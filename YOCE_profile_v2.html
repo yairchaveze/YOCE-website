@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Yair Omar Chávez-Estrada · YOCE · Cell Therapy Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;--card:#ffffff;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* LANG */
+.lang-toggle{position:fixed;top:14px;right:60px;z-index:300;display:flex;background:#fff;border:1px solid var(--bord2);border-radius:30px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.lang-btn{padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--m);cursor:pointer;transition:all .2s;border:none;background:transparent}
+.lang-btn.active{background:var(--g3);color:var(--g);font-weight:500}
+
+/* PAGE */
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem;position:relative}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--g)}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+
+/* HAMBURGER */
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;z-index:300;position:fixed;top:14px;right:16px}
+.ham span{display:block;width:22px;height:2px;background:var(--t);border-radius:2px;transition:all .3s}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{font-size:11px;color:var(--m);text-decoration:none;letter-spacing:.03em;transition:color .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--g)}
+.avail-pill{display:flex;align-items:center;gap:5px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;padding:4px 11px;font-size:9px;color:var(--g);font-family:'JetBrains Mono',monospace;font-weight:500;white-space:nowrap}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:blink 1.8s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* HERO CARD */
+.hero-card{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:1.75rem 1.75rem 1.5rem;margin-bottom:1.25rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:1fr 140px;gap:2rem;align-items:start;margin-bottom:1.75rem}
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.hero-kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
+h1.name{font-size:clamp(1.8rem,5vw,2.75rem);font-weight:200;line-height:1.06;letter-spacing:-.04em;color:var(--t);margin-bottom:.35rem}
+h1.name strong{color:var(--g);font-weight:600;display:block}
+.hero-role{font-size:12px;color:var(--b);margin-bottom:.3rem;font-weight:400;line-height:1.4}
+.hero-loc{font-size:11px;color:var(--m2);margin-bottom:1.2rem;display:flex;align-items:center;gap:5px}
+.hero-loc::before{content:'◎';font-size:8px;color:var(--gl)}
+.hero-desc{font-size:13px;color:var(--m);line-height:1.82}
+.photo-wrap{display:flex;flex-direction:column;align-items:center;gap:9px}
+.photo-rel{position:relative;width:120px;height:120px}
+.photo-circle{width:120px;height:120px;border-radius:50%;border:2.5px solid var(--gl);overflow:hidden;box-shadow:0 0 0 5px rgba(0,196,154,.12),0 6px 20px rgba(0,107,82,.15)}
+.photo-circle img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.av-ring-el{position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed rgba(0,196,154,.3);animation:spin 22s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.isct-tag{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:8px;font-size:8px;color:var(--p);padding:4px 9px;text-align:center;line-height:1.5;font-family:'JetBrains Mono',monospace;font-weight:500}
+.tags-row{display:flex;flex-wrap:wrap;gap:6px}
+.tag{border-radius:5px;font-size:10px;padding:4px 11px;font-family:'JetBrains Mono',monospace}
+.tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
+.tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
+.tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.22);color:var(--p)}
+
+/* SECTION LABEL */
+.divider{height:1px;background:var(--bord2);margin:2rem 0}
+.sec{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
+.sec-wrap{position:relative;z-index:2}
+
+/* CARRUSEL */
+.news-section{margin-bottom:2rem;position:relative;z-index:2}
+.carousel-wrap{position:relative;padding:0 4px}
+.carousel-track-outer{overflow:hidden;border-radius:12px}
+.carousel-track{display:flex;gap:12px;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.news-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.2rem;min-width:240px;max-width:240px;flex-shrink:0;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.news-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.news-card.congress::before{background:linear-gradient(90deg,var(--g),var(--gl))}
+.news-card.course::before{background:linear-gradient(90deg,var(--bl),var(--b))}
+.news-card.award::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.news-card.pub::before{background:linear-gradient(90deg,var(--pl),var(--p))}
+.news-card:hover{border-color:var(--bord3);box-shadow:0 5px 18px rgba(0,107,82,.09)}
+.nc-type{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.news-card.congress .nc-type{color:var(--g)}
+.news-card.course .nc-type{color:var(--b)}
+.news-card.award .nc-type{color:#92400e}
+.news-card.pub .nc-type{color:var(--p)}
+.nc-title{font-size:12.5px;font-weight:600;color:var(--t);margin-bottom:5px;line-height:1.35}
+.nc-body{font-size:11px;color:var(--m);line-height:1.6;margin-bottom:9px}
+.nc-date{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2)}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#fff;border:1px solid var(--bord2);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .2s;font-size:13px;color:var(--t2)}
+.car-btn:hover{background:var(--g3);border-color:var(--bord3);color:var(--g)}
+.car-btn.prev{left:-16px}
+.car-btn.next{right:-16px}
+.car-dots{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.car-dot{width:6px;height:6px;border-radius:50%;background:var(--bord2);border:none;cursor:pointer;transition:all .2s;padding:0}
+.car-dot.active{background:var(--gl);width:16px;border-radius:3px}
+
+/* SERVICIOS */
+.offer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2rem;position:relative;z-index:2}
+.oc{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.2rem;position:relative;overflow:hidden;transition:all .25s}
+.oc:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,107,82,.09)}
+.oc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;background:linear-gradient(90deg,var(--gl),var(--bl));opacity:0;transition:opacity .25s}
+.oc:hover::before{opacity:1}
+.oc-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--m2);letter-spacing:.15em;margin-bottom:8px}
+.oc-icon{font-size:18px;margin-bottom:8px;display:block}
+.oc h3{font-size:12.5px;font-weight:600;margin-bottom:5px;color:var(--t)}
+.oc p{font-size:11px;color:var(--m);line-height:1.62}
+
+/* FEAT CAR-T */
+.feat{background:#fff;border:1.5px solid rgba(0,196,154,.28);border-radius:16px;padding:1.9rem;margin-bottom:2rem;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(0,107,82,.06);z-index:2}
+.feat-glow{position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,154,.09) 0%,transparent 65%);pointer-events:none}
+.feat-label{display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
+.feat-label-dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:blink 1.8s infinite}
+.feat h2{font-size:clamp(1.25rem,3vw,1.55rem);font-weight:300;margin-bottom:.65rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
+.feat h2 em{font-style:normal;color:var(--g);font-weight:600}
+.feat-body{font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1.4rem}
+.feat-metrics{display:flex;gap:1.8rem;flex-wrap:wrap;margin-bottom:1.4rem;padding:1rem 1.2rem;background:var(--bg);border-radius:9px;border:1px solid var(--bord2)}
+.fm .v{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--g);font-weight:500}
+.fm .l{font-size:9px;color:var(--m2);margin-top:3px}
+.feat-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.fs{background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:.8rem;transition:all .2s}
+.fs:hover{background:#fff;border-color:var(--bord3)}
+.fs-n{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:var(--g);margin-bottom:5px;letter-spacing:.1em;font-weight:500}
+.fs h4{font-size:11px;font-weight:600;margin-bottom:3px;color:var(--t)}
+.fs p{font-size:10px;color:var(--m);line-height:1.5}
+
+/* AI */
+.ai-block{background:#fff;border:1.5px solid rgba(109,40,217,.18);border-radius:16px;padding:1.9rem;margin-bottom:2rem;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(109,40,217,.05);z-index:2}
+.ai-glow{position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(109,40,217,.07) 0%,transparent 65%);pointer-events:none}
+.ai-label{display:inline-flex;align-items:center;gap:6px;background:var(--p2);border:1px solid rgba(109,40,217,.22);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
+.ai-block h2{font-size:clamp(1.2rem,3vw,1.4rem);font-weight:300;margin-bottom:.6rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
+.ai-block h2 em{font-style:normal;color:var(--p);font-weight:600}
+.ai-body{font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1rem}
+.ai-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ach{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:20px;font-size:10.5px;color:var(--p);padding:4px 11px;font-weight:500}
+
+/* TIMELINE */
+.tl{display:flex;flex-direction:column;gap:7px;margin-bottom:2rem;position:relative;z-index:2}
+.ti{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:.95rem 1.1rem;display:grid;grid-template-columns:52px 9px 1fr;gap:0 10px;align-items:start;transition:all .2s}
+.ti:hover{border-color:var(--bord3);box-shadow:0 2px 9px rgba(0,107,82,.07)}
+.ti-yr{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2);padding-top:2px;line-height:1.4}
+.ti-dot{width:7px;height:7px;border-radius:50%;background:var(--gl);margin-top:4px;flex-shrink:0}
+.ti-dot.b{background:var(--bl)}.ti-dot.p{background:var(--pl)}
+.ti h4{font-size:12.5px;font-weight:600;margin-bottom:2px;color:var(--t)}
+.ti p{font-size:11px;color:var(--m);line-height:1.5}
+
+/* EDUCATION */
+.edu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem;position:relative;z-index:2}
+.ed{background:#fff;border:1px solid var(--bord2);border-radius:11px;padding:1.15rem;transition:all .2s;position:relative;overflow:hidden}
+.ed:hover{border-color:var(--bord3);box-shadow:0 3px 12px rgba(0,107,82,.08)}
+.ed::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:11px 11px 0 0}
+.ed.phd::before{background:linear-gradient(90deg,var(--g),var(--gl))}
+.ed.msc::before{background:linear-gradient(90deg,var(--bl),var(--b))}
+.ed.bsc::before{background:linear-gradient(90deg,var(--pl),var(--p))}
+.ed.exc::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.ed-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.15em;padding:2px 8px;border-radius:4px;margin-bottom:7px}
+.ed.phd .ed-badge{background:var(--g3);color:var(--g)}
+.ed.msc .ed-badge{background:var(--b2);color:var(--b)}
+.ed.bsc .ed-badge{background:var(--p2);color:var(--p)}
+.ed.exc .ed-badge{background:rgba(245,158,11,.1);color:#92400e}
+.ed h4{font-size:12.5px;font-weight:600;margin-bottom:4px;color:var(--t);line-height:1.3}
+.ed-inst{font-size:11px;color:var(--b);margin-bottom:3px;font-weight:500}
+.ed-year{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2)}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,rgba(0,196,154,.1),rgba(33,150,243,.07));border:1.5px solid rgba(0,196,154,.28);border-radius:12px;padding:1.3rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1.75rem;position:relative;z-index:2}
+.cta p{font-size:13px;color:var(--t2);font-weight:300}
+.cta p strong{color:var(--g);font-weight:600}
+.cta-btn{background:var(--g);border:none;border-radius:7px;font-size:12px;font-weight:600;color:#fff;padding:9px 20px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn:hover{background:var(--gl);transform:translateY(-1px)}
+
+/* CONTACT / SOCIAL GRID */
+.con-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:1.75rem;position:relative;z-index:2}
+.co{background:#fff;border:1px solid var(--bord2);border-radius:11px;padding:.9rem 1rem;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all .2s;text-decoration:none;text-align:center;cursor:pointer}
+.co:hover{border-color:var(--bord3);box-shadow:0 4px 14px rgba(0,107,82,.1);transform:translateY(-2px)}
+.co-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.co.email .co-ico{background:rgba(0,196,154,.12);border:1px solid rgba(0,196,154,.25)}
+.co.linkedin .co-ico{background:rgba(10,102,194,.1);border:1px solid rgba(10,102,194,.2)}
+.co.researchgate .co-ico{background:rgba(0,115,152,.1);border:1px solid rgba(0,115,152,.2)}
+.co.instagram .co-ico{background:rgba(225,48,108,.1);border:1px solid rgba(225,48,108,.2)}
+.co.facebook .co-ico{background:rgba(24,119,242,.1);border:1px solid rgba(24,119,242,.2)}
+.co.tiktok .co-ico{background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.12)}
+.co.isct .co-ico{background:var(--p2);border:1px solid rgba(109,40,217,.2)}
+.co.location .co-ico{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15)}
+.co h4{font-size:11px;font-weight:600;color:var(--t)}
+.co p{font-size:10px;color:var(--m2);line-height:1.35;word-break:break-all}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;position:relative;z-index:2;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:9.5px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+/* ══════ RESPONSIVE MOBILE ══════ */
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+
+  /* NAV mobile */
+  .ham{display:flex}
+  .lang-toggle{right:54px;top:12px}
+  nav{padding:.9rem 0 1.75rem;margin-bottom:1.75rem}
+  .logo-text{display:none}
+  .avail-pill{display:none}
+  .nav-links{
+    display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;
+    background:#fff;z-index:200;padding:4rem 1.5rem 2rem;gap:1rem;
+    box-shadow:0 4px 20px rgba(0,0,0,.12);border-bottom:1px solid var(--bord2);
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:14px;padding:.5rem 0;border-bottom:1px solid var(--bord2)}
+
+  /* HERO */
+  .hero-card{padding:1.25rem 1.1rem 1.1rem;border-radius:12px}
+  .hero-grid{grid-template-columns:1fr;gap:1.25rem}
+  .photo-wrap{flex-direction:row;align-items:center;gap:1rem}
+  .photo-rel{width:90px;height:90px}
+  .photo-circle{width:90px;height:90px;border-width:2px}
+  .isct-tag{font-size:7.5px;padding:3px 8px}
+  h1.name{font-size:1.7rem}
+  .hero-desc{font-size:12.5px}
+  .tags-row{gap:5px}
+  .tag{font-size:9px;padding:3px 9px}
+
+  /* CAROUSEL */
+  .news-card{min-width:220px;max-width:220px}
+  .car-btn.prev{left:-10px}.car-btn.next{right:-10px}
+
+  /* SERVICES */
+  .offer-grid{grid-template-columns:1fr 1fr}
+
+  /* CAR-T steps */
+  .feat-steps{grid-template-columns:1fr 1fr;gap:6px}
+  .feat h2{font-size:1.2rem}
+  .feat-metrics{gap:1.2rem}
+  .feat{padding:1.4rem 1.2rem}
+
+  /* AI */
+  .ai-block{padding:1.4rem 1.2rem}
+
+  /* TIMELINE */
+  .ti{grid-template-columns:44px 8px 1fr}
+
+  /* EDUCATION */
+  .edu{grid-template-columns:1fr}
+
+  /* CONTACT — 2 cols on mobile */
+  .con-grid{grid-template-columns:1fr 1fr}
+
+  /* CTA */
+  .cta{flex-direction:column;text-align:center}
+
+  footer{flex-direction:column;text-align:center;gap:.4rem}
+}
+
+@media(max-width:420px){
+  .offer-grid{grid-template-columns:1fr}
+  .feat-steps{grid-template-columns:1fr 1fr}
+  h1.name{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<!-- LANG -->
+<div class="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('es')" id="btn-es">ES</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+</div>
+
+<!-- HAMBURGER -->
+<button class="ham" id="hamBtn" onclick="toggleNav()" aria-label="Menú">
+  <span></span><span></span><span></span>
+</button>
+
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <div class="logo-wrap">
+    <div class="logo-mark">YOCE</div>
+    <div class="logo-text">Yair Omar Chávez-Estrada
+      <span class="t" data-es="Asesoría Científica · Cell Therapy" data-en="Scientific Advisory · Cell Therapy">Asesoría Científica · Cell Therapy</span>
+    </div>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="#offer" onclick="closeNav()" class="t" data-es="Servicios" data-en="Services">Servicios</a>
+    <a href="#cart" onclick="closeNav()">CAR-T</a>
+    <a href="#ai" onclick="closeNav()" class="t" data-es="IA en Salud" data-en="Health AI">IA en Salud</a>
+    <a href="#news" onclick="closeNav()" class="t" data-es="Noticias" data-en="News">Noticias</a>
+    <a href="#contact" onclick="closeNav()" class="t" data-es="Contacto" data-en="Contact">Contacto</a>
+  </div>
+  <div class="avail-pill"><span class="dot"></span><span class="t" data-es="Disponible" data-en="Available">Disponible</span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-card">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-kicker t" data-es="Científico · Investigador · Asesor Estratégico" data-en="Scientist · Researcher · Strategic Advisor">Científico · Investigador · Asesor Estratégico</div>
+      <h1 class="name">Yair Omar<strong>Chávez-Estrada</strong></h1>
+      <p class="hero-role">Cell Therapy · cGMP Manufacturing · Apheresis &amp; Flow Cytometry</p>
+      <p class="hero-loc">Monterrey, Nuevo León, México</p>
+      <p class="hero-desc t"
+        data-es="Científico e investigador especializado en terapia celular y génica, manufactura de ATMPs y trasplante de células hematopoyéticas. Con experiencia en translación ciencia–clínica y en fomentar colaboraciones entre hospitales, academia e industria. Miembro del comité ESP de la ISCT para Sudamérica y Centroamérica. Disponible para consultoría científica, asesoría en I+D e inversión estratégica."
+        data-en="Scientist and researcher specialized in cell &amp; gene therapy, ATMP manufacturing, and hematopoietic stem cell transplantation. Experienced in translating laboratory science into clinical application. ISCT ESP Committee Member for South &amp; Central America. Available for scientific consulting, R&amp;D advisory, and strategic investment.">
+        Científico e investigador especializado en terapia celular y génica, manufactura de ATMPs y trasplante de células hematopoyéticas. Con experiencia en translación ciencia–clínica y en fomentar colaboraciones entre hospitales, academia e industria. Miembro del comité ESP de la ISCT para Sudamérica y Centroamérica. Disponible para consultoría científica, asesoría en I+D e inversión estratégica.
+      </p>
+    </div>
+    <div class="photo-wrap">
+      <div class="photo-rel">
+        <div class="av-ring-el"></div>
+        <div class="photo-circle">
+          <img src="yoce24.jpg" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;background:linear-gradient(135deg,#006b52,#0355a0);display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:22px;font-weight:600;color:#fff>YOCE</div>'" alt="Yair Omar Chávez-Estrada"/>
+        </div>
+      </div>
+      <div class="isct-tag">ISCT · ESP<br>S &amp; C America<br>2025–</div>
+    </div>
+  </div>
+  <div class="tags-row">
+    <span class="tag g">CAR-T Cell Therapy</span>
+    <span class="tag g">cGMP ATMPs</span>
+    <span class="tag g">Apheresis</span>
+    <span class="tag g">Criopreservación</span>
+    <span class="tag b">Flow Cytometry</span>
+    <span class="tag b t" data-es="Bioestadística" data-en="Biostatistics">Bioestadística</span>
+    <span class="tag b t" data-es="Diseño de Protocolos" data-en="Protocol Design">Diseño de Protocolos</span>
+    <span class="tag p t" data-es="IA en Salud" data-en="Health AI">IA en Salud</span>
+    <span class="tag p">Machine Learning</span>
+    <span class="tag p">R · Python</span>
+  </div>
+</section>
+
+<!-- CARRUSEL NOTICIAS -->
+<section id="news" class="news-section">
+  <p class="sec t" data-es="Actividad Reciente" data-en="Recent Activity">Actividad Reciente</p>
+  <div class="carousel-wrap">
+    <button class="car-btn prev" onclick="carMove(-1)">&#8592;</button>
+    <div class="carousel-track-outer">
+      <div class="carousel-track" id="carTrack">
+        <div class="news-card congress">
+          <div class="nc-type">🌎 <span class="t" data-es="Congreso" data-en="Congress">Congreso</span></div>
+          <div class="nc-title">ISCT Annual Meeting 2025</div>
+          <div class="nc-body t" data-es="Participación como miembro del comité ESP — International Society for Cell &amp; Gene Therapy." data-en="Participation as ESP Committee member — International Society for Cell &amp; Gene Therapy.">Participación como miembro del comité ESP — International Society for Cell &amp; Gene Therapy.</div>
+          <div class="nc-date">2025</div>
+        </div>
+        <div class="news-card pub">
+          <div class="nc-type">📄 <span class="t" data-es="Publicación" data-en="Publication">Publicación</span></div>
+          <div class="nc-title t" data-es="Control microbiológico en CAR-T criopreservados" data-en="Microbiological QC in cryopreserved CAR-T">Control microbiológico en CAR-T criopreservados</div>
+          <div class="nc-body t" data-es="Manuscrito en preparación para Cytotherapy. Evaluación del suplemento BD BACTEC™ FOS en matrices DMSO/HSA." data-en="Manuscript in preparation for Cytotherapy. Evaluation of BD BACTEC™ FOS supplement in DMSO/HSA matrices.">Manuscrito en preparación para Cytotherapy. Evaluación del suplemento BD BACTEC™ FOS en matrices DMSO/HSA.</div>
+          <div class="nc-date">2025</div>
+        </div>
+        <div class="news-card course">
+          <div class="nc-type">🎓 <span class="t" data-es="Curso" data-en="Course">Curso</span></div>
+          <div class="nc-title t" data-es="Agrega tu próximo curso aquí" data-en="Add your next course here">Agrega tu próximo curso aquí</div>
+          <div class="nc-body t" data-es="Edita el HTML para añadir cursos, congresos, premios o publicaciones. Cambia la clase: congress, course, award, pub." data-en="Edit the HTML to add courses, congresses, awards or publications. Change class: congress, course, award, pub.">Edita el HTML para añadir cursos, congresos, premios o publicaciones.</div>
+          <div class="nc-date">2025</div>
+        </div>
+        <div class="news-card award">
+          <div class="nc-type">🏆 <span class="t" data-es="Reconocimiento" data-en="Award">Reconocimiento</span></div>
+          <div class="nc-title t" data-es="Agrega un reconocimiento o logro" data-en="Add an award or achievement">Agrega un reconocimiento o logro</div>
+          <div class="nc-body t" data-es="Espacio para premios, menciones o logros importantes de tu trayectoria científica." data-en="Space for awards, mentions or important achievements in your scientific career.">Espacio para premios, menciones o logros importantes de tu trayectoria científica.</div>
+          <div class="nc-date">2025</div>
+        </div>
+        <div class="news-card congress">
+          <div class="nc-type">🌎 <span class="t" data-es="Congreso" data-en="Congress">Congreso</span></div>
+          <div class="nc-title t" data-es="Próximo evento o congreso" data-en="Upcoming event or congress">Próximo evento o congreso</div>
+          <div class="nc-body t" data-es="Duplica esta tarjeta para añadir más actividades. El carrusel se adapta automáticamente." data-en="Duplicate this card to add more activities. The carousel adapts automatically.">Duplica esta tarjeta para añadir más actividades.</div>
+          <div class="nc-date">2025</div>
+        </div>
+      </div>
+    </div>
+    <button class="car-btn next" onclick="carMove(1)">&#8594;</button>
+  </div>
+  <div class="car-dots" id="carDots"></div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="offer" class="sec-wrap">
+  <p class="sec t" data-es="Servicios de Consultoría" data-en="Consulting Services">Servicios de Consultoría</p>
+  <div class="offer-grid">
+    <div class="oc"><div class="oc-num">01</div><span class="oc-icon">🧬</span><h3 class="t" data-es="Asesoría en Terapia Celular" data-en="Cell Therapy Advisory">Asesoría en Terapia Celular</h3><p class="t" data-es="Diseño, manufactura y validación de ATMPs. Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados." data-en="Design, manufacturing and validation of ATMPs. cGMP strategy for CAR-T, stem cells, and advanced biologics.">Diseño, manufactura y validación de ATMPs. Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados.</p></div>
+    <div class="oc"><div class="oc-num">02</div><span class="oc-icon">📊</span><h3 class="t" data-es="Bioestadística &amp; Protocolos" data-en="Biostatistics &amp; Protocols">Bioestadística &amp; Protocolos</h3><p class="t" data-es="Diseño estadístico de estudios clínicos y preclínicos, análisis de datos biomédicos e implementación de protocolos." data-en="Statistical design of clinical and preclinical studies, biomedical data analysis, and protocol implementation.">Diseño estadístico de estudios clínicos y preclínicos, análisis de datos biomédicos.</p></div>
+    <div class="oc"><div class="oc-num">03</div><span class="oc-icon">🤖</span><h3 class="t" data-es="IA en Ciencias de la Salud" data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p class="t" data-es="Modelos de ML para diagnóstico oncológico, análisis de citometría y optimización de procesos clínicos." data-en="ML models for oncological diagnostics, cytometry analysis, and clinical process optimization.">Modelos de ML para diagnóstico oncológico, análisis de citometría y optimización de procesos clínicos.</p></div>
+    <div class="oc"><div class="oc-num">04</div><span class="oc-icon">🔬</span><h3 class="t" data-es="I+D Estratégico" data-en="Strategic R&amp;D">I+D Estratégico</h3><p class="t" data-es="Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines de terapias avanzadas." data-en="Research proposal evaluation, funding advisory, and advanced therapy pipeline development.">Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines.</p></div>
+    <div class="oc"><div class="oc-num">05</div><span class="oc-icon">🏭</span><h3 class="t" data-es="Control de Calidad" data-en="Quality Control">Control de Calidad</h3><p class="t" data-es="Control microbiológico de criopreservados, validación de métodos analíticos, medicina transfusional y hematología oncológica." data-en="Microbiological control of cryopreserved products, analytical method validation, transfusion medicine.">Control microbiológico de criopreservados, validación de métodos, medicina transfusional.</p></div>
+    <div class="oc"><div class="oc-num">06</div><span class="oc-icon">🌎</span><h3 class="t" data-es="Asesoría a Inversionistas" data-en="Investor Advisory">Asesoría a Inversionistas</h3><p class="t" data-es="Due diligence científico-técnico, evaluación de startups biotech y análisis de viabilidad para proyectos de terapia celular en LATAM." data-en="Scientific-technical due diligence, biotech startup evaluation, and feasibility analysis for cell therapy in LATAM.">Due diligence científico-técnico, evaluación de startups biotech y viabilidad de terapia celular en LATAM.</p></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CAR-T -->
+<section id="cart" class="feat">
+  <div class="feat-glow"></div>
+  <div class="feat-label"><span class="feat-label-dot"></span><span class="t" data-es="FLAGSHIP · CAR-T Cell Therapy" data-en="FLAGSHIP · CAR-T Cell Therapy">FLAGSHIP · CAR-T Cell Therapy</span></div>
+  <h2 class="t" data-es="Desarrollo In-House de<br><em>Vector Lentiviral CD19 CAR-T</em>" data-en="In-House Development of<br><em>CD19 CAR-T Lentiviral Vector</em>">Desarrollo In-House de<br><em>Vector Lentiviral CD19 CAR-T</em></h2>
+  <p class="feat-body t" data-es="Programa pionero de manufactura descentralizada de células CAR-T en México. El vector lentiviral anti-CD19 está orientado a pacientes con leucemia linfoblástica aguda de precursores B refractaria o en recaída, con ruta estructurada hacia validación preclínica y traslación clínica." data-en="Pioneer program in decentralized CAR-T cell manufacturing in Mexico. The anti-CD19 lentiviral vector targets patients with relapsed/refractory B-cell precursor ALL, with a structured pathway toward preclinical validation and clinical translation.">Programa pionero de manufactura descentralizada de células CAR-T en México. El vector lentiviral anti-CD19 está orientado a pacientes con leucemia linfoblástica aguda de precursores B refractaria o en recaída.</p>
+  <div class="feat-metrics">
+    <div class="fm"><div class="v">ALL-B</div><div class="l t" data-es="Indicación principal" data-en="Primary indication">Indicación principal</div></div>
+    <div class="fm"><div class="v t" data-es="Preclínico" data-en="Preclinical">Preclínico</div><div class="l">Fase · RUO</div></div>
+    <div class="fm"><div class="v">cGMP</div><div class="l t" data-es="Estándar de manufactura" data-en="Manufacturing standard">Estándar de manufactura</div></div>
+    <div class="fm"><div class="v">México</div><div class="l t" data-es="Contexto LATAM" data-en="LATAM context">Contexto LATAM</div></div>
+  </div>
+  <div class="feat-steps">
+    <div class="fs"><div class="fs-n">01 · DISEÑO</div><h4 class="t" data-es="Constructo" data-en="Construct">Constructo</h4><p class="t" data-es="Ingeniería del receptor quimérico anti-CD19, dominio coestimulatorio." data-en="Anti-CD19 chimeric receptor engineering, costimulatory domain.">Ingeniería del receptor quimérico anti-CD19.</p></div>
+    <div class="fs"><div class="fs-n">02 · VECTOR</div><h4>Lentiviral</h4><p class="t" data-es="Producción, titulación funcional y optimización de MOI." data-en="Production, functional titration and MOI optimization.">Producción, titulación funcional y optimización de MOI.</p></div>
+    <div class="fs"><div class="fs-n">03 · MANUFACTURA</div><h4>cGMP</h4><p class="t" data-es="Activación, transducción y expansión de células T." data-en="T cell activation, transduction and expansion.">Activación, transducción y expansión de células T.</p></div>
+    <div class="fs"><div class="fs-n">04 · CALIDAD</div><h4>QC · Cryo</h4><p class="t" data-es="Control microbiológico, BACTEC™, estabilidad." data-en="Microbiological control, BACTEC™, long-term stability.">Control microbiológico, BACTEC™, estabilidad.</p></div>
+  </div>
+</section>
+
+<!-- AI -->
+<section id="ai" class="ai-block">
+  <div class="ai-glow"></div>
+  <div class="ai-label">◆ <span class="t" data-es="IA · Ciencias de la Salud" data-en="AI · Health Sciences">IA · Ciencias de la Salud</span></div>
+  <h2><em class="t" data-es="IA Aplicada a Ciencias de la Salud" data-en="AI Applied to Health Sciences">IA Aplicada a Ciencias de la Salud</em></h2>
+  <p class="ai-body t" data-es="Desarrollo e implementación de modelos de inteligencia artificial para diagnóstico oncológico, análisis de citometría de flujo y optimización de procesos de manufactura de terapias avanzadas. Integración de machine learning con biología celular para acelerar el ciclo de investigación y traslación clínica." data-en="Development and implementation of AI models for oncological diagnostics, flow cytometry data analysis, and optimization of advanced therapy manufacturing. Integration of machine learning with cell biology to accelerate research and clinical translation.">Desarrollo e implementación de modelos de inteligencia artificial para diagnóstico oncológico, análisis de citometría de flujo y optimización de procesos de manufactura.</p>
+  <div class="ai-chips">
+    <span class="ach t" data-es="ML para diagnóstico oncológico" data-en="ML for oncological diagnostics">ML para diagnóstico oncológico</span>
+    <span class="ach t" data-es="Análisis de flow cytometry" data-en="Flow cytometry analysis">Análisis de flow cytometry</span>
+    <span class="ach t" data-es="NLP para datos clínicos" data-en="NLP for clinical data">NLP para datos clínicos</span>
+    <span class="ach t" data-es="Modelos predictivos ATMPs" data-en="Predictive models for ATMPs">Modelos predictivos ATMPs</span>
+    <span class="ach t" data-es="Computer vision en hematología" data-en="Computer vision in hematology">Computer vision en hematología</span>
+    <span class="ach">R · Python · GraphPad</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCIA -->
+<section class="sec-wrap">
+  <p class="sec t" data-es="Trayectoria" data-en="Experience">Trayectoria</p>
+  <div class="tl">
+    <div class="ti"><div class="ti-yr">2025–hoy</div><div class="ti-dot p"></div><div><h4>ISCT — ESP Committee Member</h4><p>International Society for Cell &amp; Gene Therapy · South &amp; Central America</p></div></div>
+    <div class="ti"><div class="ti-yr">2019–hoy</div><div class="ti-dot"></div><div><h4 class="t" data-es="Químico, Analista e Investigador" data-en="Chemist, Analyst &amp; Researcher">Químico, Analista e Investigador</h4><p class="t" data-es="Hematología · Citometría de flujo · Medicina molecular · CAR-T · Criopreservación · Monterrey, México" data-en="Hematology · Flow cytometry · Molecular medicine · CAR-T · Cryopreservation · Monterrey, Mexico">Hematología · Citometría de flujo · Medicina molecular · CAR-T · Criopreservación · Monterrey, México</p></div></div>
+    <div class="ti"><div class="ti-yr">2020</div><div class="ti-dot b"></div><div><h4 class="t" data-es="Profesor de Ciencias de Laboratorio" data-en="Laboratory Sciences Professor">Profesor de Ciencias de Laboratorio</h4><p>Universidad Metropolitana de Monterrey</p></div></div>
+    <div class="ti"><div class="ti-yr">2015–16</div><div class="ti-dot"></div><div><h4 class="t" data-es="Técnico Laboratorista Clínico" data-en="Clinical Lab Technician">Técnico Laboratorista Clínico</h4><p>ALFA Medical Center · Monterrey</p></div></div>
+    <div class="ti"><div class="ti-yr">2012–13</div><div class="ti-dot b"></div><div><h4 class="t" data-es="Auxiliar Transfusión Sanguínea" data-en="Blood Transfusion Auxiliary">Auxiliar Transfusión Sanguínea</h4><p class="t" data-es="Secretaría de Salud · Monclova, Coahuila" data-en="Ministry of Health · Monclova, Coahuila">Secretaría de Salud · Monclova, Coahuila</p></div></div>
+  </div>
+</section>
+
+<!-- EDUCACIÓN -->
+<section class="sec-wrap">
+  <p class="sec t" data-es="Formación Académica" data-en="Education">Formación Académica</p>
+  <div class="edu">
+    <div class="ed phd"><div class="ed-badge">PhD</div><h4 class="t" data-es="Doctorado en Ciencias de la Salud" data-en="Doctor of Philosophy — Health Sciences">Doctorado en Ciencias de la Salud</h4><p class="ed-inst">Universidad Anáhuac México Norte</p><p class="ed-year">ago 2025 – may 2028</p></div>
+    <div class="ed msc"><div class="ed-badge">MSc</div><h4 class="t" data-es="Maestría en Ciencias Médicas" data-en="Master of Science — Medical Sciences">Maestría en Ciencias Médicas</h4><p class="ed-inst">Universidad del Noreste</p><p class="ed-year">sep 2020 – jun 2022</p></div>
+    <div class="ed bsc"><div class="ed-badge">BSc</div><h4 class="t" data-es="Químico Bacteriólogo Parasitólogo" data-en="Bacteriologist Parasitologist Chemist">Químico Bacteriólogo Parasitólogo</h4><p class="ed-inst">Universidad Autónoma de Nuevo León</p><p class="ed-year">ene 2014 – feb 2019</p></div>
+    <div class="ed exc"><div class="ed-badge t" data-es="Intercambio" data-en="Exchange">Intercambio</div><h4 class="t" data-es="Bioingeniería · Microbiología e Inmunología" data-en="Bioengineering · Microbiology &amp; Immunology">Bioingeniería · Microbiología e Inmunología</h4><p class="ed-inst">Universidad de Concepción · Chile</p><p class="ed-year">2017 – 2018</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <p class="t" data-es="¿Listo para colaborar? <strong>Disponible para consultoría científica e inversión estratégica.</strong>" data-en="Ready to collaborate? <strong>Available for scientific consulting and strategic investment.</strong>">¿Listo para colaborar? <strong>Disponible para consultoría científica e inversión estratégica.</strong></p>
+  <a href="mailto:yair_chaveze@hotmail.com" class="cta-btn"><span class="t" data-es="Escribir mensaje" data-en="Send message">Escribir mensaje</span> →</a>
+</div>
+
+<!-- CONTACTO CON REDES SOCIALES -->
+<section id="contact" class="sec-wrap">
+  <p class="sec t" data-es="Contacto &amp; Redes" data-en="Contact &amp; Social">Contacto &amp; Redes</p>
+  <div class="con-grid">
+
+    <a href="mailto:yair_chaveze@hotmail.com" class="co email">
+      <div class="co-ico">✉️</div>
+      <h4>Email</h4>
+      <p>yair_chaveze@hotmail.com</p>
+    </a>
+
+    <a href="https://www.linkedin.com/in/yair-chaveze/" target="_blank" rel="noopener" class="co linkedin">
+      <div class="co-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </div>
+      <h4>LinkedIn</h4>
+      <p>yair-chaveze</p>
+    </a>
+
+    <a href="https://www.researchgate.net/profile/Yair-Chavez-Estrada" target="_blank" rel="noopener" class="co researchgate">
+      <div class="co-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#00759a"><path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a12.584 12.584 0 0 0-.31 2.915c0 1.089.037 1.912.11 2.47h.03c.06.03.113.06.171.06.057 0 .113-.03.167-.06h.033c.057-.06.057-.15.057-.25 0-.08-.033-.167-.057-.257-.453-1.616-.68-3.22-.68-4.81 0-1.58.227-2.862.68-3.833.448-.972 1.105-1.462 1.97-1.462.862 0 1.51.482 1.96 1.447.443.965.67 2.253.67 3.848 0 1.58-.227 2.866-.67 3.853-.45.987-1.1 1.48-1.96 1.48-.863 0-1.522-.497-1.97-1.48m-8.453 9.76c-2.19 0-3.95.74-5.285 2.22C4.51 13.458 3.84 15.35 3.84 17.65c0 2.3.67 4.19 2.008 5.667 1.335 1.477 3.096 2.216 5.285 2.216 2.19 0 3.95-.739 5.285-2.216C17.754 21.84 18.42 19.95 18.42 17.65c0-2.3-.666-4.192-2.002-5.67-1.335-1.48-3.095-2.22-5.285-2.22zm0 1.87c1.6 0 2.88.547 3.837 1.64.957 1.094 1.436 2.535 1.436 4.325 0 1.79-.479 3.232-1.436 4.326-.957 1.094-2.237 1.64-3.837 1.64s-2.88-.546-3.837-1.64C6.74 20.83 6.263 19.39 6.263 17.6c0-1.79.477-3.231 1.433-4.325.956-1.093 2.237-1.64 3.837-1.64z"/></svg>
+      </div>
+      <h4>ResearchGate</h4>
+      <p>Yair-Chavez-Estrada</p>
+    </a>
+
+    <a href="https://www.instagram.com/yoce_celltherapy/" target="_blank" rel="noopener" class="co instagram">
+      <div class="co-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="url(#ig)"><defs><linearGradient id="ig" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+      <h4>Instagram</h4>
+      <p>@yoce_celltherapy</p>
+    </a>
+
+    <a href="https://www.facebook.com/yair.chavezestrada" target="_blank" rel="noopener" class="co facebook">
+      <div class="co-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </div>
+      <h4>Facebook</h4>
+      <p>yair.chavezestrada</p>
+    </a>
+
+    <a href="https://www.tiktok.com/@yoce_celltherapy" target="_blank" rel="noopener" class="co tiktok">
+      <div class="co-ico">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#000"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34v-7a8.16 8.16 0 004.77 1.52V6.41a4.85 4.85 0 01-1-.28z"/></svg>
+      </div>
+      <h4>TikTok</h4>
+      <p>@yoce_celltherapy</p>
+    </a>
+
+    <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener" class="co isct">
+      <div class="co-ico">🔬</div>
+      <h4>ISCT · ORCID</h4>
+      <p>ESP S &amp; C America</p>
+    </a>
+
+    <div class="co location" style="cursor:default">
+      <div class="co-ico">📍</div>
+      <h4 class="t" data-es="Ubicación" data-en="Location">Ubicación</h4>
+      <p>Monterrey, N.L. · México</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">Cell Therapy · AI · R&amp;D</span>
+</footer>
+</div>
+
+<script>
+/* ══ CANVAS ══ */
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const CC='0,107,82',CL='0,180,130',BC='185,28,28',BL='239,68,68',TC='3,85,160',SY='217,119,6';
+class Cell{constructor(type){this.type=type;this.respawn(true);}respawn(init){this.x=Math.random()*W;this.y=init?Math.random()*H:-20;const s=[0.55,0.28,0.38];this.vx=(Math.random()-.5)*s[this.type];this.vy=(Math.random()-.5)*s[this.type];this.r=this.type===0?10+Math.random()*5:this.type===1?13+Math.random()*6:4+Math.random()*3;this.phase=Math.random()*Math.PI*2;this.spd=.007+Math.random()*.01;this.engaged=false;this.engagedWith=null;this.synapseT=0;this.killed=false;this.deathTimer=0;}}
+const cells=[];for(let i=0;i<22;i++)cells.push(new Cell(0));for(let i=0;i<15;i++)cells.push(new Cell(1));for(let i=0;i<32;i++)cells.push(new Cell(2));
+function drawCART(cell){const{x,y,r,phase,engaged,killed,deathTimer}=cell;const alpha=killed?Math.max(0,1-deathTimer/40):1;if(alpha<=0)return;const pw=phase+t*cell.spd*55;const g=ctx.createRadialGradient(x,y,r*.15,x,y,r*2.2);g.addColorStop(0,`rgba(${CL},${.18*alpha})`);g.addColorStop(1,`rgba(${CL},0)`);ctx.beginPath();ctx.arc(x,y,r*2.2,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=`rgba(${CL},${.13*alpha})`;ctx.fill();ctx.strokeStyle=`rgba(${CC},${(engaged?.95:.65)*alpha})`;ctx.lineWidth=engaged?2:1.2;ctx.stroke();for(let i=0;i<9;i++){const a=(i/9)*Math.PI*2+pw*.013;const len=r*.48+Math.sin(pw*.07+i)*r*.1;const tx=x+Math.cos(a)*(r+len),ty=y+Math.sin(a)*(r+len);ctx.beginPath();ctx.moveTo(x+Math.cos(a-.16)*r,y+Math.sin(a-.16)*r);ctx.lineTo(tx,ty);ctx.lineTo(x+Math.cos(a+.16)*r,y+Math.sin(a+.16)*r);ctx.strokeStyle=`rgba(${CC},${(engaged?.9:.5)*alpha})`;ctx.lineWidth=.9;ctx.stroke();ctx.beginPath();ctx.arc(tx,ty,1.8,0,Math.PI*2);ctx.fillStyle=`rgba(${CL},${(engaged?1:.7)*alpha})`;ctx.fill();}ctx.beginPath();ctx.arc(x,y,r*.28,0,Math.PI*2);ctx.fillStyle=`rgba(${CC},${.3*alpha})`;ctx.fill();}
+function drawBCell(cell){const{x,y,r,phase,killed,deathTimer}=cell;const alpha=killed?Math.max(0,1-deathTimer/60):1;if(alpha<=0)return;const pw=phase+t*cell.spd*32;const g=ctx.createRadialGradient(x,y,r*.15,x,y,r*2);g.addColorStop(0,`rgba(${BC},${.15*alpha})`);g.addColorStop(1,`rgba(${BC},0)`);ctx.beginPath();ctx.arc(x,y,r*2,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();ctx.beginPath();for(let a=0;a<=Math.PI*2;a+=.12){const wr=r*(1+.07*Math.sin(a*4+pw*.018));const px=x+Math.cos(a)*wr,py=y+Math.sin(a)*wr;a<.01?ctx.moveTo(px,py):ctx.lineTo(px,py);}ctx.closePath();ctx.fillStyle=`rgba(${BC},${.1*alpha})`;ctx.fill();ctx.strokeStyle=`rgba(${BC},${.75*alpha})`;ctx.lineWidth=1.3;ctx.stroke();for(let i=0;i<8;i++){const a=(i/8)*Math.PI*2+pw*.01;ctx.beginPath();ctx.arc(x+Math.cos(a)*r,y+Math.sin(a)*r,2.8,0,Math.PI*2);ctx.fillStyle=`rgba(239,120,50,${.85*alpha})`;ctx.fill();}ctx.beginPath();ctx.arc(x,y,r*.32,0,Math.PI*2);ctx.fillStyle=`rgba(${BC},${.25*alpha})`;ctx.fill();if(killed&&deathTimer<35){const f=deathTimer/35;for(let i=0;i<10;i++){const a=(i/10)*Math.PI*2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*f*r*3,y+Math.sin(a)*f*r*3);ctx.strokeStyle=`rgba(${SY},${(1-f)*.85})`;ctx.lineWidth=1.3;ctx.stroke();}}}
+function drawBgCell(cell){const{x,y,r,phase,spd}=cell;const pw=phase+t*spd*38;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.strokeStyle=`rgba(${TC},.2)`;ctx.lineWidth=.8;ctx.stroke();ctx.fillStyle=`rgba(${TC},.05)`;ctx.fill();for(let i=0;i<4;i++){const a=(i/4)*Math.PI*2+pw*.02;ctx.beginPath();ctx.arc(x+Math.cos(a)*r,y+Math.sin(a)*r,1.2,0,Math.PI*2);ctx.fillStyle=`rgba(${TC},.32)`;ctx.fill();}}
+function drawSynapse(cart,bc){const dx=bc.x-cart.x,dy=bc.y-cart.y,d=Math.sqrt(dx*dx+dy*dy),ux=dx/d,uy=dy/d;const sx=cart.x+ux*cart.r,sy=cart.y+uy*cart.r,ex=bc.x-ux*bc.r,ey=bc.y-uy*bc.r;const pulse=.5+.5*Math.sin(t*7+cart.synapseT);const grd=ctx.createLinearGradient(sx,sy,ex,ey);grd.addColorStop(0,`rgba(${CL},${.8*pulse})`);grd.addColorStop(.5,`rgba(${SY},${.95*pulse})`);grd.addColorStop(1,`rgba(${BL},${.8*pulse})`);ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex,ey);ctx.strokeStyle=grd;ctx.lineWidth=2*pulse;ctx.stroke();for(let p=0;p<5;p++){const prog=((t*1.8+p*.2+cart.synapseT)%1),px=sx+(ex-sx)*prog,py=sy+(ey-sy)*prog;ctx.beginPath();ctx.arc(px,py,2.5,0,Math.PI*2);ctx.fillStyle=`rgba(${SY},${.95*pulse})`;ctx.fill();}ctx.beginPath();ctx.arc(bc.x,bc.y,bc.r*1.4+4*pulse,0,Math.PI*2);ctx.strokeStyle=`rgba(${SY},${.28*pulse})`;ctx.lineWidth=2.5;ctx.stroke();}
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.1+.06*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();if(y%16===0&&Math.abs(Math.sin(ph))<.2){ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.strokeStyle='rgba(0,150,110,.07)';ctx.lineWidth=.6;ctx.stroke();}}}
+function update(){const cartCells=cells.filter(c=>c.type===0&&!c.killed),bCells=cells.filter(c=>c.type===1&&!c.killed);cartCells.forEach(cart=>{if(cart.engaged&&cart.engagedWith){const tgt=cart.engagedWith;if(tgt.killed){cart.engaged=false;cart.engagedWith=null;return;}const dx=tgt.x-cart.x,dy=tgt.y-cart.y,d=Math.sqrt(dx*dx+dy*dy);cart.vx+=(dx/d)*.05;cart.vy+=(dy/d)*.05;cart.synapseT+=.022;if(d<cart.r+tgt.r+4){tgt.killed=true;cart.engaged=false;cart.engagedWith=null;setTimeout(()=>{const nb=new Cell(1);nb.x=Math.random()*W;nb.y=Math.random()*H;const idx=cells.indexOf(tgt);if(idx>-1)cells[idx]=nb;},3000);}}else{let nearest=null,nearD=Infinity;bCells.forEach(bc=>{const dx=bc.x-cart.x,dy=bc.y-cart.y,d=Math.sqrt(dx*dx+dy*dy);if(d<nearD){nearD=d;nearest=bc;}});if(nearest&&nearD<240){const dx=nearest.x-cart.x,dy=nearest.y-cart.y;cart.vx+=(dx/nearD)*.022;cart.vy+=(dy/nearD)*.022;if(nearD<cart.r+nearest.r+35){cart.engaged=true;cart.engagedWith=nearest;cart.synapseT=Math.random();}}}const s=Math.sqrt(cart.vx*cart.vx+cart.vy*cart.vy);if(s>1.4){cart.vx=(cart.vx/s)*1.4;cart.vy=(cart.vy/s)*1.4;}cart.x=(cart.x+cart.vx+W)%W;cart.y=(cart.y+cart.vy+H)%H;});cells.filter(c=>c.type===1).forEach(bc=>{bc.x=(bc.x+bc.vx+W)%W;bc.y=(bc.y+bc.vy+H)%H;});cells.filter(c=>c.type===2).forEach(tc=>{tc.x=(tc.x+tc.vx+W)%W;tc.y=(tc.y+tc.vy+H)%H;});cells.filter(c=>c.killed).forEach(c=>{c.deathTimer++;});}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'100,60,200',CC);cells.filter(c=>c.type===2).forEach(drawBgCell);cells.filter(c=>c.type===0&&c.engaged&&c.engagedWith&&!c.engagedWith.killed).forEach(c=>drawSynapse(c,c.engagedWith));cells.filter(c=>c.type===1).forEach(drawBCell);cells.filter(c=>c.type===0).forEach(drawCART);update();requestAnimationFrame(frame);}
+frame();
+
+/* ══ CARRUSEL ══ */
+const track=document.getElementById('carTrack'),dotsEl=document.getElementById('carDots');
+let carIdx=0;
+function cardW(){return 252;}
+function getVisible(){const outer=document.querySelector('.carousel-track-outer');return outer?Math.max(1,Math.floor((outer.offsetWidth+12)/cardW())):1;}
+function totalCards(){return track.children.length;}
+function maxIdx(){return Math.max(0,totalCards()-getVisible());}
+function buildDots(){dotsEl.innerHTML='';const n=maxIdx()+1;for(let i=0;i<n;i++){const b=document.createElement('button');b.className='car-dot'+(i===0?' active':'');b.onclick=()=>carGo(i);dotsEl.appendChild(b);}}
+function carGo(idx){carIdx=Math.max(0,Math.min(idx,maxIdx()));track.style.transform=`translateX(-${carIdx*cardW()}px)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));}
+function carMove(dir){carGo(carIdx+dir);}
+buildDots();
+window.addEventListener('resize',()=>{buildDots();carGo(Math.min(carIdx,maxIdx()));});
+let touchStartX=0;
+track.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+track.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>40)carMove(dx<0?1:-1);},{passive:true});
+
+/* ══ NAV MOBILE ══ */
+function toggleNav(){const b=document.getElementById('hamBtn'),n=document.getElementById('navLinks');b.classList.toggle('open');n.classList.toggle('open');}
+function closeNav(){document.getElementById('hamBtn').classList.remove('open');document.getElementById('navLinks').classList.remove('open');}
+document.addEventListener('click',e=>{const nav=document.getElementById('navLinks'),btn=document.getElementById('hamBtn');if(nav.classList.contains('open')&&!nav.contains(e.target)&&!btn.contains(e.target))closeNav();});
+
+/* ══ LANG ══ */
+function setLang(l){document.getElementById('btn-es').classList.toggle('active',l==='es');document.getElementById('btn-en').classList.toggle('active',l==='en');document.querySelectorAll('.t[data-'+l+']').forEach(el=>{el.innerHTML=el.dataset[l];});}
+</script>
+</body>
+</html>
