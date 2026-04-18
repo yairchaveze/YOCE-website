@@ -486,17 +486,39 @@ footer p{font-size:9.5px;color:var(--m2)}
 </section>
 
 <!-- LIBRO -->
-<section class="sec-wrap" style="margin-bottom:2rem">
-  <p class="sec t" data-es="Libro Publicado" data-en="Published Book">Libro Publicado</p>
-  <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517" target="_blank" rel="noopener" style="display:flex;gap:1.25rem;align-items:center;background:#fff;border:1px solid var(--bord2);border-radius:14px;padding:1.25rem;text-decoration:none;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='var(--bord3)';this.style.boxShadow='0 5px 18px rgba(0,107,82,.09)'" onmouseout="this.style.borderColor='var(--bord2)';this.style.boxShadow='none'">
-    <div style="width:60px;height:80px;border-radius:6px;background:linear-gradient(135deg,#1a1a4e,#8b1a1a);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">📖</div>
-    <div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px;font-weight:500">📚 <span class="t" data-es="Libro" data-en="Book">Libro</span> · Editorial Musa · 2025</div>
-      <div style="font-size:14px;font-weight:600;color:var(--t);margin-bottom:4px;line-height:1.3">No Soy Médico, Pero Estoy Aquí</div>
-      <div style="font-size:12px;color:var(--m);margin-bottom:6px;line-height:1.5" class="t" data-es="Una historia sobre el amor cuando la enfermedad llega a casa. Disponible en eBook y pasta blanda en Amazon." data-en="A story about love when illness comes home. Available in eBook and paperback on Amazon.">Una historia sobre el amor cuando la enfermedad llega a casa. Disponible en eBook y pasta blanda en Amazon.</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gl);font-weight:500">Ver en Amazon →</div>
+<section class="sec-wrap" style="margin-bottom:2rem;margin-top:1.5rem">
+  <p class="sec t" data-es="Novela Publicada" data-en="Published Novel">Novela Publicada</p>
+  <div style="background:#fff;border:1px solid var(--bord2);border-radius:16px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.06)">
+    <div style="display:grid;grid-template-columns:220px 1fr;min-height:260px">
+      <div style="overflow:hidden;flex-shrink:0">
+        <img src="AD_CorreoChavez.jpg" alt="No Soy Médico Pero Estoy Aquí" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a4e,#8b1a1a)';this.style.display='none'"/>
+      </div>
+      <div style="padding:1.6rem 1.6rem 1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:500;display:flex;align-items:center;gap:6px">
+            <span style="background:var(--p2);color:var(--p);border:1px solid rgba(109,40,217,.2);border-radius:4px;padding:2px 8px">Novela</span>
+            <span>Editorial Musa · 2025</span>
+          </div>
+          <div style="font-size:1.25rem;font-weight:600;color:var(--t);margin-bottom:.6rem;line-height:1.25;letter-spacing:-.02em">No Soy Médico,<br>Pero Estoy Aquí</div>
+          <div style="font-size:11px;color:var(--g);font-weight:500;margin-bottom:.75rem;font-family:'JetBrains Mono',monospace">Yair Omar Chávez Estrada</div>
+          <p style="font-size:12.5px;color:var(--m);line-height:1.78;margin-bottom:1rem" class="t"
+            data-es="Una historia de drama hospitalario realista que explora el cuidado del enfermo en casa, la fragilidad y la esperanza. Entre estudios, carpetas y firmas urgentes, Leo y Emiliano —un residente con sus propias heridas— aprenden que entender la sangre es también aprender a mirarse por dentro."
+            data-en="A realistic hospital drama exploring home caregiving, fragility, and hope. Amid studies, folders, and urgent signatures, Leo and Emiliano —a resident carrying his own wounds— learn that understanding blood is also learning to look within.">
+            Una historia de drama hospitalario realista que explora el cuidado del enfermo en casa, la fragilidad y la esperanza. Entre estudios, carpetas y firmas urgentes, Leo y Emiliano —un residente con sus propias heridas— aprenden que entender la sangre es también aprender a mirarse por dentro.
+          </p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem">
+            <span style="font-size:10px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">Drama hospitalario</span>
+            <span style="font-size:10px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">eBook &amp; Pasta blanda</span>
+          </div>
+        </div>
+        <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:7px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;padding:9px 20px;text-decoration:none;transition:opacity .2s;width:fit-content;font-family:'Plus Jakarta Sans',sans-serif"
+          onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          Ver en Amazon →
+        </a>
+      </div>
     </div>
-  </a>
+  </div>
 </section>
 
 <div class="divider"></div>
