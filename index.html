@@ -464,7 +464,13 @@ footer p{font-size:9.5px;color:var(--m2)}
 <!-- CTA -->
 <div class="cta">
   <p class="t" data-es="¿Listo para colaborar? <strong>Disponible para consultoría científica e inversión estratégica.</strong>" data-en="Ready to collaborate? <strong>Available for scientific consulting and strategic investment.</strong>">¿Listo para colaborar? <strong>Disponible para consultoría científica e inversión estratégica.</strong></p>
-  <a href="mailto:yair_chaveze@hotmail.com" class="cta-btn"><span class="t" data-es="Escribir mensaje" data-en="Send message">Escribir mensaje</span> →</a>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <a href="mailto:yair_chaveze@hotmail.com" class="cta-btn">
+    <span class="t" data-es="Escribir mensaje" data-en="Send message">Escribir mensaje</span> →
+  </a>
+  <button onclick="copyEmail()" id="copyBtn" style="background:transparent;border:1.5px solid var(--gl);border-radius:7px;font-size:12px;font-weight:600;color:var(--g);padding:9px 18px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">
+    <span class="t" data-es="Copiar correo" data-en="Copy email">Copiar correo</span>
+  </button>
 </div>
 
 <!-- CONTACTO CON REDES SOCIALES -->
@@ -580,6 +586,17 @@ document.addEventListener('click',e=>{const nav=document.getElementById('navLink
 
 /* ══ LANG ══ */
 function setLang(l){document.getElementById('btn-es').classList.toggle('active',l==='es');document.getElementById('btn-en').classList.toggle('active',l==='en');document.querySelectorAll('.t[data-'+l+']').forEach(el=>{el.innerHTML=el.dataset[l];});}
+</script>
+  <script>
+function copyEmail(){
+  navigator.clipboard.writeText('yair_chaveze@hotmail.com').then(()=>{
+    const btn = document.getElementById('copyBtn');
+    const original = btn.innerHTML;
+    btn.innerHTML = '✓ <span class="t">¡Copiado!</span>';
+    btn.style.background = 'var(--g3)';
+    setTimeout(()=>{ btn.innerHTML = original; btn.style.background = 'transparent'; }, 2000);
+  });
+}
 </script>
 </body>
 </html>
