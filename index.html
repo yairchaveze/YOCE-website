@@ -30,8 +30,7 @@ body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-se
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem;position:relative}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--g)}
-.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-mark{width:34px;height:34px;display:flex;align-items:center;justify-content:center}.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
 .logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
 
 /* HAMBURGER */
@@ -287,8 +286,9 @@ footer p{font-size:9.5px;color:var(--m2)}
 <!-- NAV -->
 <nav>
   <div class="logo-wrap">
-    <div class="logo-mark">YOCE</div>
-    <div class="logo-text">Yair Omar Chávez-Estrada
+<div class="logo-mark">
+  <img src="YOCE_logo.svg" width="28" height="28" alt="YOCE" style="display:block"/>
+</div>    <div class="logo-text">Yair Omar Chávez-Estrada
       <span class="t" data-es="Asesor Científico · Cell Therapy" data-en="Scientific Advisory · Cell Therapy">Asesoría Científica · Cell Therapy</span>
     </div>
   </div>
