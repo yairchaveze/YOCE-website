@@ -88,8 +88,7 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .news-section{margin-bottom:2rem;position:relative;z-index:2}
 .carousel-wrap{position:relative;padding:0 4px}
 .carousel-track-outer{overflow:hidden;border-radius:12px}
-.carousel-track{display:flex;gap:12px;transition:transform .4s cubic-bezier(.4,0,.2,1)}
-.news-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.2rem;min-width:240px;max-width:240px;flex-shrink:0;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.carousel-track{display:flex;gap:12px;transition:transform .5s cubic-bezier(.25,0.1,.25,1);scroll-snap-type:x mandatory}.news-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.2rem;min-width:240px;max-width:240px;flex-shrink:0;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s;scroll-snap-align:start}
 .news-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
 .news-card.congress::before{background:linear-gradient(90deg,var(--g),var(--gl))}
 .news-card.course::before{background:linear-gradient(90deg,var(--bl),var(--b))}
@@ -656,7 +655,12 @@ frame();
 /* ══ CARRUSEL ══ */
 const track=document.getElementById('carTrack'),dotsEl=document.getElementById('carDots');
 let carIdx=0;
-function cardW(){return 252;}
+function cardW(){
+  const outer=document.querySelector('.carousel-track-outer');
+  if(!outer) return 252;
+  const w=outer.offsetWidth;
+  return window.innerWidth<=680 ? w+12 : 252;
+}
 function getVisible(){const outer=document.querySelector('.carousel-track-outer');return outer?Math.max(1,Math.floor((outer.offsetWidth+12)/cardW())):1;}
 function totalCards(){return track.children.length;}
 function maxIdx(){return Math.max(0,totalCards()-getVisible());}
