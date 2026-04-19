@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Predictor de Volemia · Aféresis CPH · YoCellTherapy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--g);text-decoration:none}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+.hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
+.hero-sub{font-size:13px;color:var(--p);font-weight:500;margin-bottom:1.2rem}
+.meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
+.pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:5px 10px;font-size:10.5px;color:var(--m);font-family:'JetBrains Mono',monospace}
+.pill.p{background:var(--p2);border-color:rgba(109,40,217,.25);color:var(--p)}
+.pill.g{background:var(--g3);border-color:var(--bord3);color:var(--g)}
+.pill.b{background:var(--b2);border-color:rgba(33,150,243,.25);color:var(--b)}
+.sec{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;text-align:center}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--p);margin-bottom:4px}
+.stat .l{font-size:10px;color:var(--m2);line-height:1.4}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.info-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:border-color .2s}
+.info-item:hover{border-color:rgba(109,40,217,.25)}
+.info-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--m2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+.info-value{font-size:13px;font-weight:600;color:var(--t);line-height:1.4}
+.app-wrap{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.08)}
+.app-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(109,40,217,.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.app-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--p);font-weight:500;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
+.app-badge{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:2px 8px}
+.app-iframe{width:100%;height:700px;border:none;display:block}
+.tag{border-radius:5px;font-size:10px;padding:4px 11px;font-family:'JetBrains Mono',monospace;display:inline-block;margin:3px}
+.tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.2);color:var(--p)}
+.tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
+.tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
+.cta-box{background:linear-gradient(135deg,rgba(109,40,217,.07),rgba(0,196,154,.04));border:1.5px solid rgba(109,40,217,.2);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
+.cta-btn{background:var(--p);border:none;border-radius:8px;font-size:12px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn:hover{background:var(--pl);transform:translateY(-1px)}
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:9.5px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+@media(max-width:680px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .info-grid{grid-template-columns:1fr}
+  .cta-box{flex-direction:column;text-align:center}
+  .app-iframe{height:500px}
+  .page{padding:0 .9rem 3rem}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="page">
+<nav>
+  <div class="logo-wrap">
+    <a href="/" class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='YOCE'"/>
+    </a>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </div>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="kicker">🤖 Modelo ML · IA en Salud</div>
+  <h1>Predictor de Volemia<br>para Aféresis CPH</h1>
+  <p class="hero-sub">GradientBoosting · v5.1 · Desarrollado en UANL · Monterrey, México</p>
+  <div class="meta">
+    <span class="pill p">🧬 Células Progenitoras CD34+</span>
+    <span class="pill g">✅ Modelo v5.1 activo</span>
+    <span class="pill b">📊 n=140 pacientes</span>
+    <span class="pill">🏥 Optia · Kit IDL</span>
+  </div>
+  <div style="font-size:12.5px;color:var(--m);line-height:1.82">
+    Modelo de machine learning que estima el <strong style="color:var(--p)">número de volemias necesarias</strong> para alcanzar una cosecha eficiente de <strong>5–10 millones de células CD34+</strong> en el receptor del trasplante alogénico. Desarrollado bajo un proceso sistemático y controlado con altos estándares de calidad, diseñado específicamente para el separador celular <strong>Optia · Kit IDL</strong> en trasplantes alogénicos de adultos.
+  </div>
+</section>
+
+<!-- MÉTRICAS -->
+<section>
+  <p class="sec">Métricas del Modelo</p>
+  <div class="stat-grid">
+    <div class="stat"><div class="v">0.852</div><div class="l">R² · Coeficiente de determinación</div></div>
+    <div class="stat"><div class="v">0.266</div><div class="l">MAE · Error absoluto medio</div></div>
+    <div class="stat"><div class="v">140</div><div class="l">Pacientes en dataset de entrenamiento</div></div>
+    <div class="stat"><div class="v">v5.1</div><div class="l">Versión actual · GradientBoosting</div></div>
+  </div>
+</section>
+
+<!-- INFO TÉCNICA -->
+<section>
+  <p class="sec">Especificaciones Técnicas</p>
+  <div class="info-grid">
+    <div class="info-item"><div class="info-label">Algoritmo</div><div class="info-value">GradientBoosting Regressor</div></div>
+    <div class="info-item"><div class="info-label">Variable objetivo</div><div class="info-value">Número de volemias procesadas</div></div>
+    <div class="info-item"><div class="info-label">Separador celular</div><div class="info-value">Optia Spectra · Kit IDL</div></div>
+    <div class="info-item"><div class="info-label">Población</div><div class="info-value">Adultos ≥18 años · Alogénico</div></div>
+    <div class="info-item"><div class="info-label">CD34+ objetivo</div><div class="info-value">10–150 /µL · Meta 5-10×10⁶/kg</div></div>
+    <div class="info-item"><div class="info-label">Peso receptor</div><div class="info-value">40–123 kg · Rango validado</div></div>
+    <div class="info-item"><div class="info-label">Última actualización</div><div class="info-value">Abril 2026</div></div>
+    <div class="info-item"><div class="info-label">Plataforma</div><div class="info-value">Streamlit · Python · Scikit-learn</div></div>
+  </div>
+</section>
+
+<!-- APP STREAMLIT -->
+<section>
+  <p class="sec">Aplicación — Predictor Interactivo</p>
+  <div class="app-wrap">
+    <div class="app-header">
+      <div class="app-title">🤖 Predictor de Volemias · Aféresis CPH <span class="app-badge">v5.1 · LIVE</span></div>
+      <a href="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--p);text-decoration:none;opacity:.7">Abrir en nueva pestaña ↗</a>
+    </div>
+    <iframe
+      class="app-iframe"
+      src="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/?embedded=true"
+      title="Predictor de Volemia para Aféresis CPH">
+    </iframe>
+  </div>
+</section>
+
+<!-- TAGS -->
+<section>
+  <p class="sec">Áreas Temáticas</p>
+  <div style="margin-bottom:1.5rem">
+    <span class="tag p">Machine Learning</span>
+    <span class="tag p">GradientBoosting</span>
+    <span class="tag g">Aféresis CPH</span>
+    <span class="tag g">Células CD34+</span>
+    <span class="tag g">Trasplante Alogénico</span>
+    <span class="tag b">Python · Scikit-learn</span>
+    <span class="tag b">Streamlit</span>
+    <span class="tag p">Predicción Clínica</span>
+    <span class="tag g">cGMP · Control de Calidad</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-box">
+  <p>¿Quieres colaborar o conocer más sobre el modelo?</p>
+  <a href="mailto:yair_chaveze@hotmail.com" class="cta-btn">✉️ Contactar →</a>
+</div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const CC='0,107,82',TC='3,85,160';
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'109,40,217',CC);requestAnimationFrame(frame);}
+frame();
+</script>
+</body>
+</html>
