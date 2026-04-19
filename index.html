@@ -653,25 +653,85 @@ function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'
 frame();
 
 /* ══ CARRUSEL ══ */
-const track=document.getElementById('carTrack'),dotsEl=document.getElementById('carDots');
+const track=document.getElementById('carTrack');
+const dotsEl=document.getElementById('carDots');
+const outer=document.querySelector('.carousel-track-outer');
 let carIdx=0;
+
 function cardW(){
-  const outer=document.querySelector('.carousel-track-outer');
-  if(!outer) return 252;
-  const w=outer.offsetWidth;
-  return window.innerWidth<=680 ? w+12 : 252;
+  if(window.innerWidth<=680){
+    return outer.offsetWidth;
+  }
+  return 252;
 }
-function getVisible(){const outer=document.querySelector('.carousel-track-outer');return outer?Math.max(1,Math.floor((outer.offsetWidth+12)/cardW())):1;}
+
+function gap(){return 12;}
+
 function totalCards(){return track.children.length;}
-function maxIdx(){return Math.max(0,totalCards()-getVisible());}
-function buildDots(){dotsEl.innerHTML='';const n=maxIdx()+1;for(let i=0;i<n;i++){const b=document.createElement('button');b.className='car-dot'+(i===0?' active':'');b.onclick=()=>carGo(i);dotsEl.appendChild(b);}}
-function carGo(idx){carIdx=Math.max(0,Math.min(idx,maxIdx()));track.style.transform=`translateX(-${carIdx*cardW()}px)`;document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));}
+function maxIdx(){
+  if(window.innerWidth<=680) return totalCards()-1;
+  return Math.max(0,totalCards()-Math.floor((outer.offsetWidth+gap())/(cardW()+gap())));
+}
+
+function buildDots(){
+  dotsEl.innerHTML='';
+  const n=maxIdx()+1;
+  for(let i=0;i<n;i++){
+    const b=document.createElement('button');
+    b.className='car-dot'+(i===0?' active':'');
+    b.onclick=()=>carGo(i);
+    dotsEl.appendChild(b);
+  }
+}
+
+function carGo(idx){
+  carIdx=Math.max(0,Math.min(idx,maxIdx()));
+  const offset=carIdx*(cardW()+gap());
+  track.style.transform=`translateX(-${offset}px)`;
+  document.querySelectorAll('.car-dot').forEach((d,i)=>d.classList.toggle('active',i===carIdx));
+}
+
 function carMove(dir){carGo(carIdx+dir);}
+
+/* Ajustar ancho de tarjetas en móvil */
+function adjustCards(){
+  if(window.innerWidth<=680){
+    const w=outer.offsetWidth;
+    Array.from(track.children).forEach(c=>{
+      c.style.minWidth=w+'px';
+      c.style.maxWidth=w+'px';
+    });
+  } else {
+    Array.from(track.children).forEach(c=>{
+      c.style.minWidth='240px';
+      c.style.maxWidth='240px';
+    });
+  }
+}
+
+adjustCards();
 buildDots();
-window.addEventListener('resize',()=>{buildDots();carGo(Math.min(carIdx,maxIdx()));});
+carGo(0);
+
+window.addEventListener('resize',()=>{
+  adjustCards();
+  buildDots();
+  carGo(Math.min(carIdx,maxIdx()));
+});
+
+/* Touch swipe */
 let touchStartX=0;
-track.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
-track.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>40)carMove(dx<0?1:-1);},{passive:true});
+let touchStartIdx=0;
+track.addEventListener('touchstart',e=>{
+  touchStartX=e.touches[0].clientX;
+  touchStartIdx=carIdx;
+},{passive:true});
+track.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchStartX;
+  if(Math.abs(dx)>50){
+    carMove(dx<0?1:-1);
+  }
+},{passive:true});
 
 /* ══ NAV MOBILE ══ */
 function toggleNav(){const b=document.getElementById('hamBtn'),n=document.getElementById('navLinks');b.classList.toggle('open');n.classList.toggle('open');}
