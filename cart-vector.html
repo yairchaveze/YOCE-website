@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Vector Lentiviral CD19 CAR-T · YoCellTherapy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;text-decoration:none}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+
+.hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
+.hero-sub{font-size:13px;color:var(--g);font-weight:500;margin-bottom:1.2rem}
+.badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:5px 11px;font-size:10.5px;font-family:'JetBrains Mono',monospace}
+.badge.g{background:var(--g3);border:1px solid var(--bord3);color:var(--g)}
+.badge.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
+.badge.p{background:var(--p2);border:1px solid rgba(109,40,217,.22);color:var(--p)}
+.badge.gray{background:rgba(15,23,42,.06);border:1px solid var(--bord2);color:var(--m)}
+
+.sec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec::after{content:'';flex:1;height:1px;background:var(--bord2);max-width:100%}
+
+/* Constructo SVG diagram */
+.diagram-wrap{background:#fff;border:1px solid var(--bord2);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto}
+
+/* Step cards */
+.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.step-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.step-card:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,107,82,.09)}
+.step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.step-card.s1::before{background:linear-gradient(90deg,var(--g),var(--gl))}
+.step-card.s2::before{background:linear-gradient(90deg,var(--b),var(--bl))}
+.step-card.s3::before{background:linear-gradient(90deg,var(--p),var(--pl))}
+.step-card.s4::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--m2);letter-spacing:.15em;margin-bottom:6px}
+.step-title{font-size:14px;font-weight:700;color:var(--t);margin-bottom:4px}
+.step-sub{font-size:11px;color:var(--m);margin-bottom:.8rem}
+.step-body{font-size:12px;color:var(--m);line-height:1.75;display:none}
+.step-body.open{display:block}
+.step-toggle{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);display:flex;align-items:center;gap:4px;margin-top:.5rem}
+
+/* Domain pills */
+.domain-list{display:flex;flex-direction:column;gap:8px;margin:1rem 0}
+.domain-item{display:flex;align-items:flex-start;gap:10px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:.8rem 1rem}
+.domain-item .di-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);font-weight:600;min-width:80px;padding-top:2px;letter-spacing:.05em}
+.domain-item .di-text{font-size:12px;color:var(--m);line-height:1.65}
+
+/* Metrics bar */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.metric{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;text-align:center}
+.metric .v{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--g);margin-bottom:4px}
+.metric .l{font-size:10px;color:var(--m2);line-height:1.4}
+
+/* Versions */
+.versions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.version-card{background:#fff;border:1.5px solid var(--bord2);border-radius:12px;padding:1.25rem;transition:all .2s}
+.version-card.preclinico{border-color:rgba(0,196,154,.3)}
+.version-card.clinico{border-color:rgba(3,85,160,.3)}
+.v-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:.6rem}
+.version-card.preclinico .v-badge{background:var(--g3);color:var(--g)}
+.version-card.clinico .v-badge{background:var(--b2);color:var(--b)}
+.v-title{font-size:13px;font-weight:600;color:var(--t);margin-bottom:.4rem}
+.v-desc{font-size:11.5px;color:var(--m);line-height:1.7}
+.v-tag{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--m2);margin-top:.5rem;display:block}
+
+/* Safety box */
+.safety-box{background:linear-gradient(135deg,rgba(0,196,154,.07),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.25);border-radius:12px;padding:1.4rem;margin-bottom:1.5rem}
+.safety-box h3{font-size:13px;font-weight:600;color:var(--g);margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.safety-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.safety-list li{font-size:12px;color:var(--m);line-height:1.65;display:flex;align-items:flex-start;gap:8px}
+.safety-list li::before{content:'✓';color:var(--gl);font-weight:700;flex-shrink:0;margin-top:1px}
+
+.cta-box{background:linear-gradient(135deg,rgba(0,196,154,.08),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.22);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
+.cta-btn{background:var(--g);border:none;border-radius:8px;font-size:12px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn:hover{background:var(--gl);transform:translateY(-1px)}
+.cta-btn.paypal{background:#0070ba}
+.cta-btn.paypal:hover{background:#005ea6}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:9.5px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+@media(max-width:680px){
+  .step-grid{grid-template-columns:1fr}
+  .versions{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+  .cta-box{flex-direction:column;text-align:center}
+  .page{padding:0 .9rem 3rem}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="page">
+<nav>
+  <div class="logo-wrap">
+    <a href="/" class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size:9px;color:#006b52;font-weight:600>YOCE</span>'"/>
+    </a>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </div>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="kicker">🧬 Proyecto Flagship · CAR-T Cell Therapy · México</div>
+  <h1>Desarrollo In-House de<br>Vector Lentiviral CD19 CAR-T</h1>
+  <p class="hero-sub">Programa pionero de manufactura descentralizada en México · Fase RUO → Validación clínica</p>
+  <div class="badges">
+    <span class="badge g">✅ Fase: RUO · Preclínico</span>
+    <span class="badge b">🏥 Monterrey, México</span>
+    <span class="badge gray">🎯 Indicación: LLA-B r/r</span>
+    <span class="badge gray">⚙️ cGMP · ISO 7</span>
+    <span class="badge p">🔬 2ª Generación · 4-1BB/CD3ζ</span>
+  </div>
+  <p style="font-size:13px;color:var(--m);line-height:1.82">
+    Programa estratégico de manufactura interna de células CAR-T anti-CD19, orientado al estudio preclínico de la leucemia linfoblástica aguda de precursores B refractaria o en recaída. La iniciativa busca establecer <strong style="color:var(--g)">soberanía tecnológica</strong> en terapias de células CAR-T en México, con una ruta definida hacia la validación clínica bajo estándares regulatorios nacionales e internacionales.
+  </p>
+</section>
+
+<!-- MÉTRICAS -->
+<div class="metrics">
+  <div class="metric"><div class="v">10,053</div><div class="l">bp · Tamaño del constructo (versión preclínica)</div></div>
+  <div class="metric"><div class="v">>10⁸</div><div class="l">TU/mL · Título garantizado del vector</div></div>
+  <div class="metric"><div class="v">ISO 7</div><div class="l">Clasificación del cuarto limpio de manufactura</div></div>
+  <div class="metric"><div class="v">2 Gen</div><div class="l">Generación del constructo CAR · 4-1BB + CD3ζ</div></div>
+</div>
+
+<!-- VERSIONES -->
+<p class="sec">Dos Versiones del Constructo</p>
+<div class="versions">
+  <div class="version-card preclinico">
+    <span class="v-badge">Versión Preclínica</span>
+    <div class="v-title">Con cassette CMV-EGFP</div>
+    <div class="v-desc">Incluye proteína fluorescente verde (EGFP) como reportero para cuantificación de eficiencia de transducción por citometría de flujo y seguimiento celular en modelos murinos. Exclusivo para uso en investigación (RUO).</div>
+    <span class="v-tag">10,053 bp · Uso: validación preclínica</span>
+  </div>
+  <div class="version-card clinico">
+    <span class="v-badge">Candidato Clínico</span>
+    <div class="v-title">Sin cassette reportero</div>
+    <div class="v-desc">Arquitectura depurada del mismo constructo CAR, sin genes reporteros de origen no humano. Compatible con requisitos regulatorios para futuros ensayos clínicos. Elimina el riesgo de respuesta inmune contra EGFP en pacientes.</div>
+    <span class="v-tag">8,699 bp · Objetivo: uso clínico futuro</span>
+  </div>
+</div>
+
+<!-- PASOS EXPANDIBLES -->
+<p class="sec">Arquitectura del Constructo — 4 Módulos</p>
+<div class="step-grid">
+
+  <div class="step-card s1" onclick="toggleStep(this)">
+    <div class="step-num">01 · DISEÑO</div>
+    <div class="step-title">Constructo CAR</div>
+    <div class="step-sub">Ingeniería del receptor quimérico anti-CD19</div>
+    <div class="step-body">
+      <div class="domain-list">
+        <div class="domain-item">
+          <span class="di-label">Promotor</span>
+          <span class="di-text"><strong>EF1A</strong> — Actividad transcripcional constitutiva y robusta en linfocitos T. Mayor resistencia al silenciamiento epigenético comparado con CMV, favoreciendo expresión estable a largo plazo.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">scFv</span>
+          <span class="di-text"><strong>Anti-CD19 · clon FMC63</strong> — Dominio de reconocimiento antigénico. Mismo clon utilizado en Kymriah® (tisagenlecleucel) y Yescarta® (axicabtagene ciloleucel). Orientación VL-VH con linker flexible de 16 aminoácidos.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Bisagra · TM</span>
+          <span class="di-text"><strong>CD8α</strong> — Región bisagra y dominio transmembrana de CD8α. Provee flexibilidad conformacional y reduce el riesgo de dimerización espontánea y activación tónica no antígeno-dependiente.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Coestimulador</span>
+          <span class="di-text"><strong>4-1BB (CD137)</strong> — Activa vías NF-κB y PI3K/Akt. Promueve diferenciación hacia fenotipos de memoria central (Tcm) y menor agotamiento celular respecto a CD28. Base de tisagenlecleucel.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Activación</span>
+          <span class="di-text"><strong>CD3ζ</strong> — Dominio de activación primaria con 3 ITAMs. Responsable de la transducción de la señal citotóxica tras el reconocimiento antigénico.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">oPRE</span>
+          <span class="di-text">Elemento regulador postranscripcional optimizado (versión truncada del WPRE). Mejora estabilidad del ARNm y eficiencia de exportación nuclear. Deleción del ORF-X para eliminar potencial oncogénico.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-toggle">Ver detalles técnicos ↓</div>
+  </div>
+
+  <div class="step-card s2" onclick="toggleStep(this)">
+    <div class="step-num">02 · VECTOR</div>
+    <div class="step-title">Lentiviral VSV-G</div>
+    <div class="step-sub">Producción, titulación funcional y optimización de MOI</div>
+    <div class="step-body">
+      <div class="domain-list">
+        <div class="domain-item">
+          <span class="di-label">Pseudotipo</span>
+          <span class="di-text"><strong>VSV-G</strong> — Glicoproteína del virus de la estomatitis vesicular. Confiere amplio tropismo celular y alta eficiencia de transducción en linfocitos T primarios pre-activados. Estándar en manufactura CAR-T aprobada por FDA.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Configuración</span>
+          <span class="di-text"><strong>SIN (Self-Inactivating)</strong> — Deleción de la región U3 en ambos LTRs (ΔU3). Elimina actividad promotora viral tras integración, reduciendo significativamente el riesgo de mutagénesis insercional.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Elementos</span>
+          <span class="di-text">Señal de empaquetamiento Ψ + elemento de respuesta a Rev (RRE) + tracto de polipurina central (cPPT). Garantizan integración eficiente y título viral adecuado (>10⁸ TU/mL).</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">MOI objetivo</span>
+          <span class="di-text">Rango evaluado: <strong>MOI 2, 5 y 10</strong> en linfocitos T primarios. Respaldado por evidencia de que MOI 5 representa el punto de mayor eficiencia clínica para vectores lentivirales con CAR anti-CD19.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-toggle">Ver detalles técnicos ↓</div>
+  </div>
+
+  <div class="step-card s3" onclick="toggleStep(this)">
+    <div class="step-num">03 · MANUFACTURA</div>
+    <div class="step-title">Proceso cGMP</div>
+    <div class="step-sub">Activación, transducción y expansión de células T</div>
+    <div class="step-body">
+      <div class="domain-list">
+        <div class="domain-item">
+          <span class="di-label">Material</span>
+          <span class="di-text">PBMCs de donadores sanos por gradiente Ficoll-Paque. Selección negativa de linfocitos T CD4+/CD8+ (≥80% pureza CD3+). Verificación por citometría de flujo pre-proceso.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Activación</span>
+          <span class="di-text"><strong>T Cell TransAct (Miltenyi)</strong> — Reactivo estándar para activación de linfocitos T primarios. 1×10⁶ células/mL en TexMACS GMP + IL-7 (12.5 ng/mL) + IL-15 (12.5 ng/mL) + HSA 3%.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Transducción</span>
+          <span class="di-text">14–18 horas post-activación (Día 1). Placa 24 pozos, 1 mL/pozo, 1×10⁶ células/pozo. Polybrene 6 µg/mL como agente policatiónico potenciador.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Expansión</span>
+          <span class="di-text">Días 6–12: transferencia a frasco T-25, densidad 1×10⁶ células/mL, IL-2 (100 UI/mL) cada 72 horas. Cuarto limpio ISO 7 con monitoreo continuo.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-toggle">Ver detalles técnicos ↓</div>
+  </div>
+
+  <div class="step-card s4" onclick="toggleStep(this)">
+    <div class="step-num">04 · CALIDAD</div>
+    <div class="step-title">QC · Criopreservación</div>
+    <div class="step-sub">Control microbiológico, BACTEC™ y estabilidad</div>
+    <div class="step-body">
+      <div class="domain-list">
+        <div class="domain-item">
+          <span class="di-label">Criterios</span>
+          <span class="di-text">≥80% viabilidad CD3+ · ≥10% CAR-T entre CD3+ viables · ≥80% CD3+ entre CD45+ viables. Basados en estándares internacionales para manufactura CAR-T.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Citometría</span>
+          <span class="di-text">Panel fenotípico completo por citometría de flujo. Cuantificación CAR+ por marcador específico y (en versión preclínica) detección directa EGFP en canal FITC para correlación de métodos.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Microbiología</span>
+          <span class="di-text"><strong>BACTEC™ FOS</strong> — Control microbiológico con detección de contaminantes en matrices DMSO/HSA. Criterio: resultado negativo obligatorio.</span>
+        </div>
+        <div class="domain-item">
+          <span class="di-label">Funcional</span>
+          <span class="di-text">Citotoxicidad vs Raji CD19+ (E:T 1:1, 5:1, 10:1) · ≥50% lisis a E:T 5:1. Producción IFN-γ ≥500 pg/mL en co-cultivo CD19+. Endotoxinas <5 EU/mL.</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-toggle">Ver detalles técnicos ↓</div>
+  </div>
+
+</div>
+
+<!-- SEGURIDAD -->
+<p class="sec">Características de Seguridad del Vector</p>
+<div class="safety-box">
+  <h3>🛡️ Elementos de seguridad incorporados</h3>
+  <ul class="safety-list">
+    <li>Configuración <strong>SIN (Self-Inactivating)</strong> — deleción ΔU3 en ambos LTRs elimina actividad promotora viral post-integración, reduciendo mutagénesis insercional.</li>
+    <li>Dominios de <strong>CD8α</strong> para bisagra y transmembrana — menor riesgo de dimerización espontánea y activación tónica no antígeno-dependiente vs IgG4.</li>
+    <li><strong>oPRE optimizado</strong> — deleción del ORF-X del WPRE original elimina el potencial oncogénico reportado, manteniendo el beneficio de estabilidad del ARNm.</li>
+    <li>Dominio coestimulador <strong>4-1BB</strong> — menor riesgo de agotamiento celular y perfil de toxicidad más favorable que CD28 en uso clínico.</li>
+    <li>Clasificación <strong>NBS-2</strong> — manejo en cuarto limpio ISO 7 con protocolos de bioseguridad conforme a NOM-087-ECOL-SSA1-2002.</li>
+    <li>Candidato clínico <strong>sin EGFP</strong> — elimina riesgo de respuesta inmune contra proteína fluorescente de origen no humano en pacientes.</li>
+  </ul>
+</div>
+
+<!-- CONTEXTO -->
+<p class="sec">Contexto y Justificación</p>
+<div style="background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
+  <p style="font-size:13px;color:var(--m);line-height:1.9;margin-bottom:1rem">
+    Los productos CAR-T aprobados (<em>Kymriah®, Yescarta®, Breyanzi®</em>) han demostrado tasas de remisión completa superiores al <strong style="color:var(--g)">70–90%</strong> en LLA-B pediátrica y adulta refractaria. Sin embargo, en México el acceso enfrenta barreras críticas: tiempos logísticos de 3–6 semanas desde leucoféresis hasta infusión, complejidades regulatorias de importación de ATMPs, y costos que superan el umbral de cualquier sistema de salud pública en la región.
+  </p>
+  <p style="font-size:13px;color:var(--m);line-height:1.9">
+    La iniciativa cuenta con infraestructura especializada: cuarto limpio ISO 7, citometría multiparamétrica validada y equipo con formación en hematología oncológica, biología molecular y control de calidad. Esta base hace técnicamente viable un programa <em>in-house</em> de vector lentiviral anti-CD19 bajo estándares RUO, con ruta definida hacia validación clínica bajo COFEPRIS, en coherencia con recomendaciones internacionales sobre desarrollo descentralizado de terapias CAR-T para entornos de recursos limitados.
+  </p>
+</div>
+
+<!-- OBJETIVOS -->
+<p class="sec">Objetivos Estratégicos</p>
+<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
+  <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--g)">01</div>
+    <div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">Validación preclínica in vitro e in vivo</div><div style="font-size:12px;color:var(--m);line-height:1.65">Demostrar eficacia y seguridad funcional en células T primarias y modelo murino NSG con xenoinjerto Raji, generando expediente para solicitud regulatoria ante COFEPRIS.</div></div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--b)">02</div>
+    <div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">Adaptación a manufactura mini-escala</div><div style="font-size:12px;color:var(--m);line-height:1.65">Protocolo manual en placa 24 pozos bajo cuarto limpio ISO 7, manteniendo criterios de calidad validados internacionalmente (≥80% viabilidad, ≥10% CAR-T).</div></div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--p)">03</div>
+    <div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">Capacidad de manufactura interna de vector</div><div style="font-size:12px;color:var(--m);line-height:1.65">Producción propia mediante sistema de tres plásmidos en HEK293T, purificación por ultracentrifugación y QC bajo ISO 5. Eliminación de dependencia de proveedores externos.</div></div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#92400e">04</div>
+    <div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">Soberanía tecnológica y propiedad intelectual</div><div style="font-size:12px;color:var(--m);line-height:1.65">Documentación para registros IMPI sobre procesos optimizados en contexto institucional. Posicionamiento del HU UANL como centro de referencia regional con capacidad de transferencia tecnológica.</div></div>
+  </div>
+</div>
+
+<!-- CTAs -->
+<div class="cta-box">
+  <p style="font-size:13px;color:var(--t2);font-weight:300">¿Quieres colaborar o apoyar este proyecto de investigación?</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <a href="contacto.html" class="cta-btn">✉️ Contactar →</a>
+    <a href="https://paypal.me/yairchaveze" target="_blank" rel="noopener" class="cta-btn paypal">💙 Apoyar vía PayPal</a>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const CC='0,107,82',TC='3,85,160';
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'109,40,217',CC);requestAnimationFrame(frame);}
+frame();
+
+function toggleStep(card){
+  const body=card.querySelector('.step-body');
+  const toggle=card.querySelector('.step-toggle');
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open');
+  toggle.textContent=isOpen?'Ver detalles técnicos ↓':'Ocultar detalles ↑';
+  card.style.transform=isOpen?'':'translateY(-2px)';
+}
+</script>
+</body>
+</html>
