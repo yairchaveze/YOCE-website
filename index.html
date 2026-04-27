@@ -303,12 +303,45 @@ footer p{font-size:9.5px;color:var(--m2)}
 
 </div>
   <div class="nav-links" id="navLinks">
+
+  <!-- Servicios dropdown -->
+  <div class="nd" onmouseenter="showDrop('dServ')" onmouseleave="hideDrop('dServ')">
     <a href="#offer" onclick="closeNav()" class="t" data-es="Servicios" data-en="Services">Servicios</a>
-    <a href="#cart" onclick="closeNav()">CAR-T</a>
-    <a href="#ai" onclick="closeNav()" class="t" data-es="IA en Salud" data-en="Health AI">IA en Salud</a>
-    <a href="#news" onclick="closeNav()" class="t" data-es="Noticias" data-en="News">Noticias</a>
-    <a href="#contact" onclick="closeNav()" class="t" data-es="Contacto" data-en="Contact">Contacto</a>
+    <div class="ndrop" id="dServ">
+      <a href="#offer">🧬 Asesoría en Terapia Celular</a>
+      <a href="#offer">📊 Bioestadística & Protocolos</a>
+      <a href="#ai">🤖 IA en Ciencias de la Salud</a>
+      <a href="#offer">🔬 I+D Estratégico</a>
+      <a href="#offer">🏭 Control de Calidad</a>
+      <a href="#offer">🌎 Asesoría a Inversionistas</a>
+    </div>
   </div>
+
+  <!-- CAR-T dropdown -->
+  <div class="nd" onmouseenter="showDrop('dCart')" onmouseleave="hideDrop('dCart')">
+    <a href="#cart" onclick="closeNav()">CAR-T</a>
+    <div class="ndrop" id="dCart">
+      <a href="cart-vector.html">🧬 Vector Lentiviral CD19 CAR-T</a>
+      <a href="cart-vector.html#diseno"><span class="nd-num">01 ·</span> Diseño del Constructo</a>
+      <a href="cart-vector.html#vector"><span class="nd-num">02 ·</span> Vector Lentiviral</a>
+      <a href="cart-vector.html#manufactura"><span class="nd-num">03 ·</span> Manufactura cGMP</a>
+      <a href="cart-vector.html#calidad"><span class="nd-num">04 ·</span> Control de Calidad</a>
+    </div>
+  </div>
+
+  <!-- IA dropdown -->
+  <div class="nd" onmouseenter="showDrop('dIA')" onmouseleave="hideDrop('dIA')">
+    <a href="#ai" onclick="closeNav()" class="t" data-es="IA en Salud" data-en="Health AI">IA en Salud</a>
+    <div class="ndrop" id="dIA">
+      <a href="predictor.html">🤖 Predictor de Volemia · Aféresis CPH</a>
+    </div>
+  </div>
+
+  <!-- Noticias y Contacto sin dropdown -->
+  <a href="#news" onclick="closeNav()" class="t" data-es="Noticias" data-en="News">Noticias</a>
+  <a href="#contact" onclick="closeNav()" class="t" data-es="Contacto" data-en="Contact">Contacto</a>
+
+</div>
   <div class="avail-pill"><span class="dot"></span><span class="t" data-es="Disponible" data-en="Available">Disponible</span></div>
 </nav>
 
