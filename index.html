@@ -205,6 +205,14 @@ footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify
 footer p{font-size:9.5px;color:var(--m2)}
 .f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
 
+  /* NAV DROPDOWNS */
+.nd{position:relative;display:flex;align-items:center}
+.ndrop{display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--bord2);border-radius:12px;box-shadow:0 12px 36px rgba(0,0,0,.13);padding:.5rem;min-width:240px;z-index:500;flex-direction:column}
+.ndrop.open{display:flex}
+.ndrop a{display:flex;align-items:center;gap:8px;padding:.45rem .8rem;border-radius:8px;text-decoration:none;font-size:12px;color:var(--m);white-space:nowrap;transition:background .15s}
+.ndrop a:hover{background:var(--g3);color:var(--g)}
+.nd-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2)}
+  
 /* ══════ RESPONSIVE MOBILE ══════ */
 @media(max-width:680px){
   .page{padding:0 .9rem 3rem}
@@ -822,13 +830,10 @@ function copyEmail(){
     setTimeout(()=>{ btn.innerHTML = original; btn.style.background = 'transparent'; }, 2000);
   });
 }
-// Mega menu toggle
-const mw=document.getElementById('megaWrap');
-const mm=document.getElementById('megaMenu');
-if(mw&&mm){
-  mw.addEventListener('mouseenter',()=>mm.style.display='block');
-  mw.addEventListener('mouseleave',()=>mm.style.display='none');
-}
+
+function showDrop(id){document.getElementById(id).classList.add('open');}
+function hideDrop(id){document.getElementById(id).classList.remove('open');}
+    
 </script>
 </body>
 </html>
