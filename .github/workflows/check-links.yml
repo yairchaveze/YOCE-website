@@ -1,1 +1,37 @@
+name: Validar Links Rotos
 
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Cada lunes a las 8am
+  push:
+    branches: [main]
+  workflow_dispatch:       # También puedes correrlo manualmente
+
+jobs:
+  link-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: >
+            --verbose
+            --no-progress
+            --exclude 'mailto:'
+            --exclude 'linkedin.com'
+            --exclude 'instagram.com'
+            --exclude 'facebook.com'
+            --exclude 'tiktok.com'
+            './**/*.html'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Crear reporte si hay errores
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-links-rotos
+          path: lychee/out.md

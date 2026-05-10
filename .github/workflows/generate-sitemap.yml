@@ -1,0 +1,28 @@
+name: Generar Sitemap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.html'
+  workflow_dispatch:
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generar sitemap.xml
+        uses: cicirello/generate-sitemap@v1
+        with:
+          base-url-path: https://yocelltherapy.com/
+          include-html: true
+          exclude-paths: /google37673d14c4e8ed41.html   # excluye verificación de Google
+
+      - name: Commit sitemap
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '🗺️ Sitemap actualizado automáticamente'
+          commit_user_name: 'github-actions[bot]'
+          file_pattern: sitemap.xml
