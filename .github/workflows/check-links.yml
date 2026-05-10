@@ -3,9 +3,7 @@ name: Validar Links Rotos
 on:
   schedule:
     - cron: '0 8 * * 1'  # Cada lunes a las 8am
-  push:
-    branches: [main]
-  workflow_dispatch:       # También puedes correrlo manualmente
+  workflow_dispatch:       # Solo manual o semanal, no en cada push
 
 jobs:
   link-checker:
@@ -24,6 +22,13 @@ jobs:
             --exclude 'instagram.com'
             --exclude 'facebook.com'
             --exclude 'tiktok.com'
+            --exclude 'fonts.googleapis.com'
+            --exclude 'scholar.google.com'
+            --exclude 'researchgate.net'
+            --exclude 'formspree.io'
+            --exclude 'forms.gle'
+            --exclude 'uaz.edu.mx'
+            --exclude 'paypal.me'
             './**/*.html'
           fail: true
         env:
