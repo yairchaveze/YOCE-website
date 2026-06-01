@@ -532,11 +532,18 @@ function showSaveIndicator(msg) {
 }
 
 function doLogin() {
-  const pw = document.getElementById('pw-input').value;
+  const pw = document.getElementById('pw-input').value.trim();
+  if (!pw) return;
   const pws = getPW();
-  if (pw === pws.admin) { role = 'admin'; startApp().catch(console.error); }
-  else if (pw === pws.viewer) { role = 'viewer'; startApp().catch(console.error); }
-  else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
+  if (pw === pws.admin) {
+    role = 'admin';
+    startApp().catch(e => { alert('Error al cargar: ' + e.message); });
+  } else if (pw === pws.viewer) {
+    role = 'viewer';
+    startApp().catch(e => { alert('Error al cargar: ' + e.message); });
+  } else {
+    document.getElementById('login-error').textContent = 'Contraseña incorrecta.';
+  }
 }
 
 async function startApp() {
