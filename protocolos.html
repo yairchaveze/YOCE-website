@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Protocolos · YoCellTherapy</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ SITE VARIABLES & BASE ═══ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--bord2)}
+
+/* ═══ HERO ═══ */
+.proto-hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.proto-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
+.proto-kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.proto-kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
+.proto-hero h1{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
+.proto-hero p{font-size:13px;color:var(--m);line-height:1.82}
+
+/* ═══ PROTOCOL CARD ═══ */
+.proto-card{background:#fff;border:1.5px solid rgba(0,196,154,.28);border-radius:14px;padding:1.4rem;margin-bottom:1.5rem;box-shadow:0 3px 14px rgba(0,107,82,.07);position:relative;overflow:hidden}
+.proto-card-glow{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,154,.09),transparent 65%);pointer-events:none}
+.proto-badge{display:inline-flex;align-items:center;gap:5px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem;font-weight:500}
+.proto-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.proto-card h2{font-size:15px;font-weight:600;color:var(--t);margin-bottom:.3rem;line-height:1.3}
+.proto-card .proto-sub{font-size:11px;color:var(--m2);font-family:'JetBrains Mono',monospace;margin-bottom:1rem}
+.proto-meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem;padding:.9rem 1rem;background:var(--bg);border-radius:8px;border:1px solid var(--bord2)}
+.proto-meta-item .v{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--g);font-weight:600}
+.proto-meta-item .l{font-size:9px;color:var(--m2);margin-top:3px}
+.proto-timepoints{display:flex;gap:6px;flex-wrap:wrap}
+.tp{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--g3);border:1px solid var(--bord3);color:var(--g);border-radius:6px;padding:3px 9px;font-weight:500}
+
+/* ═══ TRACKER WRAPPER ═══ */
+.tracker-section{margin-bottom:1.5rem}
+.tracker-header{display:flex;align-items:center;gap:8px;margin-bottom:.8rem}
+.tracker-icon{width:32px;height:32px;border-radius:8px;background:rgba(10,14,26,.06);border:1px solid rgba(10,14,26,.12);display:flex;align-items:center;justify-content:center;font-size:14px}
+
+/* ═══ TRACKER APP STYLES (scoped) ═══ */
+#tracker-container {
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(10,14,26,.1);
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
+}
+
+#tracker-container-inner {
+    --bg: #0a0e1a;
+    --bg2: #111827;
+    --bg3: #1a2236;
+    --border: rgba(99,179,237,0.12);
+    --border2: rgba(99,179,237,0.25);
+    --blue: #63b3ed;
+    --blue-dim: rgba(99,179,237,0.15);
+    --green: #68d391;
+    --green-dim: rgba(104,211,145,0.12);
+    --amber: #f6ad55;
+    --amber-dim: rgba(246,173,85,0.12);
+    --red: #fc8181;
+    --red-dim: rgba(252,129,129,0.12);
+    --gray: #a0aec0;
+    --gray-dim: rgba(160,174,192,0.08);
+    --text: #e2e8f0;
+    --text2: #a0aec0;
+    --text3: #718096;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+  }
+  .login-card {
+    width: 360px; padding: 2.5rem;
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+  }
+  .login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+  .login-logo-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; }
+  .login-logo-icon svg { width: 18px; height: 18px; stroke: var(--blue); fill: none; stroke-width: 1.5; }
+  .login-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .login-sub { font-size: 12px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
+  .login-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .login-input {
+    width: 100%; padding: 10px 12px; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-family: var(--mono); font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--blue); }
+  .login-input::placeholder { color: var(--text3); }
+  .login-btn {
+    width: 100%; margin-top: 1.25rem; padding: 10px; background: var(--blue); color: #0a0e1a;
+    border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+  }
+  .login-btn:hover { opacity: 0.85; }
+  .login-error { margin-top: 10px; font-size: 12px; color: var(--red); text-align: center; min-height: 18px; }
+
+  /* ── APP ── */
+  #app { display: none; max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .app-header { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+  .app-logo { width: 38px; height: 38px; border-radius: 9px; background: var(--blue-dim); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .app-logo svg { width: 20px; height: 20px; stroke: var(--blue); fill: none; stroke-width: 1.5; }
+  .app-title { font-size: 17px; font-weight: 600; color: var(--text); }
+  .app-subtitle { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .role-badge { font-size: 11px; font-family: var(--mono); padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+  .role-admin { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(99,179,237,0.3); }
+  .role-viewer { background: var(--gray-dim); color: var(--gray); border: 1px solid rgba(160,174,192,0.2); }
+  .icon-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 10px; color: var(--text2); cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 5px; transition: border-color 0.2s, color 0.2s; font-family: var(--sans); }
+  .icon-btn:hover { border-color: var(--border2); color: var(--text); }
+  .icon-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+  /* ── ALERTS ── */
+  #alert-container { margin-bottom: 1.25rem; }
+  .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: var(--radius); margin-bottom: 6px; font-size: 12px; }
+  .alert svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; margin-top: 1px; }
+  .alert-window { background: var(--amber-dim); border: 1px solid rgba(246,173,85,0.3); color: var(--amber); }
+  .alert-overdue { background: var(--red-dim); border: 1px solid rgba(252,129,129,0.3); color: var(--red); }
+  .alert-soon { background: var(--blue-dim); border: 1px solid rgba(99,179,237,0.25); color: var(--blue); }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; width: fit-content; }
+  .tab { padding: 6px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; background: none; border: none; color: var(--text2); font-family: var(--sans); transition: all 0.15s; }
+  .tab.active { background: var(--blue); color: #0a0e1a; font-weight: 600; }
+
+  /* ── ADD FORM ── */
+  .add-form { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
+  .form-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; color: var(--text3); margin-bottom: 5px; }
+  .field input, .field select {
+    width: 100%; padding: 8px 10px; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-family: var(--mono); font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus { border-color: var(--blue); }
+  .field select option { background: var(--bg3); }
+  .btn-add {
+    padding: 8px 18px; background: var(--blue); color: #0a0e1a; border: none;
+    border-radius: var(--radius); font-family: var(--sans); font-size: 13px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;
+  }
+  .btn-add:hover { opacity: 0.85; }
+  .btn-add svg { width: 14px; height: 14px; stroke: #0a0e1a; fill: none; stroke-width: 2.5; }
+
+  /* ── PATIENT CARDS ── */
+  .px-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s; }
+  .px-card:hover { border-color: var(--border2); }
+  .px-header { padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .px-avatar { width: 36px; height: 36px; border-radius: 8px; background: var(--blue-dim); border: 1px solid rgba(99,179,237,0.25); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; color: var(--blue); flex-shrink: 0; font-family: var(--mono); }
+  .px-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .px-meta { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+  .px-progress { min-width: 100px; text-align: right; }
+  .prog-bar { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .prog-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s; }
+  .prog-label { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+  .del-btn { background: none; border: none; cursor: pointer; color: var(--text3); padding: 4px; border-radius: 6px; display: flex; transition: color 0.2s, background 0.2s; }
+  .del-btn:hover { color: var(--red); background: var(--red-dim); }
+  .del-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .chevron { color: var(--text3); transition: transform 0.2s; }
+  .chevron svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .chevron.open { transform: rotate(180deg); }
+  .tomas-wrap { display: none; border-top: 1px solid var(--border); }
+  .tomas-wrap.open { display: block; }
+  .tomas-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; padding: 14px 16px; }
+  .toma-cell { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 8px; text-align: center; transition: border-color 0.2s; }
+  .toma-cell.st-window { border-color: rgba(246,173,85,0.5); background: var(--amber-dim); }
+  .toma-cell.st-overdue { border-color: rgba(252,129,129,0.5); background: var(--red-dim); }
+  .toma-cell.st-done { border-color: rgba(104,211,145,0.4); background: var(--green-dim); }
+  .toma-cell.st-upcoming { border-color: rgba(99,179,237,0.3); }
+  .t-label { font-size: 12px; font-weight: 600; color: var(--text2); font-family: var(--mono); margin-bottom: 4px; }
+  .t-date { font-size: 11px; color: var(--text); margin-bottom: 2px; }
+  .t-window { font-size: 10px; color: var(--text3); margin-bottom: 6px; line-height: 1.4; }
+  .t-badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; font-family: var(--mono); margin-bottom: 6px; }
+  .b-done { background: var(--green-dim); color: var(--green); }
+  .b-window { background: var(--amber-dim); color: var(--amber); }
+  .b-upcoming { background: var(--blue-dim); color: var(--blue); }
+  .b-overdue { background: var(--red-dim); color: var(--red); }
+  .b-future { background: var(--gray-dim); color: var(--text3); }
+  .t-hint { font-size: 10px; color: var(--text3); margin-bottom: 4px; font-family: var(--mono); }
+  .check-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border2); background: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 2px; }
+  .check-btn:hover { border-color: var(--green); }
+  .check-btn.checked { background: var(--green); border-color: var(--green); }
+  .check-btn svg { width: 12px; height: 12px; stroke: #0a0e1a; fill: none; stroke-width: 2.5; }
+
+  /* ── UPCOMING ── */
+  .upcoming-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: border-color 0.2s; }
+  .upcoming-item:hover { border-color: var(--border2); }
+  .u-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .u-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .u-detail { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+  .u-days { font-size: 12px; font-weight: 600; font-family: var(--mono); margin-left: auto; }
+
+  /* ── SETTINGS ── */
+  .settings-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .settings-title { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
+  .settings-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .settings-row label { font-size: 13px; color: var(--text2); min-width: 140px; }
+  .settings-row input { flex: 1; padding: 7px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--mono); font-size: 13px; outline: none; }
+  .settings-row input:focus { border-color: var(--blue); }
+  .btn-save-pw { padding: 7px 16px; background: var(--blue); color: #0a0e1a; border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn-save-pw:hover { opacity: 0.85; }
+  .io-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-io { padding: 8px 16px; background: none; border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text2); font-family: var(--sans); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+  .btn-io:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-io svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .feedback { font-size: 12px; color: var(--green); margin-top: 8px; min-height: 18px; font-family: var(--mono); }
+  .no-px { text-align: center; padding: 3rem; color: var(--text3); font-size: 13px; }
+  .no-px svg { width: 32px; height: 32px; stroke: var(--text3); fill: none; stroke-width: 1.2; display: block; margin: 0 auto 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1.5rem; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); font-family: var(--mono); }
+  .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+#tracker-container-inner {
+  font-family: 'DM Sans', sans-serif;
+  background: #0a0e1a;
+  color: #e2e8f0;
+  min-height: 600px;
+  padding: 0;
+}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:1rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:9.5px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+  .proto-meta-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size:9px;color:#006b52;font-weight:600>YOCE</span>'"/>
+    </div>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </a>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<div class="proto-hero">
+  <div class="proto-kicker">📊 Bioestadística · Protocolos Activos · HU UANL</div>
+  <h1>Protocolos de Investigación Vigentes</h1>
+  <p>Seguimiento activo de estudios doctorales y proyectos colaborativos. Acceso restringido para equipo de investigación.</p>
+</div>
+
+<p class="sec-label">Protocolo Activo</p>
+
+<!-- PROTOCOL CARD -->
+<div class="proto-card">
+  <div class="proto-card-glow"></div>
+  <div class="proto-badge"><span class="proto-badge-dot"></span>Activo · Reclutando</div>
+  <h2>Expresión de PD-1 en Subpoblaciones T post-TCPH</h2>
+  <div class="proto-sub">HU UANL · Monterrey, México · 2025–2026 · Aprobación ética: HE25-00023</div>
+  <div class="proto-meta-grid">
+    <div class="proto-meta-item"><div class="v">PhD</div><div class="l">Nivel académico</div></div>
+    <div class="proto-meta-item"><div class="v">LLA · LMA</div><div class="l">Diagnósticos</div></div>
+    <div class="proto-meta-item"><div class="v">Alo-TCPH</div><div class="l">Tipo de trasplante</div></div>
+    <div class="proto-meta-item"><div class="v">365 días</div><div class="l">Seguimiento máximo</div></div>
+  </div>
+  <div class="proto-timepoints">
+    <span class="tp">+30 d</span>
+    <span class="tp">+60 d</span>
+    <span class="tp">+100 d</span>
+    <span class="tp">+180 d</span>
+    <span class="tp">+365 d</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2);padding:3px 6px">Ventana ±7 días</span>
+  </div>
+</div>
+
+<p class="sec-label">Tracker Clínico · Acceso Restringido</p>
+
+<!-- TRACKER EMBEDDED -->
+<div class="tracker-section">
+  <div id="tracker-container">
+    <div id="tracker-container-inner">
+      <!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="login-title">Protocolo PD-1</div>
+        <div class="login-sub">Seguimiento post-TCPH · HU UANL</div>
+      </div>
+    </div>
+    <div class="login-label">Contraseña de acceso</div>
+    <input class="login-input" type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="app-header">
+    <div class="app-logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <div class="app-title">Protocolo PD-1 / post-TCPH</div>
+      <div class="app-subtitle">+30 · +60 · +100 · +180 · +365 días · ventana ±7 días</div>
+    </div>
+    <div class="header-right">
+      <span class="role-badge" id="role-badge"></span>
+      <button class="icon-btn" onclick="doLogout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </button>
+    </div>
+  </div>
+
+  <div id="alert-container"></div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fc8181"></div>Vencida</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f6ad55"></div>En ventana esta semana</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#63b3ed"></div>Próxima (≤21 días)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4a5568"></div>Futura</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#68d391"></div>Realizada</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-btn-px" onclick="switchTab('px')">Pacientes</button>
+    <button class="tab" id="tab-btn-prox" onclick="switchTab('prox')">Próximas tomas</button>
+    <button class="tab" id="tab-btn-cfg" onclick="switchTab('cfg')" style="display:none;">Configuración</button>
+  </div>
+
+  <!-- TAB PACIENTES -->
+  <div id="tab-px">
+    <div class="add-form" id="add-form-section">
+      <div class="form-label">Agregar paciente</div>
+      <div class="form-grid">
+        <div class="field"><label>Código / ID</label><input type="text" id="inp-id" placeholder="HU-001" /></div>
+        <div class="field"><label>Diagnóstico</label>
+          <select id="inp-dx">
+            <option value="LLA">LLA</option>
+            <option value="LMA">LMA</option>
+            <option value="LMC">LMC</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="field"><label>Fecha trasplante (día 0)</label><input type="date" id="inp-fecha" /></div>
+      </div>
+      <button class="btn-add" onclick="addPaciente()">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Agregar paciente
+      </button>
+    </div>
+    <div id="px-list"></div>
+  </div>
+
+  <!-- TAB PROXIMAS -->
+  <div id="tab-prox" style="display:none;">
+    <div id="upcoming-container"></div>
+  </div>
+
+  <!-- TAB CONFIG -->
+  <div id="tab-cfg" style="display:none;">
+    <div class="settings-section">
+      <div class="settings-title">Cambiar contraseñas</div>
+      <div class="settings-row">
+        <label>Contraseña admin</label>
+        <input type="password" id="new-admin-pw" placeholder="Nueva contraseña admin" />
+      </div>
+      <div class="settings-row">
+        <label>Contraseña de equipo</label>
+        <input type="password" id="new-viewer-pw" placeholder="Nueva contraseña equipo" />
+      </div>
+      <button class="btn-save-pw" onclick="savePasswords()">Guardar contraseñas</button>
+      <div class="feedback" id="pw-feedback"></div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-title">Exportar / Importar datos</div>
+      <div class="io-row">
+        <button class="btn-io" onclick="exportJSON()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Exportar JSON
+        </button>
+        <button class="btn-io" onclick="document.getElementById('import-file').click()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Importar JSON
+        </button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)" />
+      </div>
+      <div class="feedback" id="io-feedback"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOMAS = [
+  {key:'t30',  label:'+30 d',  days:30},
+  {key:'t60',  label:'+60 d',  days:60},
+  {key:'t100', label:'+100 d', days:100},
+  {key:'t180', label:'+180 d', days:180},
+  {key:'t365', label:'+365 d', days:365},
+];
+const WIN = 7;
+const SK = 'pd1_data_v1';
+const SPW = 'pd1_passwords_v1';
+
+const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
+
+let role = null;
+let pacientes = [];
+
+function getPW() {
+  try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
+}
+function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
+function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
+function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
+
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const pws = getPW();
+  if (pw === pws.admin) { role = 'admin'; startApp(); }
+  else if (pw === pws.viewer) { role = 'viewer'; startApp(); }
+  else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
+}
+
+function startApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  const badge = document.getElementById('role-badge');
+  if (role === 'admin') {
+    badge.textContent = 'Admin'; badge.className = 'role-badge role-admin';
+    document.getElementById('tab-btn-cfg').style.display = '';
+    document.getElementById('add-form-section').style.display = '';
+  } else {
+    badge.textContent = 'Equipo'; badge.className = 'role-badge role-viewer';
+    document.getElementById('tab-btn-cfg').style.display = 'none';
+    document.getElementById('add-form-section').style.display = 'none';
+  }
+  loadData();
+  render();
+}
+
+function doLogout() {
+  role = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+function tomaDate(tr, days) {
+  const d = new Date(tr + 'T12:00:00');
+  d.setDate(d.getDate() + days);
+  return d;
+}
+function fmt(d) { return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'}); }
+function fmtS(d) { return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short'}); }
+function diff(date) {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const d = new Date(date); d.setHours(0,0,0,0);
+  return Math.round((d - t) / 86400000);
+}
+function getStatus(px, t) {
+  if (px.completadas?.[t.key]) return 'done';
+  const d = diff(tomaDate(px.trasplante, t.days));
+  if (d < -WIN) return 'overdue';
+  if (d >= -WIN && d <= WIN) return 'window';
+  if (d > WIN && d <= 21) return 'upcoming';
+  return 'future';
+}
+function winRange(px, t) {
+  const c = tomaDate(px.trasplante, t.days);
+  const a = new Date(c); a.setDate(a.getDate() - WIN);
+  const b = new Date(c); b.setDate(b.getDate() + WIN);
+  return `${fmtS(a)} – ${fmtS(b)}`;
+}
+
+function toggleComplete(idx, key) {
+  if (role !== 'admin') return;
+  if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
+  pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
+  saveData(); render();
+}
+
+function addPaciente() {
+  if (role !== 'admin') return;
+  const id = document.getElementById('inp-id').value.trim();
+  const dx = document.getElementById('inp-dx').value;
+  const fecha = document.getElementById('inp-fecha').value;
+  if (!id || !fecha) { alert('Completa el ID y la fecha de trasplante.'); return; }
+  if (pacientes.find(p => p.id === id)) { alert('Ya existe ese ID.'); return; }
+  pacientes.push({id, dx, trasplante: fecha, completadas: {}});
+  document.getElementById('inp-id').value = '';
+  document.getElementById('inp-fecha').value = '';
+  saveData(); render();
+}
+
+function deletePaciente(idx) {
+  if (role !== 'admin') return;
+  if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
+  pacientes.splice(idx, 1);
+  saveData(); render();
+}
+
+function toggleCard(idx) {
+  const w = document.getElementById('tw-' + idx);
+  const c = document.getElementById('ch-' + idx);
+  if (w) { w.classList.toggle('open'); c.classList.toggle('open'); }
+}
+
+function savePasswords() {
+  const a = document.getElementById('new-admin-pw').value.trim();
+  const v = document.getElementById('new-viewer-pw').value.trim();
+  if (!a || !v) { document.getElementById('pw-feedback').textContent = 'Completa ambos campos.'; return; }
+  if (a === v) { document.getElementById('pw-feedback').textContent = 'Las contraseñas deben ser distintas.'; return; }
+  savePW({admin: a, viewer: v});
+  document.getElementById('pw-feedback').textContent = 'Contraseñas actualizadas.';
+  document.getElementById('new-admin-pw').value = '';
+  document.getElementById('new-viewer-pw').value = '';
+  setTimeout(() => document.getElementById('pw-feedback').textContent = '', 3000);
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify({protocolo:'PD1_TCPH', fecha: new Date().toISOString().split('T')[0], pacientes}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'protocolo_pd1_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  document.getElementById('io-feedback').textContent = 'Exportado correctamente.';
+  setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data.pacientes)) throw new Error();
+      pacientes = data.pacientes;
+      saveData(); render();
+      document.getElementById('io-feedback').textContent = `Importados ${pacientes.length} pacientes.`;
+      setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
+    } catch { document.getElementById('io-feedback').textContent = 'Error al leer el archivo.'; }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function render() { renderAlerts(); renderPacientes(); }
+
+function renderAlerts() {
+  let html = '';
+  pacientes.forEach(px => {
+    TOMAS.forEach(t => {
+      const s = getStatus(px, t);
+      if (s === 'done') return;
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const checkIcon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+      const bellIcon = `<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>`;
+      const calIcon = `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+      if (s === 'window') {
+        const when = d === 0 ? 'día exacto hoy' : d > 0 ? `día exacto en ${d}d` : `día exacto hace ${Math.abs(d)}d`;
+        html += `<div class="alert alert-window">${bellIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> en ventana (${when}). Rango aceptable: ${winRange(px, t)}</span></div>`;
+      } else if (s === 'overdue') {
+        const fin = new Date(fecha.getTime() + WIN * 86400000);
+        html += `<div class="alert alert-overdue">${checkIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> vencida (ventana cerró el ${fmtS(fin)})</span></div>`;
+      } else if (s === 'upcoming') {
+        const abre = new Date(fecha.getTime() - WIN * 86400000);
+        html += `<div class="alert alert-soon">${calIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> en ${d}d. Ventana abre el <strong>${fmtS(abre)}</strong></span></div>`;
+      }
+    });
+  });
+  document.getElementById('alert-container').innerHTML = html;
+}
+
+function renderPacientes() {
+  const list = document.getElementById('px-list');
+  if (!pacientes.length) {
+    list.innerHTML = `<div class="no-px"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>${role==='admin'?'Sin pacientes registrados. Agrega el primero arriba.':'Sin pacientes registrados.'}</div>`;
+    return;
+  }
+  list.innerHTML = pacientes.map((px, idx) => {
+    const comp = TOMAS.filter(t => px.completadas?.[t.key]).length;
+    const pct = Math.round((comp / TOMAS.length) * 100);
+    const init = px.id.replace(/[^a-zA-Z0-9]/g,'').substring(0,2).toUpperCase();
+    const canEdit = role === 'admin';
+
+    const tHtml = TOMAS.map(t => {
+      const s = getStatus(px, t);
+      const checked = !!px.completadas?.[t.key];
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const cc = {done:'st-done', window:'st-window', overdue:'st-overdue', upcoming:'st-upcoming', future:''}[s];
+      const bc = {done:'b-done', window:'b-window', upcoming:'b-upcoming', overdue:'b-overdue', future:'b-future'}[s];
+      const bl = {done:'Realizada', window:'En ventana', upcoming:'Próxima', overdue:'Vencida', future:'Pendiente'}[s];
+      const hint = checked ? '' : d === 0 ? 'Día exacto: hoy' : d > 0 ? `Día exacto: +${d}d` : `Día exacto: -${Math.abs(d)}d`;
+      const checkBtn = canEdit
+        ? `<button onclick="toggleComplete(${idx},'${t.key}')" class="check-btn ${checked?'checked':''}" title="${checked?'Marcar pendiente':'Marcar realizada'}">${checked?`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`:''}</button>`
+        : checked ? `<span class="check-btn checked" style="cursor:default;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>` : '';
+      return `<div class="toma-cell ${cc}">
+        <div class="t-label">${t.label}</div>
+        <div class="t-date">${fmt(fecha)}</div>
+        <div class="t-window">${winRange(px,t)}</div>
+        <span class="t-badge ${bc}">${bl}</span>
+        ${!checked && hint ? `<div class="t-hint">${hint}</div>` : ''}
+        ${checkBtn}
+      </div>`;
+    }).join('');
+
+    return `<div class="px-card">
+      <div class="px-header" onclick="toggleCard(${idx})">
+        <div class="px-avatar">${init}</div>
+        <div style="flex:1;">
+          <div class="px-name">${px.id}</div>
+          <div class="px-meta">${px.dx} · Trasplante: ${fmt(new Date(px.trasplante+'T12:00:00'))}</div>
+        </div>
+        <div class="px-progress">
+          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+          <div class="prog-label">${comp}/${TOMAS.length} tomas</div>
+        </div>
+        ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation();deletePaciente(${idx})" title="Eliminar"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}
+        <div class="chevron" id="ch-${idx}"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="tomas-wrap" id="tw-${idx}"><div class="tomas-grid">${tHtml}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderUpcoming() {
+  const c = document.getElementById('upcoming-container');
+  let items = [];
+  pacientes.forEach(px => {
+    TOMAS.forEach(t => {
+      const s = getStatus(px, t);
+      if (s === 'done') return;
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const wI = new Date(fecha.getTime() - WIN * 86400000);
+      const wF = new Date(fecha.getTime() + WIN * 86400000);
+      items.push({px: px.id, dx: px.dx, toma: t.label, fecha, wI, wF, d, s});
+    });
+  });
+  items.sort((a,b) => a.d - b.d);
+  if (!items.length) { c.innerHTML = '<div class="no-px">No hay tomas pendientes.</div>'; return; }
+  const dotC = {overdue:'#fc8181', window:'#f6ad55', upcoming:'#63b3ed', future:'#4a5568'};
+  const txC = {overdue:'#fc8181', window:'#f6ad55', upcoming:'#63b3ed', future:'#718096'};
+  const sl = {overdue:'b-overdue', window:'b-window', upcoming:'b-upcoming', future:'b-future'};
+  const ll = {overdue:'Vencida', window:'En ventana', upcoming:'Próxima', future:'Futura'};
+  c.innerHTML = items.map(it => {
+    const dt = it.d === 0 ? 'hoy' : it.d < 0 ? `hace ${Math.abs(it.d)}d` : `en ${it.d}d`;
+    return `<div class="upcoming-item">
+      <div class="u-dot" style="background:${dotC[it.s]}"></div>
+      <div>
+        <div class="u-name">${it.px} <span style="font-weight:400;color:#718096;">— ${it.toma}</span> <span class="t-badge ${sl[it.s]}" style="margin-left:4px;">${ll[it.s]}</span></div>
+        <div class="u-detail">${it.dx} · Día exacto: ${fmt(it.fecha)} · Ventana: ${fmtS(it.wI)} – ${fmtS(it.wF)}</div>
+      </div>
+      <div class="u-days" style="color:${txC[it.s]}">${dt}</div>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(tab) {
+  ['px','prox','cfg'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-btn-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'prox') renderUpcoming();
+}
+</script>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE · Uso interno</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<!-- CANVAS ANIMATION -->
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+function drawDNA(ox,c1,c2){const amp=14,freq=.038;for(let y=-40;y<H+40;y+=4){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.05+.025*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.1,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.1,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.012;drawDNA(36,'0,107,82','3,85,160');drawDNA(W-36,'0,107,82','3,85,160');requestAnimationFrame(frame);}
+frame();
+</script>
+
+<!-- TRACKER SCRIPT -->
+<script>
+const TOMAS = [
+  {key:'t30',  label:'+30 d',  days:30},
+  {key:'t60',  label:'+60 d',  days:60},
+  {key:'t100', label:'+100 d', days:100},
+  {key:'t180', label:'+180 d', days:180},
+  {key:'t365', label:'+365 d', days:365},
+];
+const WIN = 7;
+const SK = 'pd1_data_v1';
+const SPW = 'pd1_passwords_v1';
+
+const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
+
+let role = null;
+let pacientes = [];
+
+function getPW() {
+  try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
+}
+function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
+function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
+function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
+
+function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const pws = getPW();
+  if (pw === pws.admin) { role = 'admin'; startApp(); }
+  else if (pw === pws.viewer) { role = 'viewer'; startApp(); }
+  else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
+}
+
+function startApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  const badge = document.getElementById('role-badge');
+  if (role === 'admin') {
+    badge.textContent = 'Admin'; badge.className = 'role-badge role-admin';
+    document.getElementById('tab-btn-cfg').style.display = '';
+    document.getElementById('add-form-section').style.display = '';
+  } else {
+    badge.textContent = 'Equipo'; badge.className = 'role-badge role-viewer';
+    document.getElementById('tab-btn-cfg').style.display = 'none';
+    document.getElementById('add-form-section').style.display = 'none';
+  }
+  loadData();
+  render();
+}
+
+function doLogout() {
+  role = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+function tomaDate(tr, days) {
+  const d = new Date(tr + 'T12:00:00');
+  d.setDate(d.getDate() + days);
+  return d;
+}
+function fmt(d) { return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short', year:'numeric'}); }
+function fmtS(d) { return d.toLocaleDateString('es-MX', {day:'2-digit', month:'short'}); }
+function diff(date) {
+  const t = new Date(); t.setHours(0,0,0,0);
+  const d = new Date(date); d.setHours(0,0,0,0);
+  return Math.round((d - t) / 86400000);
+}
+function getStatus(px, t) {
+  if (px.completadas?.[t.key]) return 'done';
+  const d = diff(tomaDate(px.trasplante, t.days));
+  if (d < -WIN) return 'overdue';
+  if (d >= -WIN && d <= WIN) return 'window';
+  if (d > WIN && d <= 21) return 'upcoming';
+  return 'future';
+}
+function winRange(px, t) {
+  const c = tomaDate(px.trasplante, t.days);
+  const a = new Date(c); a.setDate(a.getDate() - WIN);
+  const b = new Date(c); b.setDate(b.getDate() + WIN);
+  return `${fmtS(a)} – ${fmtS(b)}`;
+}
+
+function toggleComplete(idx, key) {
+  if (role !== 'admin') return;
+  if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
+  pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
+  saveData(); render();
+}
+
+function addPaciente() {
+  if (role !== 'admin') return;
+  const id = document.getElementById('inp-id').value.trim();
+  const dx = document.getElementById('inp-dx').value;
+  const fecha = document.getElementById('inp-fecha').value;
+  if (!id || !fecha) { alert('Completa el ID y la fecha de trasplante.'); return; }
+  if (pacientes.find(p => p.id === id)) { alert('Ya existe ese ID.'); return; }
+  pacientes.push({id, dx, trasplante: fecha, completadas: {}});
+  document.getElementById('inp-id').value = '';
+  document.getElementById('inp-fecha').value = '';
+  saveData(); render();
+}
+
+function deletePaciente(idx) {
+  if (role !== 'admin') return;
+  if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
+  pacientes.splice(idx, 1);
+  saveData(); render();
+}
+
+function toggleCard(idx) {
+  const w = document.getElementById('tw-' + idx);
+  const c = document.getElementById('ch-' + idx);
+  if (w) { w.classList.toggle('open'); c.classList.toggle('open'); }
+}
+
+function savePasswords() {
+  const a = document.getElementById('new-admin-pw').value.trim();
+  const v = document.getElementById('new-viewer-pw').value.trim();
+  if (!a || !v) { document.getElementById('pw-feedback').textContent = 'Completa ambos campos.'; return; }
+  if (a === v) { document.getElementById('pw-feedback').textContent = 'Las contraseñas deben ser distintas.'; return; }
+  savePW({admin: a, viewer: v});
+  document.getElementById('pw-feedback').textContent = 'Contraseñas actualizadas.';
+  document.getElementById('new-admin-pw').value = '';
+  document.getElementById('new-viewer-pw').value = '';
+  setTimeout(() => document.getElementById('pw-feedback').textContent = '', 3000);
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify({protocolo:'PD1_TCPH', fecha: new Date().toISOString().split('T')[0], pacientes}, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'protocolo_pd1_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  document.getElementById('io-feedback').textContent = 'Exportado correctamente.';
+  setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!Array.isArray(data.pacientes)) throw new Error();
+      pacientes = data.pacientes;
+      saveData(); render();
+      document.getElementById('io-feedback').textContent = `Importados ${pacientes.length} pacientes.`;
+      setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
+    } catch { document.getElementById('io-feedback').textContent = 'Error al leer el archivo.'; }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function render() { renderAlerts(); renderPacientes(); }
+
+function renderAlerts() {
+  let html = '';
+  pacientes.forEach(px => {
+    TOMAS.forEach(t => {
+      const s = getStatus(px, t);
+      if (s === 'done') return;
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const checkIcon = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+      const bellIcon = `<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>`;
+      const calIcon = `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+      if (s === 'window') {
+        const when = d === 0 ? 'día exacto hoy' : d > 0 ? `día exacto en ${d}d` : `día exacto hace ${Math.abs(d)}d`;
+        html += `<div class="alert alert-window">${bellIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> en ventana (${when}). Rango aceptable: ${winRange(px, t)}</span></div>`;
+      } else if (s === 'overdue') {
+        const fin = new Date(fecha.getTime() + WIN * 86400000);
+        html += `<div class="alert alert-overdue">${checkIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> vencida (ventana cerró el ${fmtS(fin)})</span></div>`;
+      } else if (s === 'upcoming') {
+        const abre = new Date(fecha.getTime() - WIN * 86400000);
+        html += `<div class="alert alert-soon">${calIcon}<span><strong>${px.id}</strong> — toma <strong>${t.label}</strong> en ${d}d. Ventana abre el <strong>${fmtS(abre)}</strong></span></div>`;
+      }
+    });
+  });
+  document.getElementById('alert-container').innerHTML = html;
+}
+
+function renderPacientes() {
+  const list = document.getElementById('px-list');
+  if (!pacientes.length) {
+    list.innerHTML = `<div class="no-px"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>${role==='admin'?'Sin pacientes registrados. Agrega el primero arriba.':'Sin pacientes registrados.'}</div>`;
+    return;
+  }
+  list.innerHTML = pacientes.map((px, idx) => {
+    const comp = TOMAS.filter(t => px.completadas?.[t.key]).length;
+    const pct = Math.round((comp / TOMAS.length) * 100);
+    const init = px.id.replace(/[^a-zA-Z0-9]/g,'').substring(0,2).toUpperCase();
+    const canEdit = role === 'admin';
+
+    const tHtml = TOMAS.map(t => {
+      const s = getStatus(px, t);
+      const checked = !!px.completadas?.[t.key];
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const cc = {done:'st-done', window:'st-window', overdue:'st-overdue', upcoming:'st-upcoming', future:''}[s];
+      const bc = {done:'b-done', window:'b-window', upcoming:'b-upcoming', overdue:'b-overdue', future:'b-future'}[s];
+      const bl = {done:'Realizada', window:'En ventana', upcoming:'Próxima', overdue:'Vencida', future:'Pendiente'}[s];
+      const hint = checked ? '' : d === 0 ? 'Día exacto: hoy' : d > 0 ? `Día exacto: +${d}d` : `Día exacto: -${Math.abs(d)}d`;
+      const checkBtn = canEdit
+        ? `<button onclick="toggleComplete(${idx},'${t.key}')" class="check-btn ${checked?'checked':''}" title="${checked?'Marcar pendiente':'Marcar realizada'}">${checked?`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`:''}</button>`
+        : checked ? `<span class="check-btn checked" style="cursor:default;"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>` : '';
+      return `<div class="toma-cell ${cc}">
+        <div class="t-label">${t.label}</div>
+        <div class="t-date">${fmt(fecha)}</div>
+        <div class="t-window">${winRange(px,t)}</div>
+        <span class="t-badge ${bc}">${bl}</span>
+        ${!checked && hint ? `<div class="t-hint">${hint}</div>` : ''}
+        ${checkBtn}
+      </div>`;
+    }).join('');
+
+    return `<div class="px-card">
+      <div class="px-header" onclick="toggleCard(${idx})">
+        <div class="px-avatar">${init}</div>
+        <div style="flex:1;">
+          <div class="px-name">${px.id}</div>
+          <div class="px-meta">${px.dx} · Trasplante: ${fmt(new Date(px.trasplante+'T12:00:00'))}</div>
+        </div>
+        <div class="px-progress">
+          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+          <div class="prog-label">${comp}/${TOMAS.length} tomas</div>
+        </div>
+        ${canEdit ? `<button class="del-btn" onclick="event.stopPropagation();deletePaciente(${idx})" title="Eliminar"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}
+        <div class="chevron" id="ch-${idx}"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+      <div class="tomas-wrap" id="tw-${idx}"><div class="tomas-grid">${tHtml}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderUpcoming() {
+  const c = document.getElementById('upcoming-container');
+  let items = [];
+  pacientes.forEach(px => {
+    TOMAS.forEach(t => {
+      const s = getStatus(px, t);
+      if (s === 'done') return;
+      const fecha = tomaDate(px.trasplante, t.days);
+      const d = diff(fecha);
+      const wI = new Date(fecha.getTime() - WIN * 86400000);
+      const wF = new Date(fecha.getTime() + WIN * 86400000);
+      items.push({px: px.id, dx: px.dx, toma: t.label, fecha, wI, wF, d, s});
+    });
+  });
+  items.sort((a,b) => a.d - b.d);
+  if (!items.length) { c.innerHTML = '<div class="no-px">No hay tomas pendientes.</div>'; return; }
+  const dotC = {overdue:'#fc8181', window:'#f6ad55', upcoming:'#63b3ed', future:'#4a5568'};
+  const txC = {overdue:'#fc8181', window:'#f6ad55', upcoming:'#63b3ed', future:'#718096'};
+  const sl = {overdue:'b-overdue', window:'b-window', upcoming:'b-upcoming', future:'b-future'};
+  const ll = {overdue:'Vencida', window:'En ventana', upcoming:'Próxima', future:'Futura'};
+  c.innerHTML = items.map(it => {
+    const dt = it.d === 0 ? 'hoy' : it.d < 0 ? `hace ${Math.abs(it.d)}d` : `en ${it.d}d`;
+    return `<div class="upcoming-item">
+      <div class="u-dot" style="background:${dotC[it.s]}"></div>
+      <div>
+        <div class="u-name">${it.px} <span style="font-weight:400;color:#718096;">— ${it.toma}</span> <span class="t-badge ${sl[it.s]}" style="margin-left:4px;">${ll[it.s]}</span></div>
+        <div class="u-detail">${it.dx} · Día exacto: ${fmt(it.fecha)} · Ventana: ${fmtS(it.wI)} – ${fmtS(it.wF)}</div>
+      </div>
+      <div class="u-days" style="color:${txC[it.s]}">${dt}</div>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(tab) {
+  ['px','prox','cfg'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-btn-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  if (tab === 'prox') renderUpcoming();
+}
+</script>
+</body>
+</html>
