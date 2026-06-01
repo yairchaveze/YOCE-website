@@ -281,16 +281,26 @@ footer p{font-size:9.5px;color:var(--m2)}
   <p>Seguimiento activo de estudios doctorales y proyectos colaborativos. Acceso restringido para equipo de investigación.</p>
 </div>
 
-<p class="sec-label">Protocolo Activo</p>
+<p class="sec-label">Protocolos Activos</p>
 
 <!-- PROTOCOL CARD -->
-<div class="proto-card">
+<div class="proto-card" onclick="toggleTracker()" style="cursor:pointer" id="proto-card-1">
   <div class="proto-card-glow"></div>
-  <div class="proto-badge"><span class="proto-badge-dot"></span>Activo · Reclutando</div>
-  <h2>Expresión de PD-1 en Subpoblaciones T post-TCPH</h2>
-  <div class="proto-sub">HU UANL · Monterrey, México · 2025–2026 · Aprobación ética: HE25-00023</div>
-  <div class="proto-meta-grid">
-    <div class="proto-meta-item"><div class="v">DOCTORADO</div><div class="l">Nivel académico</div></div>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem">
+    <div style="flex:1">
+      <div class="proto-badge"><span class="proto-badge-dot"></span>Activo · Reclutando</div>
+      <h2>Expresión de PD-1 en Subpoblaciones T post-TCPH</h2>
+      <div class="proto-sub">HU UANL · Monterrey, México · 2025–2026 · Aprobación ética: HE25-00023</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;padding-top:4px">
+      <span id="tracker-toggle-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);font-weight:600">Ver tracker →</span>
+      <div id="tracker-chevron" style="transition:transform .3s;color:var(--g)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="proto-meta-grid" style="margin-top:.9rem">
+    <div class="proto-meta-item"><div class="v">PhD</div><div class="l">Nivel académico</div></div>
     <div class="proto-meta-item"><div class="v">LLA · LMA</div><div class="l">Diagnósticos</div></div>
     <div class="proto-meta-item"><div class="v">Alo-TCPH</div><div class="l">Tipo de trasplante</div></div>
     <div class="proto-meta-item"><div class="v">365 días</div><div class="l">Seguimiento máximo</div></div>
@@ -305,10 +315,8 @@ footer p{font-size:9.5px;color:var(--m2)}
   </div>
 </div>
 
-<p class="sec-label">Tracker Clínico · Acceso Restringido</p>
-
-<!-- TRACKER EMBEDDED -->
-<div class="tracker-section">
+<!-- TRACKER EMBEDDED (colapsado por defecto) -->
+<div class="tracker-section" id="tracker-wrap" style="display:none;margin-top:-8px">
   <div id="tracker-container">
     <div id="tracker-container-inner">
       <!-- LOGIN -->
@@ -726,6 +734,23 @@ resize();window.addEventListener('resize',resize);
 function drawDNA(ox,c1,c2){const amp=14,freq=.038;for(let y=-40;y<H+40;y+=4){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.05+.025*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.1,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.1,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
 function frame(){ctx.clearRect(0,0,W,H);t+=.012;drawDNA(36,'0,107,82','3,85,160');drawDNA(W-36,'0,107,82','3,85,160');requestAnimationFrame(frame);}
 frame();
+
+function toggleTracker(){
+  const wrap = document.getElementById('tracker-wrap');
+  const chevron = document.getElementById('tracker-chevron');
+  const label = document.getElementById('tracker-toggle-label');
+  const isOpen = wrap.style.display !== 'none';
+  if(isOpen){
+    wrap.style.display = 'none';
+    chevron.style.transform = 'rotate(0deg)';
+    label.textContent = 'Ver tracker →';
+  } else {
+    wrap.style.display = 'block';
+    chevron.style.transform = 'rotate(180deg)';
+    label.textContent = 'Ocultar tracker ↑';
+    setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'start'}), 100);
+  }
+}
 </script>
 
 <!-- TRACKER SCRIPT -->
