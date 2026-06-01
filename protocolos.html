@@ -444,20 +444,92 @@ const TOMAS = [
   {key:'t365', label:'+365 d', days:365},
 ];
 const WIN = 7;
-const SK = 'pd1_data_v1';
 const SPW = 'pd1_passwords_v1';
-
 const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
+
+// ── JSONBin config ──
+const JSONBIN_KEY = '$2a$10$LcG7969TbYjlm5Y8EtdyaOkEOSy8Ot29eFHHKMfgY38Uc1.iI/SU2';
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+let BIN_ID = localStorage.getItem('pd1_bin_id') || null;
 
 let role = null;
 let pacientes = [];
+let saving = false;
 
 function getPW() {
   try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
 }
 function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
-function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
-function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
+
+async function loadData() {
+  if (!BIN_ID) {
+    // Create new bin
+    try {
+      const res = await fetch(JSONBIN_BASE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY,
+          'X-Bin-Name': 'protocolo-pd1-tcph',
+          'X-Bin-Private': 'true'
+        },
+        body: JSON.stringify({ pacientes: [] })
+      });
+      const data = await res.json();
+      BIN_ID = data.metadata.id;
+      localStorage.setItem('pd1_bin_id', BIN_ID);
+      pacientes = [];
+    } catch(e) {
+      console.error('Error creando bin:', e);
+      pacientes = [];
+    }
+  } else {
+    try {
+      const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      const data = await res.json();
+      pacientes = data.record?.pacientes || [];
+    } catch(e) {
+      console.error('Error cargando datos:', e);
+      pacientes = [];
+    }
+  }
+}
+
+async function saveData() {
+  if (!BIN_ID || saving) return;
+  saving = true;
+  showSaveIndicator('Guardando...');
+  try {
+    await fetch(`${JSONBIN_BASE}/${BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify({ pacientes })
+    });
+    showSaveIndicator('✓ Guardado');
+    setTimeout(() => showSaveIndicator(''), 2000);
+  } catch(e) {
+    showSaveIndicator('⚠ Error al guardar');
+    setTimeout(() => showSaveIndicator(''), 3000);
+  }
+  saving = false;
+}
+
+function showSaveIndicator(msg) {
+  let el = document.getElementById('save-indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'save-indicator';
+    el.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a2236;border:1px solid rgba(99,179,237,0.3);color:#63b3ed;font-family:DM Mono,monospace;font-size:13px;padding:8px 16px;border-radius:8px;z-index:9999;transition:opacity .3s';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = msg ? '1' : '0';
+}
 
 function doLogin() {
   const pw = document.getElementById('pw-input').value;
@@ -467,7 +539,7 @@ function doLogin() {
   else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
 }
 
-function startApp() {
+async function startApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   const badge = document.getElementById('role-badge');
@@ -480,7 +552,9 @@ function startApp() {
     document.getElementById('tab-btn-cfg').style.display = 'none';
     document.getElementById('add-form-section').style.display = 'none';
   }
-  loadData();
+  // Show loading state
+  document.getElementById('px-list').innerHTML = '<div class="no-px" style="padding:2rem;text-align:center;color:#63b3ed;font-family:DM Mono,monospace;font-size:13px">Cargando datos...</div>';
+  await loadData();
   render();
 }
 
@@ -519,14 +593,14 @@ function winRange(px, t) {
   return `${fmtS(a)} – ${fmtS(b)}`;
 }
 
-function toggleComplete(idx, key) {
+async function toggleComplete(idx, key) {
   if (role !== 'admin') return;
   if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
   pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
-  saveData(); render();
+  await saveData(); render();
 }
 
-function addPaciente() {
+async function addPaciente() {
   if (role !== 'admin') return;
   const id = document.getElementById('inp-id').value.trim();
   const dx = document.getElementById('inp-dx').value;
@@ -536,14 +610,14 @@ function addPaciente() {
   pacientes.push({id, dx, trasplante: fecha, completadas: {}});
   document.getElementById('inp-id').value = '';
   document.getElementById('inp-fecha').value = '';
-  saveData(); render();
+  await saveData(); render();
 }
 
-function deletePaciente(idx) {
+async function deletePaciente(idx) {
   if (role !== 'admin') return;
   if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
   pacientes.splice(idx, 1);
-  saveData(); render();
+  await saveData(); render();
 }
 
 function toggleCard(idx) {
@@ -583,7 +657,7 @@ function importJSON(e) {
       const data = JSON.parse(ev.target.result);
       if (!Array.isArray(data.pacientes)) throw new Error();
       pacientes = data.pacientes;
-      saveData(); render();
+      await saveData(); render();
       document.getElementById('io-feedback').textContent = `Importados ${pacientes.length} pacientes.`;
       setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
     } catch { document.getElementById('io-feedback').textContent = 'Error al leer el archivo.'; }
@@ -763,20 +837,92 @@ const TOMAS = [
   {key:'t365', label:'+365 d', days:365},
 ];
 const WIN = 7;
-const SK = 'pd1_data_v1';
 const SPW = 'pd1_passwords_v1';
-
 const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
+
+// ── JSONBin config ──
+const JSONBIN_KEY = '$2a$10$LcG7969TbYjlm5Y8EtdyaOkEOSy8Ot29eFHHKMfgY38Uc1.iI/SU2';
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+let BIN_ID = localStorage.getItem('pd1_bin_id') || null;
 
 let role = null;
 let pacientes = [];
+let saving = false;
 
 function getPW() {
   try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
 }
 function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
-function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
-function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
+
+async function loadData() {
+  if (!BIN_ID) {
+    // Create new bin
+    try {
+      const res = await fetch(JSONBIN_BASE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY,
+          'X-Bin-Name': 'protocolo-pd1-tcph',
+          'X-Bin-Private': 'true'
+        },
+        body: JSON.stringify({ pacientes: [] })
+      });
+      const data = await res.json();
+      BIN_ID = data.metadata.id;
+      localStorage.setItem('pd1_bin_id', BIN_ID);
+      pacientes = [];
+    } catch(e) {
+      console.error('Error creando bin:', e);
+      pacientes = [];
+    }
+  } else {
+    try {
+      const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}/latest`, {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      const data = await res.json();
+      pacientes = data.record?.pacientes || [];
+    } catch(e) {
+      console.error('Error cargando datos:', e);
+      pacientes = [];
+    }
+  }
+}
+
+async function saveData() {
+  if (!BIN_ID || saving) return;
+  saving = true;
+  showSaveIndicator('Guardando...');
+  try {
+    await fetch(`${JSONBIN_BASE}/${BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify({ pacientes })
+    });
+    showSaveIndicator('✓ Guardado');
+    setTimeout(() => showSaveIndicator(''), 2000);
+  } catch(e) {
+    showSaveIndicator('⚠ Error al guardar');
+    setTimeout(() => showSaveIndicator(''), 3000);
+  }
+  saving = false;
+}
+
+function showSaveIndicator(msg) {
+  let el = document.getElementById('save-indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'save-indicator';
+    el.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a2236;border:1px solid rgba(99,179,237,0.3);color:#63b3ed;font-family:DM Mono,monospace;font-size:13px;padding:8px 16px;border-radius:8px;z-index:9999;transition:opacity .3s';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = msg ? '1' : '0';
+}
 
 function doLogin() {
   const pw = document.getElementById('pw-input').value;
@@ -786,7 +932,7 @@ function doLogin() {
   else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
 }
 
-function startApp() {
+async function startApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   const badge = document.getElementById('role-badge');
@@ -799,7 +945,9 @@ function startApp() {
     document.getElementById('tab-btn-cfg').style.display = 'none';
     document.getElementById('add-form-section').style.display = 'none';
   }
-  loadData();
+  // Show loading state
+  document.getElementById('px-list').innerHTML = '<div class="no-px" style="padding:2rem;text-align:center;color:#63b3ed;font-family:DM Mono,monospace;font-size:13px">Cargando datos...</div>';
+  await loadData();
   render();
 }
 
@@ -838,14 +986,14 @@ function winRange(px, t) {
   return `${fmtS(a)} – ${fmtS(b)}`;
 }
 
-function toggleComplete(idx, key) {
+async function toggleComplete(idx, key) {
   if (role !== 'admin') return;
   if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
   pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
-  saveData(); render();
+  await saveData(); render();
 }
 
-function addPaciente() {
+async function addPaciente() {
   if (role !== 'admin') return;
   const id = document.getElementById('inp-id').value.trim();
   const dx = document.getElementById('inp-dx').value;
@@ -855,14 +1003,14 @@ function addPaciente() {
   pacientes.push({id, dx, trasplante: fecha, completadas: {}});
   document.getElementById('inp-id').value = '';
   document.getElementById('inp-fecha').value = '';
-  saveData(); render();
+  await saveData(); render();
 }
 
-function deletePaciente(idx) {
+async function deletePaciente(idx) {
   if (role !== 'admin') return;
   if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
   pacientes.splice(idx, 1);
-  saveData(); render();
+  await saveData(); render();
 }
 
 function toggleCard(idx) {
@@ -902,7 +1050,7 @@ function importJSON(e) {
       const data = JSON.parse(ev.target.result);
       if (!Array.isArray(data.pacientes)) throw new Error();
       pacientes = data.pacientes;
-      saveData(); render();
+      await saveData(); render();
       document.getElementById('io-feedback').textContent = `Importados ${pacientes.length} pacientes.`;
       setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
     } catch { document.getElementById('io-feedback').textContent = 'Error al leer el archivo.'; }
