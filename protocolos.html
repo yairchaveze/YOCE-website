@@ -534,8 +534,8 @@ function showSaveIndicator(msg) {
 function doLogin() {
   const pw = document.getElementById('pw-input').value;
   const pws = getPW();
-  if (pw === pws.admin) { role = 'admin'; startApp(); }
-  else if (pw === pws.viewer) { role = 'viewer'; startApp(); }
+  if (pw === pws.admin) { role = 'admin'; startApp().catch(console.error); }
+  else if (pw === pws.viewer) { role = 'viewer'; startApp().catch(console.error); }
   else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
 }
 
