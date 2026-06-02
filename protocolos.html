@@ -840,7 +840,7 @@ async function loadData() {
   } else {
     try {
       const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}/latest`, {
-        headers: { 'X-Access-Key': JSONBIN_KEY }
+        headers: { 'X-Master-Key': JSONBIN_KEY }
       });
       const data = await res.json();
       pacientes = data.record?.pacientes || [];
@@ -860,7 +860,7 @@ async function saveData() {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-Access-Key': JSONBIN_KEY
+        'X-Master-Key': JSONBIN_KEY
       },
       body: JSON.stringify({ pacientes })
     });
