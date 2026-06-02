@@ -829,8 +829,7 @@ function frame(){
   requestAnimationFrame(frame);
 }
 frame();
-function frame(){ctx.clearRect(0,0,W,H);t+=.012;drawDNA(36,'0,107,82','3,85,160');drawDNA(W-36,'0,107,82','3,85,160');requestAnimationFrame(frame);}
-frame();
+
 
 // ── Toggle tracker ──
 function toggleTracker(){
@@ -1076,7 +1075,7 @@ function exportJSON() {
   setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
 }
 
-async async function importJSON(e) {
+async function importJSON(e) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
