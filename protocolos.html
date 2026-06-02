@@ -411,30 +411,66 @@ const TOMAS = [
   {key:'t365', label:'+365 d', days:365},
 ];
 const WIN = 7;
-const SK = 'pd1_data_v1';
 const SPW = 'pd1_passwords_v1';
 
 const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
 
+const API_URL = 'https://script.google.com/macros/s/AKfycbwM99ybc9Uj56sqffZ0tYBIFVZxqdlwYUhAIydmPVJtsjwN0qPUv3tFyg8ThfKKZCJx/exec';
 let role = null;
 let pacientes = [];
+let saving = false;
 
 function getPW() {
   try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
 }
 function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
-function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
-function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
 
-function doLogin() {
-  const pw = document.getElementById('pw-input').value;
-  const pws = getPW();
-  if (pw === pws.admin) { role = 'admin'; startApp(); }
-  else if (pw === pws.viewer) { role = 'viewer'; startApp(); }
-  else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
+async function loadData() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    pacientes = data.pacientes || [];
+  } catch(e) {
+    console.error('Error cargando:', e);
+    pacientes = [];
+  }
 }
 
-function startApp() {
+async function saveData() {
+  if (saving) return;
+  saving = true;
+  showSaveIndicator('Guardando...');
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ pacientes }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+    showSaveIndicator('✓ Guardado en nube');
+    setTimeout(() => showSaveIndicator(''), 2500);
+  } catch(e) {
+    showSaveIndicator('⚠ Error al guardar');
+    setTimeout(() => showSaveIndicator(''), 3000);
+  }
+  saving = false;
+}
+
+function doLogin() {
+  const pw = document.getElementById('pw-input').value.trim();
+  if (!pw) return;
+  const pws = getPW();
+  if (pw === pws.admin) {
+    role = 'admin';
+    startApp().catch(e => { document.getElementById('login-error').textContent = 'Error: ' + e.message; });
+  } else if (pw === pws.viewer) {
+    role = 'viewer';
+    startApp().catch(e => { document.getElementById('login-error').textContent = 'Error: ' + e.message; });
+  } else {
+    document.getElementById('login-error').textContent = 'Contraseña incorrecta.';
+  }
+}
+
+async function startApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   const badge = document.getElementById('role-badge');
@@ -447,7 +483,8 @@ function startApp() {
     document.getElementById('tab-btn-cfg').style.display = 'none';
     document.getElementById('add-form-section').style.display = 'none';
   }
-  loadData();
+  document.getElementById('px-list').innerHTML = '<div style="padding:2rem;text-align:center;color:#63b3ed;font-size:14px">⏳ Cargando...</div>';
+  await loadData();
   render();
 }
 
@@ -486,14 +523,14 @@ function winRange(px, t) {
   return `${fmtS(a)} – ${fmtS(b)}`;
 }
 
-function toggleComplete(idx, key) {
+async function toggleComplete(idx, key) {
   if (role !== 'admin') return;
   if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
   pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
-  saveData(); render();
+  await saveData(); render();
 }
 
-function addPaciente() {
+async function addPaciente() {
   if (role !== 'admin') return;
   const id = document.getElementById('inp-id').value.trim();
   const dx = document.getElementById('inp-dx').value;
@@ -503,14 +540,14 @@ function addPaciente() {
   pacientes.push({id, dx, trasplante: fecha, completadas: {}});
   document.getElementById('inp-id').value = '';
   document.getElementById('inp-fecha').value = '';
-  saveData(); render();
+  await saveData(); render();
 }
 
-function deletePaciente(idx) {
+async function deletePaciente(idx) {
   if (role !== 'admin') return;
   if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
   pacientes.splice(idx, 1);
-  saveData(); render();
+  await saveData(); render();
 }
 
 function toggleCard(idx) {
