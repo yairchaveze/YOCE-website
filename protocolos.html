@@ -85,13 +85,10 @@ footer p{font-size:10px;color:var(--m2)}
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   #tracker-wrap { font-family: var(--sans); color: var(--text); font-size: 16px; }
-#login-screen { background: #0a0e1a; }
-#app { background: #0a0e1a; min-height: 400px; }
-
-  /* ── LOGIN ── */
+/* ── LOGIN ── */
   #login-screen {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: var(--bg);
+    background: #0a0e1a;
   }
   .login-card {
     width: 360px; padding: 2.5rem;
@@ -403,6 +400,8 @@ footer p{font-size:10px;color:var(--m2)}
   </div>
 </div>
 
+</div>
+
 <script>
 const TOMAS = [
   {key:'t30',  label:'+30 d',  days:30},
@@ -412,98 +411,30 @@ const TOMAS = [
   {key:'t365', label:'+365 d', days:365},
 ];
 const WIN = 7;
+const SK = 'pd1_data_v1';
 const SPW = 'pd1_passwords_v1';
+
 const DEFAULT_PASSWORDS = { admin: 'admin2024', viewer: 'equipo2024' };
 
-const JSONBIN_KEY = '$2a$10$g9o9tQZ/XXD0vBOdf9WUJ.9U5D0BLzKYaTAbSmTzBz/p3gecRICYe';
-const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
-let BIN_ID = null;
 let role = null;
 let pacientes = [];
-let saving = false;
 
 function getPW() {
   try { return JSON.parse(localStorage.getItem(SPW)) || DEFAULT_PASSWORDS; } catch { return DEFAULT_PASSWORDS; }
 }
 function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
-
-async function loadData() {
-  if (!BIN_ID) {
-    try {
-      const res = await fetch(JSONBIN_BASE, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_KEY,
-          'X-Bin-Name': 'protocolo-pd1-tcph',
-          'X-Bin-Private': 'true'
-        },
-        body: JSON.stringify({ pacientes: [] })
-      });
-      const data = await res.json();
-      BIN_ID = data.metadata.id;
-      localStorage.setItem('pd1_bin_id', BIN_ID);
-      pacientes = [];
-    } catch(e) {
-      console.error('Error creando bin:', e);
-      pacientes = [];
-    }
-  } else {
-    try {
-      const res = await fetch(`${JSONBIN_BASE}/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': JSONBIN_KEY }
-      });
-      const data = await res.json();
-      pacientes = data.record?.pacientes || [];
-    } catch(e) {
-      console.error('Error cargando datos:', e);
-      pacientes = [];
-    }
-  }
-}
-
-async function saveData() {
-  if (!BIN_ID || saving) return;
-  saving = true;
-  showSaveIndicator('Guardando...');
-  try {
-    await fetch(`${JSONBIN_BASE}/${BIN_ID}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_KEY
-      },
-      body: JSON.stringify({ pacientes })
-    });
-    showSaveIndicator('✓ Guardado en nube');
-    setTimeout(() => showSaveIndicator(''), 2500);
-  } catch(e) {
-    showSaveIndicator('⚠ Error al guardar');
-    setTimeout(() => showSaveIndicator(''), 3000);
-  }
-  saving = false;
-}
+function loadData() { try { pacientes = JSON.parse(localStorage.getItem(SK)) || []; } catch { pacientes = []; } }
+function saveData() { localStorage.setItem(SK, JSON.stringify(pacientes)); }
 
 function doLogin() {
-  const pw = document.getElementById('pw-input').value.trim();
-  if (!pw) return;
+  const pw = document.getElementById('pw-input').value;
   const pws = getPW();
-  if (pw === pws.admin) {
-    role = 'admin';
-    startApp().catch(e => {
-      document.getElementById('login-error').textContent = 'Error: ' + e.message;
-    });
-  } else if (pw === pws.viewer) {
-    role = 'viewer';
-    startApp().catch(e => {
-      document.getElementById('login-error').textContent = 'Error: ' + e.message;
-    });
-  } else {
-    document.getElementById('login-error').textContent = 'Contraseña incorrecta.';
-  }
+  if (pw === pws.admin) { role = 'admin'; startApp(); }
+  else if (pw === pws.viewer) { role = 'viewer'; startApp(); }
+  else { document.getElementById('login-error').textContent = 'Contraseña incorrecta.'; }
 }
 
-async function startApp() {
+function startApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   const badge = document.getElementById('role-badge');
@@ -516,8 +447,7 @@ async function startApp() {
     document.getElementById('tab-btn-cfg').style.display = 'none';
     document.getElementById('add-form-section').style.display = 'none';
   }
-  document.getElementById('px-list').innerHTML = '<div style="padding:2rem;text-align:center;color:#63b3ed;font-family:DM Mono,monospace;font-size:14px">⏳ Cargando datos...</div>';
-  await loadData();
+  loadData();
   render();
 }
 
@@ -556,14 +486,14 @@ function winRange(px, t) {
   return `${fmtS(a)} – ${fmtS(b)}`;
 }
 
-async function toggleComplete(idx, key) {
+function toggleComplete(idx, key) {
   if (role !== 'admin') return;
   if (!pacientes[idx].completadas) pacientes[idx].completadas = {};
   pacientes[idx].completadas[key] = !pacientes[idx].completadas[key];
-  await saveData(); render();
+  saveData(); render();
 }
 
-async function addPaciente() {
+function addPaciente() {
   if (role !== 'admin') return;
   const id = document.getElementById('inp-id').value.trim();
   const dx = document.getElementById('inp-dx').value;
@@ -573,14 +503,14 @@ async function addPaciente() {
   pacientes.push({id, dx, trasplante: fecha, completadas: {}});
   document.getElementById('inp-id').value = '';
   document.getElementById('inp-fecha').value = '';
-  await saveData(); render();
+  saveData(); render();
 }
 
-async function deletePaciente(idx) {
+function deletePaciente(idx) {
   if (role !== 'admin') return;
   if (!confirm('¿Eliminar ' + pacientes[idx].id + '?')) return;
   pacientes.splice(idx, 1);
-  await saveData(); render();
+  saveData(); render();
 }
 
 function toggleCard(idx) {
@@ -611,16 +541,16 @@ function exportJSON() {
   setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
 }
 
-async function importJSON(e) {
+function importJSON(e) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = async ev => {
+  reader.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
       if (!Array.isArray(data.pacientes)) throw new Error();
       pacientes = data.pacientes;
-      await saveData(); render();
+      saveData(); render();
       document.getElementById('io-feedback').textContent = `Importados ${pacientes.length} pacientes.`;
       setTimeout(() => document.getElementById('io-feedback').textContent = '', 3000);
     } catch { document.getElementById('io-feedback').textContent = 'Error al leer el archivo.'; }
@@ -752,7 +682,6 @@ function switchTab(tab) {
   if (tab === 'prox') renderUpcoming();
 }
 </script>
-</div>
 
 <footer>
   <p>© 2026 Yair Omar Chávez-Estrada · YOCE · Uso interno</p>
@@ -828,7 +757,6 @@ function frame(){
   requestAnimationFrame(frame);
 }
 frame();
-
 
 // ── Toggle tracker ──
 function toggleTracker(){
