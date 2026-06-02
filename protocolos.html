@@ -427,7 +427,11 @@ function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
 
 async function loadData() {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL + '?t=' + Date.now(), {
+      method: 'GET',
+      mode: 'cors',
+      redirect: 'follow'
+    });
     const data = await res.json();
     pacientes = data.pacientes || [];
   } catch(e) {
