@@ -426,18 +426,24 @@ function getPW() {
 function savePW(pw) { localStorage.setItem(SPW, JSON.stringify(pw)); }
 
 async function loadData() {
-  try {
-    const res = await fetch(API_URL + '?t=' + Date.now(), {
-      method: 'GET',
-      mode: 'cors',
-      redirect: 'follow'
-    });
-    const data = await res.json();
-    pacientes = data.pacientes || [];
-  } catch(e) {
-    console.error('Error cargando:', e);
-    pacientes = [];
-  }
+  return new Promise((resolve) => {
+    const cbName = 'cb_' + Date.now();
+    window[cbName] = function(data) {
+      pacientes = data.pacientes || [];
+      delete window[cbName];
+      document.getElementById('jsonp-script')?.remove();
+      resolve();
+    };
+    const script = document.createElement('script');
+    script.id = 'jsonp-script';
+    script.src = API_URL + '?callback=' + cbName + '&t=' + Date.now();
+    script.onerror = function() {
+      console.error('Error cargando datos');
+      pacientes = [];
+      resolve();
+    };
+    document.head.appendChild(script);
+  });
 }
 
 async function saveData() {
