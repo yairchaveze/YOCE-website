@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>I+D Estratégico · YoCellTherapy</title>
+<meta name="description" content="Herramientas de I+D Estratégico para laboratorio clínico. Calculadora de rangos de referencia CLSI EP28-A3c con detección de outliers por Tukey y estratificación por sexo y edad."/>
+<link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;--card:#ffffff;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+
+.page{max-width:920px;margin:0 auto;padding:0 1.25rem 3rem;position:relative;z-index:1}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:34px;height:34px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.nav-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--m);text-decoration:none;border:1px solid var(--bord2);border-radius:8px;padding:6px 14px;transition:all .2s;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+.nav-back:hover{border-color:var(--bord3);color:var(--g);background:var(--g3)}
+
+/* PAGE HEADER */
+.page-header{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.page-kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.page-kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
+.page-header h1{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.15}
+.page-header h1 em{font-style:normal;color:var(--g);font-weight:600}
+.page-header p{font-size:13px;color:var(--m);line-height:1.8;margin-top:.75rem}
+
+.sec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
+.divider{height:1px;background:var(--bord2);margin:1.5rem 0}
+
+/* TOOL CARD */
+.tool-card{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.05);position:relative;overflow:hidden}
+.tool-glow{position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(109,40,217,.07) 0%,transparent 65%);pointer-events:none}
+.tool-label{display:inline-flex;align-items:center;gap:6px;background:var(--p2);border:1px solid rgba(109,40,217,.22);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
+.tool-card h2{font-size:clamp(1.1rem,3vw,1.35rem);font-weight:300;margin-bottom:.6rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
+.tool-card h2 em{font-style:normal;color:var(--p);font-weight:600}
+.tool-desc{font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1.25rem}
+.tool-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.tch{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:20px;font-size:10.5px;color:var(--p);padding:4px 11px;font-weight:500}
+.tch.g{background:var(--g3);border-color:rgba(0,196,154,.3);color:var(--g)}
+
+/* LOCK */
+.lock-wrap{background:var(--bg);border:1px solid var(--bord2);border-radius:12px;padding:2rem;text-align:center;margin-top:1rem}
+.lock-icon-sm{font-size:32px;color:var(--m2);margin-bottom:.75rem}
+.lock-wrap h3{font-size:16px;font-weight:500;margin-bottom:.4rem}
+.lock-wrap p{font-size:13px;color:var(--m);margin-bottom:1.25rem;line-height:1.6}
+.lock-input-row{display:flex;gap:8px;max-width:360px;margin:0 auto}
+.lock-input-row input{flex:1;padding:0 12px;height:38px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);font-size:14px;font-family:'Plus Jakarta Sans',sans-serif}
+.lock-input-row input:focus{outline:none;border-color:var(--gl)}
+.lock-input-row button{height:38px;padding:0 18px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);font-size:13px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500}
+.lock-input-row button:hover{background:var(--g3);border-color:var(--bord3);color:var(--g)}
+.lock-error{font-size:13px;color:#dc2626;margin-top:8px}
+.lock-footer-note{font-size:11px;color:var(--m2);margin-top:1rem}
+.lock-footer-note a{color:var(--b);text-decoration:none}
+
+/* CALCULATOR APP */
+.calc-app{display:none;margin-top:1.25rem}
+.calc-app.visible{display:block}
+
+.nav-tabs-calc{display:flex;gap:6px;margin-bottom:1.5rem;border-bottom:1px solid var(--bord2)}
+.nav-tab-calc{font-size:13px;padding:7px 16px;border-radius:8px 8px 0 0;border:1px solid transparent;cursor:pointer;color:var(--m);background:transparent;font-family:'Plus Jakarta Sans',sans-serif}
+.nav-tab-calc:hover{background:var(--bg)}
+.nav-tab-calc.active{background:#fff;border-color:var(--bord2);border-bottom-color:#fff;color:var(--t);font-weight:500;margin-bottom:-1px}
+.tab-pane{display:none}
+.tab-pane.visible{display:block}
+
+.analito-label-c{font-size:12px;color:var(--m);display:block;margin-bottom:8px;font-weight:500;letter-spacing:.02em}
+.analito-tabs-c{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.analito-tab-c{font-size:12px;padding:5px 11px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--m);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.analito-tab-c:hover{background:var(--bg)}
+.analito-tab-c.active{background:var(--p2);color:var(--p);border-color:rgba(109,40,217,.3)}
+.add-row{display:flex;gap:8px;margin-top:8px}
+.add-row input{flex:1;height:32px;padding:0 10px;font-size:13px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif}
+.add-row button{height:32px;padding:0 12px;font-size:13px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.add-row button:hover{background:var(--bg)}
+
+.calc-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.calc-card-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+
+.steps-bar{display:flex;gap:6px;margin-bottom:1.5rem}
+.sbar-step{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--bord2);font-size:11px;color:var(--m2);text-align:center;font-family:'JetBrains Mono',monospace}
+.sbar-step.active{border-color:rgba(109,40,217,.4);background:var(--p2);color:var(--p)}
+.sbar-step.done{border-color:rgba(0,196,154,.4);background:var(--g3);color:var(--g)}
+
+.toggle-row-c{display:flex;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.toggle-card-c{flex:1;min-width:180px;background:var(--bg);border:1px solid var(--bord2);border-radius:12px;padding:12px 16px;cursor:pointer;transition:border-color .15s}
+.toggle-card-c.active{border-color:rgba(109,40,217,.4);background:var(--p2)}
+.toggle-header-c{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.toggle-title-c{font-size:13px;font-weight:500;color:var(--t)}
+.toggle-card-c.active .toggle-title-c{color:var(--p)}
+.toggle-desc-c{font-size:11px;color:var(--m2);line-height:1.5}
+.toggle-card-c.active .toggle-desc-c{color:var(--p);opacity:.8}
+.tsw{width:36px;height:20px;border-radius:10px;background:var(--bord2);position:relative;flex-shrink:0;transition:background .15s}
+.tsw.on{background:var(--p)}
+.tsw::after{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .15s}
+.tsw.on::after{left:19px}
+
+.data-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:1rem}
+.data-col-c{display:flex;flex-direction:column;gap:6px}
+.data-col-c label{font-size:11px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace}
+textarea.data-ta{width:100%;min-height:220px;resize:vertical;border:1px solid var(--bord2);border-radius:8px;padding:10px;font-size:13px;font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--t);line-height:1.8}
+textarea.data-ta:focus{outline:none;border-color:var(--gl)}
+.hint-c{font-size:11px;color:var(--m2)}
+.calc-btn-c{width:100%;height:40px;margin-top:6px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);font-size:14px;cursor:pointer;font-weight:500;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.calc-btn-c:hover{background:var(--g3);border-color:var(--bord3);color:var(--g)}
+
+.semaforo-c{display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:8px;font-size:13px;margin-bottom:1rem}
+.semaforo-c.verde{background:rgba(0,196,154,.1);color:var(--g);border:1px solid rgba(0,196,154,.3)}
+.semaforo-c.amarillo{background:rgba(245,158,11,.1);color:#92400e;border:1px solid rgba(245,158,11,.3)}
+.semaforo-c.rojo{background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.25)}
+.sdot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sdot-verde{background:#22c55e}.sdot-amarillo{background:#f59e0b}.sdot-rojo{background:#ef4444}
+
+.stat-box{border-radius:8px;padding:10px 14px;font-size:13px;display:flex;gap:10px;align-items:flex-start;margin-bottom:.75rem;line-height:1.6}
+.stat-box.sig{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.stat-box.nosig{background:rgba(0,196,154,.1);border:1px solid rgba(0,196,154,.3);color:var(--g)}
+.stat-box.info{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
+
+.result-c{background:rgba(0,196,154,.1);border:1px solid rgba(0,196,154,.3);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.result-c.insuf{background:var(--bg);border-color:var(--bord2)}
+.result-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.result-c.insuf .result-lbl{color:var(--m2)}
+.result-num{font-size:26px;font-weight:300;color:var(--g);margin-bottom:4px;letter-spacing:-.02em}
+.result-sub{font-size:11px;color:var(--m2);font-family:'JetBrains Mono',monospace}
+
+/* METHODOLOGY */
+.info-c{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.info-c h3{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:var(--t)}
+.info-c p{font-size:13px;color:var(--m);line-height:1.75;margin-bottom:10px}
+.info-c p:last-child{margin-bottom:0}
+.formula-c{background:var(--bg);border-radius:8px;padding:1rem 1.25rem;margin:10px 0;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2.1}
+.fl{display:flex;align-items:baseline;gap:12px;padding:2px 0}
+.fn{color:var(--m2);min-width:150px;font-size:11px}
+.fe{color:var(--t);font-weight:500}
+.fd{color:var(--m2);font-size:10px;font-family:'Plus Jakarta Sans',sans-serif}
+.badges-c{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bc{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--b2);color:var(--b);border:1px solid rgba(33,150,243,.2)}
+.bc.warn{background:rgba(245,158,11,.1);color:#92400e;border-color:rgba(245,158,11,.25)}
+.note-c{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 14px;font-size:12.5px;color:#92400e;display:flex;gap:8px;align-items:flex-start;margin-top:10px;line-height:1.6}
+.noapply-c{background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:10px 14px;font-size:12.5px;color:#991b1b;display:flex;gap:8px;align-items:flex-start;margin-top:10px;line-height:1.6}
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-top:12px}
+.ae{background:var(--bg);border-radius:8px;padding:10px 12px}
+.ae-cat{font-size:10px;color:var(--m2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace}
+.ae-list{font-size:12.5px;color:var(--t);line-height:1.8}
+.contact-c{background:var(--bg);border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-top:1rem;text-align:center}
+.contact-c p{font-size:13px;color:var(--m);margin-bottom:1rem;line-height:1.6}
+.contact-btn-c{display:inline-flex;align-items:center;gap:8px;padding:9px 22px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);font-size:13px;cursor:pointer;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;font-weight:500}
+.contact-btn-c:hover{background:var(--g3);border-color:var(--bord3);color:var(--g)}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:2rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:9.5px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+  nav{padding:.9rem 0 1.75rem;margin-bottom:1.75rem}
+  .toggle-row-c{flex-direction:column}
+  .steps-bar{font-size:9px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-mark">
+      <img src="YOCE_logo.svg" width="28" height="28" alt="YOCE" style="display:block" onerror="this.style.display='none'"/>
+    </div>
+    <div class="logo-text">Yair Omar Chávez-Estrada
+      <span>Asesoría Científica · Cell Therapy</span>
+    </div>
+  </a>
+  <a href="index.html" class="nav-back">← Inicio</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-kicker">I+D Estratégico · Herramientas de Laboratorio</div>
+  <h1>Herramientas de <em>I+D Estratégico</em></h1>
+  <p>Recursos técnicos para laboratorio clínico, diseñados bajo estándares internacionales. Acceso mediante código mensual para usuarios registrados.</p>
+</div>
+
+<!-- TOOL: CALCULADORA -->
+<p class="sec">Calculadora de Rangos de Referencia</p>
+
+<div class="tool-card">
+  <div class="tool-glow"></div>
+  <div class="tool-label">◆ CLSI EP28-A3c · Tukey · No paramétrico</div>
+  <h2>Calculadora de <em>Rangos de Referencia</em></h2>
+  <p class="tool-desc">Herramienta estadística para establecer intervalos de referencia en laboratorio clínico. Detecta outliers por el método de Tukey, evalúa diferencias significativas por sexo (Mann-Whitney U) y grupos de edad (Kruskal-Wallis), y calcula los percentiles P2.5–P97.5 siguiendo la guía CLSI EP28-A3c. Aplicable a cualquier analito cuantitativo continuo.</p>
+  <div class="tool-chips">
+    <span class="tch">CLSI EP28-A3c</span>
+    <span class="tch">Tukey outliers</span>
+    <span class="tch">Mann-Whitney U</span>
+    <span class="tch">Kruskal-Wallis</span>
+    <span class="tch g">Biometría hemática</span>
+    <span class="tch g">Química clínica</span>
+    <span class="tch g">Citometría · Coagulación</span>
+  </div>
+
+  <!-- LOCK -->
+  <div class="lock-wrap" id="lockWrap">
+    <div class="lock-icon-sm"><i class="ti ti-lock"></i></div>
+    <h3>Acceso con código mensual</h3>
+    <p>Ingresa tu código de acceso para usar la calculadora</p>
+    <div class="lock-input-row">
+      <input type="password" id="codeInput" placeholder="Código de acceso" onkeydown="if(event.key==='Enter')checkCode()"/>
+      <button onclick="checkCode()">Entrar</button>
+    </div>
+    <div class="lock-error" id="lockError"></div>
+    <div class="lock-footer-note">¿No tienes acceso? <a href="contacto.html">Contáctanos</a></div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="calc-app" id="calcApp">
+
+    <div class="nav-tabs-calc">
+      <button class="nav-tab-calc active" onclick="showCalcTab('tabCalc',this)"><i class="ti ti-calculator" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i> Calculadora</button>
+      <button class="nav-tab-calc" onclick="showCalcTab('tabMetodo',this)"><i class="ti ti-book" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i> Fundamento metodológico</button>
+    </div>
+
+    <!-- TAB CALCULADORA -->
+    <div class="tab-pane visible" id="tabCalc">
+
+      <div class="calc-card">
+        <div class="calc-card-title">Parámetro activo</div>
+        <div class="analito-tabs-c" id="analitoTabs"></div>
+        <div class="add-row">
+          <input type="text" id="newAnalitoInput" placeholder="Agregar analito personalizado..."/>
+          <button onclick="addAnalito()"><i class="ti ti-plus" style="font-size:13px;vertical-align:-1px"></i> Agregar</button>
+        </div>
+      </div>
+
+      <div class="steps-bar">
+        <div class="sbar-step active" id="step1">1 · Datos</div>
+        <div class="sbar-step" id="step2">2 · Prueba estadística</div>
+        <div class="sbar-step" id="step3">3 · Outliers</div>
+        <div class="sbar-step" id="step4">4 · Rangos</div>
+      </div>
+
+      <div class="calc-card">
+        <div class="calc-card-title">Opciones de estratificación</div>
+        <div class="toggle-row-c">
+          <div class="toggle-card-c" id="toggleSexoCard" onclick="toggleOpt('sexo')">
+            <div class="toggle-header-c">
+              <span class="toggle-title-c"><i class="ti ti-gender-bigender" style="font-size:14px;vertical-align:-2px;margin-right:5px"></i>Estratificar por sexo</span>
+              <div class="tsw" id="toggleSexoSwitch"></div>
+            </div>
+            <div class="toggle-desc-c">Mann-Whitney U · p &lt; 0.05 → rangos separados M/F</div>
+          </div>
+          <div class="toggle-card-c" id="toggleEdadCard" onclick="toggleOpt('edad')">
+            <div class="toggle-header-c">
+              <span class="toggle-title-c"><i class="ti ti-users" style="font-size:14px;vertical-align:-2px;margin-right:5px"></i>Estratificar por edad</span>
+              <div class="tsw" id="toggleEdadSwitch"></div>
+            </div>
+            <div class="toggle-desc-c">Kruskal-Wallis · grupos: pediátrico / adulto / adulto mayor</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-card">
+        <div class="calc-card-title">Ingreso de datos</div>
+        <div class="data-grid" id="dataGrid">
+          <div class="data-col-c">
+            <label><i class="ti ti-list-numbers" style="font-size:12px;vertical-align:-1px"></i> Valores</label>
+            <textarea class="data-ta" id="inputValores" placeholder="13.2&#10;14.5&#10;12.8&#10;15.1&#10;13.9&#10;16.2&#10;14.0&#10;13.5&#10;12.1&#10;15.8"></textarea>
+            <span class="hint-c">Un valor por línea</span>
+          </div>
+          <div class="data-col-c" id="colSexo" style="display:none">
+            <label><i class="ti ti-gender-bigender" style="font-size:12px;vertical-align:-1px"></i> Sexo</label>
+            <textarea class="data-ta" id="inputSexo" placeholder="F&#10;M&#10;F&#10;M&#10;F&#10;M&#10;F&#10;M&#10;F&#10;M"></textarea>
+            <span class="hint-c">M o F — mismo orden que valores</span>
+          </div>
+          <div class="data-col-c" id="colEdad" style="display:none">
+            <label><i class="ti ti-calendar" style="font-size:12px;vertical-align:-1px"></i> Edad</label>
+            <textarea class="data-ta" id="inputEdad" placeholder="25&#10;34&#10;42&#10;28&#10;55&#10;61&#10;38&#10;47&#10;22&#10;33"></textarea>
+            <span class="hint-c">Edad en años — mismo orden que valores</span>
+          </div>
+        </div>
+        <button class="calc-btn-c" onclick="calcular()"><i class="ti ti-calculator" style="font-size:15px;vertical-align:-2px;margin-right:6px"></i> Calcular rangos de referencia</button>
+      </div>
+
+      <div id="resultadosSection" style="display:none">
+        <div id="semaforoDiv"></div>
+        <div id="pruebasSection"></div>
+        <div id="rangosSection"></div>
+      </div>
+
+    </div>
+
+    <!-- TAB METODOLOGÍA -->
+    <div class="tab-pane" id="tabMetodo">
+
+      <div class="info-c">
+        <h3><i class="ti ti-file-certificate" style="font-size:16px;color:var(--m)"></i> ¿En qué se basa esta calculadora?</h3>
+        <p>Implementa las recomendaciones del <strong>Clinical and Laboratory Standards Institute (CLSI)</strong> en la guía <strong>EP28-A3c</strong> (<em>Defining, Establishing, and Verifying Reference Intervals in the Clinical Laboratory</em>), estándar internacional para determinar intervalos de referencia en laboratorio clínico.</p>
+        <p>La guía indica explícitamente que antes de combinar datos, se debe evaluar si existen diferencias significativas entre subgrupos (sexo, edad). Si p &lt; 0.05 → rangos separados. Si p ≥ 0.05 → datos combinados para maximizar n.</p>
+        <div class="badges-c">
+          <span class="bc">CLSI EP28-A3c</span>
+          <span class="bc">Método no paramétrico</span>
+          <span class="bc">P2.5 – P97.5</span>
+          <span class="bc warn">Mínimo recomendado: 120 muestras</span>
+        </div>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-circles-relation" style="font-size:16px;color:var(--m)"></i> ¿Para qué analitos aplica?</h3>
+        <p>Cualquier <strong>analito cuantitativo continuo</strong> medido en una <strong>población de referencia sana</strong> — no está limitado a biometría hemática.</p>
+        <div class="ag">
+          <div class="ae"><div class="ae-cat">Hematología</div><div class="ae-list">WBC, RBC, HGB, HCT, MCV, MCH, MCHC, PLT, diferencial</div></div>
+          <div class="ae"><div class="ae-cat">Química clínica</div><div class="ae-list">Glucosa, creatinina, urea, ALT, AST, bilirrubinas, albúmina</div></div>
+          <div class="ae"><div class="ae-cat">Coagulación</div><div class="ae-list">TP, TTPa, fibrinógeno, dímero D, INR</div></div>
+          <div class="ae"><div class="ae-cat">Hormonas</div><div class="ae-list">TSH, T4 libre, cortisol, insulina, estradiol, testosterona</div></div>
+          <div class="ae"><div class="ae-cat">Inmunología</div><div class="ae-list">IgG, IgA, IgM, C3, C4, ferritina, PCR</div></div>
+          <div class="ae"><div class="ae-cat">Citometría</div><div class="ae-list">CD4+, CD8+, NK, linfocitos B, subpoblaciones T</div></div>
+        </div>
+        <div class="noapply-c">
+          <i class="ti ti-x" style="font-size:15px;flex-shrink:0;margin-top:1px"></i>
+          <span><strong>No aplica para:</strong> variables categóricas (positivo/negativo), ordinales, ni pacientes enfermos — requiere exclusivamente individuos de referencia sanos.</span>
+        </div>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-gender-bigender" style="font-size:16px;color:var(--m)"></i> Estratificación por sexo — Mann-Whitney U</h3>
+        <p>Prueba no paramétrica equivalente a la t de Student para muestras independientes. No asume distribución normal.</p>
+        <div class="formula-c">
+          <div class="fl"><span class="fn">H₀</span><span class="fe">No hay diferencia entre M y F</span></div>
+          <div class="fl"><span class="fn">p &lt; 0.05</span><span class="fe">→ rangos separados por sexo</span></div>
+          <div class="fl"><span class="fn">p ≥ 0.05</span><span class="fe">→ M y F se combinan</span></div>
+        </div>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-users" style="font-size:16px;color:var(--m)"></i> Estratificación por edad — Kruskal-Wallis</h3>
+        <p>Equivalente no paramétrico del ANOVA de una vía para evaluar diferencias entre más de dos grupos.</p>
+        <div class="formula-c">
+          <div class="fl"><span class="fn">Pediátrico</span><span class="fe">0 – 17 años</span></div>
+          <div class="fl"><span class="fn">Adulto</span><span class="fe">18 – 59 años</span></div>
+          <div class="fl"><span class="fn">Adulto mayor</span><span class="fe">≥ 60 años</span></div>
+          <div class="fl"><span class="fn">p &lt; 0.05</span><span class="fe">→ rangos separados por grupo</span></div>
+        </div>
+        <div class="contact-c">
+          <p>¿Tu analito o población requiere grupos de edad distintos? Solicita una configuración personalizada.</p>
+          <a class="contact-btn-c" href="contacto.html"><i class="ti ti-mail" style="font-size:14px;vertical-align:-2px"></i> Solicitar grupos personalizados</a>
+        </div>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-filter" style="font-size:16px;color:var(--m)"></i> Detección de outliers — método de Tukey</h3>
+        <div class="formula-c">
+          <div class="fl"><span class="fn">IQR</span><span class="fe">= Q3 − Q1</span><span class="fd">Rango intercuartílico</span></div>
+          <div class="fl"><span class="fn">Límite inferior</span><span class="fe">= Q1 − 1.5 × IQR</span></div>
+          <div class="fl"><span class="fn">Límite superior</span><span class="fe">= Q3 + 1.5 × IQR</span></div>
+        </div>
+        <p>La constante 1.5 fue establecida empíricamente por John Tukey. Cualquier valor fuera de estos límites se excluye antes de calcular el intervalo de referencia.</p>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-ruler-measure" style="font-size:16px;color:var(--m)"></i> Intervalo de referencia — CLSI EP28-A3c</h3>
+        <div class="formula-c">
+          <div class="fl"><span class="fn">Posición r1</span><span class="fe">= 0.025 × (n + 1)</span><span class="fd">P2.5</span></div>
+          <div class="fl"><span class="fn">Posición r2</span><span class="fe">= 0.975 × (n + 1)</span><span class="fd">P97.5</span></div>
+          <div class="fl"><span class="fn">Interpolación</span><span class="fe">= Vᵢ + d × (Vᵢ₊₁ − Vᵢ)</span></div>
+        </div>
+        <div class="note-c">
+          <i class="ti ti-alert-triangle" style="font-size:15px;flex-shrink:0;margin-top:1px"></i>
+          <span>CLSI EP28-A3c recomienda un mínimo de <strong>120 individuos por subgrupo</strong> para que los percentiles extremos sean estadísticamente confiables.</span>
+        </div>
+      </div>
+
+      <div class="info-c">
+        <h3><i class="ti ti-books" style="font-size:16px;color:var(--m)"></i> Referencias</h3>
+        <p style="font-size:12.5px">Clinical and Laboratory Standards Institute. <em>Defining, Establishing, and Verifying Reference Intervals in the Clinical Laboratory</em>. 3rd ed. CLSI document EP28-A3c. Wayne, PA: CLSI; 2010.</p>
+        <p style="font-size:12.5px">Tukey JW. <em>Exploratory Data Analysis</em>. Addison-Wesley; 1977.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">Cell Therapy · AI · R&D</span>
+</footer>
+</div>
+
+<script>
+// ─── CAMBIAR ESTE CÓDIGO CADA MES ──────────────────────────────────────────
+const ACCESS_CODE = "YCT2026";
+// ───────────────────────────────────────────────────────────────────────────
+
+const BHC=["WBC","RBC","HGB","HCT","MCV","MCH","MCHC","PLT","Neutrófilos","Linfocitos","Monocitos","Eosinófilos","Basófilos"];
+let analitos=[...BHC],currentAnalito=analitos[0],savedData={};
+let usaSexo=false,usaEdad=false;
+
+function showCalcTab(id,btn){
+  document.querySelectorAll(".tab-pane").forEach(t=>t.classList.remove("visible"));
+  document.querySelectorAll(".nav-tab-calc").forEach(t=>t.classList.remove("active"));
+  document.getElementById(id).classList.add("visible");btn.classList.add("active");
+}
+
+function checkCode(){
+  const v=document.getElementById("codeInput").value.trim();
+  if(v===ACCESS_CODE){
+    document.getElementById("lockWrap").style.display="none";
+    document.getElementById("calcApp").classList.add("visible");
+    renderTabs();
+  } else {
+    document.getElementById("lockError").textContent="Código incorrecto. Verifica e intenta de nuevo.";
+  }
+}
+
+function renderTabs(){
+  const cont=document.getElementById("analitoTabs");cont.innerHTML="";
+  analitos.forEach(a=>{
+    const btn=document.createElement("button");
+    btn.className="analito-tab-c"+(a===currentAnalito?" active":"");
+    btn.textContent=a;btn.onclick=()=>selectAnalito(a);cont.appendChild(btn);
+  });
+}
+
+function selectAnalito(a){
+  if(currentAnalito){savedData[currentAnalito]={v:document.getElementById("inputValores").value,s:document.getElementById("inputSexo").value,e:document.getElementById("inputEdad").value};}
+  currentAnalito=a;renderTabs();
+  const d=savedData[a]||{v:"",s:"",e:""};
+  document.getElementById("inputValores").value=d.v;
+  document.getElementById("inputSexo").value=d.s;
+  document.getElementById("inputEdad").value=d.e;
+  document.getElementById("resultadosSection").style.display="none";
+  setStep(1);
+}
+
+function addAnalito(){
+  const inp=document.getElementById("newAnalitoInput"),val=inp.value.trim();
+  if(val&&!analitos.includes(val)){analitos.push(val);renderTabs();selectAnalito(val);inp.value="";}
+}
+
+function toggleOpt(opt){
+  if(opt==="sexo"){
+    usaSexo=!usaSexo;
+    document.getElementById("toggleSexoCard").classList.toggle("active",usaSexo);
+    document.getElementById("toggleSexoSwitch").classList.toggle("on",usaSexo);
+    document.getElementById("colSexo").style.display=usaSexo?"flex":"none";
+  } else {
+    usaEdad=!usaEdad;
+    document.getElementById("toggleEdadCard").classList.toggle("active",usaEdad);
+    document.getElementById("toggleEdadSwitch").classList.toggle("on",usaEdad);
+    document.getElementById("colEdad").style.display=usaEdad?"flex":"none";
+  }
+  const n=1+(usaSexo?1:0)+(usaEdad?1:0);
+  document.getElementById("dataGrid").style.gridTemplateColumns=n===1?"1fr":n===2?"1fr 1fr":"1fr 1fr 1fr";
+}
+
+function setStep(n){
+  [1,2,3,4].forEach(i=>{
+    const el=document.getElementById("step"+i);
+    if(el)el.className="sbar-step"+(i<n?" done":i===n?" active":"");
+  });
+}
+
+function parseLines(txt){return txt.trim().split("\n").map(l=>l.trim()).filter(l=>l);}
+function quantile(s,p){const pos=p*(s.length-1),lo=Math.floor(pos),hi=Math.ceil(pos);if(lo===hi)return s[lo];return s[lo]+(pos-lo)*(s[hi]-s[lo]);}
+function percentileEP28(s,p){const n=s.length,pos=p*(n+1),lo=Math.floor(pos),hi=Math.ceil(pos),d=pos-lo;if(lo<1)return s[0];if(hi>n)return s[n-1];return s[lo-1]+d*(s[hi-1]-s[lo-1]);}
+function tukey(vals){const s=[...vals].sort((a,b)=>a-b);const q1=quantile(s,.25),q3=quantile(s,.75),iqr=q3-q1,lo=q1-1.5*iqr,hi=q3+1.5*iqr;return{clean:s.filter(v=>v>=lo&&v<=hi),outliers:s.filter(v=>v<lo||v>hi)};}
+function normCDF(z){const t=1/(1+.2316419*z),p=t*(.319381530+t*(-.356563782+t*(1.781477937+t*(-1.821255978+t*1.330274429))));return 1-0.3989422804014327*Math.exp(-.5*z*z)*p;}
+function lgamma(z){const c=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,.1208650973866179e-2,-.5395239384953e-5];let y=z,x=z,tmp=x+5.5;tmp-=(x+.5)*Math.log(tmp);let ser=1.000000000190015;for(let j=0;j<6;j++)ser+=c[j]/++y;return-tmp+Math.log(2.5066282746310005*ser/x);}
+function regularizedGamma(a,x){let sum=1/a,term=1/a;for(let i=1;i<100;i++){term*=x/(a+i);sum+=term;if(term<1e-10)break;}return 1-Math.exp(-x+a*Math.log(x)-lgamma(a))*sum;}
+function chi2CDF(x,df){if(x<=0)return 0;return regularizedGamma(df/2,x/2);}
+function mannWhitney(a,b){const na=a.length,nb=b.length;let u1=0;for(let i=0;i<na;i++)for(let j=0;j<nb;j++){if(a[i]>b[j])u1++;else if(a[i]===b[j])u1+=.5;}const u=Math.min(u1,na*nb-u1),mu=na*nb/2,sig=Math.sqrt(na*nb*(na+nb+1)/12),z=(u-mu)/sig,p=2*(1-normCDF(Math.abs(z)));return{u:u.toFixed(1),z:z.toFixed(3),p};}
+function kruskalWallis(groups){const all=[].concat(...groups.map((g,i)=>g.map(v=>({v,g:i}))));all.sort((a,b)=>a.v-b.v);all.forEach((d,i)=>d.rank=i+1);const n=all.length,H=12/(n*(n+1))*groups.reduce((s,g,i)=>{const rs=all.filter(d=>d.g===i).reduce((r,d)=>r+d.rank,0);return s+rs*rs/g.length;},0)-3*(n+1);return{H:H.toFixed(3),df:groups.length-1,p:1-chi2CDF(H,groups.length-1)};}
+
+function semaforoHTML(n){
+  if(n>=120)return`<div class="semaforo-c verde"><div class="sdot sdot-verde"></div>n = ${n} — cumple CLSI EP28-A3c (≥ 120 muestras)</div>`;
+  if(n>=40)return`<div class="semaforo-c amarillo"><div class="sdot sdot-amarillo"></div>n = ${n} — usar con cautela (recomendado ≥ 120 muestras)</div>`;
+  return`<div class="semaforo-c rojo"><div class="sdot sdot-rojo"></div>n = ${n} — no recomendado (mínimo CLSI: 120 muestras)</div>`;
+}
+
+function renderRango(titulo,vals){
+  if(vals.length<4)return`<div class="result-c insuf"><div class="result-lbl">${titulo}</div><div style="font-size:13px;color:var(--m2)">Muestra insuficiente (n = ${vals.length})</div></div>`;
+  const t=tukey(vals),c=t.clean;
+  const lo=percentileEP28(c,.025),hi=percentileEP28(c,.975);
+  return`<div class="result-c"><div class="result-lbl">${titulo}</div><div class="result-num">${lo.toFixed(2)} – ${hi.toFixed(2)}</div><div class="result-sub">n total: ${vals.length} · outliers: ${t.outliers.length} · n limpio: ${c.length} · r1: ${(0.025*(c.length+1)).toFixed(3)} · r2: ${(0.975*(c.length+1)).toFixed(3)}</div></div>`;
+}
+
+function calcular(){
+  const vLines=parseLines(document.getElementById("inputValores").value);
+  const valores=vLines.map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if(valores.length<4){alert("Se necesitan al menos 4 valores.");return;}
+  const sLines=usaSexo?parseLines(document.getElementById("inputSexo").value):[];
+  const eLines=usaEdad?parseLines(document.getElementById("inputEdad").value):[];
+  const datos=valores.map((val,i)=>({val,sexo:usaSexo&&sLines[i]?sLines[i].toUpperCase():null,edad:usaEdad&&eLines[i]?parseInt(eLines[i]):null}));
+  setStep(2);
+  document.getElementById("semaforoDiv").innerHTML=semaforoHTML(datos.length);
+  let pruebasHtml="",sepSexo=false,sepEdad=false;
+  if(usaSexo){
+    const M=datos.filter(d=>d.sexo==="M").map(d=>d.val),F=datos.filter(d=>d.sexo==="F").map(d=>d.val);
+    if(M.length>=2&&F.length>=2){
+      const mw=mannWhitney(M,F);sepSexo=parseFloat(mw.p)<.05;
+      const cls=sepSexo?"sig":"nosig",icon=sepSexo?"ti-alert-triangle":"ti-check";
+      pruebasHtml+=`<div class="stat-box ${cls}"><i class="ti ${icon}" style="font-size:15px;flex-shrink:0;margin-top:1px"></i><div><strong>Mann-Whitney U — por sexo</strong><br>U = ${mw.u}, z = ${mw.z}, p = ${parseFloat(mw.p).toFixed(4)}<br>${sepSexo?"Diferencia significativa → rangos separados por sexo":"Sin diferencia significativa → M y F se combinan"}<br><span style="font-size:11px;opacity:.8">n M = ${M.length} · n F = ${F.length}</span></div></div>`;
+    } else {pruebasHtml+=`<div class="stat-box info"><i class="ti ti-info-circle" style="font-size:15px;flex-shrink:0;margin-top:1px"></i>Se necesitan al menos 2 datos por sexo</div>`;}
+  }
+  if(usaEdad){
+    const ped=datos.filter(d=>d.edad!==null&&d.edad<=17).map(d=>d.val);
+    const adu=datos.filter(d=>d.edad!==null&&d.edad>=18&&d.edad<=59).map(d=>d.val);
+    const may=datos.filter(d=>d.edad!==null&&d.edad>=60).map(d=>d.val);
+    const grupos=[ped,adu,may].filter(g=>g.length>=2);
+    if(grupos.length>=2){
+      const kw=kruskalWallis(grupos);sepEdad=parseFloat(kw.p)<.05;
+      const cls=sepEdad?"sig":"nosig",icon=sepEdad?"ti-alert-triangle":"ti-check";
+      pruebasHtml+=`<div class="stat-box ${cls}"><i class="ti ${icon}" style="font-size:15px;flex-shrink:0;margin-top:1px"></i><div><strong>Kruskal-Wallis — por edad</strong><br>H = ${kw.H}, gl = ${kw.df}, p = ${parseFloat(kw.p).toFixed(4)}<br>${sepEdad?"Diferencia significativa → rangos separados por grupo de edad":"Sin diferencia significativa → grupos de edad se combinan"}<br><span style="font-size:11px;opacity:.8">Pediátrico: ${ped.length} · Adulto: ${adu.length} · Adulto mayor: ${may.length}</span></div></div>`;
+    } else {pruebasHtml+=`<div class="stat-box info"><i class="ti ti-info-circle" style="font-size:15px;flex-shrink:0;margin-top:1px"></i>Se necesitan al menos 2 grupos de edad con 2+ datos cada uno</div>`;}
+  }
+  document.getElementById("pruebasSection").innerHTML=pruebasHtml;
+  setStep(3);
+  let rangosHtml=`<div class="calc-card"><div class="calc-card-title">Rangos de referencia — ${currentAnalito}</div>`;
+  if(sepSexo&&sepEdad){
+    [{l:"Masculino · pediátrico (0–17)",f:d=>d.sexo==="M"&&d.edad!==null&&d.edad<=17},
+     {l:"Masculino · adulto (18–59)",f:d=>d.sexo==="M"&&d.edad!==null&&d.edad>=18&&d.edad<=59},
+     {l:"Masculino · adulto mayor (≥60)",f:d=>d.sexo==="M"&&d.edad!==null&&d.edad>=60},
+     {l:"Femenino · pediátrico (0–17)",f:d=>d.sexo==="F"&&d.edad!==null&&d.edad<=17},
+     {l:"Femenino · adulto (18–59)",f:d=>d.sexo==="F"&&d.edad!==null&&d.edad>=18&&d.edad<=59},
+     {l:"Femenino · adulto mayor (≥60)",f:d=>d.sexo==="F"&&d.edad!==null&&d.edad>=60}
+    ].forEach(c=>{const v=datos.filter(c.f).map(d=>d.val);if(v.length>0)rangosHtml+=renderRango(c.l,v);});
+  } else if(sepSexo){
+    rangosHtml+=renderRango("Masculino",datos.filter(d=>d.sexo==="M").map(d=>d.val));
+    rangosHtml+=renderRango("Femenino",datos.filter(d=>d.sexo==="F").map(d=>d.val));
+  } else if(sepEdad){
+    const ped=datos.filter(d=>d.edad!==null&&d.edad<=17).map(d=>d.val);
+    const adu=datos.filter(d=>d.edad!==null&&d.edad>=18&&d.edad<=59).map(d=>d.val);
+    const may=datos.filter(d=>d.edad!==null&&d.edad>=60).map(d=>d.val);
+    if(ped.length>0)rangosHtml+=renderRango("Pediátrico (0–17 años)",ped);
+    if(adu.length>0)rangosHtml+=renderRango("Adulto (18–59 años)",adu);
+    if(may.length>0)rangosHtml+=renderRango("Adulto mayor (≥60 años)",may);
+  } else {
+    rangosHtml+=renderRango("Población general",datos.map(d=>d.val));
+  }
+  rangosHtml+="</div>";
+  document.getElementById("rangosSection").innerHTML=rangosHtml;
+  document.getElementById("resultadosSection").style.display="block";
+  setStep(4);
+}
+</script>
+</body>
+</html>
