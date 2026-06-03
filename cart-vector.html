@@ -20,31 +20,31 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 23px}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 33px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.6}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
 .logo-wrap{display:flex;align-items:center;gap:10px}
 .logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;text-decoration:none}
-.logo-text{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
-.logo-text span{display:block;font-size: 10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
-.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size: 20px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size: 14px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size: 20px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
 .back-btn:hover{color:var(--g)}
 
 .hero{background:rgba(255,255,255,0.85);border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
-.kicker{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size: 16px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 .hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
-.hero-sub{font-size: 19px;color:var(--g);font-weight:500;margin-bottom:1.2rem}
+.hero-sub{font-size: 27px;color:var(--g);font-weight:500;margin-bottom:1.2rem}
 .badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
-.badge{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:5px 11px;font-size: 15px;font-family:'JetBrains Mono',monospace}
+.badge{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:5px 11px;font-size: 21px;font-family:'JetBrains Mono',monospace}
 .badge.g{background:var(--g3);border:1px solid var(--bord3);color:var(--g)}
 .badge.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
 .badge.p{background:var(--p2);border:1px solid rgba(109,40,217,.22);color:var(--p)}
 .badge.gray{background:rgba(15,23,42,.06);border:1px solid var(--bord2);color:var(--m)}
 
-.sec{font-family:'JetBrains Mono',monospace;font-size: 16px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec{font-family:'JetBrains Mono',monospace;font-size: 23px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2);max-width:100%}
 
 /* Constructo SVG diagram */
@@ -59,53 +59,53 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .step-card.s2::before{background:linear-gradient(90deg,var(--b),var(--bl))}
 .step-card.s3::before{background:linear-gradient(90deg,var(--p),var(--pl))}
 .step-card.s4::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.step-num{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--m2);letter-spacing:.15em;margin-bottom:6px}
-.step-title{font-size: 20px;font-weight:700;color:var(--t);margin-bottom:4px}
-.step-sub{font-size: 16px;color:var(--m);margin-bottom:.8rem}
-.step-body{font-size: 17px;color:var(--m);line-height:1.75;display:none}
+.step-num{font-family:'JetBrains Mono',monospace;font-size: 16px;color:var(--m2);letter-spacing:.15em;margin-bottom:6px}
+.step-title{font-size: 29px;font-weight:700;color:var(--t);margin-bottom:4px}
+.step-sub{font-size: 23px;color:var(--m);margin-bottom:.8rem}
+.step-body{font-size: 24px;color:var(--m);line-height:1.75;display:none}
 .step-body.open{display:block}
-.step-toggle{font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--g);display:flex;align-items:center;gap:4px;margin-top:.5rem}
+.step-toggle{font-family:'JetBrains Mono',monospace;font-size: 19px;color:var(--g);display:flex;align-items:center;gap:4px;margin-top:.5rem}
 
 /* Domain pills */
 .domain-list{display:flex;flex-direction:column;gap:8px;margin:1rem 0}
 .domain-item{display:flex;align-items:flex-start;gap:10px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:.8rem 1rem}
-.domain-item .di-label{font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--g);font-weight:600;min-width:80px;padding-top:2px;letter-spacing:.05em}
-.domain-item .di-text{font-size: 17px;color:var(--m);line-height:1.65}
+.domain-item .di-label{font-family:'JetBrains Mono',monospace;font-size: 19px;color:var(--g);font-weight:600;min-width:80px;padding-top:2px;letter-spacing:.05em}
+.domain-item .di-text{font-size: 24px;color:var(--m);line-height:1.65}
 
 /* Metrics bar */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
 .metric{background:rgba(255,255,255,0.85);border:1px solid var(--bord2);border-radius:10px;padding:1rem;text-align:center}
-.metric .v{font-family:'JetBrains Mono',monospace;font-size: 23px;font-weight:700;color:var(--g);margin-bottom:4px}
-.metric .l{font-size: 14px;color:var(--m2);line-height:1.4}
+.metric .v{font-family:'JetBrains Mono',monospace;font-size: 33px;font-weight:700;color:var(--g);margin-bottom:4px}
+.metric .l{font-size: 20px;color:var(--m2);line-height:1.4}
 
 /* Versions */
 .versions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
 .version-card{background:rgba(255,255,255,0.85);border:1.5px solid var(--bord2);border-radius:12px;padding:1.25rem;transition:all .2s}
 .version-card.preclinico{border-color:rgba(0,196,154,.3)}
 .version-card.clinico{border-color:rgba(3,85,160,.3)}
-.v-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size: 11px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:.6rem}
+.v-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size: 16px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:.6rem}
 .version-card.preclinico .v-badge{background:var(--g3);color:var(--g)}
 .version-card.clinico .v-badge{background:var(--b2);color:var(--b)}
-.v-title{font-size: 19px;font-weight:600;color:var(--t);margin-bottom:.4rem}
-.v-desc{font-size: 16px;color:var(--m);line-height:1.7}
-.v-tag{font-size: 14px;font-family:'JetBrains Mono',monospace;color:var(--m2);margin-top:.5rem;display:block}
+.v-title{font-size: 27px;font-weight:600;color:var(--t);margin-bottom:.4rem}
+.v-desc{font-size: 23px;color:var(--m);line-height:1.7}
+.v-tag{font-size: 20px;font-family:'JetBrains Mono',monospace;color:var(--m2);margin-top:.5rem;display:block}
 
 /* Safety box */
 .safety-box{background:linear-gradient(135deg,rgba(0,196,154,.07),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.25);border-radius:12px;padding:1.4rem;margin-bottom:1.5rem}
-.safety-box h3{font-size: 19px;font-weight:600;color:var(--g);margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.safety-box h3{font-size: 27px;font-weight:600;color:var(--g);margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .safety-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.safety-list li{font-size: 18px;color:var(--m);line-height:1.7;padding-left:1.4rem;position:relative}
+.safety-list li{font-size: 26px;color:var(--m);line-height:1.7;padding-left:1.4rem;position:relative}
 .safety-list li::before{content:'✓';color:var(--gl);font-weight:700;position:absolute;left:0;top:0}
 
 .cta-box{background:linear-gradient(135deg,rgba(0,196,154,.08),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.22);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
-.cta-btn{background:var(--g);border:none;border-radius:8px;font-size: 17px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn{background:var(--g);border:none;border-radius:8px;font-size: 24px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .cta-btn:hover{background:var(--gl);transform:translateY(-1px)}
 .cta-btn.paypal{background:#0070ba}
 .cta-btn.paypal:hover{background:#005ea6}
 
 footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
-footer p{font-size: 14px;color:var(--m2)}
-.f-mark{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--g);letter-spacing:.12em;font-weight:500}
+footer p{font-size: 20px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size: 20px;color:var(--g);letter-spacing:.12em;font-weight:500}
 
 @media(max-width:680px){
   .step-grid{grid-template-columns:1fr}
@@ -123,7 +123,7 @@ footer p{font-size: 14px;color:var(--m2)}
 <nav>
   <div class="logo-wrap">
     <a href="/" class="logo-mark">
-      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size: 13px;color:#006b52;font-weight:600>YOCE</span>'"/>
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size: 19px;color:#006b52;font-weight:600>YOCE</span>'"/>
     </a>
     <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
   </div>
@@ -133,16 +133,16 @@ footer p{font-size: 14px;color:var(--m2)}
 <!-- HERO -->
 <section class="hero">
   <div class="kicker">🧬 Proyecto Flagship · CAR-T Cell Therapy · México</div>
-  <h1>Desarrollo In-House de<br>Vector Lentiviral CD19 CAR-T</h1>
-  <p class="hero-sub">Programa pionero de manufactura descentralizada en México · Fase RUO → Validación clínica</p>
+  <h1>¿Y si fabricáramos nuestro propio<br>Vector Lentiviral CD19 CAR-T?</h1>
+  <p class="hero-sub">Propuesta de manufactura descentralizada in-house en México · Fase RUO (Uso en Investigación) → Validación clínica</p>
   <div class="badges">
-    <span class="badge g">✅ Fase: RUO · Preclínico</span>
+    <span class="badge g">✅ Fase: RUO (Uso en Investigación) · Preclínico</span>
     <span class="badge b">🏥 Monterrey, México</span>
     <span class="badge gray">🎯 Indicación: LLA-B r/r</span>
     <span class="badge gray">⚙️ cGMP · ISO 7</span>
     <span class="badge p">🔬 2ª Generación · 4-1BB/CD3ζ</span>
   </div>
-  <p style="font-size: 19px;color:var(--m);line-height:1.82">
+  <p style="font-size: 27px;color:var(--m);line-height:1.82">
     Programa estratégico de manufactura interna de células CAR-T anti-CD19, orientado al estudio preclínico de la leucemia linfoblástica aguda de precursores B refractaria o en recaída. La iniciativa busca establecer <strong style="color:var(--g)">soberanía tecnológica</strong> en terapias de células CAR-T en México, con una ruta definida hacia la validación clínica bajo estándares regulatorios nacionales e internacionales.
   </p>
 </section>
@@ -157,7 +157,7 @@ footer p{font-size: 14px;color:var(--m2)}
 
 <!-- DIAGRAMA CONSTRUCTO SVG -->
 <div style="background:#fff;border:1px solid var(--bord2);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.04)">
-  <div style="font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem;font-weight:500;display:flex;align-items:center;gap:7px">
+  <div style="font-family:'JetBrains Mono',monospace;font-size: 16px;color:var(--g);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem;font-weight:500;display:flex;align-items:center;gap:7px">
     <span style="width:14px;height:1.5px;background:var(--gl);border-radius:2px;display:inline-block"></span>
     Arquitectura del Constructo CAR Anti-CD19
   </div>
@@ -254,20 +254,20 @@ footer p{font-size: 14px;color:var(--m2)}
 
 <!-- ── LOCK WALL ── -->
 <div id="lock-wall" style="background:rgba(255,255,255,0.88);border:1.5px solid rgba(0,196,154,.28);border-radius:14px;padding:2.5rem;margin-bottom:1.5rem;box-shadow:0 3px 14px rgba(0,107,82,.07);text-align:center">
-  <div style="font-size:34px;margin-bottom:1rem">🔒</div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--g);font-weight:600;margin-bottom:.5rem;letter-spacing:.05em">Contenido restringido</div>
-  <div style="font-size:17px;color:var(--m);margin-bottom:1.5rem;line-height:1.7">El resto de esta página requiere un código de acceso.<br>Contacta a <strong style="color:var(--t)">Yair Omar Chávez-Estrada</strong> para obtenerlo.</div>
+  <div style="font-size: 49px;margin-bottom:1rem">🔒</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size: 24px;color:var(--g);font-weight:600;margin-bottom:.5rem;letter-spacing:.05em">Contenido restringido</div>
+  <div style="font-size: 24px;color:var(--m);margin-bottom:1.5rem;line-height:1.7">El resto de esta página requiere un código de acceso.<br>Contacta a <strong style="color:var(--t)">Yair Omar Chávez-Estrada</strong> para obtenerlo.</div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
     <input id="lock-input" type="password" placeholder="Código de acceso" 
-      style="padding:11px 16px;border:1.5px solid rgba(0,196,154,.4);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:17px;outline:none;background:#f8fffe;color:var(--t);width:220px"
+      style="padding:11px 16px;border:1.5px solid rgba(0,196,154,.4);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size: 24px;outline:none;background:#f8fffe;color:var(--t);width:220px"
       onkeydown="if(event.key==='Enter')checkLock()" />
     <button onclick="checkLock()" 
-      style="padding:11px 22px;background:var(--g);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;transition:all .2s"
+      style="padding:11px 22px;background:var(--g);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size: 24px;font-weight:600;cursor:pointer;transition:all .2s"
       onmouseover="this.style.background='var(--gl)'" onmouseout="this.style.background='var(--g)'">
       Acceder →
     </button>
   </div>
-  <div id="lock-error" style="font-size:15px;color:#e53e3e;margin-top:.75rem;min-height:20px;font-family:'JetBrains Mono',monospace"></div>
+  <div id="lock-error" style="font-size: 21px;color:#e53e3e;margin-top:.75rem;min-height:20px;font-family:'JetBrains Mono',monospace"></div>
 </div>
 
 <!-- LOCKED CONTENT (hidden) -->
@@ -500,10 +500,10 @@ footer p{font-size: 14px;color:var(--m2)}
 <!-- CONTEXTO -->
 <p class="sec">Contexto y Justificación</p>
 <div style="background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
-  <p style="font-size: 19px;color:var(--m);line-height:1.9;margin-bottom:1rem">
+  <p style="font-size: 27px;color:var(--m);line-height:1.9;margin-bottom:1rem">
     Los productos CAR-T aprobados (<em>Kymriah®, Yescarta®, Breyanzi®</em>) han demostrado tasas de remisión completa superiores al <strong style="color:var(--g)">70–90%</strong> en LLA-B pediátrica y adulta refractaria. Sin embargo, en México el acceso enfrenta barreras críticas: tiempos logísticos de 3–6 semanas desde leucoféresis hasta infusión, complejidades regulatorias de importación de ATMPs, y costos que superan el umbral de cualquier sistema de salud pública en la región.
   </p>
-  <p style="font-size: 19px;color:var(--m);line-height:1.9">
+  <p style="font-size: 27px;color:var(--m);line-height:1.9">
     La iniciativa cuenta con infraestructura especializada: cuarto limpio ISO 7, citometría multiparamétrica validada y equipo con formación en hematología oncológica, biología molecular y control de calidad. Esta base hace técnicamente viable un programa <em>in-house</em> de vector lentiviral anti-CD19 bajo estándares RUO, con ruta definida hacia validación clínica, en coherencia con recomendaciones internacionales sobre desarrollo descentralizado de terapias CAR-T para entornos de recursos limitados.
   </p>
 </div>
@@ -512,26 +512,26 @@ footer p{font-size: 14px;color:var(--m2)}
 <p class="sec">Objetivos Estratégicos</p>
 <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem">
   <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-    <div style="font-family:'JetBrains Mono',monospace;font-size: 16px;font-weight:700;color:var(--g)">01</div>
-    <div><div style="font-size: 19px;font-weight:600;color:var(--t);margin-bottom:3px">Validación preclínica in vitro e in vivo</div><div style="font-size: 17px;color:var(--m);line-height:1.65">Demostrar eficacia y seguridad funcional en células T primarias y modelo murino NSG con xenoinjerto Raji, generando expediente para solicitud regulatoria ante COFEPRIS.</div></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size: 23px;font-weight:700;color:var(--g)">01</div>
+    <div><div style="font-size: 27px;font-weight:600;color:var(--t);margin-bottom:3px">Validación preclínica in vitro e in vivo</div><div style="font-size: 24px;color:var(--m);line-height:1.65">Demostrar eficacia y seguridad funcional en células T primarias y modelo murino NSG con xenoinjerto Raji, generando expediente para solicitud regulatoria ante COFEPRIS.</div></div>
   </div>
   <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-    <div style="font-family:'JetBrains Mono',monospace;font-size: 16px;font-weight:700;color:var(--b)">02</div>
-    <div><div style="font-size: 19px;font-weight:600;color:var(--t);margin-bottom:3px">Adaptación a manufactura mini-escala</div><div style="font-size: 17px;color:var(--m);line-height:1.65">Protocolo manual en placa 24 pozos bajo cuarto limpio ISO 7, manteniendo criterios de calidad validados internacionalmente (≥80% viabilidad, ≥10% CAR-T).</div></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size: 23px;font-weight:700;color:var(--b)">02</div>
+    <div><div style="font-size: 27px;font-weight:600;color:var(--t);margin-bottom:3px">Adaptación a manufactura mini-escala</div><div style="font-size: 24px;color:var(--m);line-height:1.65">Protocolo manual en placa 24 pozos bajo cuarto limpio ISO 7, manteniendo criterios de calidad validados internacionalmente (≥80% viabilidad, ≥10% CAR-T).</div></div>
   </div>
   <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-    <div style="font-family:'JetBrains Mono',monospace;font-size: 16px;font-weight:700;color:var(--p)">03</div>
-    <div><div style="font-size: 19px;font-weight:600;color:var(--t);margin-bottom:3px">Capacidad de manufactura interna de vector</div><div style="font-size: 17px;color:var(--m);line-height:1.65">Producción propia mediante sistema de tres plásmidos en HEK293T, purificación por ultracentrifugación y QC bajo ISO 5. Eliminación de dependencia de proveedores externos.</div></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size: 23px;font-weight:700;color:var(--p)">03</div>
+    <div><div style="font-size: 27px;font-weight:600;color:var(--t);margin-bottom:3px">Capacidad de manufactura interna de vector</div><div style="font-size: 24px;color:var(--m);line-height:1.65">Producción propia mediante sistema de tres plásmidos en HEK293T, purificación por ultracentrifugación y QC bajo ISO 5. Eliminación de dependencia de proveedores externos.</div></div>
   </div>
   <div style="background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem 1.25rem;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start">
-    <div style="font-family:'JetBrains Mono',monospace;font-size: 16px;font-weight:700;color:#92400e">04</div>
-    <div><div style="font-size: 19px;font-weight:600;color:var(--t);margin-bottom:3px">Soberanía tecnológica y propiedad intelectual</div><div style="font-size: 17px;color:var(--m);line-height:1.65">Documentación para registros IMPI sobre procesos optimizados en contexto institucional. Posicionamiento del HU UANL como centro de referencia regional con capacidad de transferencia tecnológica.</div></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size: 23px;font-weight:700;color:#92400e">04</div>
+    <div><div style="font-size: 27px;font-weight:600;color:var(--t);margin-bottom:3px">Soberanía tecnológica y propiedad intelectual</div><div style="font-size: 24px;color:var(--m);line-height:1.65">Documentación para registros IMPI sobre procesos optimizados en contexto institucional. Posicionamiento del HU UANL como centro de referencia regional con capacidad de transferencia tecnológica.</div></div>
   </div>
 </div>
 
 <!-- CTAs -->
 <div class="cta-box">
-  <p style="font-size: 19px;color:var(--t2);font-weight:300">¿Quieres colaborar o apoyar este proyecto de investigación?</p>
+  <p style="font-size: 27px;color:var(--t2);font-weight:300">¿Quieres colaborar o apoyar este proyecto de investigación?</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap">
     <a href="contacto.html" class="cta-btn">✉️ Contactar →</a>
     <a href="https://paypal.me/yairchaveze" target="_blank" rel="noopener" class="cta-btn paypal">💙 Apoyar vía PayPal</a>
