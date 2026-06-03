@@ -19,9 +19,9 @@
   --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
-
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{max-width:920px;margin:0 auto;padding:0 1.25rem 3rem;position:relative;z-index:1}
 
 /* NAV */
@@ -34,7 +34,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .nav-back:hover{border-color:var(--bord3);color:var(--g);background:var(--g3)}
 
 /* PAGE HEADER */
-.page-header{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.page-header{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
 .page-kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .page-kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 .page-header h1{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:200;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.15}
@@ -46,7 +46,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .divider{height:1px;background:var(--bord2);margin:1.5rem 0}
 
 /* TOOL CARD */
-.tool-card{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.05);position:relative;overflow:hidden}
+.tool-card{background:rgba(255,255,255,0.88);border:1.5px solid rgba(109,40,217,.2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.05);position:relative;overflow:hidden}
 .tool-glow{position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(109,40,217,.07) 0%,transparent 65%);pointer-events:none}
 .tool-label{display:inline-flex;align-items:center;gap:6px;background:var(--p2);border:1px solid rgba(109,40,217,.22);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
 .tool-card h2{font-size:clamp(1.1rem,3vw,1.35rem);font-weight:300;margin-bottom:.6rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
@@ -91,7 +91,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .add-row button{height:32px;padding:0 12px;font-size:13px;border-radius:8px;border:1px solid var(--bord2);background:#fff;color:var(--t);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
 .add-row button:hover{background:var(--bg)}
 
-.calc-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.calc-card{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
 .calc-card-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
 
 .steps-bar{display:flex;gap:6px;margin-bottom:1.5rem}
@@ -141,7 +141,7 @@ textarea.data-ta:focus{outline:none;border-color:var(--gl)}
 .result-sub{font-size:11px;color:var(--m2);font-family:'JetBrains Mono',monospace}
 
 /* METHODOLOGY */
-.info-c{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.info-c{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem}
 .info-c h3{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:var(--t)}
 .info-c p{font-size:13px;color:var(--m);line-height:1.75;margin-bottom:10px}
 .info-c p:last-child{margin-bottom:0}
@@ -177,6 +177,7 @@ footer p{font-size:9.5px;color:var(--m2)}
 </style>
 </head>
 <body>
+<canvas id="c"></canvas>
 <div class="page">
 
 <!-- NAV -->
@@ -561,6 +562,70 @@ function calcular(){
   document.getElementById("resultadosSection").style.display="block";
   setStep(4);
 }
+</script>
+
+<script>
+// ── Canvas animation ──
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const NODES=[];
+const COLS=['0,107,82','3,85,160','109,40,217','0,180,130'];
+for(let i=0;i<28;i++){
+  NODES.push({
+    x:Math.random()*window.innerWidth,
+    y:Math.random()*window.innerHeight,
+    vx:(Math.random()-.5)*0.28,
+    vy:(Math.random()-.5)*0.28,
+    r:2.5+Math.random()*3.5,
+    col:COLS[Math.floor(Math.random()*COLS.length)],
+    phase:Math.random()*Math.PI*2
+  });
+}
+function frame(){
+  ctx.clearRect(0,0,W,H);
+  t+=0.008;
+  NODES.forEach(n=>{
+    n.x+=n.vx; n.y+=n.vy;
+    if(n.x<-20) n.x=W+20;
+    if(n.x>W+20) n.x=-20;
+    if(n.y<-20) n.y=H+20;
+    if(n.y>H+20) n.y=-20;
+  });
+  for(let i=0;i<NODES.length;i++){
+    for(let j=i+1;j<NODES.length;j++){
+      const dx=NODES[j].x-NODES[i].x;
+      const dy=NODES[j].y-NODES[i].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<160){
+        const a=(1-(d/160))*0.12;
+        ctx.beginPath();
+        ctx.moveTo(NODES[i].x,NODES[i].y);
+        ctx.lineTo(NODES[j].x,NODES[j].y);
+        ctx.strokeStyle=`rgba(0,107,82,${a})`;
+        ctx.lineWidth=0.8;
+        ctx.stroke();
+      }
+    }
+  }
+  NODES.forEach(n=>{
+    const pulse=0.5+0.5*Math.sin(t*1.2+n.phase);
+    const a=0.12+0.08*pulse;
+    const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3);
+    g.addColorStop(0,`rgba(${n.col},${a*0.8})`);
+    g.addColorStop(1,`rgba(${n.col},0)`);
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r*3,0,Math.PI*2);
+    ctx.fillStyle=g;ctx.fill();
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${n.col},${0.25+0.15*pulse})`;
+    ctx.fill();
+    ctx.strokeStyle=`rgba(${n.col},${0.4+0.2*pulse})`;
+    ctx.lineWidth=1;ctx.stroke();
+  });
+  requestAnimationFrame(frame);
+}
+frame();
 </script>
 </body>
 </html>
