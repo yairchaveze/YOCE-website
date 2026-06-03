@@ -25,48 +25,48 @@ body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-se
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
 .logo-wrap{display:flex;align-items:center;gap:10px}
-.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;color:var(--g);text-decoration:none}
-.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
-.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
-.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size: 14px;font-weight:500;color:var(--g);text-decoration:none}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size: 10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
 .back-btn:hover{color:var(--g)}
 .hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
 .hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
-.hero-sub{font-size:13px;color:var(--p);font-weight:500;margin-bottom:1.2rem}
+.hero-sub{font-size: 19px;color:var(--p);font-weight:500;margin-bottom:1.2rem}
 .meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
-.pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:5px 10px;font-size:10.5px;color:var(--m);font-family:'JetBrains Mono',monospace}
+.pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:5px 10px;font-size: 15px;color:var(--m);font-family:'JetBrains Mono',monospace}
 .pill.p{background:var(--p2);border-color:rgba(109,40,217,.25);color:var(--p)}
 .pill.g{background:var(--g3);border-color:var(--bord3);color:var(--g)}
 .pill.b{background:var(--b2);border-color:rgba(33,150,243,.25);color:var(--b)}
-.sec{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
 .stat{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;text-align:center}
-.stat .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--p);margin-bottom:4px}
-.stat .l{font-size:10px;color:var(--m2);line-height:1.4}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size: 29px;font-weight:700;color:var(--p);margin-bottom:4px}
+.stat .l{font-size: 14px;color:var(--m2);line-height:1.4}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
 .info-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:border-color .2s}
 .info-item:hover{border-color:rgba(109,40,217,.25)}
-.info-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--m2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
-.info-value{font-size:13px;font-weight:600;color:var(--t);line-height:1.4}
+.info-label{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--m2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+.info-value{font-size: 19px;font-weight:600;color:var(--t);line-height:1.4}
 .app-wrap{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.08)}
 .app-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(109,40,217,.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.app-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--p);font-weight:500;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
-.app-badge{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:2px 8px}
+.app-title{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--p);font-weight:500;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
+.app-badge{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--p);padding:2px 8px}
 .app-iframe{width:100%;height:700px;border:none;display:block}
-.tag{border-radius:5px;font-size:10px;padding:4px 11px;font-family:'JetBrains Mono',monospace;display:inline-block;margin:3px}
+.tag{border-radius:5px;font-size: 14px;padding:4px 11px;font-family:'JetBrains Mono',monospace;display:inline-block;margin:3px}
 .tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.2);color:var(--p)}
 .tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
 .tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
 .cta-box{background:linear-gradient(135deg,rgba(109,40,217,.07),rgba(0,196,154,.04));border:1.5px solid rgba(109,40,217,.2);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
-.cta-btn{background:var(--p);border:none;border-radius:8px;font-size:12px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn{background:var(--p);border:none;border-radius:8px;font-size: 17px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .cta-btn:hover{background:var(--pl);transform:translateY(-1px)}
 footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
-footer p{font-size:9.5px;color:var(--m2)}
-.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+footer p{font-size: 14px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--g);letter-spacing:.12em;font-weight:500}
 @media(max-width:680px){
   .stat-grid{grid-template-columns:1fr 1fr}
   .info-grid{grid-template-columns:1fr}
@@ -101,7 +101,7 @@ footer p{font-size:9.5px;color:var(--m2)}
     <span class="pill b">📊 n=140 pacientes</span>
     <span class="pill">🏥 Optia · Kit IDL</span>
   </div>
-  <div style="font-size:12.5px;color:var(--m);line-height:1.82">
+  <div style="font-size: 18px;color:var(--m);line-height:1.82">
     Modelo de machine learning que estima el <strong style="color:var(--p)">número de volemias necesarias</strong> para alcanzar una cosecha eficiente de <strong>5–10 millones de células CD34+</strong> en el receptor del trasplante alogénico. Desarrollado bajo un proceso sistemático y controlado con altos estándares de calidad, diseñado específicamente para el separador celular <strong>Optia · Kit IDL</strong> en trasplantes alogénicos de adultos.
   </div>
 </section>
@@ -135,10 +135,31 @@ footer p{font-size:9.5px;color:var(--m2)}
 <!-- APP STREAMLIT -->
 <section>
   <p class="sec">Aplicación — Predictor Interactivo</p>
+
+  <!-- LOCK WALL -->
+  <div id="lock-wall" style="background:rgba(255,255,255,0.88);border:1.5px solid rgba(109,40,217,.28);border-radius:14px;padding:2.5rem;margin-bottom:1.5rem;box-shadow:0 3px 14px rgba(109,40,217,.07);text-align:center">
+    <div style="font-size:34px;margin-bottom:1rem">🔒</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--p);font-weight:600;margin-bottom:.5rem;letter-spacing:.05em">Acceso restringido</div>
+    <div style="font-size:19px;color:var(--m);margin-bottom:1.5rem;line-height:1.7">Esta herramienta requiere un código de acceso.<br>Contacta a <strong style="color:var(--t)">Yair Omar Chávez-Estrada</strong> para obtenerlo.</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
+      <input id="lock-input" type="password" placeholder="Código de acceso"
+        style="padding:11px 16px;border:1.5px solid rgba(109,40,217,.35);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:17px;outline:none;background:#faf8ff;color:var(--t);width:220px"
+        onkeydown="if(event.key==='Enter')checkLock()" />
+      <button onclick="checkLock()"
+        style="padding:11px 22px;background:var(--p);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;transition:all .2s"
+        onmouseover="this.style.background='var(--pl)'" onmouseout="this.style.background='var(--p)'">
+        Acceder →
+      </button>
+    </div>
+    <div id="lock-error" style="font-size:15px;color:#e53e3e;margin-top:.75rem;min-height:20px;font-family:'JetBrains Mono',monospace"></div>
+  </div>
+
+  <!-- LOCKED CONTENT -->
+  <div id="locked-content" style="display:none">
   <div class="app-wrap">
     <div class="app-header">
       <div class="app-title">🤖 Predictor de Volemias · Aféresis CPH <span class="app-badge">v5.1 · LIVE</span></div>
-      <a href="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--p);text-decoration:none;opacity:.7">Abrir en nueva pestaña ↗</a>
+      <a href="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--p);text-decoration:none;opacity:.7">Abrir en nueva pestaña ↗</a>
     </div>
     <iframe
       class="app-iframe"
@@ -146,6 +167,7 @@ footer p{font-size:9.5px;color:var(--m2)}
       title="Predictor de Volemia para Aféresis CPH">
     </iframe>
   </div>
+  </div><!-- /locked-content -->
 </section>
 
 <!-- TAGS -->
@@ -175,6 +197,24 @@ footer p{font-size:9.5px;color:var(--m2)}
   <span class="f-mark">yocelltherapy.com</span>
 </footer>
 </div>
+
+
+<script>
+function checkLock(){
+  const val = document.getElementById('lock-input').value.trim();
+  const err = document.getElementById('lock-error');
+  const CODE = 'YCT2026';
+  if(val === CODE){
+    document.getElementById('lock-wall').style.display='none';
+    document.getElementById('locked-content').style.display='block';
+    err.textContent='';
+  } else {
+    err.textContent='Código incorrecto. Inténtalo de nuevo.';
+    document.getElementById('lock-input').value='';
+    document.getElementById('lock-input').focus();
+  }
+}
+</script>
 
 <script>
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
