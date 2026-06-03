@@ -27,12 +27,12 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 23px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 
 /* LANG */
 .lang-toggle{position:fixed;top:14px;right:60px;z-index:300;display:flex;background:#fff;border:1px solid var(--bord2);border-radius:30px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.lang-btn{padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--m);cursor:pointer;transition:all .2s;border:none;background:transparent}
+.lang-btn{padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size: 13px;letter-spacing:.12em;color:var(--m);cursor:pointer;transition:all .2s;border:none;background:transparent}
 .lang-btn.active{background:var(--g3);color:var(--g);font-weight:500}
 
 /* PAGE */
@@ -40,8 +40,8 @@ body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-se
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem;position:relative}
 .logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.logo-mark{width:34px;height:34px;display:flex;align-items:center;justify-content:center}.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
-.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.logo-mark{width:34px;height:34px;display:flex;align-items:center;justify-content:center}.logo-text{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size: 10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
 
 /* HAMBURGER */
 .ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;z-index:300;position:fixed;top:14px;right:16px}
@@ -51,39 +51,39 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
 .nav-links{display:flex;gap:1.5rem;align-items:center}
-.nav-links a{font-size:11px;color:var(--m);text-decoration:none;letter-spacing:.03em;transition:color .2s;white-space:nowrap}
+.nav-links a{font-size: 16px;color:var(--m);text-decoration:none;letter-spacing:.03em;transition:color .2s;white-space:nowrap}
 .nav-links a:hover{color:var(--g)}
-.avail-pill{display:flex;align-items:center;gap:5px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;padding:4px 11px;font-size:9px;color:var(--g);font-family:'JetBrains Mono',monospace;font-weight:500;white-space:nowrap}
+.avail-pill{display:flex;align-items:center;gap:5px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;padding:4px 11px;font-size: 13px;color:var(--g);font-family:'JetBrains Mono',monospace;font-weight:500;white-space:nowrap}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:blink 1.8s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
 /* HERO CARD */
 .hero-card{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:1.75rem 1.75rem 1.5rem;margin-bottom:1.25rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;z-index:2}
 .hero-grid{display:grid;grid-template-columns:1fr 140px;gap:2rem;align-items:start;margin-bottom:1.75rem}
-.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .hero-kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 h1.name{font-size:clamp(1.8rem,5vw,2.75rem);font-weight:200;line-height:1.06;letter-spacing:-.04em;color:var(--t);margin-bottom:.35rem}
 h1.name strong{color:var(--g);font-weight:600;display:block}
-.hero-role{font-size:12px;color:var(--b);margin-bottom:.3rem;font-weight:400;line-height:1.4}
-.hero-loc{font-size:11px;color:var(--m2);margin-bottom:1.2rem;display:flex;align-items:center;gap:5px}
-.hero-loc::before{content:'◎';font-size:8px;color:var(--gl)}
-.hero-desc{font-size:13px;color:var(--m);line-height:1.82}
+.hero-role{font-size: 17px;color:var(--b);margin-bottom:.3rem;font-weight:400;line-height:1.4}
+.hero-loc{font-size: 16px;color:var(--m2);margin-bottom:1.2rem;display:flex;align-items:center;gap:5px}
+.hero-loc::before{content:'◎';font-size: 11px;color:var(--gl)}
+.hero-desc{font-size: 19px;color:var(--m);line-height:1.82}
 .photo-wrap{display:flex;flex-direction:column;align-items:center;gap:9px}
 .photo-rel{position:relative;width:120px;height:120px}
 .photo-circle{width:120px;height:120px;border-radius:50%;border:2.5px solid var(--gl);overflow:hidden;box-shadow:0 0 0 5px rgba(0,196,154,.12),0 6px 20px rgba(0,107,82,.15)}
 .photo-circle img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .av-ring-el{position:absolute;inset:-6px;border-radius:50%;border:1.5px dashed rgba(0,196,154,.3);animation:spin 22s linear infinite;pointer-events:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-.isct-tag{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:8px;font-size:8px;color:var(--p);padding:4px 9px;text-align:center;line-height:1.5;font-family:'JetBrains Mono',monospace;font-weight:500}
+.isct-tag{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:8px;font-size: 11px;color:var(--p);padding:4px 9px;text-align:center;line-height:1.5;font-family:'JetBrains Mono',monospace;font-weight:500}
 .tags-row{display:flex;flex-wrap:wrap;gap:6px}
-.tag{border-radius:5px;font-size:10px;padding:4px 11px;font-family:'JetBrains Mono',monospace}
+.tag{border-radius:5px;font-size: 14px;padding:4px 11px;font-family:'JetBrains Mono',monospace}
 .tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
 .tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
 .tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.22);color:var(--p)}
 
 /* SECTION LABEL */
 .divider{height:1px;background:var(--bord2);margin:1rem auto;max-width:920px}
-.sec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec{font-family:'JetBrains Mono',monospace;font-size: 16px;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2);max-width:100%;overflow:hidden}
 .sec-wrap{position:relative;z-index:2;max-width:920px;margin-left:auto;margin-right:auto}
   
@@ -98,15 +98,15 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .news-card.award::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
 .news-card.pub::before{background:linear-gradient(90deg,var(--pl),var(--p))}
 .news-card:hover{border-color:var(--bord3);box-shadow:0 5px 18px rgba(0,107,82,.09)}
-.nc-type{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.nc-type{font-family:'JetBrains Mono',monospace;font-size: 11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:7px;display:flex;align-items:center;gap:5px}
 .news-card.congress .nc-type{color:var(--g)}
 .news-card.course .nc-type{color:var(--b)}
 .news-card.award .nc-type{color:#92400e}
 .news-card.pub .nc-type{color:var(--p)}
-.nc-title{font-size:12.5px;font-weight:600;color:var(--t);margin-bottom:5px;line-height:1.35}
-.nc-body{font-size:12px;color:var(--m);line-height:1.6;margin-bottom:9px}
-.nc-date{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2)}
-.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#fff;border:1px solid var(--bord2);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .2s;font-size:13px;color:var(--t2)}
+.nc-title{font-size: 18px;font-weight:600;color:var(--t);margin-bottom:5px;line-height:1.35}
+.nc-body{font-size: 17px;color:var(--m);line-height:1.6;margin-bottom:9px}
+.nc-date{font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--m2)}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:#fff;border:1px solid var(--bord2);box-shadow:0 2px 8px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all .2s;font-size: 19px;color:var(--t2)}
 .car-btn:hover{background:var(--g3);border-color:var(--bord3);color:var(--g)}
 .car-btn.prev{left:-16px}
 .car-btn.next{right:-16px}
@@ -120,48 +120,48 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .oc:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,107,82,.09)}
 .oc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;background:linear-gradient(90deg,var(--gl),var(--bl));opacity:0;transition:opacity .25s}
 .oc:hover::before{opacity:1}
-.oc-num{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--m2);letter-spacing:.15em;margin-bottom:8px}
-.oc-icon{font-size:18px;margin-bottom:8px;display:block}
-.oc h3{font-size:12.5px;font-weight:600;margin-bottom:5px;color:var(--t)}
-.oc p{font-size:11px;color:var(--m);line-height:1.62}
+.oc-num{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--m2);letter-spacing:.15em;margin-bottom:8px}
+.oc-icon{font-size: 26px;margin-bottom:8px;display:block}
+.oc h3{font-size: 18px;font-weight:600;margin-bottom:5px;color:var(--t)}
+.oc p{font-size: 16px;color:var(--m);line-height:1.62}
 
 /* FEAT CAR-T */
 .feat{background:#fff;border:1.5px solid rgba(0,196,154,.28);border-radius:16px;padding:1.9rem;margin-bottom:2rem;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(0,107,82,.06);z-index:2}
 .feat-glow{position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,196,154,.09) 0%,transparent 65%);pointer-events:none}
-.feat-label{display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
+.feat-label{display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
 .feat-label-dot{width:5px;height:5px;border-radius:50%;background:var(--gl);animation:blink 1.8s infinite}
 .feat h2{font-size:clamp(1.25rem,3vw,1.55rem);font-weight:300;margin-bottom:.65rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
 .feat h2 em{font-style:normal;color:var(--g);font-weight:600}
-.feat-body{font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1.4rem}
+.feat-body{font-size: 18px;color:var(--m);line-height:1.82;margin-bottom:1.4rem}
 .feat-metrics{display:flex;gap:1.8rem;flex-wrap:wrap;margin-bottom:1.4rem;padding:1rem 1.2rem;background:var(--bg);border-radius:9px;border:1px solid var(--bord2)}
-.fm .v{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--g);font-weight:500}
-.fm .l{font-size:9px;color:var(--m2);margin-top:3px}
+.fm .v{font-family:'JetBrains Mono',monospace;font-size: 20px;color:var(--g);font-weight:500}
+.fm .l{font-size: 13px;color:var(--m2);margin-top:3px}
 .feat-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .fs{background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:.8rem;transition:all .2s}
 .fs:hover{background:#fff;border-color:var(--bord3)}
-.fs-n{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:var(--g);margin-bottom:5px;letter-spacing:.1em;font-weight:500}
-.fs h4{font-size:11px;font-weight:600;margin-bottom:3px;color:var(--t)}
-.fs p{font-size:10px;color:var(--m);line-height:1.5}
+.fs-n{font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);margin-bottom:5px;letter-spacing:.1em;font-weight:500}
+.fs h4{font-size: 16px;font-weight:600;margin-bottom:3px;color:var(--t)}
+.fs p{font-size: 14px;color:var(--m);line-height:1.5}
 
 /* AI */
 .ai-block{background:#fff;border:1.5px solid rgba(109,40,217,.18);border-radius:16px;padding:1.9rem;margin-bottom:1rem;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(109,40,217,.05);z-index:2}
 .ai-glow{position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(109,40,217,.07) 0%,transparent 65%);pointer-events:none}
-.ai-label{display:inline-flex;align-items:center;gap:6px;background:var(--p2);border:1px solid rgba(109,40,217,.22);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--p);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
+.ai-label{display:inline-flex;align-items:center;gap:6px;background:var(--p2);border:1px solid rgba(109,40,217,.22);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--p);padding:4px 11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;font-weight:500}
 .ai-block h2{font-size:clamp(1.2rem,3vw,1.4rem);font-weight:300;margin-bottom:.6rem;letter-spacing:-.02em;line-height:1.2;color:var(--t)}
 .ai-block h2 em{font-style:normal;color:var(--p);font-weight:600}
-.ai-body{font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1rem}
+.ai-body{font-size: 18px;color:var(--m);line-height:1.82;margin-bottom:1rem}
 .ai-chips{display:flex;flex-wrap:wrap;gap:6px}
-.ach{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:20px;font-size:10.5px;color:var(--p);padding:4px 11px;font-weight:500}
+.ach{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:20px;font-size: 15px;color:var(--p);padding:4px 11px;font-weight:500}
 
 /* TIMELINE */
 .tl{display:flex;flex-direction:column;gap:7px;margin-bottom:2rem;position:relative;z-index:2}
 .ti{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:.95rem 1.1rem;display:grid;grid-template-columns:52px 9px 1fr;gap:0 10px;align-items:start;transition:all .2s}
 .ti:hover{border-color:var(--bord3);box-shadow:0 2px 9px rgba(0,107,82,.07)}
-.ti-yr{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2);padding-top:2px;line-height:1.4}
+.ti-yr{font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--m2);padding-top:2px;line-height:1.4}
 .ti-dot{width:7px;height:7px;border-radius:50%;background:var(--gl);margin-top:4px;flex-shrink:0}
 .ti-dot.b{background:var(--bl)}.ti-dot.p{background:var(--pl)}
-.ti h4{font-size:12.5px;font-weight:600;margin-bottom:2px;color:var(--t)}
-.ti p{font-size:11px;color:var(--m);line-height:1.5}
+.ti h4{font-size: 18px;font-weight:600;margin-bottom:2px;color:var(--t)}
+.ti p{font-size: 16px;color:var(--m);line-height:1.5}
 
 /* EDUCATION */
 .edu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem;position:relative;z-index:2}
@@ -172,27 +172,27 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .ed.msc::before{background:linear-gradient(90deg,var(--bl),var(--b))}
 .ed.bsc::before{background:linear-gradient(90deg,var(--pl),var(--p))}
 .ed.exc::before{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
-.ed-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.15em;padding:3px 10px;border-radius:5px;margin-bottom:9px}
+.ed-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size: 14px;font-weight:600;letter-spacing:.15em;padding:3px 10px;border-radius:5px;margin-bottom:9px}
 .ed.phd .ed-badge{background:var(--g3);color:var(--g)}
 .ed.msc .ed-badge{background:var(--b2);color:var(--b)}
 .ed.bsc .ed-badge{background:var(--p2);color:var(--p)}
 .ed.exc .ed-badge{background:rgba(245,158,11,.1);color:#92400e}
-..ed h4{font-size:14px;font-weight:600;margin-bottom:5px;color:var(--t);line-height:1.3}
-.ed-inst{font-size:12px;color:var(--b);margin-bottom:4px;font-weight:500}
-.ed-year{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2)}
+..ed h4{font-size: 20px;font-weight:600;margin-bottom:5px;color:var(--t);line-height:1.3}
+.ed-inst{font-size: 17px;color:var(--b);margin-bottom:4px;font-weight:500}
+.ed-year{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--m2)}
 
 /* CTA */
 .cta{background:linear-gradient(135deg,rgba(0,196,154,.1),rgba(33,150,243,.07));border:1.5px solid rgba(0,196,154,.28);border-radius:12px;padding:1.3rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1.75rem;position:relative;z-index:2;max-width:920px;margin-left:auto;margin-right:auto;box-sizing:border-box}
-.cta p{font-size:13px;color:var(--t2);font-weight:300}
+.cta p{font-size: 19px;color:var(--t2);font-weight:300}
 .cta p strong{color:var(--g);font-weight:600}
-.cta-btn{background:var(--g);border:none;border-radius:7px;font-size:12px;font-weight:600;color:#fff;padding:9px 20px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn{background:var(--g);border:none;border-radius:7px;font-size: 17px;font-weight:600;color:#fff;padding:9px 20px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .cta-btn:hover{background:var(--gl);transform:translateY(-1px)}
 
 /* CONTACT / SOCIAL GRID */
 .con-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:1.75rem;position:relative;z-index:2;max-width:920px;margin-left:auto;margin-right:auto}
 .co{background:#fff;border:1px solid var(--bord2);border-radius:11px;padding:1.1rem 1rem;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all .2s;text-decoration:none;text-align:center;cursor:pointer}
 .co:hover{border-color:var(--bord3);box-shadow:0 4px 14px rgba(0,107,82,.1);transform:translateY(-2px)}
-.co-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.co-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size: 26px;flex-shrink:0}
 .co.email .co-ico{background:rgba(0,196,154,.12);border:1px solid rgba(0,196,154,.25)}
 .co.linkedin .co-ico{background:rgba(10,102,194,.1);border:1px solid rgba(10,102,194,.2)}
 .co.researchgate .co-ico{background:rgba(0,115,152,.1);border:1px solid rgba(0,115,152,.2)}
@@ -201,21 +201,21 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .co.tiktok .co-ico{background:rgba(0,0,0,.07);border:1px solid rgba(0,0,0,.12)}
 .co.isct .co-ico{background:var(--p2);border:1px solid rgba(109,40,217,.2)}
 .co.location .co-ico{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15)}
-.co h4{font-size:11px;font-weight:600;color:var(--t)}
-.co p{font-size:11px;color:var(--m2);line-height:1.35;word-break:break-all}
+.co h4{font-size: 16px;font-weight:600;color:var(--t)}
+.co p{font-size: 16px;color:var(--m2);line-height:1.35;word-break:break-all}
 
 footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;position:relative;z-index:2;flex-wrap:wrap;gap:.5rem}
-footer p{font-size:9.5px;color:var(--m2)}
-.f-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--g);letter-spacing:.12em;font-weight:500}
+footer p{font-size: 14px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--g);letter-spacing:.12em;font-weight:500}
 
 /* NAV DROPDOWNS */
 .nd{position:relative;display:flex;align-items:center}
 .nd::after{content:'';position:absolute;top:100%;left:0;width:100%;height:12px;}
 .ndrop{display:none;position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--bord2);border-radius:12px;box-shadow:0 12px 36px rgba(0,0,0,.13);padding:.5rem;min-width:240px;z-index:500;flex-direction:column}
 .ndrop.open{display:flex}
-.ndrop a{display:flex;align-items:center;gap:8px;padding:.45rem .8rem;border-radius:8px;text-decoration:none;font-size:12px;color:var(--m);white-space:nowrap;transition:background .15s}
+.ndrop a{display:flex;align-items:center;gap:8px;padding:.45rem .8rem;border-radius:8px;text-decoration:none;font-size: 17px;color:var(--m);white-space:nowrap;transition:background .15s}
 .ndrop a:hover{background:var(--g3);color:var(--g)}
-.nd-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2)}
+.nd-num{font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--m2)}
   
 /* ══════ RESPONSIVE MOBILE ══════ */
 @media(max-width:680px){
@@ -233,7 +233,7 @@ footer p{font-size:9.5px;color:var(--m2)}
     box-shadow:0 4px 20px rgba(0,0,0,.12);border-bottom:1px solid var(--bord2);
   }
   .nav-links.open{display:flex}
-  .nav-links a{font-size:14px;padding:.5rem 0;border-bottom:1px solid var(--bord2)}
+  .nav-links a{font-size: 20px;padding:.5rem 0;border-bottom:1px solid var(--bord2)}
 
   /* HERO */
   .hero-card{padding:1.25rem 1.1rem 1.1rem;border-radius:12px}
@@ -241,11 +241,11 @@ footer p{font-size:9.5px;color:var(--m2)}
   .photo-wrap{flex-direction:row;align-items:center;gap:1rem}
   .photo-rel{width:90px;height:90px}
   .photo-circle{width:90px;height:90px;border-width:2px}
-  .isct-tag{font-size:7.5px;padding:3px 8px}
+  .isct-tag{font-size: 11px;padding:3px 8px}
   h1.name{font-size:1.7rem}
-  .hero-desc{font-size:12.5px}
+  .hero-desc{font-size: 18px}
   .tags-row{gap:5px}
-  .tag{font-size:9px;padding:3px 9px}
+  .tag{font-size: 13px;padding:3px 9px}
 
   /* CAROUSEL */
   .news-card{min-width:220px;max-width:220px}
@@ -375,7 +375,7 @@ footer p{font-size:9.5px;color:var(--m2)}
       <div class="photo-rel">
         <div class="av-ring-el"></div>
         <div class="photo-circle">
-          <img src="yoce24.jpg" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;background:linear-gradient(135deg,#006b52,#0355a0);display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:22px;font-weight:600;color:#fff>YOCE</div>'" alt="Yair Omar Chávez-Estrada"/>
+          <img src="yoce24.jpg" onerror="this.parentElement.innerHTML='<div style=width:100%;height:100%;background:linear-gradient(135deg,#006b52,#0355a0);display:flex;align-items:center;justify-content:center;font-family:monospace;font-size: 31px;font-weight:600;color:#fff>YOCE</div>'" alt="Yair Omar Chávez-Estrada"/>
         </div>
       </div>
       <div class="isct-tag">ISCT · ESP<br>S &amp; C America<br>2026–</div>
@@ -466,7 +466,7 @@ footer p{font-size:9.5px;color:var(--m2)}
   <div class="feat-glow"></div>
   <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.65rem">
   <h2 class="t" data-es="Desarrollo In-House de<br><em>Vector Lentiviral CD19 CAR-T</em>" data-en="In-House Development of<br><em>CD19 CAR-T Lentiviral Vector</em>">Desarrollo In-House de<br><em>Vector Lentiviral CD19 CAR-T</em></h2>
-  <a href="cart-vector.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1.5px solid var(--bord3);border-radius:10px;padding:8px 14px;text-decoration:none;transition:all .2s;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--g);font-weight:600;letter-spacing:.08em;white-space:nowrap">🧬 Ver detalles →</a>
+  <a href="cart-vector.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1.5px solid var(--bord3);border-radius:10px;padding:8px 14px;text-decoration:none;transition:all .2s;font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--g);font-weight:600;letter-spacing:.08em;white-space:nowrap">🧬 Ver detalles →</a>
 </div>
   <p class="feat-body t" data-es="Programa pionero de manufactura descentralizada de células CAR-T en México. El vector lentiviral anti-CD19 está orientado a pacientes con leucemia linfoblástica aguda de precursores B refractaria o en recaída, con ruta estructurada hacia validación preclínica y traslación clínica." data-en="Pioneer program in decentralized CAR-T cell manufacturing in Mexico. The anti-CD19 lentiviral vector targets patients with relapsed/refractory B-cell precursor ALL, with a structured pathway toward preclinical validation and clinical translation.">Programa pionero de manufactura descentralizada de células CAR-T en México. El vector lentiviral anti-CD19 está orientado al estudio preclínico de leucemia linfoblástica aguda de precursores B refractaria o en recaída.</p>
   <div class="feat-metrics">
@@ -483,17 +483,17 @@ footer p{font-size:9.5px;color:var(--m2)}
   </div>
 
   <div style="margin-top:1.5rem;background:linear-gradient(135deg,rgba(0,196,154,.07),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.25);border-radius:14px;padding:1.4rem 1.6rem">
-  <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.6rem;font-weight:500;display:flex;align-items:center;gap:7px">
+  <div style="font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.6rem;font-weight:500;display:flex;align-items:center;gap:7px">
     <span style="width:14px;height:1.5px;background:var(--gl);border-radius:2px;display:inline-block"></span>
     Apoya la Investigación · México
   </div>
-  <p style="font-size:12.5px;color:var(--m);line-height:1.82;margin-bottom:1rem" class="t"
+  <p style="font-size: 18px;color:var(--m);line-height:1.82;margin-bottom:1rem" class="t"
     data-es="Los recursos permiten costear el uso de instalaciones certificadas, reactivos especializados y el desarrollo de estudios como el vector lentiviral CD19 in-house. Cada aportación incluye factura fiscal y reporte de avances."
     data-en="Resources help cover the use of certified facilities, specialized reagents, and in-house CD19 lentiviral vector development. Every contribution includes a fiscal invoice and progress report.">
     Los recursos permiten costear el uso de instalaciones certificadas, reactivos especializados y el desarrollo de estudios como el vector lentiviral CD19 in-house. Cada aportación incluye factura fiscal y reporte de avances.
   </p>
   <a href="https://paypal.me/yairchaveze" target="_blank" rel="noopener"
-    style="display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;padding:10px 20px;text-decoration:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif"
+    style="display:inline-flex;align-items:center;gap:8px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size: 17px;font-weight:600;padding:10px 20px;text-decoration:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif"
     onmouseover="this.style.background='var(--gl)'" onmouseout="this.style.background='var(--g)'">
     💙 <span class="t" data-es="Apoyar vía PayPal" data-en="Support via PayPal">Apoyar vía PayPal</span> →
   </a>
@@ -513,16 +513,16 @@ footer p{font-size:9.5px;color:var(--m2)}
   <!-- App link -->
 <!-- App link -->
   <div style="display:flex;align-items:flex-start;gap:10px;margin-top:1rem;background:rgba(109,40,217,.07);border:1px solid rgba(109,40,217,.18);border-radius:12px;padding:1rem 1.1rem">
-  <span style="font-size:22px;flex-shrink:0">💉</span>
+  <span style="font-size: 31px;flex-shrink:0">💉</span>
   <div>
-    <div style="font-size:11px;font-weight:600;color:var(--p);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-bottom:4px">PREDICTOR DE VOLEMIA · AFÉRESIS CPH</div>
-<p style="font-size:12px;color:var(--m);line-height:1.7">Modelo de machine learning (<strong>GradientBoosting, R²=0.852</strong>) que estima el número de volemias necesarias para alcanzar una cosecha eficiente de <strong>5–10 millones de células CD34+</strong> en el receptor del trasplante alogénico. Desarrollado bajo un proceso sistemático y controlado con altos estándares de calidad, diseñado específicamente para el separador celular <strong>Optia · Kit IDL</strong> en trasplantes alogénicos de adultos.</p>  </div>
+    <div style="font-size: 16px;font-weight:600;color:var(--p);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-bottom:4px">PREDICTOR DE VOLEMIA · AFÉRESIS CPH</div>
+<p style="font-size: 17px;color:var(--m);line-height:1.7">Modelo de machine learning (<strong>GradientBoosting, R²=0.852</strong>) que estima el número de volemias necesarias para alcanzar una cosecha eficiente de <strong>5–10 millones de células CD34+</strong> en el receptor del trasplante alogénico. Desarrollado bajo un proceso sistemático y controlado con altos estándares de calidad, diseñado específicamente para el separador celular <strong>Optia · Kit IDL</strong> en trasplantes alogénicos de adultos.</p>  </div>
 </div>
   <a href="predictor.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:1rem;background:var(--p2);border:1px solid rgba(109,40,217,.25);border-radius:9px;padding:10px 18px;text-decoration:none;transition:all .2s;cursor:pointer">
-  <span style="font-size:16px">🤖</span>
+  <span style="font-size: 23px">🤖</span>
   <div>
-    <div style="font-size:12px;font-weight:600;color:var(--p);font-family:'Plus Jakarta Sans',sans-serif">Predictor de Volemia para Aféresis</div>
-    <div style="font-size:10px;color:var(--m2);font-family:'JetBrains Mono',monospace;margin-top:2px">Modelo ML · Streamlit · Ver app →</div>
+    <div style="font-size: 17px;font-weight:600;color:var(--p);font-family:'Plus Jakarta Sans',sans-serif">Predictor de Volemia para Aféresis</div>
+    <div style="font-size: 14px;color:var(--m2);font-family:'JetBrains Mono',monospace;margin-top:2px">Modelo ML · Streamlit · Ver app →</div>
   </div>
 </a>
   
@@ -574,20 +574,20 @@ footer p{font-size:9.5px;color:var(--m2)}
       </div>
     </div>
   </div>
-  <a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&hl=es" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);border:1px solid var(--bord3);border-radius:20px;padding:5px 14px;text-decoration:none;background:var(--g3);font-weight:500;margin-top:.5rem">
+  <a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&hl=es" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size: 14px;color:var(--g);border:1px solid var(--bord3);border-radius:20px;padding:5px 14px;text-decoration:none;background:var(--g3);font-weight:500;margin-top:.5rem">
     📚 <span class="t" data-es="Ver todas en Google Scholar" data-en="View all on Google Scholar">Ver todas en Google Scholar</span>
   </a>
   <div style="margin-top:1.25rem;background:#fff;border:1px solid var(--bord2);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)">
     <div style="padding:.8rem 1rem;border-bottom:1px solid var(--bord2);display:flex;align-items:center;gap:8px">
-      <span style="font-size:14px">▶️</span>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--m2);letter-spacing:.12em;text-transform:uppercase">Video resumen · NotebookLM × YouTube</span>
+      <span style="font-size: 20px">▶️</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size: 13px;color:var(--m2);letter-spacing:.12em;text-transform:uppercase">Video resumen · NotebookLM × YouTube</span>
     </div>
     <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden">
       <iframe src="https://www.youtube.com/embed/vFzSUHfblvo" title="Cura Local: La Revolución CAR-T en México" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe>
     </div>
     <div style="padding:.8rem 1rem">
-      <div style="font-size:12px;font-weight:600;color:var(--t);margin-bottom:3px">Tecnología Local: La Revolución CAR-T en México</div>
-      <div style="font-size:11px;color:var(--m2);font-family:'JetBrains Mono',monospace">Resumen generado con NotebookLM · Salazar-Riojas et al. · JCO Global Oncology 2025</div>
+      <div style="font-size: 17px;font-weight:600;color:var(--t);margin-bottom:3px">Tecnología Local: La Revolución CAR-T en México</div>
+      <div style="font-size: 16px;color:var(--m2);font-family:'JetBrains Mono',monospace">Resumen generado con NotebookLM · Salazar-Riojas et al. · JCO Global Oncology 2025</div>
     </div>
   </div>
 
@@ -602,24 +602,24 @@ footer p{font-size:9.5px;color:var(--m2)}
       </div>
       <div style="padding:1.6rem 1.6rem 1.4rem;display:flex;flex-direction:column;justify-content:space-between">
         <div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:500;display:flex;align-items:center;gap:6px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size: 11px;color:var(--g);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:500;display:flex;align-items:center;gap:6px">
             <span style="background:var(--p2);color:var(--p);border:1px solid rgba(109,40,217,.2);border-radius:4px;padding:2px 8px">Novela</span>
             <span>Editorial Musa · 2025</span>
           </div>
           <div style="font-size:1.25rem;font-weight:600;color:var(--t);margin-bottom:.6rem;line-height:1.25;letter-spacing:-.02em">No Soy Médico,<br>Pero Estoy Aquí</div>
-          <div style="font-size:11px;color:var(--g);font-weight:500;margin-bottom:.75rem;font-family:'JetBrains Mono',monospace">Yair Omar Chávez Estrada</div>
-          <p style="font-size:12.5px;color:var(--m);line-height:1.78;margin-bottom:1rem" class="t"
+          <div style="font-size: 16px;color:var(--g);font-weight:500;margin-bottom:.75rem;font-family:'JetBrains Mono',monospace">Yair Omar Chávez Estrada</div>
+          <p style="font-size: 18px;color:var(--m);line-height:1.78;margin-bottom:1rem" class="t"
             data-es="Una historia de drama hospitalario realista que explora el cuidado del enfermo en casa, la fragilidad y la esperanza. Entre estudios, carpetas y firmas urgentes, Leo y Emiliano —un residente con sus propias heridas— aprenden que entender la sangre es también aprender a mirarse por dentro."
             data-en="A realistic hospital drama exploring home caregiving, fragility, and hope. Amid studies, folders, and urgent signatures, Leo and Emiliano —a resident carrying his own wounds— learn that understanding blood is also learning to look within.">
             Una historia de drama hospitalario realista que explora el cuidado del enfermo en casa, la fragilidad y la esperanza. Entre estudios, carpetas y firmas urgentes, Leo y Emiliano —un residente con sus propias heridas— aprenden que entender la sangre es también aprender a mirarse por dentro.
           </p>
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem">
-            <span style="font-size:10px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">Drama hospitalario</span>
-            <span style="font-size:10px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">eBook &amp; Pasta blanda</span>
+            <span style="font-size: 14px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">Drama hospitalario</span>
+            <span style="font-size: 14px;background:var(--g3);color:var(--g);border:1px solid rgba(0,196,154,.25);border-radius:4px;padding:2px 9px;font-family:'JetBrains Mono',monospace">eBook &amp; Pasta blanda</span>
           </div>
         </div>
         <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517" target="_blank" rel="noopener"
-          style="display:inline-flex;align-items:center;gap:7px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;padding:9px 20px;text-decoration:none;transition:opacity .2s;width:fit-content;font-family:'Plus Jakarta Sans',sans-serif"
+          style="display:inline-flex;align-items:center;gap:7px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size: 17px;font-weight:600;padding:9px 20px;text-decoration:none;transition:opacity .2s;width:fit-content;font-family:'Plus Jakarta Sans',sans-serif"
           onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
           Ver en Amazon →
         </a>
@@ -638,7 +638,7 @@ footer p{font-size:9.5px;color:var(--m2)}
   <a href="contacto.html" class="cta-btn">
     <span class="t" data-es="Escribir mensaje" data-en="Send message">Escribir mensaje</span> →
   </a>
- <button onclick="copyEmail()" id="copyBtn" style="background:transparent;border:1.5px solid var(--gl);border-radius:7px;font-size:12px;font-weight:600;color:var(--g);padding:9px 18px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">
+ <button onclick="copyEmail()" id="copyBtn" style="background:transparent;border:1.5px solid var(--gl);border-radius:7px;font-size: 17px;font-weight:600;color:var(--g);padding:9px 18px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">
     <span class="t" data-es="Copiar correo" data-en="Copy email">Copiar correo</span>
   </button>
 </div>
