@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>IA en Ciencias de la Salud · YoCellTherapy</title>
+<meta name="description" content="Herramientas de inteligencia artificial y modelos predictivos para ciencias de la salud: predictor de volemia para aféresis, calculadora de recambio plasmático y más.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--g);text-decoration:none}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+.hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:2rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
+.hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.8rem}
+.hero p{font-size:18px;color:var(--m);line-height:1.82}
+.sec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1rem}
+.tool-card{background:#fff;border:1.5px solid var(--bord2);border-radius:14px;padding:1.5rem;text-decoration:none;display:flex;flex-direction:column;transition:all .2s;position:relative;overflow:hidden}
+.tool-card:hover{border-color:var(--bord3);box-shadow:0 8px 28px rgba(0,107,82,.12);transform:translateY(-2px)}
+.tool-icon{font-size:30px;margin-bottom:.9rem}
+.tool-badge{position:absolute;top:1.1rem;right:1.1rem;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);padding:3px 10px;letter-spacing:.08em;font-weight:500}
+.tool-title{font-size:18px;font-weight:600;color:var(--t);margin-bottom:.5rem;line-height:1.3}
+.tool-desc{font-size:14px;color:var(--m);line-height:1.7;margin-bottom:1rem;flex:1}
+.tool-cta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--g);font-weight:600;display:flex;align-items:center;gap:5px}
+.tool-card.soon{opacity:.55;cursor:default}
+.tool-card.soon:hover{border-color:var(--bord2);box-shadow:none;transform:none}
+.tool-card.soon .tool-badge{background:var(--bg);border-color:var(--bord2);color:var(--m2)}
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:14px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--g);letter-spacing:.12em;font-weight:500}
+@media(max-width:680px){
+  .tool-grid{grid-template-columns:1fr}
+  .page{padding:0 .9rem 3rem}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="page">
+<nav>
+  <div class="logo-wrap">
+    <a href="/" class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='YOCE'"/>
+    </a>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </div>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="kicker">🤖 IA en Ciencias de la Salud</div>
+  <h1>Herramientas de Inteligencia Artificial<br>&amp; Modelos Predictivos</h1>
+  <p>Modelos de machine learning y calculadoras clínicas desarrollados para apoyar la toma de decisiones en citometría de flujo, aféresis, terapia celular y medicina transfusional. Elige la herramienta que necesitas:</p>
+</section>
+
+<!-- HERRAMIENTAS -->
+<section>
+  <p class="sec">Herramientas Disponibles</p>
+  <div class="tool-grid">
+
+    <a href="predictor.html" class="tool-card">
+      <span class="tool-badge">v5.1 · LIVE</span>
+      <div class="tool-icon">🤖</div>
+      <div class="tool-title">Predictor de Volemia · Aféresis CPH</div>
+      <div class="tool-desc">Modelo GradientBoosting que estima el número de volemias necesarias para una cosecha eficiente de células CD34+ en trasplante alogénico. n=140 · R²=0.852.</div>
+      <div class="tool-cta">Abrir herramienta →</div>
+    </a>
+
+    <a href="recambio-plasmatico.html" class="tool-card">
+      <span class="tool-badge">ASFA 2023</span>
+      <div class="tool-icon">🔬</div>
+      <div class="tool-title">Calculadora de Recambio Plasmático</div>
+      <div class="tool-desc">Cálculo del Volumen Sanguíneo Total (VST), Volumen Plasmático (VP) y solución de reemplazo con albúmina humana al 5%, basada en guías ASFA 2023.</div>
+      <div class="tool-cta">Abrir herramienta →</div>
+    </a>
+
+    <div class="tool-card soon">
+      <span class="tool-badge">Próximamente</span>
+      <div class="tool-icon">🧪</div>
+      <div class="tool-title">Nueva herramienta en desarrollo</div>
+      <div class="tool-desc">Estamos trabajando en más modelos de IA aplicados a manufactura de ATMPs, hematología y medicina transfusional.</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const CC='0,107,82',TC='3,85,160';
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'109,40,217',CC);requestAnimationFrame(frame);}
+frame();
+</script>
+</body>
+</html>
