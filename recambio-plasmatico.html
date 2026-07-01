@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Calculadora Recambio Plasmático · YoCellTherapy</title>
+<meta name="description" content="Calculadora clínica para recambio plasmático terapéutico basada en guías ASFA 2023. Fórmulas de Nadler y Gilcher/Terumo BCT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+  --warn:#92400e;--warn-bg:rgba(251,191,36,0.1);--warn-bord:rgba(251,191,36,0.35);
+  --danger:#991b1b;--danger-bg:rgba(239,68,68,0.08);--danger-bord:rgba(239,68,68,0.25);
+  --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:7px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+
+/* HERO */
+.hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
+.hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
+.hero p{font-size:14px;color:var(--m);line-height:1.82}
+.asfa-badge{display:inline-flex;align-items:center;gap:5px;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--g);padding:4px 11px;letter-spacing:.1em;margin-top:.8rem;font-weight:500}
+
+/* DISCLAIMER */
+.disclaimer{background:var(--danger-bg);border:1px solid var(--danger-bord);border-radius:10px;padding:.85rem 1.1rem;font-size:13px;color:var(--danger);margin-bottom:1.5rem;line-height:1.7}
+.disclaimer strong{font-weight:600}
+
+/* STEP CARDS */
+.sc{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:14px;padding:1.25rem;margin-bottom:1rem;backdrop-filter:blur(4px)}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:.6rem}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--g3);color:var(--g);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;border:1px solid var(--bord3)}
+.st{font-size:15px;font-weight:600;color:var(--t)}
+.sd{font-size:13px;color:var(--m);margin-bottom:.85rem;line-height:1.7}
+.ref-tag{display:inline-block;background:var(--success-bg);color:var(--g);border:0.5px solid var(--success-bord);border-radius:4px;font-size:9px;padding:1px 7px;margin-left:6px;font-weight:500;font-family:'JetBrains Mono',monospace}
+
+/* FORMULA SELECTOR */
+.formula-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.fs-btn{padding:5px 13px;border-radius:8px;border:1px solid var(--bord2);font-size:12px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.fs-btn.a{background:var(--g3);border-color:var(--bord3);color:var(--g);font-weight:500}
+
+/* INPUTS */
+.ir{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:.85rem}
+.ig label{display:block;font-size:12px;color:var(--m2);margin-bottom:4px}
+input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--bord2);border-radius:8px;font-size:14px;color:var(--t);background:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--gl)}
+
+/* FORMULA BOX */
+.fb{background:var(--b2);border:1px solid rgba(33,150,243,.2);border-radius:8px;padding:.6rem .9rem;font-size:12px;color:var(--b);font-family:'JetBrains Mono',monospace;margin-bottom:.85rem;white-space:pre-wrap;line-height:1.6}
+
+/* RESULT GRID */
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.rc{background:rgba(255,255,255,0.7);border:1px solid var(--bord2);border-radius:10px;padding:.75rem 1rem}
+.rl{font-size:11px;color:var(--m2);margin-bottom:4px;line-height:1.4}
+.rv{font-size:22px;font-weight:600;color:var(--t)}
+.ru{font-size:11px;color:var(--m)}
+.rc.success{background:var(--success-bg);border-color:var(--success-bord)}.rc.success .rv{color:var(--g)}.rc.success .rl{color:var(--g)}
+.rc.warn{background:var(--warn-bg);border-color:var(--warn-bord)}.rc.warn .rv{color:var(--warn)}.rc.warn .rl{color:var(--warn)}
+
+/* VOL TABS */
+.vt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:13px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.vb.a{background:var(--g3);border-color:var(--bord3);color:var(--g);font-weight:500}
+.vb.custom{border-style:dashed}
+
+/* WARN BOX */
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-bord);border-radius:8px;padding:.6rem .9rem;font-size:12.5px;color:var(--warn);margin-bottom:.85rem;display:none;line-height:1.6}
+
+/* SUMMARY */
+.sum-box{background:rgba(255,255,255,0.85);border:1px solid var(--success-bord);border-radius:10px;padding:1rem 1.25rem;font-size:13.5px;color:var(--t);line-height:2.1}
+.sum-box strong{color:var(--g)}
+.refs{margin-top:1rem;font-size:11px;color:var(--m2);line-height:1.8;padding-top:.75rem;border-top:1px solid var(--bord2)}
+.refs em{font-style:italic}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:2rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:10px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+  .rg{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="page">
+
+<nav>
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size:9px;color:#006b52;font-weight:600>YOCE</span>'"/>
+    </div>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </a>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">🔬 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <h1>Calculadora de Recambio Plasmático Terapéutico</h1>
+  <p>Herramienta didáctica para el cálculo del Volumen Sanguíneo Total (VST), Volumen Plasmático (VP) y solución de reemplazo con albúmina en procedimientos de Recambio Plasmático Terapéutico (RPT), también conocido como Therapeutic Plasma Exchange (TPE).</p>
+  <div class="asfa-badge">📋 Basado en guías ASFA 2023 · 9th Special Issue · J Clin Apheresis 2023;38:77–278</div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>⚠ Nota importante:</strong> Esta calculadora es una herramienta de apoyo didáctico únicamente. Los resultados deben ser siempre revisados y validados por el personal de aféresis certificado y/o el médico tratante antes de iniciar cualquier procedimiento. No sustituye el juicio clínico profesional.
+</div>
+
+<!-- PASO 1 -->
+<div class="sc">
+  <div class="sh"><div class="sn">1</div><div class="st">Datos del paciente</div></div>
+  <p class="sd">
+    El <strong>Volumen Sanguíneo Total (VST)</strong> se calcula con la fórmula de <strong>Nadler</strong>, estándar bibliográfico internacional validado (Nadler SB et al., <em>Surgery</em> 1962). A partir del VST y el Hematocrito (HTo), se obtiene la fracción plasmática y el Volumen Plasmático (VP) que equivale a 1 volemia.
+  </p>
+  <div style="display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1px solid var(--bord3);border-radius:8px;padding:5px 13px;font-size:12px;color:var(--g);font-weight:500;margin-bottom:.85rem">
+    ✓ Fórmula de Nadler — Nadler SB et al. <em>Surgery.</em> 1962;51(2):224–232
+  </div>
+  <div class="ir">
+    <div class="ig"><label>Peso (kg)</label><input type="number" id="peso" value="107.8" step="0.1" oninput="calc()"></div>
+    <div class="ig"><label>Talla (cm)</label><input type="number" id="talla" value="179" step="1" oninput="calc()"></div>
+    <div class="ig"><label>Hematocrito — HTo (%)</label><input type="number" id="hto" value="25.3" step="0.1" min="1" max="99" oninput="calc()"></div>
+
+  </div>
+  <div class="fb" id="f-vst">—</div>
+  <div class="rg">
+    <div class="rc"><div class="rl">Volumen Sanguíneo Total (VST)</div><div class="rv" id="r-vst">—</div><div class="ru">mL</div></div>
+    <div class="rc"><div class="rl">Fracción plasmática (100 − HTo)</div><div class="rv" id="r-fp">—</div><div class="ru">%</div></div>
+    <div class="rc success"><div class="rl">Volumen Plasmático (VP) = 1 volemia</div><div class="rv" id="r-vp">—</div><div class="ru">mL</div></div>
+  </div>
+</div>
+
+<!-- PASO 2 -->
+<div class="sc">
+  <div class="sh"><div class="sn">2</div><div class="st">Volumen de recambio <span class="ref-tag">ASFA 2023</span></div></div>
+  <p class="sd">
+    Según las guías <strong>ASFA 2023</strong>, el volumen de recambio varía según el diagnóstico:
+    <br>• <strong>1–1.5 VP</strong>: mayoría de indicaciones (Guillain-Barré, ADEM, TTP, miastenia gravis, etc.)
+    <br>• <strong>1–2 VP</strong>: intoxicaciones/venenos, vasculitis, esclerodermia
+    <br>• <strong>&gt;2 VP</strong>: High-Volume TPE — solo en indicaciones especiales (revisar ficha ASFA)
+  </p>
+  <div class="vt">
+    <button class="vb a" onclick="setVol(1,this)">1 VP</button>
+    <button class="vb" onclick="setVol(1.5,this)">1.5 VP</button>
+    <button class="vb" onclick="setVol(2,this)">2 VP</button>
+    <button class="vb custom" onclick="setVol('custom',this)">Personalizado ✎</button>
+  </div>
+  <div id="custom-input" style="display:none;margin-bottom:.85rem">
+    <div class="ig"><label>Número de Volúmenes Plasmáticos (VP)</label><input type="number" id="vol-custom" value="1.2" step="0.1" min="0.5" max="4" oninput="calc()"></div>
+  </div>
+  <div class="warn-box" id="warn-2vp">⚠ Volúmenes &gt;2 VP corresponden a <strong>High-Volume TPE</strong>. Revisar indicación específica en guías ASFA 2023 y confirmar con médico tratante antes de proceder.</div>
+  <div class="rg">
+    <div class="rc success"><div class="rl">Volumen de recambio total</div><div class="rv" id="r-vrec">—</div><div class="ru">mL</div></div>
+    <div class="rc"><div class="rl">Múltiplo de VP utilizado</div><div class="rv" id="r-factor">—</div><div class="ru">× VP</div></div>
+  </div>
+</div>
+
+<!-- PASO 3 -->
+<div class="sc">
+  <div class="sh"><div class="sn">3</div><div class="st">Solución de reemplazo — Albúmina humana al 5% <span class="ref-tag">ASFA 2023</span></div></div>
+  <p class="sd">
+    La <strong>albúmina humana al 5%</strong> es el fluido de reemplazo estándar según guías ASFA 2023. El plasma fresco congelado (PFC) se reserva para pacientes con coagulopatía significativa.
+    <br>Se utiliza la fórmula <strong>C₁V₁ = C₂V₂</strong> para diluir la albúmina concentrada disponible hasta una concentración final del 5% en el volumen de recambio total.
+  </p>
+  <div class="ir">
+    <div class="ig">
+      <label>Concentración de albúmina disponible (%)</label>
+      <select id="conc-alb" oninput="calc()">
+        <option value="20" selected>20%</option>
+        <option value="25">25%</option>
+        <option value="4">4%</option>
+        <option value="5">5% (lista para usar)</option>
+      </select>
+    </div>
+    <div class="ig"><label>Volumen por frasco (mL)</label><input type="number" id="vol-frasco" value="50" step="1" oninput="calc()"></div>
+  </div>
+  <div class="fb" id="f-alb">—</div>
+  <div class="rg">
+    <div class="rc warn"><div class="rl">Albúmina a utilizar</div><div class="rv" id="r-alb">—</div><div class="ru">mL</div></div>
+    <div class="rc warn"><div class="rl">Frascos necesarios</div><div class="rv" id="r-frascos">—</div><div class="ru">frascos</div></div>
+    <div class="rc"><div class="rl">Solución Salina 0.9% (NaCl) a agregar</div><div class="rv" id="r-ss">—</div><div class="ru">mL</div></div>
+  </div>
+</div>
+
+<!-- PASO 4 RESUMEN -->
+<div class="sc" style="background:var(--success-bg);border-color:var(--success-bord)">
+  <div class="sh">
+    <div class="sn" style="background:var(--g);color:#fff;border-color:var(--g)">4</div>
+    <div class="st" style="color:var(--g)">Resumen de prescripción</div>
+  </div>
+  <div class="sum-box" id="r-sum">—</div>
+  <div class="refs">
+    <strong>Referencias bibliográficas:</strong><br>
+    1. Connelly-Smith L et al. Guidelines on the Use of Therapeutic Apheresis in Clinical Practice — Evidence-Based Approach from the Writing Committee of the American Society for Apheresis: The Ninth Special Issue. <em>Journal of Clinical Apheresis.</em> 2023;38:77–278. DOI: 10.1002/jca.22043<br>
+    2. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224–232.<br>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE · Herramienta didáctica</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<!-- CANVAS ANIMATION -->
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+const NODES=[];
+const COLS=['0,107,82','3,85,160','109,40,217','0,180,130'];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<24;i++){
+  NODES.push({
+    x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,
+    vx:(Math.random()-.5)*0.22,vy:(Math.random()-.5)*0.22,
+    r:2+Math.random()*3,col:COLS[Math.floor(Math.random()*COLS.length)],
+    phase:Math.random()*Math.PI*2
+  });
+}
+function frame(){
+  ctx.clearRect(0,0,W,H);t+=0.008;
+  NODES.forEach(n=>{
+    n.x+=n.vx;n.y+=n.vy;
+    if(n.x<-20)n.x=W+20;if(n.x>W+20)n.x=-20;
+    if(n.y<-20)n.y=H+20;if(n.y>H+20)n.y=-20;
+  });
+  for(let i=0;i<NODES.length;i++){
+    for(let j=i+1;j<NODES.length;j++){
+      const dx=NODES[j].x-NODES[i].x,dy=NODES[j].y-NODES[i].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<150){
+        ctx.beginPath();ctx.moveTo(NODES[i].x,NODES[i].y);ctx.lineTo(NODES[j].x,NODES[j].y);
+        ctx.strokeStyle=`rgba(0,107,82,${(1-(d/150))*0.1})`;ctx.lineWidth=0.7;ctx.stroke();
+      }
+    }
+  }
+  NODES.forEach(n=>{
+    const pulse=0.5+0.5*Math.sin(t*1.2+n.phase);
+    const a=0.1+0.07*pulse;
+    const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3);
+    g.addColorStop(0,`rgba(${n.col},${a*0.8})`);g.addColorStop(1,`rgba(${n.col},0)`);
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r*3,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${n.col},${0.2+0.12*pulse})`;ctx.fill();
+    ctx.strokeStyle=`rgba(${n.col},${0.35+0.18*pulse})`;ctx.lineWidth=0.8;ctx.stroke();
+  });
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+
+<!-- CALCULADORA -->
+<script>
+let volFactor=1;
+
+function setVol(v,btn){
+  document.querySelectorAll('.vb').forEach(b=>b.classList.remove('a'));
+  btn.classList.add('a');
+  const ci=document.getElementById('custom-input');
+  if(v==='custom'){ci.style.display='block';volFactor=parseFloat(document.getElementById('vol-custom').value)||1.2;}
+  else{ci.style.display='none';volFactor=v;}
+  calc();
+}
+
+function calc(){
+  const peso=parseFloat(document.getElementById('peso').value)||0;
+  const talla=parseFloat(document.getElementById('talla').value)||0;
+  const hto=parseFloat(document.getElementById('hto').value)||0;
+  const concAlb=parseFloat(document.getElementById('conc-alb').value)||20;
+  const volFrasco=parseFloat(document.getElementById('vol-frasco').value)||50;
+  if(document.getElementById('custom-input').style.display!=='none'){
+    volFactor=parseFloat(document.getElementById('vol-custom').value)||1.2;
+  }
+  if(!peso||!talla||!hto)return;
+  const tallam=talla/100;
+  const vst=Math.round((0.3669*Math.pow(tallam,3)+0.03219*peso+0.6041)*1000);
+  const fLabel='VST (Nadler) = (0.3669 × '+tallam.toFixed(2)+'³) + (0.03219 × '+peso+') + 0.6041\n= '+(vst/1000).toFixed(3)+' L = '+vst.toLocaleString('es-MX')+' mL\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+  const fp=parseFloat((100-hto).toFixed(1));
+  const vp=Math.round((fp/100)*vst);
+  const vrec=Math.round(vp*volFactor);
+  document.getElementById('warn-2vp').style.display=volFactor>2?'block':'none';
+  let albVol,frascos,ssVol,fAlb;
+  if(concAlb==5){
+    albVol=vrec;frascos=Math.ceil(albVol/volFrasco);ssVol=0;
+    fAlb='Albúmina ya al 5% → usar '+albVol.toLocaleString('es-MX')+' mL directamente\n('+frascos+' frascos × '+volFrasco+' mL)';
+  } else {
+    albVol=Math.round((5*vrec)/concAlb);
+    frascos=Math.ceil(albVol/volFrasco);
+    ssVol=Math.round(vrec-albVol);
+    fAlb='C₁V₁ = C₂V₂\n('+concAlb+'%)(x) = (5%)('+vrec.toLocaleString('es-MX')+' mL)\nx = (5 × '+vrec.toLocaleString('es-MX')+') / '+concAlb+' = '+albVol.toLocaleString('es-MX')+' mL\n→ '+frascos+' frascos × '+volFrasco+' mL + '+ssVol.toLocaleString('es-MX')+' mL NaCl 0.9%';
+  }
+  document.getElementById('f-vst').textContent=fLabel;
+  document.getElementById('r-vst').textContent=vst.toLocaleString('es-MX');
+  document.getElementById('r-fp').textContent=fp;
+  document.getElementById('r-vp').textContent=vp.toLocaleString('es-MX');
+  document.getElementById('r-vrec').textContent=vrec.toLocaleString('es-MX');
+  document.getElementById('r-factor').textContent=volFactor.toString();
+  document.getElementById('f-alb').textContent=fAlb;
+  document.getElementById('r-alb').textContent=albVol.toLocaleString('es-MX');
+  document.getElementById('r-frascos').textContent=frascos;
+  document.getElementById('r-ss').textContent=ssVol.toLocaleString('es-MX');
+  const fluido=concAlb==5
+    ?frascos+' frascos albúmina 5% ('+volFrasco+' mL c/u)'
+    :albVol.toLocaleString('es-MX')+' mL albúmina '+concAlb+'% ('+frascos+' frascos × '+volFrasco+' mL) + '+ssVol.toLocaleString('es-MX')+' mL NaCl 0.9%';
+  document.getElementById('r-sum').innerHTML=
+    '<strong>Paciente:</strong> '+peso+' kg · '+talla+' cm · HTo '+hto+'%<br>'+
+    '<strong>VST (Nadler):</strong> <strong>'+vst.toLocaleString('es-MX')+' mL</strong><br>'+
+    '<strong>Volumen Plasmático (VP):</strong> '+vp.toLocaleString('es-MX')+' mL (fracción plasmática '+fp+'%)<br>'+
+    '<strong>Recambio ('+volFactor+' VP):</strong> '+vrec.toLocaleString('es-MX')+' mL<br>'+
+    '<strong>Solución de reemplazo:</strong> '+fluido+'<br>'+
+    '<strong>Concentración final:</strong> Albúmina humana 5% en '+vrec.toLocaleString('es-MX')+' mL total';
+}
+calc();
+</script>
+</body>
+</html>
