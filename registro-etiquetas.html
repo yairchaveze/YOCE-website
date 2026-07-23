@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Registro de Pacientes y Etiquetas | YoCell Lab</title>
+<style>
+  .site-nav{max-width:1000px;margin:0 auto;padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;font-family:'Segoe UI',system-ui,sans-serif;}
+  .site-nav a{font-size:13px;color:#6d1a36;text-decoration:none;font-weight:600;}
+  .site-nav a:hover{text-decoration:underline;}
+  .site-nav .lab{display:flex;align-items:center;gap:8px;font-weight:700;color:#6d1a36;font-size:13px;}
+  .site-nav .dot{width:8px;height:8px;border-radius:50%;background:#6d1a36;}
+</style>
+</head>
+<body style="margin:0;">
+<div class="site-nav">
+  <a href="yocell-lab.html">← YoCell Lab</a>
+  <div class="lab"><span class="dot"></span> YoCell Lab</div>
+</div>
+<style>
+  :root{
+    --burgundy:#6d1a36;
+    --burgundy-dark:#4a1024;
+    --teal:#1f6f6f;
+    --teal-light:#e7f3f2;
+    --ink:#26232a;
+    --paper:#faf8f6;
+    --line:#e3dcd8;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--paper);margin:0;padding:0;}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px;}
+  h1{font-size:20px;color:var(--burgundy);margin:0 0 4px;}
+  .sub{color:#6b6b6b;font-size:13px;margin-bottom:20px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:18px;}
+  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--teal);margin:0 0 14px;border-bottom:2px solid var(--teal-light);padding-bottom:8px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;}
+  input,select{width:100%;padding:8px 10px;border:1px solid #cfcac6;border-radius:6px;font-size:13px;background:#fff;}
+  input:focus,select:focus{outline:2px solid var(--teal-light);border-color:var(--teal);}
+  .checks{display:flex;flex-direction:column;gap:8px;font-size:13px;}
+  .checks label{display:flex;align-items:center;gap:7px;font-weight:400;color:var(--ink);margin:0;}
+  .checks input{width:auto;}
+  .btn{border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-primary{background:var(--burgundy);color:#fff;}
+  .btn-primary:hover{background:var(--burgundy-dark);}
+  .btn-teal{background:var(--teal);color:#fff;}
+  .btn-teal:hover{background:#175656;}
+  .btn-outline{background:#fff;border:1px solid var(--teal);color:var(--teal);}
+  .btn-sm{padding:4px 9px;font-size:11px;border-radius:5px;}
+  .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .sizebar{display:flex;gap:14px;align-items:end;flex-wrap:wrap;}
+  .sizebar .field{width:120px;}
+  .hint{font-size:11px;color:#888;margin-top:4px;}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:999;}
+  .toast.show{opacity:1;transform:translateY(0);}
+
+  .logobox{display:flex;align-items:center;gap:14px;}
+  .logoslot{width:78px;height:78px;border:2px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fbfaf9;flex-shrink:0;}
+  .logoslot img{max-width:100%;max-height:100%;}
+  .logoslot span{font-size:10px;color:#aaa;text-align:center;padding:4px;}
+
+  #labelPreviewRow{display:flex;gap:14px;padding:16px;background:#f1efec;border-radius:8px;overflow-x:auto;}
+  .labelcard{background:#fff;border:1px solid #ccc;padding:6px 8px;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;justify-content:center;gap:2px;flex-shrink:0;}
+  .labelcard .llogo{display:flex;justify-content:flex-end;}
+  .labelcard .llogo img{height:14px;}
+  .labelcard .lname{font-weight:700;font-size:11px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .labelcard .lrow{font-size:9px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .labelcard .lmuestra{font-size:10px;font-weight:700;color:var(--burgundy);white-space:nowrap;}
+  .labelcard .lbarcode{margin-top:2px;text-align:center;}
+  .labelcard .lbarcode svg{max-width:100%;height:auto;}
+  .countpill{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:700;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+
+  @media print{
+    body *{visibility:hidden;}
+    #printArea, #printArea *{visibility:visible;}
+    #printArea{position:fixed;top:0;left:0;}
+    .print-label{page-break-after:always;}
+    .print-label:last-child{page-break-after:auto;}
+  }
+</style>
+
+<div class="wrap" id="app">
+  <h1>Registro de pacientes y etiquetas de tubo — FCAL-04</h1>
+  <div class="sub">YoCell Lab · San Buenaventura, Coahuila &nbsp;|&nbsp; Impresora: iDPRT SP310 (térmica, 1–3.15 in)</div>
+
+  <!-- LOGO -->
+  <div class="card">
+    <h2>Logo del laboratorio</h2>
+    <div class="logobox">
+      <div class="logoslot" id="logoSlot"><img id="logoIcon" src="logo-ycl-icon.png" alt="YoCell Lab"></div>
+      <div id="logoStatusText" class="hint">Buscando logo-ycl-icon.png junto a esta página…</div>
+    </div>
+  </div>
+  <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
+
+  <!-- FORMULARIO -->
+  <div class="card">
+    <h2>Datos del paciente</h2>
+    <div class="grid3">
+      <div>
+        <label>Folio</label>
+        <input id="f_folio" type="text">
+        <div class="hint">Formato AAMMDD-XXX. El consecutivo (XXX) lo ajustas tú según cuántos pacientes lleves ese día.</div>
+      </div>
+      <div>
+        <label>Nombre del paciente</label>
+        <input id="f_nombre" type="text" placeholder="Nombre completo" oninput="renderLabels()">
+      </div>
+      <div>
+        <label>Edad</label>
+        <input id="f_edad" type="text" placeholder="Ej. 34 años" oninput="renderLabels()">
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:12px;">
+      <div>
+        <label>Sexo</label>
+        <select id="f_sexo" onchange="renderLabels()">
+          <option value="">—</option>
+          <option value="H">H</option>
+          <option value="M">M</option>
+        </select>
+      </div>
+      <div>
+        <label>Fecha de nacimiento</label>
+        <input id="f_fnac" type="date">
+      </div>
+      <div>
+        <label>Médico solicitante</label>
+        <input id="f_medico" type="text" placeholder="Nombre del médico">
+        <label style="display:flex;align-items:center;gap:5px;font-weight:400;margin-top:6px;">
+          <input type="checkbox" id="f_medico_generico" style="width:auto;" onchange="toggleMedicoGenerico()"> A quien corresponda
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <label>Estudios solicitados</label>
+      <div class="checks">
+        <label><input type="checkbox" class="f_estudio" value="BH" data-tubo="Lila (EDTA)" data-muestra="ST en EDTA" onchange="renderLabels()"> Biometría Hemática (BH) → tubo lila (EDTA) — etiqueta: "ST en EDTA"</label>
+        <label><input type="checkbox" class="f_estudio" value="QS" data-tubo="Rojo/gel (seco)" data-muestra="Suero en Seco/gel" onchange="renderLabels()"> Química Sanguínea (QS) → tubo rojo/gel (seco) — etiqueta: "Suero en Seco/gel"</label>
+        <label><input type="checkbox" class="f_estudio" value="EGO" data-tubo="Frasco de orina" data-muestra="Orina" onchange="renderLabels()"> Examen Gral. de Orina (EGO) → frasco de orina — etiqueta: "Orina"</label>
+      </div>
+      <div class="grid3" style="margin-top:10px;">
+        <input id="f_otro_estudio" type="text" placeholder="Otro estudio (nombre)" oninput="renderLabels()">
+        <input id="f_otro_tubo" type="text" placeholder="Tubo/recipiente para 'Otro'" oninput="renderLabels()">
+        <input id="f_otro_muestra" type="text" placeholder="Texto para la etiqueta (ej. Plasma)" oninput="renderLabels()">
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:14px;">
+      <div>
+        <label>Fecha y hora de toma</label>
+        <input id="f_fechatoma" type="datetime-local" oninput="renderLabels()">
+      </div>
+      <div>
+        <label>Flebotomista</label>
+        <input id="f_fleb" type="text">
+      </div>
+      <div>
+        <label>Ayuno / muestra adecuada</label>
+        <input id="f_notas_toma" type="text" placeholder="Opcional: notas de toma">
+      </div>
+    </div>
+  </div>
+
+  <!-- ETIQUETAS -->
+  <div class="card">
+    <h2>Etiquetas de tubo</h2>
+    <div class="sizebar">
+      <div class="field">
+        <label>Ancho (in)</label>
+        <input id="lbl_w" type="number" step="0.05" min="1" max="3.15" value="2.25" onchange="renderLabels()">
+      </div>
+      <div class="field">
+        <label>Alto (in)</label>
+        <input id="lbl_h" type="number" step="0.05" min="0.3" max="4" value="1" onchange="renderLabels()">
+      </div>
+    </div>
+    <div class="hint">El SP310 admite anchos de 1 a 3.15 in. Ajusta estas medidas al tamaño real de tu rollo de etiquetas antes de imprimir.</div>
+
+    <div style="margin-top:14px;">
+      <span class="countpill" id="countPill">0 etiquetas a generar</span>
+    </div>
+    <div id="labelPreviewRow"></div>
+
+    <div class="actions">
+      <button class="btn btn-teal" onclick="imprimirEtiquetas()">Imprimir etiquetas en SP310</button>
+      <button class="btn btn-outline" onclick="descargarPDFEtiquetas()">Descargar PDF de etiquetas</button>
+    </div>
+  </div>
+
+  <!-- ORDEN DE ESTUDIOS -->
+  <div class="card">
+    <h2>Orden de estudios (FCAL-04)</h2>
+    <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado, listo para que el paciente lo lea y firme.</div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="generarOrdenPDF()">Generar Orden de Estudios (PDF)</button>
+    </div>
+  </div>
+</div>
+
+<div id="printArea"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+function logoDisponible(id){
+  const img = document.getElementById(id);
+  return img && img.complete && img.naturalWidth > 0;
+}
+
+function logoListo(){
+  document.getElementById('logoStatusText').textContent = 'Logo cargado ✓';
+  renderLabels();
+}
+
+function logoFaltante(){
+  document.getElementById('logoSlot').innerHTML = '<span style="font-size:10px;color:#aaa;text-align:center;padding:4px;">Sube logo-ycl-icon.png y logo-ycl-full.png junto a esta página</span>';
+  document.getElementById('logoStatusText').textContent = 'Aún no encuentro el archivo logo-ycl-icon.png en esta carpeta.';
+}
+
+function watchLogo(id, onOk, onFail){
+  const img = document.getElementById(id);
+  if(!img) return;
+  if(img.complete){
+    img.naturalWidth > 0 ? onOk() : onFail();
+  }else{
+    img.addEventListener('load', onOk);
+    img.addEventListener('error', onFail);
+  }
+}
+watchLogo('logoIcon', logoListo, logoFaltante);
+watchLogo('logoFull', ()=>{}, ()=>{});
+
+function datePrefixToday(){
+  const d = new Date();
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${yy}${mm}${dd}`;
+}
+
+function setDefaultDateTime(){
+  const now = new Date();
+  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+  document.getElementById('f_fechatoma').value = now.toISOString().slice(0,16);
+}
+
+function initForm(){
+  document.getElementById('f_folio').value = datePrefixToday() + '-001';
+  setDefaultDateTime();
+}
+
+function toggleMedicoGenerico(){
+  const chk = document.getElementById('f_medico_generico').checked;
+  const inp = document.getElementById('f_medico');
+  if(chk){
+    inp.value = 'A quien corresponda';
+    inp.disabled = true;
+  }else{
+    inp.disabled = false;
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+
+function fmtFechaHora(v){
+  if(!v) return '';
+  const [d,t] = v.split('T');
+  return `${d} ${t||''}`.trim();
+}
+
+function readPaciente(){
+  return {
+    folio: document.getElementById('f_folio').value.trim(),
+    nombre: document.getElementById('f_nombre').value.trim(),
+    edad: document.getElementById('f_edad').value.trim(),
+    sexo: document.getElementById('f_sexo').value,
+    fnac: document.getElementById('f_fnac').value,
+    medico: document.getElementById('f_medico').value.trim(),
+    fechatoma: document.getElementById('f_fechatoma').value,
+    fleb: document.getElementById('f_fleb').value.trim(),
+    notas: document.getElementById('f_notas_toma').value.trim(),
+  };
+}
+
+function readEstudiosSeleccionados(){
+  return Array.from(document.querySelectorAll('.f_estudio')).map(c=>({
+    codigo: c.value, checked: c.checked, tubo: c.dataset.tubo, muestra: c.dataset.muestra
+  }));
+}
+
+function computeEtiquetas(){
+  const items = [];
+  document.querySelectorAll('.f_estudio:checked').forEach(c=>{
+    items.push({ tubo: c.dataset.tubo, muestra: c.dataset.muestra });
+  });
+  const otroEstudio = document.getElementById('f_otro_estudio').value.trim();
+  const otroTubo = document.getElementById('f_otro_tubo').value.trim();
+  const otroMuestra = document.getElementById('f_otro_muestra').value.trim();
+  if(otroEstudio || otroTubo || otroMuestra){
+    items.push({ tubo: otroTubo || 'Otro', muestra: otroMuestra || otroEstudio || 'Otro' });
+  }
+  return items;
+}
+
+function renderLabels(){
+  const data = readPaciente();
+  const etiquetas = computeEtiquetas();
+  const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+
+  document.getElementById('countPill').textContent =
+    etiquetas.length === 1 ? '1 etiqueta a generar' : `${etiquetas.length} etiquetas a generar`;
+
+  const row = document.getElementById('labelPreviewRow');
+  row.innerHTML = '';
+  etiquetas.forEach((et, i)=>{
+    const card = document.createElement('div');
+    card.className = 'labelcard';
+    card.style.width = (w*96)+'px';
+    card.style.height = (h*96)+'px';
+    card.innerHTML = `
+      ${logoDisponible('logoIcon') ? `<div class="llogo"><img src="logo-ycl-icon.png"></div>` : ''}
+      <div class="lname">${data.nombre || '(sin nombre)'}</div>
+      <div class="lrow">Folio: ${data.folio || ''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}</div>
+      <div class="lrow">${fmtFechaHora(data.fechatoma)}</div>
+      <div class="lmuestra">${et.muestra}</div>
+      <div class="lbarcode"><svg id="bc_${i}"></svg></div>
+    `;
+    row.appendChild(card);
+    try{
+      JsBarcode(`#bc_${i}`, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:22, margin:0, width:1.3 });
+    }catch(e){ console.error(e); }
+  });
+}
+
+function buildLabelHTML(data, et, w, h, barcodeSvg){
+  return `
+    <div class="print-label" style="width:${w}in;height:${h}in;padding:2mm 3mm;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;justify-content:center;gap:1mm;box-sizing:border-box;">
+      ${logoDisponible('logoIcon') ? `<div style="text-align:right;"><img src="logo-ycl-icon.png" style="height:12px;"></div>` : ''}
+      <div style="font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;">${data.nombre||''}</div>
+      <div style="font-size:9px;white-space:nowrap;overflow:hidden;">Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}</div>
+      <div style="font-size:9px;white-space:nowrap;overflow:hidden;">${fmtFechaHora(data.fechatoma)}</div>
+      <div style="font-size:10px;font-weight:700;white-space:nowrap;">${et.muestra}</div>
+      <div style="text-align:center;">${barcodeSvg}</div>
+    </div>
+  `;
+}
+
+function imprimirEtiquetas(){
+  const data = readPaciente();
+  const etiquetas = computeEtiquetas();
+  if(etiquetas.length === 0){ toast('Selecciona al menos un estudio'); return; }
+  const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+
+  let styleTag = document.getElementById('printPageStyle');
+  if(!styleTag){
+    styleTag = document.createElement('style');
+    styleTag.id = 'printPageStyle';
+    document.head.appendChild(styleTag);
+  }
+  styleTag.textContent = `@page{ size: ${w}in ${h}in; margin: 0; }`;
+
+  const printArea = document.getElementById('printArea');
+  printArea.innerHTML = '';
+  etiquetas.forEach((et,i)=>{
+    const tmp = document.createElement('canvas');
+    JsBarcode(tmp, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:40, margin:0 });
+    const svgWrap = document.createElement('div');
+    JsBarcode(svgWrap, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:22, margin:0, width:1.3 });
+    printArea.innerHTML += buildLabelHTML(data, et, w, h, svgWrap.innerHTML);
+  });
+  setTimeout(()=>window.print(), 150);
+}
+
+function descargarPDFEtiquetas(){
+  const data = readPaciente();
+  const etiquetas = computeEtiquetas();
+  if(etiquetas.length === 0){ toast('Selecciona al menos un estudio'); return; }
+  const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation: w>=h?'landscape':'portrait', unit:'in', format:[w,h] });
+
+  etiquetas.forEach((et, i)=>{
+    if(i>0) pdf.addPage([w,h], w>=h?'landscape':'portrait');
+    addLogoToPdf(pdf, 'logoIcon', w-0.08, 0.06, 0.4, 0.16, 'right');
+    pdf.setFont('courier','bold');
+    pdf.setFontSize(10);
+    pdf.text(data.nombre || '(sin nombre)', 0.08, 0.2);
+    pdf.setFont('courier','normal');
+    pdf.setFontSize(7.5);
+    pdf.text(`Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}`, 0.08, 0.36);
+    pdf.text(fmtFechaHora(data.fechatoma), 0.08, 0.5);
+    pdf.setFont('courier','bold');
+    pdf.setFontSize(8.5);
+    pdf.text(et.muestra, 0.08, 0.64);
+
+    try{
+      const canvas = document.createElement('canvas');
+      JsBarcode(canvas, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:40, margin:0 });
+      const imgData = canvas.toDataURL('image/png');
+      const bw = w*0.8, bh = Math.min(h*0.28, 0.28);
+      pdf.addImage(imgData, 'PNG', (w-bw)/2, h-bh-0.06, bw, bh);
+    }catch(e){ console.error(e); }
+  });
+
+  pdf.save(`etiquetas_${data.folio||'sin_folio'}.pdf`);
+  toast('PDF de etiquetas descargado');
+}
+
+function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
+  const img = document.getElementById(imgId);
+  if(!img || !img.complete || img.naturalWidth === 0) return;
+  const ratio = img.naturalWidth / img.naturalHeight;
+  let w = maxW, h = maxW / ratio;
+  if(h > maxH){ h = maxH; w = maxH * ratio; }
+  let px = x;
+  if(align === 'right') px = x - w;
+  else if(align === 'center') px = x - w/2;
+  try{ pdf.addImage(img, undefined, px, y, w, h); }catch(e){ console.error(e); }
+}
+
+function checkbox(pdf, x, y, checked, size=0.11){
+  pdf.rect(x, y-size+0.02, size, size);
+  if(checked){
+    pdf.setLineWidth(0.02);
+    pdf.line(x, y-size+0.02, x+size, y+0.02);
+    pdf.line(x, y+0.02, x+size, y-size+0.02);
+  }
+}
+
+function generarOrdenPDF(){
+  const data = readPaciente();
+  const estudios = readEstudiosSeleccionados();
+  const otroEstudio = document.getElementById('f_otro_estudio').value.trim();
+  const etiquetas = computeEtiquetas();
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation:'portrait', unit:'in', format:'letter' });
+  const marginL = 0.7, pageW = 8.5;
+  let y = 0.6;
+
+  addLogoToPdf(pdf, 'logoFull', marginL, y-0.42, 1.3, 0.6, 'left');
+  pdf.setFont('helvetica','bold');
+  pdf.setFontSize(14);
+  pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
+  pdf.setFont('helvetica','normal');
+  pdf.setFontSize(9);
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.2, {align:'center'});
+  y += 0.55;
+
+  pdf.setDrawColor(150);
+  pdf.setLineWidth(0.01);
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.28;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
+  const colW = (pageW - 2*marginL)/2;
+  function campo(label, value, x, yy){
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
+    pdf.text(label, x, yy);
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(9.5);
+    pdf.text(String(value||''), x, yy+0.16);
+  }
+  campo('Paciente:', data.nombre, marginL, y);
+  campo('Folio:', data.folio, marginL+colW, y);
+  y += 0.36;
+  campo('Edad:', data.edad, marginL, y);
+  campo('Sexo:', data.sexo, marginL+colW, y);
+  y += 0.36;
+  campo('Fecha de nacimiento:', data.fnac, marginL, y);
+  campo('Médico solicitante:', data.medico, marginL+colW, y);
+  y += 0.42;
+
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.26;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+  pdf.text('ESTUDIOS SOLICITADOS', marginL, y);
+  y += 0.24;
+  pdf.setFontSize(9); pdf.setFont('helvetica','normal');
+  let x = marginL;
+  estudios.forEach(e=>{
+    const nombre = {BH:'Biometría Hemática (BH)', QS:'Química Sanguínea (QS)', EGO:'Examen Gral. de Orina (EGO)'}[e.codigo];
+    checkbox(pdf, x, y, e.checked);
+    pdf.text(nombre, x+0.18, y);
+    x += (e.codigo==='EGO') ? 2.4 : 2.2;
+  });
+  y += 0.28;
+  checkbox(pdf, marginL, y, !!otroEstudio);
+  pdf.text(`Otro: ${otroEstudio || '_______________________________'}`, marginL+0.18, y);
+  y += 0.4;
+
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.26;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+  pdf.text('REGISTRO DE TOMA DE MUESTRA', marginL, y);
+  y += 0.26;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
+  campo('Fecha y hora de toma:', fmtFechaHora(data.fechatoma), marginL, y);
+  campo('Flebotomista:', data.fleb, marginL+colW, y);
+  y += 0.4;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
+  pdf.text('Tubo(s) / recipiente(s) a usar:', marginL, y);
+  y += 0.18;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
+  const tubosTexto = etiquetas.length ? etiquetas.map(e=>e.tubo).join('  •  ') : 'No especificado';
+  pdf.text(tubosTexto, marginL, y);
+  y += 0.3;
+
+  if(data.notas){
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
+    pdf.text('Notas de toma:', marginL, y);
+    pdf.setFont('helvetica','normal');
+    pdf.text(data.notas, marginL+1.1, y);
+    y += 0.3;
+  }
+  y += 0.1;
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.3;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+  pdf.text('CONSENTIMIENTO INFORMADO', marginL, y);
+  y += 0.24;
+  pdf.setFont('helvetica','italic'); pdf.setFontSize(8.7);
+  const consentText = 'Por medio del presente, declaro que he sido informado(a) de forma clara sobre el estudio o los estudios de laboratorio marcados en este documento, así como del procedimiento necesario para la toma de la(s) muestra(s) (punción venosa y/o capilar y/o recolección de orina). Autorizo de manera voluntaria dicha toma de muestra. Entiendo que los resultados me serán entregados en la fecha acordada y que este estudio de laboratorio es una herramienta de apoyo diagnóstico que no sustituye la consulta, el diagnóstico ni el tratamiento por un profesional de la salud, por lo que deberé acudir con un médico para la interpretación clínica de mis resultados.';
+  const lines = pdf.splitTextToSize(consentText, pageW - 2*marginL);
+  pdf.text(lines, marginL, y);
+  y += lines.length*0.155 + 0.5;
+
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
+  pdf.line(marginL+0.6, y, pageW-marginL-0.6, y);
+  y += 0.16;
+  pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', pageW/2, y, {align:'center'});
+
+  pdf.setFontSize(7.5); pdf.setTextColor(140);
+  pdf.text('Página 1 de 1 — FCAL-04', marginL, 10.6);
+
+  pdf.save(`orden_estudios_${data.folio||'sin_folio'}.pdf`);
+  toast('Orden de estudios generada');
+}
+
+initForm();
+renderLabels();
+</script>
+</body>
+</html>
