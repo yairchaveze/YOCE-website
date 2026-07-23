@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>YoCell Lab | Laboratorio de Análisis Clínicos · San Buenaventura, Coahuila</title>
+<meta name="description" content="YoCell Lab: laboratorio de análisis clínicos de bajo costo en San Buenaventura, Coahuila. Biometría Hemática, Química Sanguínea y Examen General de Orina."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --r:#6d1a36;--rl:#8f2447;--r2:rgba(109,26,54,0.08);--r3:rgba(109,26,54,0.14);
+  --teal:#1f6f6f;--teal2:rgba(31,111,111,0.1);
+  --bg:#f7f3f2;--card:#ffffff;
+  --bord2:rgba(15,23,42,0.09);
+  --t:#0f172a;--m:#3d5166;--m2:#536880;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.5}
+.page{max-width:920px;margin:0 auto;padding:0 1.25rem 3rem}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 1.6rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem;flex-wrap:wrap;gap:10px}
+.back-link{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--m2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
+.back-link:hover{color:var(--r)}
+.lab-logo{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--r)}
+.lab-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--r)}
+
+/* HERO */
+.hero{background:var(--card);border:1px solid var(--bord2);border-radius:16px;padding:2rem 1.9rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(109,26,54,.05)}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--r)}
+h1{font-size:2.1rem;font-weight:600;color:var(--t);line-height:1.15;margin-bottom:.6rem}
+h1 span{color:var(--r)}
+.lead{font-size:1.05rem;color:var(--m);max-width:640px;margin-bottom:1.6rem}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.cta-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;border:1.5px solid transparent}
+.cta-btn.primary{background:var(--r);color:#fff}
+.cta-btn.primary:hover{background:var(--rl);transform:translateY(-1px);box-shadow:0 6px 18px rgba(109,26,54,.3)}
+.cta-btn.secondary{background:#fff;border-color:var(--bord2);color:var(--t)}
+.cta-btn.secondary:hover{border-color:var(--r);color:var(--r)}
+
+/* MISION */
+.card{background:var(--card);border:1px solid var(--bord2);border-radius:14px;padding:1.6rem 1.8rem;margin-bottom:1.5rem}
+.card h2{font-size:1rem;text-transform:uppercase;letter-spacing:.04em;color:var(--r);margin-bottom:.9rem;font-family:'JetBrains Mono',monospace;font-weight:500}
+.card p{color:var(--m);font-size:.98rem;line-height:1.72}
+.card p+p{margin-top:.7rem}
+
+/* ESTUDIOS */
+.studies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.study{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.3rem 1.2rem;position:relative;overflow:hidden}
+.study .num{position:absolute;top:10px;right:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--r3)}
+.study .icon{font-size:1.5rem;margin-bottom:.6rem}
+.study h3{font-size:1rem;font-weight:600;color:var(--t);margin-bottom:.4rem}
+.study .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:2px 8px;border-radius:5px;margin-bottom:.5rem}
+.study p{font-size:.88rem;color:var(--m);line-height:1.55}
+
+footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2)}
+
+@media(max-width:700px){
+  .studies-grid{grid-template-columns:1fr}
+  h1{font-size:1.6rem}
+  .hero{padding:1.5rem 1.3rem}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<nav>
+  <a href="index.html" class="back-link">← Yair Omar Chávez-Estrada</a>
+  <div class="lab-logo"><span class="dot"></span> YoCell Lab</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="kicker">Laboratorio de Análisis Clínicos</div>
+  <h1>YoCell Lab — <span>análisis clínicos accesibles</span> para San Buenaventura</h1>
+  <p class="lead">Un laboratorio de análisis clínicos de bajo costo, nacido en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
+  <div class="cta-row">
+    <a href="registro-etiquetas.html" class="cta-btn primary">🧪 Registro de pacientes →</a>
+    <a href="resultados.html" class="cta-btn secondary">📄 Resultados</a>
+  </div>
+</section>
+
+<!-- MISION -->
+<div class="card">
+  <h2>Sobre el proyecto</h2>
+  <p>YoCell Lab busca ofrecer estudios de laboratorio esenciales a un costo accesible, comenzando en San Buenaventura, Coahuila — el municipio donde nací y donde quiero que la ciencia y el diagnóstico clínico de calidad también estén al alcance de la comunidad.</p>
+  <p>Iniciamos con tres estudios básicos, de los más solicitados en consulta general, e iremos ampliando el catálogo conforme el proyecto crezca.</p>
+</div>
+
+<!-- ESTUDIOS -->
+<div class="card">
+  <h2>Estudios disponibles (fase inicial)</h2>
+  <div class="studies-grid">
+    <div class="study">
+      <div class="num">01</div>
+      <div class="icon">🩸</div>
+      <span class="tag">BH</span>
+      <h3>Biometría Hemática</h3>
+      <p>Evalúa glóbulos rojos, blancos y plaquetas. Útil para detectar anemia, infecciones y otras alteraciones generales de la sangre.</p>
+    </div>
+    <div class="study">
+      <div class="num">02</div>
+      <div class="icon">🧪</div>
+      <span class="tag">QS</span>
+      <h3>Química Sanguínea</h3>
+      <p>Mide glucosa, función renal y otros parámetros metabólicos básicos para el seguimiento de la salud general.</p>
+    </div>
+    <div class="study">
+      <div class="num">03</div>
+      <div class="icon">🧫</div>
+      <span class="tag">EGO</span>
+      <h3>Examen General de Orina</h3>
+      <p>Análisis físico, químico y microscópico de la orina, de apoyo en el diagnóstico de infecciones y otras condiciones.</p>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 YoCell Lab · San Buenaventura, Coahuila</footer>
+
+</div>
+</body>
+</html>
