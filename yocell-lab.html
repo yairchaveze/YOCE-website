@@ -19,7 +19,8 @@
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.5}
-.page{max-width:920px;margin:0 auto;padding:0 1.25rem 3rem}
+#bloodCanvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 3rem}
 
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 1.6rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem;flex-wrap:wrap;gap:10px}
@@ -27,6 +28,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .back-link:hover{color:var(--r)}
 .lab-logo{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--r)}
 .lab-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--r)}
+.lab-logo img{height:26px;display:block}
 
 /* HERO */
 .hero{background:var(--card);border:1px solid var(--bord2);border-radius:16px;padding:2rem 1.9rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(109,26,54,.05)}
@@ -41,6 +43,25 @@ h1 span{color:var(--r)}
 .cta-btn.primary:hover{background:var(--rl);transform:translateY(-1px);box-shadow:0 6px 18px rgba(109,26,54,.3)}
 .cta-btn.secondary{background:#fff;border-color:var(--bord2);color:var(--t)}
 .cta-btn.secondary:hover{border-color:var(--r);color:var(--r)}
+
+/* MODAL DE ACCESO */
+.access-overlay{position:fixed;inset:0;background:rgba(15,10,12,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
+.access-overlay.open{display:flex}
+.access-box{background:#fff;border-radius:14px;padding:1.8rem 1.7rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center;animation:accPop .18s ease-out}
+@keyframes accPop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.access-box .lock{font-size:1.8rem;margin-bottom:.5rem}
+.access-box h3{font-size:1.05rem;color:var(--t);margin-bottom:.35rem}
+.access-box p{font-size:.85rem;color:var(--m);margin-bottom:1.1rem}
+.access-box input{width:100%;padding:10px 12px;border:1.5px solid var(--bord2);border-radius:8px;font-size:.95rem;text-align:center;letter-spacing:.08em;margin-bottom:.6rem}
+.access-box input:focus{outline:none;border-color:var(--r)}
+.access-error{color:var(--r);font-size:.8rem;min-height:1.1rem;margin-bottom:.5rem}
+.access-btns{display:flex;gap:8px}
+.access-btns button{flex:1;padding:10px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer}
+.access-btns .go{background:var(--r);color:#fff}
+.access-btns .go:hover{background:var(--rl)}
+.access-btns .cancel{background:#f1eeec;color:var(--m)}
+.access-box.shake{animation:accShake .35s}
+@keyframes accShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
 /* MISION */
 .card{background:var(--card);border:1px solid var(--bord2);border-radius:14px;padding:1.6rem 1.8rem;margin-bottom:1.5rem}
@@ -67,21 +88,40 @@ footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monosp
 </style>
 </head>
 <body>
+<canvas id="bloodCanvas"></canvas>
+
+<!-- MODAL DE ACCESO -->
+<div class="access-overlay" id="accessOverlay">
+  <div class="access-box" id="accessBox">
+    <div class="lock">🔒</div>
+    <h3>Acceso restringido</h3>
+    <p>Ingresa la contraseña para continuar.</p>
+    <input type="password" id="accessInput" placeholder="Contraseña" autocomplete="off">
+    <div class="access-error" id="accessError"></div>
+    <div class="access-btns">
+      <button class="cancel" onclick="closeAccess()">Cancelar</button>
+      <button class="go" onclick="checkAccess()">Entrar</button>
+    </div>
+  </div>
+</div>
+
 <div class="page">
 
 <nav>
   <a href="index.html" class="back-link">← Yair Omar Chávez-Estrada</a>
-  <div class="lab-logo"><span class="dot"></span> YoCell Lab</div>
+  <div class="lab-logo" id="labLogo">
+    <img src="logo-ycl-full.png" alt="YoCell Lab" onerror="this.outerHTML='&lt;span class=&quot;dot&quot;&gt;&lt;/span&gt; YoCell Lab'">
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="kicker">Laboratorio de Análisis Clínicos</div>
   <h1>YoCell Lab — <span>análisis clínicos accesibles</span> para San Buenaventura</h1>
-  <p class="lead">Un laboratorio de análisis clínicos de bajo costo, crecí en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
+  <p class="lead">Un laboratorio de análisis clínicos de bajo costo, nacido en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
   <div class="cta-row">
-    <a href="registro-etiquetas.html" class="cta-btn primary">🧪 Registro de pacientes →</a>
-    <a href="resultados.html" class="cta-btn secondary">📄 Resultados</a>
+    <a href="registro-etiquetas.html" class="cta-btn primary" onclick="return requestAccess(event,'registro-etiquetas.html')">🧪 Registro de pacientes →</a>
+    <a href="resultados.html" class="cta-btn secondary" onclick="return requestAccess(event,'resultados.html')">📄 Resultados</a>
   </div>
 </section>
 
@@ -123,5 +163,212 @@ footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monosp
 <footer>© 2026 YoCell Lab · San Buenaventura, Coahuila</footer>
 
 </div>
+<script>
+/* ═══ ACCESO CON CONTRASEÑA (Registro / Resultados) ═══ */
+const ACCESS_PASSWORD = 'YCL2026';
+let pendingAccessUrl = null;
+
+function requestAccess(e, url){
+  e.preventDefault();
+  pendingAccessUrl = url;
+  document.getElementById('accessError').textContent = '';
+  const input = document.getElementById('accessInput');
+  input.value = '';
+  document.getElementById('accessOverlay').classList.add('open');
+  setTimeout(()=>input.focus(), 50);
+  return false;
+}
+function closeAccess(){
+  document.getElementById('accessOverlay').classList.remove('open');
+  pendingAccessUrl = null;
+}
+function checkAccess(){
+  const val = document.getElementById('accessInput').value;
+  if(val === ACCESS_PASSWORD){
+    window.location.href = pendingAccessUrl;
+  }else{
+    document.getElementById('accessError').textContent = 'Contraseña incorrecta';
+    const box = document.getElementById('accessBox');
+    box.classList.remove('shake');
+    void box.offsetWidth;
+    box.classList.add('shake');
+  }
+}
+document.getElementById('accessInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkAccess(); });
+document.getElementById('accessOverlay').addEventListener('click', e=>{ if(e.target.id==='accessOverlay') closeAccess(); });
+</script>
+
+<script>
+/* ═══ ANIMACIÓN DE FONDO: gotas de sangre estilo logo YoCell Lab ═══ */
+(function(){
+  const canvas = document.getElementById('bloodCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Perfil de ancho de la gota (0 = punta arriba, 1 = base redonda abajo)
+  const PROFILE = [[0,0],[0.08,0.05],[0.18,0.14],[0.30,0.26],[0.42,0.36],[0.55,0.44],[0.68,0.48],[0.80,0.46],[0.90,0.36],[0.97,0.18],[1,0]];
+  function halfWidthAt(t){
+    for(let i=0;i<PROFILE.length-1;i++){
+      const [t0,w0]=PROFILE[i], [t1,w1]=PROFILE[i+1];
+      if(t>=t0 && t<=t1){ const f=(t-t0)/(t1-t0||1); return w0+(w1-w0)*f; }
+    }
+    return 0;
+  }
+
+  // Genera las posiciones (normalizadas) de los círculos que forman una gota, al estilo del logo
+  function buildDropTemplate(n){
+    const circles = [];
+    let attempts = 0;
+    while(circles.length < n && attempts < 6000){
+      attempts++;
+      const t = Math.random();
+      const hw = halfWidthAt(t);
+      if(hw <= 0.015) continue;
+      const x = (Math.random()*2-1) * hw * 0.94;
+      const y = t;
+      const centerFactor = 1 - Math.min(1, Math.abs(x)/hw);
+      const baseR = 0.028 + centerFactor*0.085 + (t>0.28 && t<0.88 ? 0.02 : 0);
+      const r = baseR * (0.65 + Math.random()*0.7);
+      let ok = true;
+      for(const c of circles){
+        const dx = c.x-x, dy=(c.y-y)*1.25;
+        if(Math.sqrt(dx*dx+dy*dy) < (c.r+r)*0.5){ ok=false; break; }
+      }
+      if(!ok) continue;
+      circles.push({x, y, r, cf:centerFactor, t});
+    }
+    return circles;
+  }
+
+  const TEMPLATE = buildDropTemplate(30);
+
+  // Paletas de color (claro → oscuro) para variar el tono de cada gota
+  const PALETTES = [
+    ['#f4b8a8','#e8806b','#c94f4a','#9c2b3e','#6d1a36'],
+    ['#f0a898','#df7358','#c0392b','#8f2447','#5c1128'],
+    ['#f6c2ae','#ec9478','#d15b46','#a83252','#6d1a36'],
+  ];
+  function lerpColor(c1, c2, f){
+    const a = parseInt(c1.slice(1),16), b = parseInt(c2.slice(1),16);
+    const ar=(a>>16)&255, ag=(a>>8)&255, ab=a&255;
+    const br=(b>>16)&255, bg=(b>>8)&255, bb=b&255;
+    const r=Math.round(ar+(br-ar)*f), g=Math.round(ag+(bg-ag)*f), bl=Math.round(ab+(bb-ab)*f);
+    return `rgb(${r},${g},${bl})`;
+  }
+  function colorFor(circle, palette){
+    // más oscuro hacia el centro/abajo, más claro hacia el borde/punta
+    const f = Math.min(1, circle.cf*0.65 + circle.t*0.35);
+    const idx = f*(palette.length-1);
+    const i0 = Math.floor(idx), i1 = Math.min(palette.length-1, i0+1);
+    return lerpColor(palette[i0], palette[i1], idx-i0);
+  }
+
+  const STATES = { FORMING:'forming', HOLDING:'holding', DISPERSING:'dispersing', HIDDEN:'hidden' };
+
+  class BloodDrop{
+    constructor(){ this.reset(true); }
+    reset(initial){
+      this.baseX = Math.random()*W;
+      this.baseY = Math.random()*H;
+      this.scale = 26 + Math.random()*34; // altura aprox. de la gota en px
+      this.palette = PALETTES[Math.floor(Math.random()*PALETTES.length)];
+      this.bobPhase = Math.random()*Math.PI*2;
+      this.bobSpeed = 0.25 + Math.random()*0.25;
+      this.state = initial ? (Math.random()<0.5?STATES.HOLDING:STATES.FORMING) : STATES.HIDDEN;
+      this.timer = initial ? Math.random()*2 : 0.4 + Math.random()*2.2;
+      this.formDur = 2.6 + Math.random()*1.2;
+      this.holdDur = 5 + Math.random()*5;
+      this.dispDur = 2 + Math.random()*1;
+      // puntos de dispersión aleatorios para cada círculo (offset grande respecto a su posición final)
+      this.scatter = TEMPLATE.map(()=>({
+        dx:(Math.random()-0.5)*W*0.5,
+        dy:(Math.random()-0.5)*H*0.5,
+      }));
+    }
+    update(dt){
+      this.timer -= dt;
+      if(this.state===STATES.FORMING && this.timer<=0){ this.state=STATES.HOLDING; this.timer=this.holdDur; }
+      else if(this.state===STATES.HOLDING && this.timer<=0){ this.state=STATES.DISPERSING; this.timer=this.dispDur; }
+      else if(this.state===STATES.DISPERSING && this.timer<=0){ this.reset(false); }
+      else if(this.state===STATES.HIDDEN && this.timer<=0){ this.state=STATES.FORMING; this.timer=this.formDur; }
+    }
+    progress(){
+      if(this.state===STATES.FORMING) return 1 - Math.max(0,this.timer)/this.formDur;
+      if(this.state===STATES.HOLDING) return 1;
+      if(this.state===STATES.DISPERSING) return Math.max(0,this.timer)/this.dispDur;
+      return 0;
+    }
+    draw(t){
+      const p = this.progress();
+      if(p<=0.001) return;
+      const ease = p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
+      const bob = Math.sin(t*this.bobSpeed + this.bobPhase) * 6;
+      const cx = this.baseX, cy = this.baseY + bob;
+      TEMPLATE.forEach((c, i)=>{
+        const targetX = cx + (c.x)*this.scale;
+        const targetY = cy + (c.y - 0.5)*this.scale*1.5;
+        const sc = this.scatter[i];
+        const x = targetX + sc.dx*(1-ease);
+        const y = targetY + sc.dy*(1-ease);
+        const r = Math.max(0.4, c.r*this.scale*ease*0.9);
+        const alpha = 0.55*ease;
+        if(alpha<=0.01 || r<=0.3) return;
+        ctx.beginPath();
+        ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fillStyle = colorFor(c, this.palette);
+        ctx.globalAlpha = alpha;
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  const drops = [];
+  const N_DROPS = window.innerWidth < 700 ? 1 : 2;
+  for(let i=0;i<N_DROPS;i++) drops.push(new BloodDrop());
+
+  // Partículas ambientales: muchos círculos sueltos dispersos, sin formar figura
+  const ambient = [];
+  const N_AMBIENT = window.innerWidth < 700 ? 70 : 150;
+  for(let i=0;i<N_AMBIENT;i++){
+    const pal = PALETTES[Math.floor(Math.random()*PALETTES.length)];
+    ambient.push({
+      x:Math.random()*W, y:Math.random()*H,
+      r: 1.5 + Math.random()*Math.random()*7,
+      vx:(Math.random()-0.5)*0.22, vy:(Math.random()-0.5)*0.22,
+      color: pal[Math.floor(Math.random()*pal.length)],
+      alpha: 0.12 + Math.random()*0.28,
+      pulsePhase: Math.random()*Math.PI*2,
+      pulseSpeed: 0.3 + Math.random()*0.5,
+    });
+  }
+
+  let last = performance.now();
+  function frame(now){
+    const dt = Math.min(0.05, (now-last)/1000);
+    last = now;
+    const t = now/1000;
+    ctx.clearRect(0,0,W,H);
+
+    ambient.forEach(a=>{
+      a.x=(a.x+a.vx+W)%W; a.y=(a.y+a.vy+H)%H;
+      const pulse = 0.85 + 0.15*Math.sin(t*a.pulseSpeed + a.pulsePhase);
+      ctx.beginPath();
+      ctx.arc(a.x,a.y,a.r*pulse,0,Math.PI*2);
+      ctx.fillStyle = a.color;
+      ctx.globalAlpha = a.alpha;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    drops.forEach(d=>{ d.update(dt); d.draw(t); });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
