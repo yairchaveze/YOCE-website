@@ -89,14 +89,18 @@
   .logoslot span{font-size:10px;color:#aaa;text-align:center;padding:4px;}
 
   #labelPreviewRow{display:flex;gap:14px;padding:16px;background:#f1efec;border-radius:8px;overflow-x:auto;}
-  .labelcard{background:#fff;border:1px solid #ccc;padding:6px 8px;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;justify-content:center;gap:2px;flex-shrink:0;}
-  .labelcard .llogo{display:flex;justify-content:flex-end;}
-  .labelcard .llogo img{height:14px;}
-  .labelcard .lname{font-weight:700;font-size:11px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .labelcard .lrow{font-size:9px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .labelcard .lmuestra{font-size:10px;font-weight:700;color:var(--burgundy);white-space:nowrap;}
-  .labelcard .lbarcode{margin-top:2px;text-align:center;}
-  .labelcard .lbarcode svg{max-width:100%;height:auto;}
+  .labelcard{background:#fff;border:1px solid #ccc;padding:5px 7px;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;gap:1px;flex-shrink:0;overflow:hidden;}
+  .labelcard .lhead{display:flex;align-items:center;justify-content:center;gap:5px;border-bottom:1px solid #ddd;padding-bottom:2px;margin-bottom:2px;}
+  .labelcard .lhead img{height:16px;flex-shrink:0;}
+  .labelcard .lhead-text{text-align:left;line-height:1.05;}
+  .labelcard .lhead-lab{font-weight:700;font-size:9.5px;}
+  .labelcard .lhead-sub{font-size:6.5px;color:#555;white-space:nowrap;}
+  .labelcard .lname{font-weight:700;font-size:10.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .labelcard .lrow{font-size:8.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .labelcard .lmuestra{font-size:9.5px;font-weight:700;color:var(--burgundy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .labelcard .lfoot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:2px;}
+  .labelcard .lqr{flex-shrink:0;}
+  .labelcard .lqr img{display:block;}
   .countpill{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:700;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
 
   @media print{
@@ -129,15 +133,29 @@
       <div>
         <label>Folio</label>
         <input id="f_folio" type="text">
-        <div class="hint">Formato AAMMDD-XXX. El consecutivo (XXX) lo ajustas tú según cuántos pacientes lleves ese día.</div>
+        <div class="hint">Formato AAMMDD-XXX. Se sugiere solo según los pacientes ya guardados hoy.</div>
       </div>
       <div>
-        <label>Nombre del paciente</label>
-        <input id="f_nombre" type="text" placeholder="Nombre completo" oninput="renderLabels()">
+        <label>Nombre(s)</label>
+        <input id="f_nombres" type="text" placeholder="Nombre(s)" oninput="renderLabels()">
+      </div>
+      <div>
+        <label>Teléfono</label>
+        <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:12px;">
+      <div>
+        <label>Apellido paterno</label>
+        <input id="f_apellidop" type="text" placeholder="Apellido paterno" oninput="renderLabels()">
+      </div>
+      <div>
+        <label>Apellido materno</label>
+        <input id="f_apellidom" type="text" placeholder="Apellido materno" oninput="renderLabels()">
       </div>
       <div>
         <label>Edad</label>
-        <input id="f_edad" type="text" placeholder="Ej. 34 años" oninput="renderLabels()">
+        <input id="f_edad" type="text" placeholder="Ej. 34" oninput="renderLabels()">
       </div>
     </div>
     <div class="grid3" style="margin-top:12px;">
@@ -145,8 +163,8 @@
         <label>Sexo</label>
         <select id="f_sexo" onchange="renderLabels()">
           <option value="">—</option>
-          <option value="H">H</option>
-          <option value="M">M</option>
+          <option value="Masc">Masc</option>
+          <option value="Fem">Fem</option>
         </select>
       </div>
       <div>
@@ -190,6 +208,10 @@
         <input id="f_notas_toma" type="text" placeholder="Opcional: notas de toma">
       </div>
     </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="guardarRegistro()">💾 Guardar paciente en la base</button>
+    </div>
   </div>
 
   <!-- ETIQUETAS -->
@@ -202,7 +224,7 @@
       </div>
       <div class="field">
         <label>Alto (in)</label>
-        <input id="lbl_h" type="number" step="0.05" min="0.3" max="4" value="1" onchange="renderLabels()">
+        <input id="lbl_h" type="number" step="0.05" min="0.3" max="4" value="1.4" onchange="renderLabels()">
       </div>
     </div>
     <div class="hint">El SP310 admite anchos de 1 a 3.15 in. Ajusta estas medidas al tamaño real de tu rollo de etiquetas antes de imprimir.</div>
@@ -226,15 +248,41 @@
       <button class="btn btn-primary" onclick="generarOrdenPDF()">Generar Orden de Estudios (PDF)</button>
     </div>
   </div>
+
+  <!-- LISTA DE TRABAJO / BASE DE DATOS -->
+  <div class="card">
+    <h2>Lista de trabajo del turno</h2>
+    <div class="hint">Cada vez que guardas un paciente, se agrega a esta lista y queda guardado en tu base (Google Sheets) para siempre, no solo en esta pestaña. Al final del turno puedes generar el PDF con todos los pacientes del día.</div>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span class="countpill" id="listaCountPill">0 paciente(s) registrados hoy</span>
+      <button class="btn btn-outline btn-sm" onclick="cargarListaTrabajo()">🔄 Actualizar lista</button>
+    </div>
+    <div id="listaTrabajoWrap" style="margin-top:12px;overflow-x:auto;">
+      <div class="hint">Aún no hay pacientes registrados hoy.</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-teal" onclick="generarListaTrabajoPDF()">📋 Generar PDF de lista de trabajo</button>
+    </div>
+  </div>
 </div>
 
 <div id="printArea"></div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/JsBarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script>
+/* ═══ CONFIGURACIÓN DE LA BASE DE DATOS (Google Sheets vía Apps Script) ═══ */
+/* Pega aquí la URL de tu Web App de Google Apps Script (ver instrucciones que te compartí). */
+const GOOGLE_SCRIPT_URL = 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT';
+let listaTrabajo = [];
+
+function baseConfigurada(){
+  return GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes('PEGA_AQUI');
+}
+
 function toast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -287,6 +335,7 @@ function setDefaultDateTime(){
 function initForm(){
   document.getElementById('f_folio').value = datePrefixToday() + '-001';
   setDefaultDateTime();
+  cargarListaTrabajo();
 }
 
 function toggleMedicoGenerico(){
@@ -303,6 +352,31 @@ function toggleMedicoGenerico(){
 }
 
 
+function formatEdad(v){
+  if(!v) return '';
+  return /^\d+$/.test(v.trim()) ? `${v.trim()} a` : v.trim();
+}
+
+function buildQrPayload(data, et){
+  return [
+    `Folio: ${data.folio||''}`,
+    data.nombre||'',
+    data.sexo||'',
+    formatEdad(data.edad),
+    et ? `${et.codigo||''} (${et.muestra||''})`.trim() : '',
+    fmtFechaHora(data.fechatoma)
+  ].filter(Boolean).join(' | ');
+}
+
+function makeQrDataUrl(text, size){
+  const holder = document.createElement('div');
+  new QRCode(holder, { text, width:size, height:size, correctLevel: QRCode.CorrectLevel.M });
+  const canvas = holder.querySelector('canvas');
+  if(canvas) return canvas.toDataURL('image/png');
+  const img = holder.querySelector('img');
+  return img ? img.src : '';
+}
+
 function fmtFechaHora(v){
   if(!v) return '';
   const [d,t] = v.split('T');
@@ -310,12 +384,18 @@ function fmtFechaHora(v){
 }
 
 function readPaciente(){
+  const nombres = document.getElementById('f_nombres').value.trim();
+  const apellidoP = document.getElementById('f_apellidop').value.trim();
+  const apellidoM = document.getElementById('f_apellidom').value.trim();
+  const nombreCompleto = [nombres, apellidoP, apellidoM].filter(Boolean).join(' ');
   return {
     folio: document.getElementById('f_folio').value.trim(),
-    nombre: document.getElementById('f_nombre').value.trim(),
+    nombres, apellidoP, apellidoM,
+    nombre: nombreCompleto,
     edad: document.getElementById('f_edad').value.trim(),
     sexo: document.getElementById('f_sexo').value,
     fnac: document.getElementById('f_fnac').value,
+    telefono: document.getElementById('f_telefono').value.trim(),
     medico: document.getElementById('f_medico').value.trim(),
     fechatoma: document.getElementById('f_fechatoma').value,
     fleb: document.getElementById('f_fleb').value.trim(),
@@ -332,13 +412,13 @@ function readEstudiosSeleccionados(){
 function computeEtiquetas(){
   const items = [];
   document.querySelectorAll('.f_estudio:checked').forEach(c=>{
-    items.push({ tubo: c.dataset.tubo, muestra: c.dataset.muestra });
+    items.push({ codigo: c.value, tubo: c.dataset.tubo, muestra: c.dataset.muestra });
   });
   const otroEstudio = document.getElementById('f_otro_estudio').value.trim();
   const otroTubo = document.getElementById('f_otro_tubo').value.trim();
   const otroMuestra = document.getElementById('f_otro_muestra').value.trim();
   if(otroEstudio || otroTubo || otroMuestra){
-    items.push({ tubo: otroTubo || 'Otro', muestra: otroMuestra || otroEstudio || 'Otro' });
+    items.push({ codigo: otroEstudio || 'Otro', tubo: otroTubo || 'Otro', muestra: otroMuestra || otroEstudio || 'Otro' });
   }
   return items;
 }
@@ -347,7 +427,7 @@ function renderLabels(){
   const data = readPaciente();
   const etiquetas = computeEtiquetas();
   const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
-  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1.4;
 
   document.getElementById('countPill').textContent =
     etiquetas.length === 1 ? '1 etiqueta a generar' : `${etiquetas.length} etiquetas a generar`;
@@ -359,30 +439,47 @@ function renderLabels(){
     card.className = 'labelcard';
     card.style.width = (w*96)+'px';
     card.style.height = (h*96)+'px';
+    const qrId = `qrp_${i}`;
     card.innerHTML = `
-      ${logoDisponible('logoIcon') ? `<div class="llogo"><img src="logo-ycl-icon.png"></div>` : ''}
+      <div class="lhead">
+        ${logoDisponible('logoIcon') ? `<img src="logo-ycl-icon.png">` : ''}
+        <div class="lhead-text">
+          <div class="lhead-lab">YoCell Lab</div>
+          <div class="lhead-sub">Laboratorio de Análisis Clínicos<br>San Buenaventura, Coahuila</div>
+        </div>
+      </div>
       <div class="lname">${data.nombre || '(sin nombre)'}</div>
-      <div class="lrow">Folio: ${data.folio || ''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}</div>
+      <div class="lrow">Folio: ${data.folio || ''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+formatEdad(data.edad)):''}</div>
       <div class="lrow">${fmtFechaHora(data.fechatoma)}</div>
-      <div class="lmuestra">${et.muestra}</div>
-      <div class="lbarcode"><svg id="bc_${i}"></svg></div>
+      <div class="lfoot">
+        <div class="lmuestra">${et.codigo ? `${et.codigo} (${et.muestra})` : et.muestra}</div>
+        <div class="lqr" id="${qrId}"></div>
+      </div>
     `;
     row.appendChild(card);
     try{
-      JsBarcode(`#bc_${i}`, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:22, margin:0, width:1.3 });
+      new QRCode(document.getElementById(qrId), { text: buildQrPayload(data, et), width:34, height:34, correctLevel: QRCode.CorrectLevel.M });
     }catch(e){ console.error(e); }
   });
 }
 
-function buildLabelHTML(data, et, w, h, barcodeSvg){
+function buildLabelHTML(data, et, w, h, qrDataUrl){
   return `
-    <div class="print-label" style="width:${w}in;height:${h}in;padding:2mm 3mm;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;justify-content:center;gap:1mm;box-sizing:border-box;">
-      ${logoDisponible('logoIcon') ? `<div style="text-align:right;"><img src="logo-ycl-icon.png" style="height:12px;"></div>` : ''}
-      <div style="font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;">${data.nombre||''}</div>
-      <div style="font-size:9px;white-space:nowrap;overflow:hidden;">Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}</div>
-      <div style="font-size:9px;white-space:nowrap;overflow:hidden;">${fmtFechaHora(data.fechatoma)}</div>
-      <div style="font-size:10px;font-weight:700;white-space:nowrap;">${et.muestra}</div>
-      <div style="text-align:center;">${barcodeSvg}</div>
+    <div class="print-label" style="width:${w}in;height:${h}in;padding:1.5mm 2.5mm;font-family:'Consolas','Courier New',monospace;color:#000;display:flex;flex-direction:column;gap:0.4mm;box-sizing:border-box;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:4px;border-bottom:1px solid #ddd;padding-bottom:1.5px;margin-bottom:1.5px;">
+        ${logoDisponible('logoIcon') ? `<img src="logo-ycl-icon.png" style="height:15px;flex-shrink:0;">` : ''}
+        <div style="text-align:left;line-height:1.05;">
+          <div style="font-weight:700;font-size:9px;">YoCell Lab</div>
+          <div style="font-size:6px;color:#555;white-space:nowrap;">Laboratorio de Análisis Clínicos<br>San Buenaventura, Coahuila</div>
+        </div>
+      </div>
+      <div style="font-weight:700;font-size:10.5px;white-space:nowrap;overflow:hidden;">${data.nombre||''}</div>
+      <div style="font-size:8.5px;white-space:nowrap;overflow:hidden;">Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+formatEdad(data.edad)):''}</div>
+      <div style="font-size:8.5px;white-space:nowrap;overflow:hidden;">${fmtFechaHora(data.fechatoma)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:5px;margin-top:1px;">
+        <div style="font-size:9.5px;font-weight:700;white-space:nowrap;overflow:hidden;">${et.codigo ? `${et.codigo} (${et.muestra})` : et.muestra}</div>
+        <img src="${qrDataUrl}" style="width:0.5in;height:0.5in;flex-shrink:0;">
+      </div>
     </div>
   `;
 }
@@ -392,7 +489,7 @@ function imprimirEtiquetas(){
   const etiquetas = computeEtiquetas();
   if(etiquetas.length === 0){ toast('Selecciona al menos un estudio'); return; }
   const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
-  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1.4;
 
   let styleTag = document.getElementById('printPageStyle');
   if(!styleTag){
@@ -404,14 +501,21 @@ function imprimirEtiquetas(){
 
   const printArea = document.getElementById('printArea');
   printArea.innerHTML = '';
-  etiquetas.forEach((et,i)=>{
-    const tmp = document.createElement('canvas');
-    JsBarcode(tmp, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:40, margin:0 });
-    const svgWrap = document.createElement('div');
-    JsBarcode(svgWrap, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:22, margin:0, width:1.3 });
-    printArea.innerHTML += buildLabelHTML(data, et, w, h, svgWrap.innerHTML);
+  etiquetas.forEach((et)=>{
+    const qrDataUrl = makeQrDataUrl(buildQrPayload(data, et), 120);
+    printArea.innerHTML += buildLabelHTML(data, et, w, h, qrDataUrl);
   });
   setTimeout(()=>window.print(), 150);
+}
+
+function fitFontSize(pdf, text, maxWidth, startSize, minSize){
+  let size = startSize;
+  pdf.setFontSize(size);
+  while(pdf.getTextWidth(text) > maxWidth && size > minSize){
+    size -= 0.5;
+    pdf.setFontSize(size);
+  }
+  return size;
 }
 
 function descargarPDFEtiquetas(){
@@ -419,35 +523,203 @@ function descargarPDFEtiquetas(){
   const etiquetas = computeEtiquetas();
   if(etiquetas.length === 0){ toast('Selecciona al menos un estudio'); return; }
   const w = parseFloat(document.getElementById('lbl_w').value) || 2.25;
-  const h = parseFloat(document.getElementById('lbl_h').value) || 1;
+  const h = parseFloat(document.getElementById('lbl_h').value) || 1.4;
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation: w>=h?'landscape':'portrait', unit:'in', format:[w,h] });
+  const pad = 0.09;
+  const usableW = w - pad*2;
 
   etiquetas.forEach((et, i)=>{
     if(i>0) pdf.addPage([w,h], w>=h?'landscape':'portrait');
-    addLogoToPdf(pdf, 'logoIcon', w-0.08, 0.06, 0.4, 0.16, 'right');
+    let y = 0.16;
+
+    // Encabezado: logo + "YoCell Lab" centrados
+    const logoImg = document.getElementById('logoIcon');
+    const hasLogo = logoImg && logoImg.complete && logoImg.naturalWidth > 0;
+    const headerText = 'YoCell Lab';
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
+    const textW = pdf.getTextWidth(headerText);
+    const logoW = hasLogo ? 0.14 : 0;
+    const totalHeadW = logoW + (hasLogo?0.04:0) + textW;
+    let hx = (w-totalHeadW)/2;
+    if(hasLogo){ addLogoToPdf(pdf, 'logoIcon', hx, y-0.11, 0.14, 0.14, 'left'); hx += logoW + 0.04; }
+    pdf.text(headerText, hx, y);
+    y += 0.12;
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(5.3);
+    pdf.text('Laboratorio de Análisis Clínicos', w/2, y, {align:'center'});
+    y += 0.09;
+    pdf.text('San Buenaventura, Coahuila', w/2, y, {align:'center'});
+    y += 0.1;
+    pdf.setDrawColor(210); pdf.setLineWidth(0.005);
+    pdf.line(pad, y, w-pad, y);
+    y += 0.16;
+
+    // Nombre del paciente (tamaño adaptable para que quepa)
     pdf.setFont('courier','bold');
-    pdf.setFontSize(10);
-    pdf.text(data.nombre || '(sin nombre)', 0.08, 0.2);
-    pdf.setFont('courier','normal');
-    pdf.setFontSize(7.5);
-    pdf.text(`Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+data.edad):''}`, 0.08, 0.36);
-    pdf.text(fmtFechaHora(data.fechatoma), 0.08, 0.5);
-    pdf.setFont('courier','bold');
-    pdf.setFontSize(8.5);
-    pdf.text(et.muestra, 0.08, 0.64);
+    const nombreSize = fitFontSize(pdf, data.nombre || '(sin nombre)', usableW, 10, 6);
+    pdf.text(data.nombre || '(sin nombre)', pad, y);
+    y += nombreSize/72 + 0.06;
+
+    pdf.setFont('courier','normal'); pdf.setFontSize(7.5);
+    pdf.text(`Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+formatEdad(data.edad)):''}`, pad, y);
+    y += 0.14;
+    pdf.text(fmtFechaHora(data.fechatoma), pad, y);
+    y += 0.14;
+
+    pdf.setFont('courier','bold'); pdf.setFontSize(8.5);
+    const muestraTxt = et.codigo ? `${et.codigo} (${et.muestra})` : et.muestra;
+    fitFontSize(pdf, muestraTxt, usableW - 0.55, 8.5, 6);
+    pdf.text(muestraTxt, pad, y+0.3);
 
     try{
-      const canvas = document.createElement('canvas');
-      JsBarcode(canvas, data.folio || 'SIN-FOLIO', { format:'CODE128', displayValue:false, height:40, margin:0 });
-      const imgData = canvas.toDataURL('image/png');
-      const bw = w*0.8, bh = Math.min(h*0.28, 0.28);
-      pdf.addImage(imgData, 'PNG', (w-bw)/2, h-bh-0.06, bw, bh);
+      const qrDataUrl = makeQrDataUrl(buildQrPayload(data, et), 120);
+      const qrSize = Math.min(0.5, h - y - 0.08);
+      pdf.addImage(qrDataUrl, 'PNG', w-pad-qrSize, y+0.02, qrSize, qrSize);
     }catch(e){ console.error(e); }
   });
 
   pdf.save(`etiquetas_${data.folio||'sin_folio'}.pdf`);
   toast('PDF de etiquetas descargado');
+}
+
+async function enviarRegistro(record){
+  if(!baseConfigurada()) return false;
+  try{
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(record)
+    });
+    return true;
+  }catch(e){
+    console.error(e);
+    return false;
+  }
+}
+
+function hoyISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+async function cargarListaTrabajo(){
+  if(!baseConfigurada()){
+    document.getElementById('listaTrabajoWrap').innerHTML = '<div class="hint">Falta configurar GOOGLE_SCRIPT_URL para conectar con tu Google Sheet.</div>';
+    return;
+  }
+  try{
+    const res = await fetch(`${GOOGLE_SCRIPT_URL}?fecha=${hoyISO()}`);
+    listaTrabajo = await res.json();
+    renderListaTrabajo();
+    prepararSiguienteFolio();
+  }catch(e){
+    console.error(e);
+    toast('No se pudo cargar la lista de trabajo');
+  }
+}
+
+function renderListaTrabajo(){
+  document.getElementById('listaCountPill').textContent =
+    `${listaTrabajo.length} paciente(s) registrados hoy`;
+  const wrap = document.getElementById('listaTrabajoWrap');
+  if(!listaTrabajo.length){
+    wrap.innerHTML = '<div class="hint">Aún no hay pacientes registrados hoy.</div>';
+    return;
+  }
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <thead><tr style="background:var(--teal-light);color:var(--teal);">
+      <th style="padding:6px;text-align:left;">Folio</th>
+      <th style="padding:6px;text-align:left;">Nombre completo</th>
+      <th style="padding:6px;text-align:left;">Edad</th>
+      <th style="padding:6px;text-align:left;">Sexo</th>
+      <th style="padding:6px;text-align:left;">Teléfono</th>
+      <th style="padding:6px;text-align:left;">Estudios</th>
+    </tr></thead><tbody>`;
+  listaTrabajo.forEach(r=>{
+    html += `<tr style="border-bottom:1px solid #eee;">
+      <td style="padding:6px;">${r.folio||''}</td>
+      <td style="padding:6px;">${r.nombreCompleto||''}</td>
+      <td style="padding:6px;">${formatEdad(String(r.edad||''))}</td>
+      <td style="padding:6px;">${r.sexo||''}</td>
+      <td style="padding:6px;">${r.telefono||''}</td>
+      <td style="padding:6px;">${r.estudios||''}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+function prepararSiguienteFolio(){
+  const n = (listaTrabajo?.length || 0) + 1;
+  document.getElementById('f_folio').value = datePrefixToday() + '-' + String(n).padStart(3,'0');
+}
+
+async function guardarRegistro(){
+  const data = readPaciente();
+  if(!data.nombres && !data.apellidoP){ toast('Falta el nombre del paciente'); return; }
+  if(!baseConfigurada()){
+    toast('Falta configurar tu Google Sheet (GOOGLE_SCRIPT_URL) para poder guardar');
+    return;
+  }
+  const etiquetas = computeEtiquetas();
+  const estudiosTxt = etiquetas.map(e => e.codigo ? `${e.codigo} (${e.muestra})` : e.muestra).join(', ');
+  const record = {
+    folio: data.folio,
+    nombres: data.nombres,
+    apellidoPaterno: data.apellidoP,
+    apellidoMaterno: data.apellidoM,
+    nombreCompleto: data.nombre,
+    edad: data.edad,
+    sexo: data.sexo,
+    fechaNacimiento: data.fnac,
+    telefono: data.telefono,
+    medico: data.medico,
+    estudios: estudiosTxt,
+    fechaToma: fmtFechaHora(data.fechatoma),
+    flebotomista: data.fleb,
+    notas: data.notas
+  };
+  toast('Guardando…');
+  const ok = await enviarRegistro(record);
+  if(ok){
+    toast('Paciente guardado en la base ✓');
+    setTimeout(cargarListaTrabajo, 900);
+  }else{
+    toast('No se pudo guardar. Revisa la conexión con Google Sheets.');
+  }
+}
+
+function generarListaTrabajoPDF(){
+  if(!listaTrabajo || listaTrabajo.length === 0){ toast('No hay registros para generar la lista'); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation:'landscape', unit:'in', format:'letter' });
+  const fechaStr = new Date().toLocaleDateString('es-MX');
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(15);
+  pdf.text('Lista de Trabajo — YoCell Lab', 0.5, 0.55);
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(9.5);
+  pdf.text(`Fecha: ${fechaStr}   ·   Total de pacientes: ${listaTrabajo.length}`, 0.5, 0.78);
+
+  const body = listaTrabajo.map(r=>[
+    r.folio || '',
+    r.nombreCompleto || '',
+    formatEdad(String(r.edad||'')),
+    r.sexo || '',
+    r.telefono || '',
+    r.estudios || ''
+  ]);
+
+  pdf.autoTable({
+    startY: 1.0,
+    head: [['Folio','Nombre completo','Edad','Sexo','Teléfono','Estudios solicitados']],
+    body,
+    styles: { font:'helvetica', fontSize:9, cellPadding:0.07 },
+    headStyles: { fillColor:[109,26,54], textColor:255 },
+    margin: { left:0.5, right:0.5 }
+  });
+
+  pdf.save(`lista_trabajo_${hoyISO()}.pdf`);
+  toast('Lista de trabajo generada');
 }
 
 function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
