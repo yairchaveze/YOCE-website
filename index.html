@@ -22,6 +22,7 @@
   --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
   --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
   --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --r:#6d1a36;--rl:#8f2447;--r2:rgba(109,26,54,0.08);
   --bg:#f0f4f8;--card:#ffffff;
   --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
@@ -80,6 +81,12 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
 .tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
 .tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.22);color:var(--p)}
+.lab-banner{display:inline-flex;align-items:center;gap:9px;background:var(--r2);border:1.5px solid rgba(109,26,54,.32);color:var(--r);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.05em;padding:8px 16px;border-radius:30px;text-decoration:none;margin-bottom:16px;transition:all .2s}
+.lab-banner:hover{background:var(--r);color:#fff;transform:translateY(-1px);box-shadow:0 4px 14px rgba(109,26,54,.28)}
+.lab-banner-dot{width:7px;height:7px;border-radius:50%;background:var(--r);flex-shrink:0}
+.lab-banner:hover .lab-banner-dot{background:#fff}
+.lab-banner-arrow{transition:transform .2s;font-size:14px}
+.lab-banner:hover .lab-banner-arrow{transform:translateX(3px)}
 
 /* SECTION LABEL */
 .divider{height:1px;background:var(--bord2);margin:1rem auto;max-width:920px}
@@ -356,6 +363,11 @@ footer p{font-size: 14px;color:var(--m2)}
 <section class="hero-card">
   <div class="hero-grid">
     <div>
+      <a href="yocell-lab.html" class="lab-banner">
+        <span class="lab-banner-dot"></span>
+        <span class="t" data-es="YoCell Lab · Laboratorio de Análisis Clínicos" data-en="YoCell Lab · Clinical Analysis Laboratory">YoCell Lab · Laboratorio de Análisis Clínicos</span>
+        <span class="lab-banner-arrow">→</span>
+      </a>
       <div class="hero-kicker t" data-es="Científico · Investigador · Asesor Estratégico" data-en="Scientist · Researcher · Strategic Advisor">Científico · Investigador · Asesor Estratégico</div>
       <h1 class="name">Yair Omar<strong>Chávez-Estrada</strong></h1>
       <p class="hero-role">Cell Therapy · cGMP Manufacturing · Apheresis &amp; Flow Cytometry</p>
