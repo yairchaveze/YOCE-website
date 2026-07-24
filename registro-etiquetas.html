@@ -134,6 +134,11 @@
         <div class="hint">Formato AAMMDD-XXX. Se sugiere solo según los pacientes ya guardados hoy.</div>
       </div>
       <div>
+        <label>ID Paciente (expediente)</label>
+        <input id="f_idpaciente" type="text" readonly style="background:#f4f2ef;color:#555;">
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">🔍 Buscar paciente existente</button>
+      </div>
+      <div>
         <label>Nombre(s)</label>
         <input id="f_nombres" type="text" placeholder="Nombre(s)" oninput="renderLabels(); actualizarIdPaciente();">
       </div>
@@ -141,15 +146,19 @@
         <label>Apellido paterno</label>
         <input id="f_apellidop" type="text" placeholder="Apellido paterno" oninput="renderLabels(); actualizarIdPaciente();">
       </div>
+    </div>
+    <div class="grid4" style="margin-top:12px;">
       <div>
         <label>Apellido materno</label>
         <input id="f_apellidom" type="text" placeholder="Apellido materno" oninput="renderLabels(); actualizarIdPaciente();">
       </div>
-    </div>
-    <div class="grid3" style="margin-top:12px;">
       <div>
-        <label>Edad</label>
-        <input id="f_edad" type="text" placeholder="Ej. 34" oninput="renderLabels()">
+        <label>Fecha de nacimiento</label>
+        <input id="f_fnac" type="date" onchange="actualizarIdPaciente(); actualizarEdad(); buscarPacienteAuto();">
+      </div>
+      <div>
+        <label>Edad (automática)</label>
+        <input id="f_edad" type="text" readonly style="background:#f4f2ef;color:#555;" placeholder="Se calcula con la fecha de nacimiento">
       </div>
       <div>
         <label>Sexo</label>
@@ -159,10 +168,6 @@
           <option value="Fem">Fem</option>
         </select>
       </div>
-      <div>
-        <label>Fecha de nacimiento</label>
-        <input id="f_fnac" type="date" onchange="actualizarIdPaciente()">
-      </div>
     </div>
     <div class="grid" style="margin-top:12px;">
       <div>
@@ -170,12 +175,19 @@
         <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
       </div>
       <div>
+        <label>Dirección</label>
+        <input id="f_direccion" type="text" placeholder="Calle, número, colonia">
+      </div>
+    </div>
+    <div class="grid" style="margin-top:12px;">
+      <div>
         <label>Médico solicitante</label>
         <input id="f_medico" type="text" placeholder="Nombre del médico">
         <label style="display:flex;align-items:center;gap:5px;font-weight:400;margin-top:6px;">
           <input type="checkbox" id="f_medico_generico" style="width:auto;" onchange="toggleMedicoGenerico()"> A quien corresponda
         </label>
       </div>
+      <div></div>
     </div>
 
     <div style="margin-top:14px;">
@@ -192,7 +204,7 @@
       </div>
     </div>
 
-    <div class="grid3" style="margin-top:14px;">
+    <div class="grid" style="margin-top:14px;">
       <div>
         <label>Fecha y hora de toma</label>
         <input id="f_fechatoma" type="datetime-local" oninput="renderLabels()">
@@ -200,11 +212,6 @@
       <div>
         <label>Flebotomista</label>
         <input id="f_fleb" type="text">
-      </div>
-      <div>
-        <label>ID Paciente (expediente)</label>
-        <input id="f_idpaciente" type="text" readonly style="background:#f4f2ef;color:#555;">
-        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">🔍 Buscar paciente existente</button>
       </div>
     </div>
 
@@ -279,7 +286,8 @@
       <div class="hint">Aún no hay pacientes registrados hoy.</div>
     </div>
     <div class="actions">
-      <button class="btn btn-teal" onclick="generarListaTrabajoPDF()">📋 Generar PDF de lista de trabajo</button>
+      <button class="btn btn-teal" onclick="imprimirListaTrabajo()">🖨️ Imprimir lista de trabajo</button>
+      <button class="btn btn-primary" onclick="generarListaTrabajoPDF()">📋 Descargar PDF de lista de trabajo</button>
       <button class="btn btn-outline" onclick="cerrarTurno()">🔒 Cerrar turno (borra la lista de hoy)</button>
     </div>
   </div>
@@ -387,6 +395,31 @@ function actualizarIdPaciente(){
   document.getElementById('f_idpaciente').value = computeIdPaciente(nombres, apellidoP, apellidoM, fnac);
 }
 
+function calcularEdad(fnac){
+  if(!fnac) return { anios:null, meses:null, corta:'', larga:'' };
+  const hoy = new Date();
+  const nac = new Date(fnac+'T00:00:00');
+  if(isNaN(nac.getTime())) return { anios:null, meses:null, corta:'', larga:'' };
+  let anios = hoy.getFullYear() - nac.getFullYear();
+  let meses = hoy.getMonth() - nac.getMonth();
+  if(hoy.getDate() < nac.getDate()) meses--;
+  if(meses < 0){ anios--; meses += 12; }
+  if(anios < 0) return { anios:null, meses:null, corta:'', larga:'' };
+  const corta = `${anios} a`;
+  const larga = `${anios} año${anios!==1?'s':''} ${meses} mes${meses!==1?'es':''}`;
+  return { anios, meses, corta, larga };
+}
+
+function edadCortaDesdeFnac(fnac){
+  return calcularEdad(fnac).corta || '';
+}
+
+function actualizarEdad(){
+  const fnac = document.getElementById('f_fnac').value;
+  document.getElementById('f_edad').value = calcularEdad(fnac).larga;
+  renderLabels();
+}
+
 function buscarPacienteJSONP(idPaciente){
   return new Promise((resolve)=>{
     const cbName = 'cbPac_' + Date.now();
@@ -416,11 +449,34 @@ async function buscarPacienteExistente(){
   }
   const p = rows[0];
   if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
+  if(p.direccion) document.getElementById('f_direccion').value = p.direccion;
   if(p.medico && !document.getElementById('f_medico_generico').checked){
     document.getElementById('f_medico').value = p.medico;
   }
   toast(`Expediente encontrado: ${p.nombreCompleto || ''} — datos cargados, corrobora antes de guardar`);
   renderLabels();
+}
+
+let ultimoIdBuscado = '';
+async function buscarPacienteAuto(){
+  actualizarIdPaciente();
+  const id = document.getElementById('f_idpaciente').value.trim();
+  if(!id || id === ultimoIdBuscado) return;
+  if(!baseConfigurada()) return;
+  ultimoIdBuscado = id;
+  const rows = await buscarPacienteJSONP(id);
+  if(rows && rows.length > 0){
+    const p = rows[0];
+    if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
+    if(p.direccion) document.getElementById('f_direccion').value = p.direccion;
+    if(p.medico && !document.getElementById('f_medico_generico').checked){
+      document.getElementById('f_medico').value = p.medico;
+    }
+    toast(`Paciente ya registrado antes: ${p.nombreCompleto || ''} — datos jalados, corrobora`);
+    renderLabels();
+  }else{
+    toast('Paciente nuevo (sin expediente previo)');
+  }
 }
 
 function renderAyunoAviso(){
@@ -439,7 +495,7 @@ function buildQrPayload(data, et){
     `Folio: ${data.folio||''}`,
     data.nombre||'',
     data.sexo||'',
-    formatEdad(data.edad),
+    edadCortaDesdeFnac(data.fnac),
     et ? `${et.codigo||''} (${et.muestra||''})`.trim() : '',
     fmtFechaHora(data.fechatoma)
   ].filter(Boolean).join(' | ');
@@ -475,6 +531,7 @@ function readPaciente(){
     sexo: document.getElementById('f_sexo').value,
     fnac: document.getElementById('f_fnac').value,
     telefono: document.getElementById('f_telefono').value.trim(),
+    direccion: document.getElementById('f_direccion').value.trim(),
     medico: document.getElementById('f_medico').value.trim(),
     fechatoma: document.getElementById('f_fechatoma').value,
     fleb: document.getElementById('f_fleb').value.trim(),
@@ -529,7 +586,7 @@ function renderLabels(){
         </div>
       </div>
       <div class="lname">${data.nombre || '(sin nombre)'}</div>
-      <div class="lrow">Folio: ${data.folio || ''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+formatEdad(data.edad)):''}</div>
+      <div class="lrow">Folio: ${data.folio || ''} ${data.sexo?('· '+data.sexo):''} ${data.fnac?('· '+edadCortaDesdeFnac(data.fnac)):''}</div>
       <div class="lrow">${fmtFechaHora(data.fechatoma)}</div>
       <div class="lfoot">
         <div class="lmuestra">${et.codigo ? `${et.codigo} (${et.muestra})` : et.muestra}</div>
@@ -599,7 +656,7 @@ function buildEtiquetasDoc(){
     y += nombreSize/72 + 0.08;
 
     pdf.setFont('courier','normal'); pdf.setFontSize(8);
-    pdf.text(`Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.edad?('· '+formatEdad(data.edad)):''}`, pad, y);
+    pdf.text(`Folio: ${data.folio||''} ${data.sexo?('· '+data.sexo):''} ${data.fnac?('· '+edadCortaDesdeFnac(data.fnac)):''}`, pad, y);
     y += 0.16;
     pdf.text(fmtFechaHora(data.fechatoma), pad, y);
     y += 0.16;
@@ -750,11 +807,14 @@ async function cerrarTurno(){
   if(!ok1) return;
   toast('Cerrando turno…');
   const res = await cerrarTurnoJSONP();
+  console.log('Respuesta cerrarTurno:', res);
   if(res && res.ok){
     toast(`Turno cerrado — se borraron ${res.borrados} registro(s) de hoy`);
     await cargarListaTrabajo();
   }else{
-    toast('No se pudo cerrar el turno. Intenta de nuevo.');
+    const detalle = res && res.error ? ` (${res.error})` : '';
+    toast(`No se pudo cerrar el turno${detalle}`);
+    alert(`No se pudo cerrar el turno.${detalle ? '\n\nDetalle: '+res.error : '\n\nRevisa la consola del navegador (clic derecho → Inspeccionar → Console) y mándame lo que diga.'}`);
   }
 }
 
@@ -783,6 +843,7 @@ async function guardarRegistro(){
     sexo: data.sexo,
     fechaNacimiento: data.fnac,
     telefono: data.telefono,
+    direccion: data.direccion,
     medico: data.medico,
     estudios: estudiosTxt,
     fechaToma: fmtFechaHora(data.fechatoma),
@@ -808,7 +869,9 @@ function limpiarParaSiguiente(){
   document.getElementById('f_sexo').value = '';
   document.getElementById('f_fnac').value = '';
   document.getElementById('f_telefono').value = '';
+  document.getElementById('f_direccion').value = '';
   document.getElementById('f_idpaciente').value = '';
+  ultimoIdBuscado = '';
   document.getElementById('f_medico_generico').checked = false;
   document.getElementById('f_medico').disabled = false;
   document.getElementById('f_medico').value = '';
@@ -827,8 +890,8 @@ function limpiarParaSiguiente(){
   toast('Listo para el siguiente paciente');
 }
 
-function generarListaTrabajoPDF(){
-  if(!listaTrabajo || listaTrabajo.length === 0){ toast('No hay registros para generar la lista'); return; }
+function buildListaTrabajoDoc(){
+  if(!listaTrabajo || listaTrabajo.length === 0) return null;
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation:'landscape', unit:'in', format:'letter' });
   const fechaStr = new Date().toLocaleDateString('es-MX');
@@ -840,6 +903,7 @@ function generarListaTrabajoPDF(){
 
   const body = listaTrabajo.map(r=>[
     r.folio || '',
+    r.idPaciente || '',
     r.nombreCompleto || '',
     formatEdad(String(r.edad||'')),
     r.sexo || '',
@@ -849,15 +913,29 @@ function generarListaTrabajoPDF(){
 
   pdf.autoTable({
     startY: 1.0,
-    head: [['Folio','Nombre completo','Edad','Sexo','Teléfono','Estudios solicitados']],
+    head: [['Folio','ID Paciente','Nombre completo','Edad','Sexo','Teléfono','Estudios solicitados']],
     body,
     styles: { font:'helvetica', fontSize:9, cellPadding:0.07 },
     headStyles: { fillColor:[109,26,54], textColor:255 },
     margin: { left:0.5, right:0.5 }
   });
 
+  return pdf;
+}
+
+function generarListaTrabajoPDF(){
+  const pdf = buildListaTrabajoDoc();
+  if(!pdf){ toast('No hay registros para generar la lista'); return; }
   pdf.save(`lista_trabajo_${hoyISO()}.pdf`);
-  toast('Lista de trabajo generada');
+  toast('Lista de trabajo descargada');
+}
+
+function imprimirListaTrabajo(){
+  const pdf = buildListaTrabajoDoc();
+  if(!pdf){ toast('No hay registros para generar la lista'); return; }
+  pdf.autoPrint();
+  const blobUrl = pdf.output('bloburl');
+  window.open(blobUrl, '_blank');
 }
 
 function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
@@ -900,24 +978,24 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
   pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.15, {align:'center'});
 
   try{
-    const qrSize = 0.42;
+    const qrSize = 0.62;
     const qrUrl = `https://yocelltherapy.com/resultados.html?folio=${encodeURIComponent(data.folio||'')}`;
-    const resultadosQr = makeQrDataUrl(qrUrl, 110);
+    const resultadosQr = makeQrDataUrl(qrUrl, 160);
     const qrX = pageW - marginL - qrSize;
-    const qrY = y - 0.3;
+    const qrY = y - 0.34;
     pdf.addImage(resultadosQr, 'PNG', qrX, qrY, qrSize, qrSize);
-    pdf.setFont('helvetica','normal'); pdf.setFontSize(5.4);
-    pdf.text('Ver resultados aquí', qrX+qrSize/2, qrY+qrSize+0.09, {align:'center'});
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(5.6);
+    pdf.text('Ver resultados aquí', qrX+qrSize/2, qrY+qrSize+0.1, {align:'center'});
   }catch(e){ console.error(e); }
 
-  y += 0.3;
+  y += 0.36;
 
   pdf.setDrawColor(150); pdf.setLineWidth(0.008);
   pdf.line(marginL, y, pageW-marginL, y);
   y += 0.18;
 
   campo('Paciente:', data.nombre, marginL, y);
-  campo('Folio:', data.folio, marginL+colW, y);
+  campo('Folio:', `${data.folio||''}${data.idPaciente ? '   ·   ID: '+data.idPaciente : ''}`, marginL+colW, y);
   y += 0.3;
   campo('Edad:', formatEdad(data.edad), marginL, y);
   campo('Sexo:', data.sexo, marginL+colW, y);
@@ -963,6 +1041,20 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
   pdf.text(tubosTexto, marginL+1.2, y);
   y += 0.2;
 
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
+  pdf.text('Ayuno:', marginL, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(data.ayuno || 'No especificado', marginL+0.5, y);
+  y += 0.18;
+
+  if(data.ayuno && !data.ayuno.startsWith('Adecuado')){
+    pdf.setFont('helvetica','italic'); pdf.setFontSize(6.3);
+    const avisoTxt = 'Se explicó al paciente la importancia de un ayuno adecuado; al firmar autoriza continuar bajo esta condición, entendiendo que puede alterar el resultado. Se recomienda repetir el estudio con ayuno adecuado.';
+    const avisoLines = pdf.splitTextToSize(avisoTxt, pageW - 2*marginL);
+    pdf.text(avisoLines, marginL, y);
+    y += avisoLines.length*0.088 + 0.06;
+  }
+
   if(data.notas){
     pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
     pdf.text('Notas:', marginL, y);
@@ -981,7 +1073,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
   const consentText = 'Por medio del presente, declaro que he sido informado(a) de forma clara sobre el estudio o los estudios de laboratorio marcados en este documento, así como del procedimiento necesario para la toma de la(s) muestra(s) (punción venosa y/o capilar y/o recolección de orina). Autorizo de manera voluntaria dicha toma de muestra. Entiendo que los resultados me serán entregados en la fecha acordada y que este estudio de laboratorio es una herramienta de apoyo diagnóstico que no sustituye la consulta, el diagnóstico ni el tratamiento por un profesional de la salud, por lo que deberé acudir con un médico para la interpretación clínica de mis resultados.';
   const lines = pdf.splitTextToSize(consentText, pageW - 2*marginL);
   pdf.text(lines, marginL, y);
-  y += lines.length*0.108 + 0.24;
+  y += lines.length*0.1 + 0.18;
 
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
   pdf.line(marginL+0.5, y, pageW-marginL-0.5, y);
