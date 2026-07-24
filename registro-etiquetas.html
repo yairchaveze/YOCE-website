@@ -275,7 +275,7 @@
 
   <!-- ORDEN DE ESTUDIOS -->
   <div class="card">
-    <h2>Orden de estudios (FCAL-04)</h2>
+    <h2>Orden de estudios (FCAL-04-01)</h2>
     <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado — se imprime dos veces por hoja (arriba y abajo, con línea para cortar) para que salgan 2 copias de una sola hoja.</div>
     <div class="actions">
       <button class="btn btn-teal" onclick="imprimirOrden()">🖨️ Imprimir Orden de Estudios</button>
@@ -312,7 +312,7 @@
 <script>
 /* ═══ CONFIGURACIÓN DE LA BASE DE DATOS (Google Sheets vía Apps Script) ═══ */
 /* Pega aquí la URL de tu Web App de Google Apps Script (ver instrucciones que te compartí). */
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhsWiLj4U4O0a98RfY4oK4KppAYcyzHGY8p3M3EFRK3AI0CeMkbCntBHAVK2kUimRv/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXCrb5Qlnopc0QJ68BE56w0AQq5NhKqZ0CKOeLM_OcPJr522J5486emziH46V5DJF4/exec';
 let listaTrabajo = [];
 
 function baseConfigurada(){
@@ -1012,7 +1012,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.setFont('helvetica','bold'); pdf.setFontSize(12);
   pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.6);
-  pdf.text('YoCell Lab · San Buenaventura, Coahuila · FCAL-04', pageW/2, y+0.15, {align:'center'});
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila · FCAL-04-01', pageW/2, y+0.15, {align:'center'});
 
   // Etiqueta de copia (Cliente / Laboratorio), arriba a la derecha
   if(copiaLabel){
@@ -1153,10 +1153,6 @@ function buildOrdenDoc(){
   pdf.setLineDashPattern([], 0);
   pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(140);
   pdf.text('✂ cortar aquí', pageW/2, half-0.05, {align:'center'});
-  pdf.setTextColor(0);
-
-  pdf.setFontSize(6.5); pdf.setTextColor(140);
-  pdf.text('FCAL-04', 0.55, pageH-0.15);
   pdf.setTextColor(0);
 
   return { pdf, folio: data.folio };
