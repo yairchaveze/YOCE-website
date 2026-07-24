@@ -11,25 +11,46 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --r:#6d1a36;--rl:#8f2447;--r2:rgba(109,26,54,0.08);--r3:rgba(109,26,54,0.14);
+  --teal:#1f6f6f;
   --bg:#f7f3f2;--card:#ffffff;--bord2:rgba(15,23,42,0.09);
   --t:#0f172a;--m:#3d5166;--m2:#536880;
 }
 body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column}
-.page{max-width:920px;margin:0 auto;padding:0 1.25rem;width:100%}
+.page{max-width:640px;margin:0 auto;padding:0 1.25rem 3rem;width:100%}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 1.6rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
 .back-link{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--m2);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .back-link:hover{color:var(--r)}
 .lab-logo{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--r)}
 .lab-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--r)}
-main{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:3rem 1rem}
-.box{background:var(--card);border:1px solid var(--bord2);border-radius:16px;padding:3rem 2.2rem;max-width:460px;box-shadow:0 4px 24px rgba(109,26,54,.05)}
-.box .icon{font-size:2.4rem;margin-bottom:1rem}
-.box h1{font-size:1.4rem;color:var(--t);margin-bottom:.6rem}
-.box p{color:var(--m);font-size:.95rem;line-height:1.6;margin-bottom:1.6rem}
-.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:4px 12px;border-radius:20px}
+.card{background:var(--card);border:1px solid var(--bord2);border-radius:16px;padding:2rem 1.8rem;box-shadow:0 4px 24px rgba(109,26,54,.05);margin-bottom:1.2rem}
+h1{font-size:1.3rem;color:var(--t);margin-bottom:.4rem}
+.sub{color:var(--m);font-size:.9rem;margin-bottom:1.4rem}
+.search-row{display:flex;gap:8px}
+.search-row input{flex:1;padding:12px 14px;border:1.5px solid var(--bord2);border-radius:9px;font-size:1rem;letter-spacing:.03em}
+.search-row input:focus{outline:none;border-color:var(--r)}
+.search-row button{padding:12px 20px;border:none;border-radius:9px;background:var(--r);color:#fff;font-weight:600;font-size:.92rem;cursor:pointer}
+.search-row button:hover{background:var(--rl)}
+.msg{font-size:.88rem;margin-top:.8rem}
+.msg.error{color:var(--r)}
+.msg.loading{color:var(--m2)}
+
+.patient-name{font-size:1.15rem;font-weight:600;color:var(--t);margin-bottom:.2rem}
+.patient-meta{font-size:.85rem;color:var(--m2);margin-bottom:1.2rem}
+.estado-pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:1rem}
+.estado-pendiente{background:#fef3e2;color:#b5690a;}
+.estado-listo{background:#e3f5ee;color:#1f6f6f;}
+
+.studies{display:flex;flex-direction:column;gap:10px}
+.study-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-radius:11px;border:1.5px solid var(--bord2);background:#fff;cursor:pointer;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
+.study-btn:hover{border-color:var(--r);background:var(--r2)}
+.study-btn .name{font-weight:600;color:var(--t);font-size:.95rem}
+.study-btn .status{font-size:.78rem;color:var(--m2)}
+.study-btn .status.ready{color:var(--teal);font-weight:600}
+.study-btn .arrow{font-size:1.1rem;color:var(--r)}
+
 footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2)}
 
-/* CANDADO DE ACCESO */
+/* CANDADO DE ACCESO (personal de laboratorio) */
 #gateOverlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:900;padding:1rem}
 .gate-box{background:#fff;border-radius:14px;padding:2rem 1.8rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.12);text-align:center}
 .gate-box .lock{font-size:1.9rem;margin-bottom:.5rem}
@@ -47,7 +68,7 @@ footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace
 </head>
 <body>
 
-<!-- CANDADO -->
+<!-- CANDADO (temporal, mientras esto está en pruebas) -->
 <div id="gateOverlay">
   <div class="gate-box" id="gateBox">
     <div class="lock">🔒</div>
@@ -65,27 +86,57 @@ footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace
   <a href="yocell-lab.html" class="back-link">← YoCell Lab</a>
   <div class="lab-logo"><span class="dot"></span> YoCell Lab</div>
 </nav>
+
+<div class="card" id="searchCard">
+  <h1>Consulta tus resultados</h1>
+  <div class="sub">Escribe el folio de tu orden de estudios (lo encuentras en tu orden de estudios o en la etiqueta que te dieron).</div>
+  <div class="search-row">
+    <input id="folioInput" type="text" placeholder="Ej. 260723-001" autocomplete="off">
+    <button onclick="buscarFolio()">Buscar</button>
+  </div>
+  <div class="msg" id="searchMsg"></div>
 </div>
 
-<main>
-  <div class="box">
-    <div class="icon">📄</div>
-    <h1>Resultados de laboratorio</h1>
-    <p>Esta sección está en construcción. Muy pronto podrás consultar aquí tus resultados de manera segura.</p>
-    <span class="tag">Próximamente</span>
-  </div>
-</main>
+<div class="card" id="resultCard" style="display:none;">
+  <div class="patient-name" id="rNombre"></div>
+  <div class="patient-meta" id="rMeta"></div>
+  <span class="estado-pill" id="rEstadoPill"></span>
+  <div class="studies" id="rStudies"></div>
+</div>
+
+</div>
 
 <footer>© 2026 YoCell Lab · San Buenaventura, Coahuila</footer>
 </div>
 
 <script>
+/* ═══ CANDADO DE ACCESO (compartido con yocell-lab.html) ═══ */
 const GATE_PASSWORD = 'YCL2026';
+const ACCESS_KEY = 'yclAccess';
+
+function yaTieneAcceso(){
+  try{ return sessionStorage.getItem(ACCESS_KEY) === 'ok'; }catch(e){ return false; }
+}
+function marcarAcceso(){
+  try{ sessionStorage.setItem(ACCESS_KEY, 'ok'); }catch(e){}
+}
+function mostrarContenido(){
+  document.getElementById('gateOverlay').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+  initResultados();
+}
+
+if(yaTieneAcceso()){
+  mostrarContenido();
+}else{
+  setTimeout(()=>document.getElementById('gateInput').focus(), 100);
+}
+
 function checkGate(){
   const val = document.getElementById('gateInput').value;
   if(val === GATE_PASSWORD){
-    document.getElementById('gateOverlay').style.display = 'none';
-    document.getElementById('siteContent').style.display = 'block';
+    marcarAcceso();
+    mostrarContenido();
   }else{
     document.getElementById('gateError').textContent = 'Contraseña incorrecta';
     const box = document.getElementById('gateBox');
@@ -93,7 +144,117 @@ function checkGate(){
   }
 }
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkGate(); });
-setTimeout(()=>document.getElementById('gateInput').focus(), 100);
+</script>
+
+<script>
+/* ═══ CONSULTA DE RESULTADOS ═══ */
+/* Misma URL de Apps Script que usa registro-etiquetas.html */
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhsWiLj4U4O0a98RfY4oK4KppAYcyzHGY8p3M3EFRK3AI0CeMkbCntBHAVK2kUimRv/exec';
+
+function baseConfigurada(){
+  return GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes('PEGA_AQUI');
+}
+
+function buscarPorFolioJSONP(folio){
+  return new Promise((resolve)=>{
+    const cbName = 'cbFolio_' + Date.now();
+    window[cbName] = function(data){
+      delete window[cbName];
+      document.getElementById('jsonp-folio')?.remove();
+      resolve(data || []);
+    };
+    const script = document.createElement('script');
+    script.id = 'jsonp-folio';
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${cbName}&folio=${encodeURIComponent(folio)}&t=${Date.now()}`;
+    script.onerror = function(){
+      delete window[cbName];
+      resolve([]);
+    };
+    document.head.appendChild(script);
+  });
+}
+
+function parseCodigosEstudio(estudiosStr){
+  if(!estudiosStr) return [];
+  return estudiosStr.split(',').map(s=>{
+    const m = s.trim().match(/^([^(]+)/);
+    return (m ? m[1] : s).trim();
+  }).filter(Boolean);
+}
+
+const NOMBRES_ESTUDIO = { BH:'Biometría Hemática (BH)', QS:'Química Sanguínea (QS)', EGO:'Examen Gral. de Orina (EGO)' };
+const CAMPO_RESULTADO = { BH:'resultadoBH', QS:'resultadoQS', EGO:'resultadoEGO' };
+
+function abrirResultado(url, nombreEstudio){
+  if(url){
+    window.open(url, '_blank');
+  }else{
+    alert(`Tu resultado de ${nombreEstudio} aún no está listo. Te avisaremos por teléfono en cuanto esté disponible.`);
+  }
+}
+
+function mostrarRegistro(r){
+  document.getElementById('searchMsg').textContent = '';
+  document.getElementById('rNombre').textContent = r.nombreCompleto || '(sin nombre)';
+  document.getElementById('rMeta').textContent =
+    `Folio: ${r.folio || ''} · ${r.sexo || ''} · ${r.edad ? r.edad + ' a' : ''}`;
+
+  const pill = document.getElementById('rEstadoPill');
+  const listo = String(r.estado || '').toLowerCase() === 'listo';
+  pill.textContent = listo ? 'Resultados listos' : 'En proceso';
+  pill.className = 'estado-pill ' + (listo ? 'estado-listo' : 'estado-pendiente');
+
+  const codigos = parseCodigosEstudio(r.estudios);
+  const wrap = document.getElementById('rStudies');
+  wrap.innerHTML = '';
+  codigos.forEach(codigo=>{
+    const nombre = NOMBRES_ESTUDIO[codigo] || codigo;
+    const campo = CAMPO_RESULTADO[codigo];
+    const url = campo ? r[campo] : (r.resultadoOtro || '');
+    const btn = document.createElement('button');
+    btn.className = 'study-btn';
+    btn.innerHTML = `
+      <div>
+        <div class="name">${nombre}</div>
+        <div class="status ${url ? 'ready' : ''}">${url ? 'Listo para ver' : 'Aún en proceso'}</div>
+      </div>
+      <div class="arrow">${url ? '↓' : '⏳'}</div>
+    `;
+    btn.onclick = () => abrirResultado(url, nombre);
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById('resultCard').style.display = 'block';
+}
+
+async function buscarFolio(){
+  const folio = document.getElementById('folioInput').value.trim();
+  const msg = document.getElementById('searchMsg');
+  document.getElementById('resultCard').style.display = 'none';
+  if(!folio){ msg.textContent = 'Escribe tu folio.'; msg.className = 'msg error'; return; }
+  if(!baseConfigurada()){ msg.textContent = 'La base de datos aún no está configurada.'; msg.className = 'msg error'; return; }
+
+  msg.textContent = 'Buscando…';
+  msg.className = 'msg loading';
+  const rows = await buscarPorFolioJSONP(folio);
+  if(!rows || rows.length === 0){
+    msg.textContent = 'No encontramos ese folio. Verifica que esté bien escrito.';
+    msg.className = 'msg error';
+    return;
+  }
+  mostrarRegistro(rows[0]);
+}
+
+document.getElementById('folioInput').addEventListener('keydown', e=>{ if(e.key==='Enter') buscarFolio(); });
+
+function initResultados(){
+  const params = new URLSearchParams(window.location.search);
+  const folioURL = params.get('folio');
+  if(folioURL){
+    document.getElementById('folioInput').value = folioURL;
+    buscarFolio();
+  }
+}
 </script>
 </body>
 </html>

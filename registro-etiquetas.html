@@ -62,6 +62,7 @@
   .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:18px;}
   .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--teal);margin:0 0 14px;border-bottom:2px solid var(--teal-light);padding-bottom:8px;}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid4{display:grid;grid-template-columns:1fr 1.4fr 1fr 1fr;gap:12px;}
   .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
   label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;}
   input,select{width:100%;padding:8px 10px;border:1px solid #cfcac6;border-radius:6px;font-size:13px;background:#fff;}
@@ -129,7 +130,7 @@
   <!-- FORMULARIO -->
   <div class="card">
     <h2>Datos del paciente</h2>
-    <div class="grid3">
+    <div class="grid4">
       <div>
         <label>Folio</label>
         <input id="f_folio" type="text">
@@ -140,12 +141,6 @@
         <input id="f_nombres" type="text" placeholder="Nombre(s)" oninput="renderLabels()">
       </div>
       <div>
-        <label>Teléfono</label>
-        <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
-      </div>
-    </div>
-    <div class="grid3" style="margin-top:12px;">
-      <div>
         <label>Apellido paterno</label>
         <input id="f_apellidop" type="text" placeholder="Apellido paterno" oninput="renderLabels()">
       </div>
@@ -153,12 +148,12 @@
         <label>Apellido materno</label>
         <input id="f_apellidom" type="text" placeholder="Apellido materno" oninput="renderLabels()">
       </div>
+    </div>
+    <div class="grid3" style="margin-top:12px;">
       <div>
         <label>Edad</label>
         <input id="f_edad" type="text" placeholder="Ej. 34" oninput="renderLabels()">
       </div>
-    </div>
-    <div class="grid3" style="margin-top:12px;">
       <div>
         <label>Sexo</label>
         <select id="f_sexo" onchange="renderLabels()">
@@ -170,6 +165,12 @@
       <div>
         <label>Fecha de nacimiento</label>
         <input id="f_fnac" type="date">
+      </div>
+    </div>
+    <div class="grid" style="margin-top:12px;">
+      <div>
+        <label>Teléfono</label>
+        <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
       </div>
       <div>
         <label>Médico solicitante</label>
@@ -243,9 +244,10 @@
   <!-- ORDEN DE ESTUDIOS -->
   <div class="card">
     <h2>Orden de estudios (FCAL-04)</h2>
-    <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado, listo para que el paciente lo lea y firme.</div>
+    <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado — se imprime dos veces por hoja (arriba y abajo, con línea para cortar) para que salgan 2 copias de una sola hoja.</div>
     <div class="actions">
-      <button class="btn btn-primary" onclick="generarOrdenPDF()">Generar Orden de Estudios (PDF)</button>
+      <button class="btn btn-teal" onclick="imprimirOrden()">🖨️ Imprimir Orden de Estudios</button>
+      <button class="btn btn-primary" onclick="generarOrdenPDF()">Descargar PDF de Orden de Estudios</button>
     </div>
   </div>
 
@@ -276,7 +278,7 @@
 <script>
 /* ═══ CONFIGURACIÓN DE LA BASE DE DATOS (Google Sheets vía Apps Script) ═══ */
 /* Pega aquí la URL de tu Web App de Google Apps Script (ver instrucciones que te compartí). */
-const GOOGLE_SCRIPT_URL = 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhsWiLj4U4O0a98RfY4oK4KppAYcyzHGY8p3M3EFRK3AI0CeMkbCntBHAVK2kUimRv/exec';
 let listaTrabajo = [];
 
 function baseConfigurada(){
@@ -588,8 +590,10 @@ async function enviarRegistro(record){
     await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(record)
+      body: JSON.stringify(record),
+      mode: 'no-cors'
     });
+    // con mode:'no-cors' no podemos leer la respuesta; si no hubo error de red, asumimos éxito
     return true;
   }catch(e){
     console.error(e);
@@ -602,20 +606,34 @@ function hoyISO(){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+function cargarListaTrabajoJSONP(){
+  return new Promise((resolve)=>{
+    const cbName = 'cbLista_' + Date.now();
+    window[cbName] = function(data){
+      delete window[cbName];
+      document.getElementById('jsonp-lista')?.remove();
+      resolve(data || []);
+    };
+    const script = document.createElement('script');
+    script.id = 'jsonp-lista';
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${cbName}&fecha=${hoyISO()}&t=${Date.now()}`;
+    script.onerror = function(){
+      console.error('Error cargando lista de trabajo');
+      delete window[cbName];
+      resolve([]);
+    };
+    document.head.appendChild(script);
+  });
+}
+
 async function cargarListaTrabajo(){
   if(!baseConfigurada()){
     document.getElementById('listaTrabajoWrap').innerHTML = '<div class="hint">Falta configurar GOOGLE_SCRIPT_URL para conectar con tu Google Sheet.</div>';
     return;
   }
-  try{
-    const res = await fetch(`${GOOGLE_SCRIPT_URL}?fecha=${hoyISO()}`);
-    listaTrabajo = await res.json();
-    renderListaTrabajo();
-    prepararSiguienteFolio();
-  }catch(e){
-    console.error(e);
-    toast('No se pudo cargar la lista de trabajo');
-  }
+  listaTrabajo = await cargarListaTrabajoJSONP();
+  renderListaTrabajo();
+  prepararSiguienteFolio();
 }
 
 function renderListaTrabajo(){
@@ -634,6 +652,7 @@ function renderListaTrabajo(){
       <th style="padding:6px;text-align:left;">Sexo</th>
       <th style="padding:6px;text-align:left;">Teléfono</th>
       <th style="padding:6px;text-align:left;">Estudios</th>
+      <th style="padding:6px;text-align:left;"></th>
     </tr></thead><tbody>`;
   listaTrabajo.forEach(r=>{
     html += `<tr style="border-bottom:1px solid #eee;">
@@ -643,10 +662,17 @@ function renderListaTrabajo(){
       <td style="padding:6px;">${r.sexo||''}</td>
       <td style="padding:6px;">${r.telefono||''}</td>
       <td style="padding:6px;">${r.estudios||''}</td>
+      <td style="padding:6px;"><button class="btn btn-outline btn-sm" onclick="reportarEstudio('${r.folio}')">📝 Reportar estudio</button></td>
     </tr>`;
   });
   html += '</tbody></table>';
   wrap.innerHTML = html;
+}
+
+function reportarEstudio(folio){
+  // Aún en desarrollo: aquí vamos a conectar la forma de reportar resultados
+  // por analito una vez que definamos el formato exacto (documento pendiente).
+  toast(`Reportar estudio de ${folio} — en construcción, muy pronto 🚧`);
 }
 
 function prepararSiguienteFolio(){
@@ -743,116 +769,156 @@ function checkbox(pdf, x, y, checked, size=0.11){
   }
 }
 
-function generarOrdenPDF(){
+function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
+  const marginL = 0.55, pageW = 8.5;
+  const colW = (pageW - 2*marginL)/2;
+  let y = oy + 0.34;
+
+  function campo(label, value, x, yy){
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
+    pdf.text(label, x, yy);
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(8.5);
+    pdf.text(String(value||''), x, yy+0.14);
+  }
+
+  addLogoToPdf(pdf, 'logoFull', marginL, y-0.3, 0.9, 0.42, 'left');
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(12);
+  pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.15, {align:'center'});
+
+  try{
+    const qrSize = 0.42;
+    const qrUrl = `https://yocelltherapy.com/resultados.html?folio=${encodeURIComponent(data.folio||'')}`;
+    const resultadosQr = makeQrDataUrl(qrUrl, 110);
+    const qrX = pageW - marginL - qrSize;
+    const qrY = y - 0.3;
+    pdf.addImage(resultadosQr, 'PNG', qrX, qrY, qrSize, qrSize);
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(5.4);
+    pdf.text('Ver resultados aquí', qrX+qrSize/2, qrY+qrSize+0.09, {align:'center'});
+  }catch(e){ console.error(e); }
+
+  y += 0.3;
+
+  pdf.setDrawColor(150); pdf.setLineWidth(0.008);
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.18;
+
+  campo('Paciente:', data.nombre, marginL, y);
+  campo('Folio:', data.folio, marginL+colW, y);
+  y += 0.3;
+  campo('Edad:', formatEdad(data.edad), marginL, y);
+  campo('Sexo:', data.sexo, marginL+colW, y);
+  y += 0.3;
+  campo('Fecha de nacimiento:', data.fnac, marginL, y);
+  campo('Médico solicitante:', data.medico, marginL+colW, y);
+  y += 0.28;
+
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.18;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.text('ESTUDIOS SOLICITADOS', marginL, y);
+  y += 0.18;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(8);
+  let x = marginL;
+  estudios.forEach(e=>{
+    const nombre = {BH:'Biometría Hemática (BH)', QS:'Química Sanguínea (QS)', EGO:'Examen Gral. de Orina (EGO)'}[e.codigo];
+    checkbox(pdf, x, y, e.checked, 0.1);
+    pdf.text(nombre, x+0.16, y);
+    x += (e.codigo==='EGO') ? 2.05 : 1.9;
+  });
+  y += 0.22;
+  checkbox(pdf, marginL, y, !!otroEstudio, 0.1);
+  pdf.text(`Otro: ${otroEstudio || '____________________________'}`, marginL+0.16, y);
+  y += 0.22;
+
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.18;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.text('REGISTRO DE TOMA DE MUESTRA', marginL, y);
+  y += 0.2;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(8);
+  campo('Fecha y hora de toma:', fmtFechaHora(data.fechatoma), marginL, y);
+  campo('Flebotomista:', data.fleb, marginL+colW, y);
+  y += 0.28;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
+  pdf.text('Tubo(s)/recipiente(s):', marginL, y);
+  pdf.setFont('helvetica','normal');
+  const tubosTexto = etiquetas.length ? etiquetas.map(e=>e.tubo).join(' • ') : 'No especificado';
+  pdf.text(tubosTexto, marginL+1.2, y);
+  y += 0.2;
+
+  if(data.notas){
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
+    pdf.text('Notas:', marginL, y);
+    pdf.setFont('helvetica','normal');
+    pdf.text(data.notas, marginL+0.5, y);
+    y += 0.18;
+  }
+  y += 0.08;
+  pdf.line(marginL, y, pageW-marginL, y);
+  y += 0.2;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.text('CONSENTIMIENTO INFORMADO', marginL, y);
+  y += 0.17;
+  pdf.setFont('helvetica','italic'); pdf.setFontSize(7.3);
+  const consentText = 'Por medio del presente, declaro que he sido informado(a) de forma clara sobre el estudio o los estudios de laboratorio marcados en este documento, así como del procedimiento necesario para la toma de la(s) muestra(s) (punción venosa y/o capilar y/o recolección de orina). Autorizo de manera voluntaria dicha toma de muestra. Entiendo que los resultados me serán entregados en la fecha acordada y que este estudio de laboratorio es una herramienta de apoyo diagnóstico que no sustituye la consulta, el diagnóstico ni el tratamiento por un profesional de la salud, por lo que deberé acudir con un médico para la interpretación clínica de mis resultados.';
+  const lines = pdf.splitTextToSize(consentText, pageW - 2*marginL);
+  pdf.text(lines, marginL, y);
+  y += lines.length*0.108 + 0.24;
+
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
+  pdf.line(marginL+0.5, y, pageW-marginL-0.5, y);
+  y += 0.14;
+  pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', pageW/2, y, {align:'center'});
+
+  return y;
+}
+
+function buildOrdenDoc(){
   const data = readPaciente();
   const estudios = readEstudiosSeleccionados();
   const otroEstudio = document.getElementById('f_otro_estudio').value.trim();
   const etiquetas = computeEtiquetas();
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ orientation:'portrait', unit:'in', format:'letter' });
-  const marginL = 0.7, pageW = 8.5;
-  let y = 0.6;
+  const pageW = 8.5, pageH = 11, half = pageH/2;
 
-  addLogoToPdf(pdf, 'logoFull', marginL, y-0.42, 1.3, 0.6, 'left');
-  pdf.setFont('helvetica','bold');
-  pdf.setFontSize(14);
-  pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
-  pdf.setFont('helvetica','normal');
-  pdf.setFontSize(9);
-  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.2, {align:'center'});
-  y += 0.55;
+  drawOrdenBlock(pdf, 0, data, estudios, otroEstudio, etiquetas);
+  drawOrdenBlock(pdf, half, data, estudios, otroEstudio, etiquetas);
 
-  pdf.setDrawColor(150);
-  pdf.setLineWidth(0.01);
-  pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.28;
+  // Línea de corte al centro de la hoja
+  pdf.setDrawColor(120);
+  pdf.setLineWidth(0.012);
+  pdf.setLineDashPattern([0.06, 0.06], 0);
+  pdf.line(0.15, half, pageW-0.15, half);
+  pdf.setLineDashPattern([], 0);
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5); pdf.setTextColor(140);
+  pdf.text('✂ cortar aquí', pageW/2, half-0.05, {align:'center'});
+  pdf.setTextColor(0);
 
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(9);
-  const colW = (pageW - 2*marginL)/2;
-  function campo(label, value, x, yy){
-    pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
-    pdf.text(label, x, yy);
-    pdf.setFont('helvetica','normal'); pdf.setFontSize(9.5);
-    pdf.text(String(value||''), x, yy+0.16);
-  }
-  campo('Paciente:', data.nombre, marginL, y);
-  campo('Folio:', data.folio, marginL+colW, y);
-  y += 0.36;
-  campo('Edad:', data.edad, marginL, y);
-  campo('Sexo:', data.sexo, marginL+colW, y);
-  y += 0.36;
-  campo('Fecha de nacimiento:', data.fnac, marginL, y);
-  campo('Médico solicitante:', data.medico, marginL+colW, y);
-  y += 0.42;
+  pdf.setFontSize(6.5); pdf.setTextColor(140);
+  pdf.text('FCAL-04', 0.55, pageH-0.15);
+  pdf.setTextColor(0);
 
-  pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.26;
+  return { pdf, folio: data.folio };
+}
 
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
-  pdf.text('ESTUDIOS SOLICITADOS', marginL, y);
-  y += 0.24;
-  pdf.setFontSize(9); pdf.setFont('helvetica','normal');
-  let x = marginL;
-  estudios.forEach(e=>{
-    const nombre = {BH:'Biometría Hemática (BH)', QS:'Química Sanguínea (QS)', EGO:'Examen Gral. de Orina (EGO)'}[e.codigo];
-    checkbox(pdf, x, y, e.checked);
-    pdf.text(nombre, x+0.18, y);
-    x += (e.codigo==='EGO') ? 2.4 : 2.2;
-  });
-  y += 0.28;
-  checkbox(pdf, marginL, y, !!otroEstudio);
-  pdf.text(`Otro: ${otroEstudio || '_______________________________'}`, marginL+0.18, y);
-  y += 0.4;
+function generarOrdenPDF(){
+  const { pdf, folio } = buildOrdenDoc();
+  pdf.save(`orden_estudios_${folio||'sin_folio'}.pdf`);
+  toast('Orden de estudios generada (2 copias por hoja)');
+}
 
-  pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.26;
-
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
-  pdf.text('REGISTRO DE TOMA DE MUESTRA', marginL, y);
-  y += 0.26;
-  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
-  campo('Fecha y hora de toma:', fmtFechaHora(data.fechatoma), marginL, y);
-  campo('Flebotomista:', data.fleb, marginL+colW, y);
-  y += 0.4;
-
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
-  pdf.text('Tubo(s) / recipiente(s) a usar:', marginL, y);
-  y += 0.18;
-  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
-  const tubosTexto = etiquetas.length ? etiquetas.map(e=>e.tubo).join('  •  ') : 'No especificado';
-  pdf.text(tubosTexto, marginL, y);
-  y += 0.3;
-
-  if(data.notas){
-    pdf.setFont('helvetica','bold'); pdf.setFontSize(8.5);
-    pdf.text('Notas de toma:', marginL, y);
-    pdf.setFont('helvetica','normal');
-    pdf.text(data.notas, marginL+1.1, y);
-    y += 0.3;
-  }
-  y += 0.1;
-  pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.3;
-
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
-  pdf.text('CONSENTIMIENTO INFORMADO', marginL, y);
-  y += 0.24;
-  pdf.setFont('helvetica','italic'); pdf.setFontSize(8.7);
-  const consentText = 'Por medio del presente, declaro que he sido informado(a) de forma clara sobre el estudio o los estudios de laboratorio marcados en este documento, así como del procedimiento necesario para la toma de la(s) muestra(s) (punción venosa y/o capilar y/o recolección de orina). Autorizo de manera voluntaria dicha toma de muestra. Entiendo que los resultados me serán entregados en la fecha acordada y que este estudio de laboratorio es una herramienta de apoyo diagnóstico que no sustituye la consulta, el diagnóstico ni el tratamiento por un profesional de la salud, por lo que deberé acudir con un médico para la interpretación clínica de mis resultados.';
-  const lines = pdf.splitTextToSize(consentText, pageW - 2*marginL);
-  pdf.text(lines, marginL, y);
-  y += lines.length*0.155 + 0.5;
-
-  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
-  pdf.line(marginL+0.6, y, pageW-marginL-0.6, y);
-  y += 0.16;
-  pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', pageW/2, y, {align:'center'});
-
-  pdf.setFontSize(7.5); pdf.setTextColor(140);
-  pdf.text('Página 1 de 1 — FCAL-04', marginL, 10.6);
-
-  pdf.save(`orden_estudios_${data.folio||'sin_folio'}.pdf`);
-  toast('Orden de estudios generada');
+function imprimirOrden(){
+  const { pdf } = buildOrdenDoc();
+  pdf.autoPrint();
+  const blobUrl = pdf.output('bloburl');
+  window.open(blobUrl, '_blank');
 }
 
 initForm();
@@ -861,11 +927,30 @@ renderLabels();
 
 <script>
 const GATE_PASSWORD = 'YCL2026';
+const ACCESS_KEY = 'yclAccess';
+
+function yaTieneAcceso(){
+  try{ return sessionStorage.getItem(ACCESS_KEY) === 'ok'; }catch(e){ return false; }
+}
+function marcarAcceso(){
+  try{ sessionStorage.setItem(ACCESS_KEY, 'ok'); }catch(e){}
+}
+function mostrarContenido(){
+  document.getElementById('gateOverlay').style.display = 'none';
+  document.getElementById('siteContent').style.display = 'block';
+}
+
+if(yaTieneAcceso()){
+  mostrarContenido();
+}else{
+  setTimeout(()=>document.getElementById('gateInput').focus(), 100);
+}
+
 function checkGate(){
   const val = document.getElementById('gateInput').value;
   if(val === GATE_PASSWORD){
-    document.getElementById('gateOverlay').style.display = 'none';
-    document.getElementById('siteContent').style.display = 'block';
+    marcarAcceso();
+    mostrarContenido();
   }else{
     document.getElementById('gateError').textContent = 'Contraseña incorrecta';
     const box = document.getElementById('gateBox');
@@ -873,7 +958,6 @@ function checkGate(){
   }
 }
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkGate(); });
-setTimeout(()=>document.getElementById('gateInput').focus(), 100);
 </script>
 </div>
 </body>

@@ -166,10 +166,22 @@ footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monosp
 <script>
 /* ═══ ACCESO CON CONTRASEÑA (Registro / Resultados) ═══ */
 const ACCESS_PASSWORD = 'YCL2026';
+const ACCESS_KEY = 'yclAccess';
 let pendingAccessUrl = null;
+
+function yaTieneAcceso(){
+  try{ return sessionStorage.getItem(ACCESS_KEY) === 'ok'; }catch(e){ return false; }
+}
+function marcarAcceso(){
+  try{ sessionStorage.setItem(ACCESS_KEY, 'ok'); }catch(e){}
+}
 
 function requestAccess(e, url){
   e.preventDefault();
+  if(yaTieneAcceso()){
+    window.location.href = url;
+    return false;
+  }
   pendingAccessUrl = url;
   document.getElementById('accessError').textContent = '';
   const input = document.getElementById('accessInput');
@@ -185,6 +197,7 @@ function closeAccess(){
 function checkAccess(){
   const val = document.getElementById('accessInput').value;
   if(val === ACCESS_PASSWORD){
+    marcarAcceso();
     window.location.href = pendingAccessUrl;
   }else{
     document.getElementById('accessError').textContent = 'Contraseña incorrecta';
