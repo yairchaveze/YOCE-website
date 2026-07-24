@@ -199,7 +199,16 @@
       </div>
       <div class="grid3" style="margin-top:10px;">
         <input id="f_otro_estudio" type="text" placeholder="Otro estudio (nombre)" oninput="renderLabels()">
-        <input id="f_otro_tubo" type="text" placeholder="Tubo/recipiente para 'Otro'" oninput="renderLabels()">
+        <div>
+          <select id="f_otro_tubo" onchange="autofillOtroMuestra(); renderLabels();">
+            <option value="">— Selecciona tubo —</option>
+            <option value="Lila (EDTA)" data-muestra="ST">Lila (EDTA)</option>
+            <option value="Rojo/gel (seco)" data-muestra="Suero">Rojo/gel (seco)</option>
+            <option value="Celeste (citrato)" data-muestra="Plasma">Celeste (citrato)</option>
+            <option value="Otro">Otro (especificar)</option>
+          </select>
+          <input id="f_otro_tubo_manual" type="text" placeholder="Especifica el tubo/recipiente" style="display:none;margin-top:6px;" oninput="renderLabels()">
+        </div>
         <input id="f_otro_muestra" type="text" placeholder="Texto para la etiqueta (ej. Plasma)" oninput="renderLabels()">
       </div>
     </div>
@@ -546,13 +555,29 @@ function readEstudiosSeleccionados(){
   }));
 }
 
+function leerOtroTubo(){
+  const sel = document.getElementById('f_otro_tubo').value;
+  if(sel === 'Otro') return document.getElementById('f_otro_tubo_manual').value.trim();
+  return sel;
+}
+
+function autofillOtroMuestra(){
+  const sel = document.getElementById('f_otro_tubo');
+  const manual = document.getElementById('f_otro_tubo_manual');
+  manual.style.display = sel.value === 'Otro' ? 'block' : 'none';
+  const opt = sel.options[sel.selectedIndex];
+  const sugerida = opt ? opt.dataset.muestra : '';
+  if(sugerida) document.getElementById('f_otro_muestra').value = sugerida;
+  else if(sel.value === 'Otro') document.getElementById('f_otro_muestra').value = '';
+}
+
 function computeEtiquetas(){
   const items = [];
   document.querySelectorAll('.f_estudio:checked').forEach(c=>{
     items.push({ codigo: c.value, tubo: c.dataset.tubo, muestra: c.dataset.muestra });
   });
   const otroEstudio = document.getElementById('f_otro_estudio').value.trim();
-  const otroTubo = document.getElementById('f_otro_tubo').value.trim();
+  const otroTubo = leerOtroTubo();
   const otroMuestra = document.getElementById('f_otro_muestra').value.trim();
   if(otroEstudio || otroTubo || otroMuestra){
     items.push({ codigo: otroEstudio || 'Otro', tubo: otroTubo || 'Otro', muestra: otroMuestra || otroEstudio || 'Otro' });
@@ -878,6 +903,8 @@ function limpiarParaSiguiente(){
   document.querySelectorAll('.f_estudio').forEach(c=>c.checked=false);
   document.getElementById('f_otro_estudio').value = '';
   document.getElementById('f_otro_tubo').value = '';
+  document.getElementById('f_otro_tubo_manual').value = '';
+  document.getElementById('f_otro_tubo_manual').style.display = 'none';
   document.getElementById('f_otro_muestra').value = '';
   document.getElementById('f_fleb').value = '';
   document.getElementById('f_notas_toma').value = '';
@@ -959,10 +986,12 @@ function checkbox(pdf, x, y, checked, size=0.11){
   }
 }
 
-function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
+function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLabel){
   const marginL = 0.55, pageW = 8.5;
-  const colW = (pageW - 2*marginL)/2;
-  let y = oy + 0.34;
+  const qrZoneW = 1.3;
+  const colGap = 0.15;
+  const colW = (pageW - 2*marginL - qrZoneW - colGap) / 2;
+  let y = oy + 0.32;
 
   function campo(label, value, x, yy){
     pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
@@ -971,45 +1000,57 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
     pdf.text(String(value||''), x, yy+0.14);
   }
 
-  addLogoToPdf(pdf, 'logoFull', marginL, y-0.3, 0.9, 0.42, 'left');
+  // Logo (solo la gota, más grande) a la izquierda
+  const logoSize = 0.5;
+  addLogoToPdf(pdf, 'logoIcon', marginL, y-0.3, logoSize, logoSize, 'left');
+
+  // Título + FCAL-04, centrados
   pdf.setFont('helvetica','bold'); pdf.setFontSize(12);
   pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
-  pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
-  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.15, {align:'center'});
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(7.6);
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila · FCAL-04', pageW/2, y+0.15, {align:'center'});
 
-  try{
-    const qrSize = 0.62;
-    const qrUrl = `https://yocelltherapy.com/resultados.html?folio=${encodeURIComponent(data.folio||'')}`;
-    const resultadosQr = makeQrDataUrl(qrUrl, 160);
-    const qrX = pageW - marginL - qrSize;
-    const qrY = y - 0.34;
-    pdf.addImage(resultadosQr, 'PNG', qrX, qrY, qrSize, qrSize);
-    pdf.setFont('helvetica','normal'); pdf.setFontSize(5.6);
-    pdf.text('Ver resultados aquí', qrX+qrSize/2, qrY+qrSize+0.1, {align:'center'});
-  }catch(e){ console.error(e); }
+  // Etiqueta de copia (Cliente / Laboratorio), arriba a la derecha
+  if(copiaLabel){
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(7.2);
+    pdf.setTextColor(109,26,54);
+    pdf.text(`Copia: ${copiaLabel}`, pageW-marginL, y-0.12, {align:'right'});
+    pdf.setTextColor(0);
+  }
 
-  y += 0.36;
-
+  y += 0.3;
   pdf.setDrawColor(150); pdf.setLineWidth(0.008);
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.18;
+  y += 0.17;
+
+  // Código QR grande, a la derecha, junto al bloque de datos del paciente
+  try{
+    const qrSize = 0.92;
+    const qrUrl = `https://yocelltherapy.com/resultados.html?folio=${encodeURIComponent(data.folio||'')}`;
+    const resultadosQr = makeQrDataUrl(qrUrl, 180);
+    const qrX = pageW - marginL - qrSize;
+    const qrY = y;
+    pdf.addImage(resultadosQr, 'PNG', qrX, qrY, qrSize, qrSize);
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(6.2);
+    pdf.text('Ver resultados aquí', qrX+qrSize/2, qrY+qrSize+0.12, {align:'center'});
+  }catch(e){ console.error(e); }
 
   campo('Paciente:', data.nombre, marginL, y);
   campo('Folio:', `${data.folio||''}${data.idPaciente ? '   ·   ID: '+data.idPaciente : ''}`, marginL+colW, y);
-  y += 0.3;
+  y += 0.27;
   campo('Edad:', formatEdad(data.edad), marginL, y);
   campo('Sexo:', data.sexo, marginL+colW, y);
-  y += 0.3;
+  y += 0.27;
   campo('Fecha de nacimiento:', data.fnac, marginL, y);
   campo('Médico solicitante:', data.medico, marginL+colW, y);
-  y += 0.28;
+  y += 0.25;
 
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.18;
+  y += 0.17;
 
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.6);
   pdf.text('ESTUDIOS SOLICITADOS', marginL, y);
-  y += 0.18;
+  y += 0.17;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(8);
   let x = marginL;
   estudios.forEach(e=>{
@@ -1018,41 +1059,41 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
     pdf.text(nombre, x+0.16, y);
     x += (e.codigo==='EGO') ? 2.05 : 1.9;
   });
-  y += 0.22;
+  y += 0.2;
   checkbox(pdf, marginL, y, !!otroEstudio, 0.1);
   pdf.text(`Otro: ${otroEstudio || '____________________________'}`, marginL+0.16, y);
-  y += 0.22;
+  y += 0.2;
 
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.18;
+  y += 0.17;
 
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.6);
   pdf.text('REGISTRO DE TOMA DE MUESTRA', marginL, y);
-  y += 0.2;
+  y += 0.19;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(8);
   campo('Fecha y hora de toma:', fmtFechaHora(data.fechatoma), marginL, y);
   campo('Flebotomista:', data.fleb, marginL+colW, y);
-  y += 0.28;
+  y += 0.26;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
   pdf.text('Tubo(s)/recipiente(s):', marginL, y);
   pdf.setFont('helvetica','normal');
   const tubosTexto = etiquetas.length ? etiquetas.map(e=>e.tubo).join(' • ') : 'No especificado';
   pdf.text(tubosTexto, marginL+1.2, y);
-  y += 0.2;
+  y += 0.19;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
   pdf.text('Ayuno:', marginL, y);
   pdf.setFont('helvetica','normal');
   pdf.text(data.ayuno || 'No especificado', marginL+0.5, y);
-  y += 0.18;
+  y += 0.17;
 
   if(data.ayuno && !data.ayuno.startsWith('Adecuado')){
-    pdf.setFont('helvetica','italic'); pdf.setFontSize(6.3);
+    pdf.setFont('helvetica','italic'); pdf.setFontSize(6.2);
     const avisoTxt = 'Se explicó al paciente la importancia de un ayuno adecuado; al firmar autoriza continuar bajo esta condición, entendiendo que puede alterar el resultado. Se recomienda repetir el estudio con ayuno adecuado.';
     const avisoLines = pdf.splitTextToSize(avisoTxt, pageW - 2*marginL);
     pdf.text(avisoLines, marginL, y);
-    y += avisoLines.length*0.088 + 0.06;
+    y += avisoLines.length*0.085 + 0.05;
   }
 
   if(data.notas){
@@ -1060,24 +1101,28 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas){
     pdf.text('Notas:', marginL, y);
     pdf.setFont('helvetica','normal');
     pdf.text(data.notas, marginL+0.5, y);
-    y += 0.18;
+    y += 0.17;
   }
-  y += 0.08;
+  y += 0.07;
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.2;
+  y += 0.18;
 
-  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.8);
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8.6);
   pdf.text('CONSENTIMIENTO INFORMADO', marginL, y);
-  y += 0.17;
-  pdf.setFont('helvetica','italic'); pdf.setFontSize(7.3);
+  y += 0.16;
+  pdf.setFont('helvetica','italic'); pdf.setFontSize(7.1);
   const consentText = 'Por medio del presente, declaro que he sido informado(a) de forma clara sobre el estudio o los estudios de laboratorio marcados en este documento, así como del procedimiento necesario para la toma de la(s) muestra(s) (punción venosa y/o capilar y/o recolección de orina). Autorizo de manera voluntaria dicha toma de muestra. Entiendo que los resultados me serán entregados en la fecha acordada y que este estudio de laboratorio es una herramienta de apoyo diagnóstico que no sustituye la consulta, el diagnóstico ni el tratamiento por un profesional de la salud, por lo que deberé acudir con un médico para la interpretación clínica de mis resultados.';
   const lines = pdf.splitTextToSize(consentText, pageW - 2*marginL);
   pdf.text(lines, marginL, y);
-  y += lines.length*0.1 + 0.18;
+  y += lines.length*0.098;
+
+  // A partir de aquí, la mitad restante del espacio es SOLO para la firma
+  // (con harta separación, porque la gente firma grande)
+  y += 0.42;
 
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
-  pdf.line(marginL+0.5, y, pageW-marginL-0.5, y);
-  y += 0.14;
+  pdf.line(marginL+0.2, y, pageW-marginL-0.2, y);
+  y += 0.15;
   pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', pageW/2, y, {align:'center'});
 
   return y;
@@ -1092,8 +1137,8 @@ function buildOrdenDoc(){
   const pdf = new jsPDF({ orientation:'portrait', unit:'in', format:'letter' });
   const pageW = 8.5, pageH = 11, half = pageH/2;
 
-  drawOrdenBlock(pdf, 0, data, estudios, otroEstudio, etiquetas);
-  drawOrdenBlock(pdf, half, data, estudios, otroEstudio, etiquetas);
+  drawOrdenBlock(pdf, 0, data, estudios, otroEstudio, etiquetas, 'Cliente');
+  drawOrdenBlock(pdf, half, data, estudios, otroEstudio, etiquetas, 'Laboratorio');
 
   // Línea de corte al centro de la hoja
   pdf.setDrawColor(120);
