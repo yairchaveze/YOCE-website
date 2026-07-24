@@ -289,7 +289,7 @@
     <div class="hint">Cada vez que guardas un paciente, se agrega a esta lista y queda guardado en tu base (Google Sheets) para siempre, no solo en esta pestaña. Al final del turno puedes generar el PDF con todos los pacientes del día.</div>
     <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span class="countpill" id="listaCountPill">0 paciente(s) registrados hoy</span>
-      <button class="btn btn-outline btn-sm" onclick="cargarListaTrabajo()">🔄 Actualizar lista</button>
+      <button class="btn btn-outline btn-sm" onclick="cargarListaTrabajo(false)">🔄 Actualizar lista</button>
     </div>
     <div id="listaTrabajoWrap" style="margin-top:12px;overflow-x:auto;">
       <div class="hint">Aún no hay pacientes registrados hoy.</div>
@@ -758,14 +758,15 @@ function cargarListaTrabajoJSONP(){
   });
 }
 
-async function cargarListaTrabajo(){
+async function cargarListaTrabajo(avanzarFolio){
+  if(avanzarFolio === undefined) avanzarFolio = true;
   if(!baseConfigurada()){
     document.getElementById('listaTrabajoWrap').innerHTML = '<div class="hint">Falta configurar GOOGLE_SCRIPT_URL para conectar con tu Google Sheet.</div>';
     return;
   }
   listaTrabajo = await cargarListaTrabajoJSONP();
   renderListaTrabajo();
-  prepararSiguienteFolio();
+  if(avanzarFolio) prepararSiguienteFolio();
 }
 
 function renderListaTrabajo(){
@@ -781,6 +782,7 @@ function renderListaTrabajo(){
       <th style="padding:6px;text-align:left;">Folio</th>
       <th style="padding:6px;text-align:left;">ID Paciente</th>
       <th style="padding:6px;text-align:left;">Nombre completo</th>
+      <th style="padding:6px;text-align:left;">Fecha Nac.</th>
       <th style="padding:6px;text-align:left;">Edad</th>
       <th style="padding:6px;text-align:left;">Sexo</th>
       <th style="padding:6px;text-align:left;">Teléfono</th>
@@ -792,6 +794,7 @@ function renderListaTrabajo(){
       <td style="padding:6px;">${r.folio||''}</td>
       <td style="padding:6px;font-family:monospace;">${r.idPaciente||''}</td>
       <td style="padding:6px;">${r.nombreCompleto||''}</td>
+      <td style="padding:6px;">${r.fechaNacimiento||''}</td>
       <td style="padding:6px;">${formatEdad(String(r.edad||''))}</td>
       <td style="padding:6px;">${r.sexo||''}</td>
       <td style="padding:6px;">${r.telefono||''}</td>
@@ -879,8 +882,8 @@ async function guardarRegistro(){
   toast('Guardando…');
   const ok = await enviarRegistro(record);
   if(ok){
-    toast('Paciente guardado en la base ✓');
-    setTimeout(cargarListaTrabajo, 900);
+    toast('Paciente guardado en la base ✓ — el folio se queda igual hasta que le des "Limpiar para siguiente paciente"');
+    setTimeout(()=>cargarListaTrabajo(false), 900);
   }else{
     toast('No se pudo guardar. Revisa la conexión con Google Sheets.');
   }
@@ -932,6 +935,7 @@ function buildListaTrabajoDoc(){
     r.folio || '',
     r.idPaciente || '',
     r.nombreCompleto || '',
+    r.fechaNacimiento || '',
     formatEdad(String(r.edad||'')),
     r.sexo || '',
     r.telefono || '',
@@ -940,7 +944,7 @@ function buildListaTrabajoDoc(){
 
   pdf.autoTable({
     startY: 1.0,
-    head: [['Folio','ID Paciente','Nombre completo','Edad','Sexo','Teléfono','Estudios solicitados']],
+    head: [['Folio','ID Paciente','Nombre completo','Fecha Nac.','Edad','Sexo','Teléfono','Estudios solicitados']],
     body,
     styles: { font:'helvetica', fontSize:9, cellPadding:0.07 },
     headStyles: { fillColor:[109,26,54], textColor:255 },
@@ -1023,11 +1027,11 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.line(marginL, y, pageW-marginL, y);
   y += 0.17;
 
-  // Código QR grande, a la derecha, junto al bloque de datos del paciente
+  // Código QR — dentro de la zona del bloque de datos del paciente, sin tocar la línea
   try{
-    const qrSize = 0.92;
+    const qrSize = 0.68;
     const qrUrl = `https://yocelltherapy.com/resultados.html?folio=${encodeURIComponent(data.folio||'')}`;
-    const resultadosQr = makeQrDataUrl(qrUrl, 180);
+    const resultadosQr = makeQrDataUrl(qrUrl, 160);
     const qrX = pageW - marginL - qrSize;
     const qrY = y;
     pdf.addImage(resultadosQr, 'PNG', qrX, qrY, qrSize, qrSize);
@@ -1037,20 +1041,20 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
 
   campo('Paciente:', data.nombre, marginL, y);
   campo('Folio:', `${data.folio||''}${data.idPaciente ? '   ·   ID: '+data.idPaciente : ''}`, marginL+colW, y);
-  y += 0.27;
+  y += 0.32;
   campo('Edad:', formatEdad(data.edad), marginL, y);
   campo('Sexo:', data.sexo, marginL+colW, y);
-  y += 0.27;
+  y += 0.32;
   campo('Fecha de nacimiento:', data.fnac, marginL, y);
   campo('Médico solicitante:', data.medico, marginL+colW, y);
-  y += 0.25;
+  y += 0.22;
 
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.17;
+  y += 0.15;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(8.6);
   pdf.text('ESTUDIOS SOLICITADOS', marginL, y);
-  y += 0.17;
+  y += 0.15;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(8);
   let x = marginL;
   estudios.forEach(e=>{
@@ -1059,13 +1063,13 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
     pdf.text(nombre, x+0.16, y);
     x += (e.codigo==='EGO') ? 2.05 : 1.9;
   });
-  y += 0.2;
+  y += 0.18;
   checkbox(pdf, marginL, y, !!otroEstudio, 0.1);
   pdf.text(`Otro: ${otroEstudio || '____________________________'}`, marginL+0.16, y);
-  y += 0.2;
+  y += 0.18;
 
   pdf.line(marginL, y, pageW-marginL, y);
-  y += 0.17;
+  y += 0.15;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(8.6);
   pdf.text('REGISTRO DE TOMA DE MUESTRA', marginL, y);
@@ -1080,7 +1084,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.setFont('helvetica','normal');
   const tubosTexto = etiquetas.length ? etiquetas.map(e=>e.tubo).join(' • ') : 'No especificado';
   pdf.text(tubosTexto, marginL+1.2, y);
-  y += 0.19;
+  y += 0.18;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(7.5);
   pdf.text('Ayuno:', marginL, y);
@@ -1116,14 +1120,15 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.text(lines, marginL, y);
   y += lines.length*0.098;
 
-  // A partir de aquí, la mitad restante del espacio es SOLO para la firma
-  // (con harta separación, porque la gente firma grande)
-  y += 0.42;
+  // Firma: zona propia en la mitad derecha, con más espacio para firmar
+  y += 0.3;
 
+  const firmaX1 = pageW/2 + 0.15;
+  const firmaX2 = pageW - marginL;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.8);
-  pdf.line(marginL+0.2, y, pageW-marginL-0.2, y);
+  pdf.line(firmaX1, y, firmaX2, y);
   y += 0.15;
-  pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', pageW/2, y, {align:'center'});
+  pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', (firmaX1+firmaX2)/2, y, {align:'center'});
 
   return y;
 }
