@@ -1100,7 +1100,7 @@ function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
   let px = x;
   if(align === 'right') px = x - w;
   else if(align === 'center') px = x - w/2;
-  try{ pdf.addImage(img, undefined, px, y, w, h); }catch(e){ console.error(e); }
+  try{ pdf.addImage(img, 'PNG', px, y, w, h); }catch(e){ console.error(e); }
 }
 
 function checkbox(pdf, x, y, checked, size=0.11){
@@ -1113,7 +1113,7 @@ function checkbox(pdf, x, y, checked, size=0.11){
 }
 
 function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLabel){
-  const marginL = 0.55, pageW = 8.5;
+  const marginL = 0.55, pageW = 8.5, pageH = 11, half = pageH/2;
   const qrZoneW = 1.3;
   const colGap = 0.15;
   const colW = (pageW - 2*marginL - qrZoneW - colGap) / 2;
@@ -1134,7 +1134,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.setFont('helvetica','bold'); pdf.setFontSize(12);
   pdf.text('ORDEN DE ESTUDIOS', pageW/2, y, {align:'center'});
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.6);
-  pdf.text('YoCell Lab · San Buenaventura, Coahuila · FCAL-04-01', pageW/2, y+0.15, {align:'center'});
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW/2, y+0.15, {align:'center'});
 
   // Etiqueta de copia (Cliente / Laboratorio), arriba a la derecha
   if(copiaLabel){
@@ -1243,7 +1243,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   y += lines.length*0.098;
 
   // Firma: zona propia en la mitad derecha, con más espacio para firmar
-  y += 0.3;
+  y += 0.5;
 
   const firmaX1 = pageW/2 + 0.15;
   const firmaX2 = pageW - marginL;
@@ -1251,6 +1251,12 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   pdf.line(firmaX1, y, firmaX2, y);
   y += 0.15;
   pdf.text('Firma del paciente (o tutor/responsable si es menor de edad)', (firmaX1+firmaX2)/2, y, {align:'center'});
+
+  // Folio de formato, fijo abajo a la izquierda del bloque
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(6.5);
+  pdf.setTextColor(140);
+  pdf.text('FCAL-04-01', marginL, oy + half - 0.12);
+  pdf.setTextColor(0);
 
   return y;
 }
