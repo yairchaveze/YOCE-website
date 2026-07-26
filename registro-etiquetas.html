@@ -183,6 +183,8 @@
         <input id="f_direccion" type="text" placeholder="Calle, número, colonia">
       </div>
     </div>
+
+    <div id="estadoPaciente" style="display:none;margin-top:12px;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;"></div>
     <div class="grid" style="margin-top:12px;">
       <div>
         <label>Médico solicitante</label>
@@ -280,8 +282,13 @@
     <div class="actions">
       <button class="btn btn-teal" onclick="imprimirOrden()">🖨️ Imprimir Orden de Estudios</button>
       <button class="btn btn-primary" onclick="generarOrdenPDF()">Descargar PDF de Orden de Estudios</button>
-      <button class="btn btn-primary" onclick="guardarRegistro()">💾 Guardar paciente en la base</button>
     </div>
+  </div>
+
+  <!-- GUARDAR PACIENTE — aparte y llamativo para que no se le pase a la secretaria -->
+  <div class="card" style="background:#fdeaea;border:2px solid #c0273c;text-align:center;">
+    <button class="btn" style="background:#c0273c;color:#fff;font-size:16px;font-weight:700;padding:14px 28px;width:100%;box-shadow:0 3px 10px rgba(192,39,60,.35);" onclick="guardarRegistro()">💾 GUARDAR PACIENTE EN LA BASE</button>
+    <div class="hint" style="text-align:center;margin-top:8px;font-size:12px;">⚠️ No olvides este paso — sin guardar, el paciente no queda registrado en el sistema.</div>
   </div>
 
   <!-- LISTA DE TRABAJO / BASE DE DATOS -->
@@ -453,6 +460,7 @@ async function buscarPacienteExistente(){
   if(!baseConfigurada()){ toast('Falta configurar la base de datos'); return; }
   toast('Buscando expediente…');
   const rows = await buscarPacienteJSONP(id);
+  mostrarEstadoPaciente(rows);
   if(!rows || rows.length === 0){
     toast('No hay expediente previo — se registrará como paciente nuevo');
     return;
@@ -471,10 +479,11 @@ let ultimoIdBuscado = '';
 async function buscarPacienteAuto(){
   actualizarIdPaciente();
   const id = document.getElementById('f_idpaciente').value.trim();
-  if(!id || id === ultimoIdBuscado) return;
+  if(!id || id === ultimoIdBuscado){ return; }
   if(!baseConfigurada()) return;
   ultimoIdBuscado = id;
   const rows = await buscarPacienteJSONP(id);
+  mostrarEstadoPaciente(rows);
   if(rows && rows.length > 0){
     const p = rows[0];
     if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
@@ -487,6 +496,35 @@ async function buscarPacienteAuto(){
   }else{
     toast('Paciente nuevo (sin expediente previo)');
   }
+}
+
+/* Pinta la casilla de "paciente nuevo" (verde) o "ya registrado, último estudio" (ámbar) */
+function mostrarEstadoPaciente(rows){
+  const el = document.getElementById('estadoPaciente');
+  if(!el) return;
+  if(!rows || rows.length === 0){
+    el.style.display = 'block';
+    el.style.background = '#e6f7ec';
+    el.style.border = '1.5px solid #34a853';
+    el.style.color = '#1e7e34';
+    el.innerHTML = '🟢 Paciente nuevo — sin estudios previos registrados';
+    return;
+  }
+  // Se asume que la hoja regresa las visitas en el orden en que se guardaron (la más reciente al final)
+  const ultimo = rows[rows.length - 1];
+  const fechaTxt = (ultimo.fechaToma || '').split(' ')[0] || '';
+  el.style.display = 'block';
+  el.style.background = '#fff4e5';
+  el.style.border = '1.5px solid #f0ad4e';
+  el.style.color = '#8a5a00';
+  el.innerHTML = `🟠 Paciente ya registrado${fechaTxt ? ' — último estudio: '+fechaTxt : ''}${ultimo.estudios ? ' · '+ultimo.estudios : ''} · posible seguimiento`;
+}
+
+function ocultarEstadoPaciente(){
+  const el = document.getElementById('estadoPaciente');
+  if(!el) return;
+  el.style.display = 'none';
+  el.innerHTML = '';
 }
 
 function renderAyunoAviso(){
@@ -923,6 +961,7 @@ function limpiarParaSiguiente(){
   const ayunoAdecuado = document.querySelector('input[name="f_ayuno"][value^="Adecuado"]');
   if(ayunoAdecuado) ayunoAdecuado.checked = true;
   renderAyunoAviso();
+  ocultarEstadoPaciente();
   setDefaultDateTime();
   prepararSiguienteFolio();
   renderLabels();
