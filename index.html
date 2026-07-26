@@ -31,6 +31,8 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 23px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 
+.founder-pill{display:inline-flex;align-items:center;gap:6px;background:var(--b2);border:1px solid rgba(33,150,243,.28);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size: 12px;color:var(--b);padding:3px 11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem}
+.founder-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--bl);flex-shrink:0}
 /* LANG */
 .lang-toggle{position:fixed;top:14px;right:60px;z-index:300;display:flex;background:#fff;border:1px solid var(--bord2);border-radius:30px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .lang-btn{padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size: 13px;letter-spacing:.12em;color:var(--m);cursor:pointer;transition:all .2s;border:none;background:transparent}
@@ -131,6 +133,21 @@ h1.name strong{color:var(--g);font-weight:600;display:block}
 .oc-icon{font-size: 26px;margin-bottom:8px;display:block}
 .oc h3{font-size: 18px;font-weight:600;margin-bottom:5px;color:var(--t)}
 .oc p{font-size: 16px;color:var(--m);line-height:1.62}
+
+/* ACCESOS RÁPIDOS */
+.quick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:1.75rem;position:relative;z-index:2}
+.qc{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1rem .6rem;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;text-decoration:none;transition:all .22s}
+.qc:hover{border-color:var(--bord3);transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,107,82,.1)}
+.qc-ico{width:44px;height:44px;border-radius:12px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-size: 21px}
+.qc-label{font-size: 13px;font-weight:600;color:var(--t2);line-height:1.25}
+
+/* AFILIACIONES / CREDENCIALES */
+.cred-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem;position:relative;z-index:2}
+.cred{background:#fff;border:1px solid var(--bord2);border-radius:14px;padding:1.3rem 1.2rem;text-align:center;transition:all .25s}
+.cred:hover{border-color:var(--bord3);box-shadow:0 6px 20px rgba(0,107,82,.08);transform:translateY(-2px)}
+.cred-badge{width:52px;height:52px;border-radius:50%;margin:0 auto .8rem;display:flex;align-items:center;justify-content:center;font-size: 24px;background:var(--g3);border:1.5px solid var(--bord3)}
+.cred h4{font-size: 17px;font-weight:600;color:var(--t);margin-bottom:4px;line-height:1.3}
+.cred p{font-size: 15px;color:var(--m);line-height:1.5}
 
 /* FEAT CAR-T */
 .feat{background:#fff;border:1.5px solid rgba(0,196,154,.28);border-radius:16px;padding:1.9rem;margin-bottom:2rem;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(0,107,82,.06);z-index:2}
@@ -261,6 +278,13 @@ footer p{font-size: 14px;color:var(--m2)}
   /* SERVICES */
   .offer-grid{grid-template-columns:1fr 1fr}
 
+  /* ACCESOS RÁPIDOS */
+  .quick-grid{grid-template-columns:repeat(3,1fr)}
+  .qc-label{font-size: 12px}
+
+  /* CREDENCIALES */
+  .cred-grid{grid-template-columns:1fr}
+
   /* CAR-T steps */
   .feat-steps{grid-template-columns:1fr 1fr;gap:6px}
   .feat h2{font-size:1.2rem}
@@ -368,6 +392,7 @@ footer p{font-size: 14px;color:var(--m2)}
         <span class="t" data-es="YoCell Lab · Laboratorio de Análisis Clínicos" data-en="YoCell Lab · Clinical Analysis Laboratory">YoCell Lab · Laboratorio de Análisis Clínicos</span>
         <span class="lab-banner-arrow">→</span>
       </a>
+      <div class="founder-pill"><span class="founder-pill-dot"></span><span class="t" data-es="Fundador · YoCellTherapy" data-en="Founder · YoCellTherapy">Fundador · YoCellTherapy</span></div>
       <div class="hero-kicker t" data-es="Científico · Investigador · Asesor Estratégico" data-en="Scientist · Researcher · Strategic Advisor">Científico · Investigador · Asesor Estratégico</div>
       <h1 class="name">Yair Omar<strong>Chávez-Estrada</strong></h1>
       <p class="hero-role">Cell Therapy · cGMP Manufacturing · Apheresis &amp; Flow Cytometry</p>
@@ -399,6 +424,36 @@ footer p{font-size: 14px;color:var(--m2)}
     <span class="tag p t" data-es="IA en Salud" data-en="Health AI">IA en Salud</span>
     <span class="tag p">Machine Learning</span>
     <span class="tag p">R · Python</span>
+  </div>
+</section>
+
+<!-- ACCESOS RÁPIDOS -->
+<section class="sec-wrap" style="margin-bottom:1.75rem">
+  <div class="quick-grid">
+    <a href="#offer" class="qc">
+      <div class="qc-ico">🧬</div>
+      <span class="qc-label t" data-es="Servicios" data-en="Services">Servicios</span>
+    </a>
+    <a href="#cart" class="qc">
+      <div class="qc-ico">🚀</div>
+      <span class="qc-label">CAR-T</span>
+    </a>
+    <a href="ia-salud.html" class="qc">
+      <div class="qc-ico">🤖</div>
+      <span class="qc-label t" data-es="IA en Salud" data-en="Health AI">IA en Salud</span>
+    </a>
+    <a href="yocell-lab.html" class="qc">
+      <div class="qc-ico">🧫</div>
+      <span class="qc-label">YoCell Lab</span>
+    </a>
+    <a href="#pubs" class="qc">
+      <div class="qc-ico">📄</div>
+      <span class="qc-label t" data-es="Publicaciones" data-en="Publications">Publicaciones</span>
+    </a>
+    <a href="contacto.html" class="qc">
+      <div class="qc-ico">✉️</div>
+      <span class="qc-label t" data-es="Contacto" data-en="Contact">Contacto</span>
+    </a>
   </div>
 </section>
 
@@ -463,6 +518,43 @@ footer p{font-size: 14px;color:var(--m2)}
 <a href="ia-salud.html" class="oc" style="text-decoration:none"><div class="oc-num">03</div><span class="oc-icon">🤖</span><h3 class="t" data-es="IA en Ciencias de la Salud" data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p class="t" data-es="Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de ATMPs." data-en="ML models and clinical prediction applied to flow cytometry, apheresis and ATMP manufacturing.">Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de ATMPs.</p></a>    <a href="id-estrategico.html" class="oc" style="text-decoration:none"><div class="oc-num">04</div><span class="oc-icon">🔬</span><h3 class="t" data-es="I+D Estratégico" data-en="Strategic R&amp;D">I+D Estratégico</h3><p class="t" data-es="Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines de terapias avanzadas." data-en="Research proposal evaluation, funding advisory, and advanced therapy pipeline development.">Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines.</p></a>
     <div class="oc"><div class="oc-num">05</div><span class="oc-icon">🏭</span><h3 class="t" data-es="Control de Calidad" data-en="Quality Control">Control de Calidad</h3><p class="t" data-es="Control microbiológico de criopreservados, validación de métodos analíticos, medicina transfusional y hematología oncológica." data-en="Microbiological control of cryopreserved products, analytical method validation, transfusion medicine.">Control microbiológico de criopreservados, validación de métodos, medicina transfusional.</p></div>
     <div class="oc"><div class="oc-num">06</div><span class="oc-icon">🌎</span><h3 class="t" data-es="Asesoría a Inversionistas" data-en="Investor Advisory">Asesoría a Inversionistas</h3><p class="t" data-es="Due diligence científico-técnico, evaluación de startups biotech y análisis de viabilidad para proyectos de terapia celular en LATAM." data-en="Scientific-technical due diligence, biotech startup evaluation, and feasibility analysis for cell therapy in LATAM.">Due diligence científico-técnico, evaluación de startups biotech y viabilidad de terapia celular en LATAM.</p></div>
+  </div>
+</section>
+
+<!-- AFILIACIONES / RECONOCIMIENTOS -->
+<section class="sec-wrap">
+  <p class="sec t" data-es="Afiliaciones &amp; Reconocimientos" data-en="Affiliations &amp; Recognition">Afiliaciones &amp; Reconocimientos</p>
+  <div class="cred-grid">
+    <div class="cred">
+      <div class="cred-badge">🌐</div>
+      <h4>ISCT · ESP Committee</h4>
+      <p class="t" data-es="International Society for Cell &amp; Gene Therapy — miembro del comité para Sudamérica y Centroamérica." data-en="International Society for Cell &amp; Gene Therapy — Committee Member for South &amp; Central America.">International Society for Cell &amp; Gene Therapy — miembro del comité para Sudamérica y Centroamérica.</p>
+    </div>
+    <div class="cred">
+      <div class="cred-badge">🎓</div>
+      <h4 class="t" data-es="Universidad Anáhuac" data-en="Universidad Anáhuac">Universidad Anáhuac</h4>
+      <p class="t" data-es="Candidato a Doctor en Ciencias de la Salud, con protocolo de investigación registrado (HE25-00023)." data-en="Doctoral candidate in Health Sciences, with registered research protocol (HE25-00023).">Candidato a Doctor en Ciencias de la Salud, con protocolo de investigación registrado (HE25-00023).</p>
+    </div>
+    <div class="cred">
+      <div class="cred-badge">🏥</div>
+      <h4 class="t" data-es="Hospital Universitario UANL" data-en="Hospital Universitario UANL">Hospital Universitario UANL</h4>
+      <p class="t" data-es="Unidad de Trasplante de Hematología y Terapia Celular — Monterrey, México." data-en="Hematology and Cell Therapy Transplant Unit — Monterrey, Mexico.">Unidad de Trasplante de Hematología y Terapia Celular — Monterrey, México.</p>
+    </div>
+    <div class="cred">
+      <div class="cred-badge">📄</div>
+      <h4>JCO Global Oncology</h4>
+      <p class="t" data-es="Publicación 2025 sobre el primer programa descentralizado de manufactura CAR-T en México." data-en="2025 publication on Mexico's first decentralized CAR-T manufacturing program.">Publicación 2025 sobre el primer programa descentralizado de manufactura CAR-T en México.</p>
+    </div>
+    <div class="cred">
+      <div class="cred-badge">🧪</div>
+      <h4 class="t" data-es="Químico Bacteriólogo Parasitólogo" data-en="Bacteriologist Parasitologist Chemist">QBP · UANL</h4>
+      <p class="t" data-es="Formación de base en la Universidad Autónoma de Nuevo León, con especialización en hematología y citometría de flujo." data-en="Foundational training at Universidad Autónoma de Nuevo León, specialized in hematology and flow cytometry.">Formación de base en la Universidad Autónoma de Nuevo León, con especialización en hematología y citometría de flujo.</p>
+    </div>
+    <div class="cred">
+      <div class="cred-badge">🩸</div>
+      <h4 class="t" data-es="La Célula Mexicana" data-en="La Célula Mexicana">La Célula Mexicana</h4>
+      <p class="t" data-es="Podcast de divulgación científica en terapia celular, co-conducido con Lilia Carolina León-Moreno." data-en="Science communication podcast on cell therapy, co-hosted with Lilia Carolina León-Moreno.">Podcast de divulgación científica en terapia celular, co-conducido con Lilia Carolina León-Moreno.</p>
+    </div>
   </div>
 </section>
 
@@ -542,7 +634,7 @@ footer p{font-size: 14px;color:var(--m2)}
   </div>
 </section>
 <!-- PUBLICACIONES -->
-<section class="sec-wrap">
+<section id="pubs" class="sec-wrap">
   <p class="sec t" data-es="Publicaciones" data-en="Publications">Publicaciones</p>
 
   <!-- SCHOLAR WIDGET -->
@@ -581,8 +673,8 @@ footer p{font-size: 14px;color:var(--m2)}
           <tbody>
             <tr style="border-top:1px solid var(--bord2)">
               <td style="padding:6px 0;color:var(--m);font-size: 14px">Citas</td>
-              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">13</td>
-              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">13</td>
+              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">17</td>
+              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">17</td>
             </tr>
             <tr style="border-top:1px solid var(--bord2)">
               <td style="padding:6px 0;color:var(--m);font-size: 14px">Índice h</td>
@@ -591,8 +683,8 @@ footer p{font-size: 14px;color:var(--m2)}
             </tr>
             <tr style="border-top:1px solid var(--bord2)">
               <td style="padding:6px 0;color:var(--m);font-size: 14px">Índice i10</td>
-              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">0</td>
-              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">0</td>
+              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">1</td>
+              <td style="text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--b);font-size: 17px">1</td>
             </tr>
           </tbody>
         </table>
