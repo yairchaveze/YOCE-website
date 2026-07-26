@@ -63,6 +63,7 @@
   .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--teal);margin:0 0 14px;border-bottom:2px solid var(--teal-light);padding-bottom:8px;}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .grid4{display:grid;grid-template-columns:1fr 1.4fr 1fr 1fr;gap:12px;}
+  .grid5pac{display:grid;grid-template-columns:0.55fr 1.2fr 1.2fr 1.2fr 0.95fr;gap:12px;}
   .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
   label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;}
   input,select{width:100%;padding:8px 10px;border:1px solid #cfcac6;border-radius:6px;font-size:13px;background:#fff;}
@@ -124,19 +125,17 @@
   </div>
   <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
 
+  <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
+    <button class="btn" style="background:var(--teal);color:#fff;font-size:13px;padding:10px 18px;" onclick="if(confirm('¿Borrar todos los datos del formulario para iniciar un nuevo registro?')) limpiarParaSiguiente()">🆕 Nuevo Paciente / Nuevo Registro</button>
+  </div>
+
   <!-- FORMULARIO -->
   <div class="card">
     <h2>Datos del paciente</h2>
-    <div class="grid4">
+    <div class="grid5pac">
       <div>
         <label>Folio</label>
         <input id="f_folio" type="text">
-        <div class="hint">Formato AAMMDD-XXX. Se sugiere solo según los pacientes ya guardados hoy.</div>
-      </div>
-      <div>
-        <label>ID Paciente (expediente)</label>
-        <input id="f_idpaciente" type="text" readonly style="background:#f4f2ef;color:#555;">
-        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">🔍 Buscar paciente existente</button>
       </div>
       <div>
         <label>Nombre(s)</label>
@@ -146,8 +145,6 @@
         <label>Apellido paterno</label>
         <input id="f_apellidop" type="text" placeholder="Apellido paterno" oninput="renderLabels(); actualizarIdPaciente();">
       </div>
-    </div>
-    <div class="grid4" style="margin-top:12px;">
       <div>
         <label>Apellido materno</label>
         <input id="f_apellidom" type="text" placeholder="Apellido materno" oninput="renderLabels(); actualizarIdPaciente();">
@@ -155,6 +152,13 @@
       <div>
         <label>Fecha de nacimiento</label>
         <input id="f_fnac" type="date" onchange="actualizarIdPaciente(); actualizarEdad(); buscarPacienteAuto();">
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:12px;">
+      <div>
+        <label>ID Paciente (expediente)</label>
+        <input id="f_idpaciente" type="text" readonly style="background:#f4f2ef;color:#555;">
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">🔍 Buscar paciente existente</button>
       </div>
       <div>
         <label>Edad (automática)</label>
@@ -241,10 +245,6 @@
       <input id="f_notas_toma" type="text" placeholder="Otras observaciones">
     </div>
 
-    <div class="actions">
-      <button class="btn btn-primary" onclick="guardarRegistro()">💾 Guardar paciente en la base</button>
-      <button class="btn btn-outline" onclick="limpiarParaSiguiente()">🧹 Limpiar para siguiente paciente</button>
-    </div>
   </div>
 
   <!-- ETIQUETAS -->
@@ -280,6 +280,7 @@
     <div class="actions">
       <button class="btn btn-teal" onclick="imprimirOrden()">🖨️ Imprimir Orden de Estudios</button>
       <button class="btn btn-primary" onclick="generarOrdenPDF()">Descargar PDF de Orden de Estudios</button>
+      <button class="btn btn-primary" onclick="guardarRegistro()">💾 Guardar paciente en la base</button>
     </div>
   </div>
 
@@ -519,10 +520,18 @@ function makeQrDataUrl(text, size){
   return img ? img.src : '';
 }
 
+function fmtFechaDMY(v){
+  if(!v) return '';
+  const soloFecha = String(v).split('T')[0];
+  const [yyyy, mm, dd] = soloFecha.split('-');
+  if(!yyyy || !mm || !dd) return v;
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function fmtFechaHora(v){
   if(!v) return '';
   const [d,t] = v.split('T');
-  return `${d} ${t||''}`.trim();
+  return `${fmtFechaDMY(d)} ${t||''}`.trim();
 }
 
 function readPaciente(){
@@ -794,7 +803,7 @@ function renderListaTrabajo(){
       <td style="padding:6px;">${r.folio||''}</td>
       <td style="padding:6px;font-family:monospace;">${r.idPaciente||''}</td>
       <td style="padding:6px;">${r.nombreCompleto||''}</td>
-      <td style="padding:6px;">${r.fechaNacimiento||''}</td>
+      <td style="padding:6px;">${fmtFechaDMY(r.fechaNacimiento)||''}</td>
       <td style="padding:6px;">${formatEdad(String(r.edad||''))}</td>
       <td style="padding:6px;">${r.sexo||''}</td>
       <td style="padding:6px;">${r.telefono||''}</td>
@@ -935,7 +944,7 @@ function buildListaTrabajoDoc(){
     r.folio || '',
     r.idPaciente || '',
     r.nombreCompleto || '',
-    r.fechaNacimiento || '',
+    fmtFechaDMY(r.fechaNacimiento) || '',
     formatEdad(String(r.edad||'')),
     r.sexo || '',
     r.telefono || '',
@@ -1045,7 +1054,7 @@ function drawOrdenBlock(pdf, oy, data, estudios, otroEstudio, etiquetas, copiaLa
   campo('Edad:', formatEdad(data.edad), marginL, y);
   campo('Sexo:', data.sexo, marginL+colW, y);
   y += 0.32;
-  campo('Fecha de nacimiento:', data.fnac, marginL, y);
+  campo('Fecha de nacimiento:', fmtFechaDMY(data.fnac), marginL, y);
   campo('Médico solicitante:', data.medico, marginL+colW, y);
   y += 0.22;
 
