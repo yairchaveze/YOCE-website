@@ -52,8 +52,8 @@ h1 span{color:var(--r)}
 .cta-btn.secondary{background:#fff;border-color:var(--bord2);color:var(--t)}
 .cta-btn.secondary:hover{border-color:var(--r);color:var(--r)}
 .logo-badge{display:flex;align-items:center;justify-content:center}
-.logo-badge-circle{width:150px;height:150px;border-radius:50%;background:#fff;border:2.5px solid var(--r3);box-shadow:0 0 0 6px rgba(164,29,35,.06),0 8px 22px rgba(164,29,35,.14);display:flex;align-items:center;justify-content:center}
-.logo-badge-circle img{width:96px;height:auto;display:block}
+.logo-badge-circle{width:150px;height:150px;border-radius:50%;background:#fff;border:2.5px solid var(--r3);box-shadow:0 0 0 6px rgba(164,29,35,.06),0 8px 22px rgba(164,29,35,.14);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logo-badge-circle img{width:70%;height:70%;object-fit:contain;display:block}
 
 /* MODAL DE ACCESO */
 .access-overlay{position:fixed;inset:0;background:rgba(20,8,10,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
@@ -93,7 +93,7 @@ h1 span{color:var(--r)}
 .study .icon{font-size:2.1rem;margin-bottom:.6rem;display:block}
 .study h3{font-size:1.22rem;font-weight:700;color:var(--t);margin-bottom:.45rem}
 .study .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:2px 9px;border-radius:6px;margin-bottom:.55rem;font-weight:600}
-.study p{font-size:1.02rem;color:var(--m);line-height:1.68}
+.study p{font-size:16px;color:var(--m);line-height:1.62}
 
 /* CONTACTO */
 .contact-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:linear-gradient(135deg,rgba(164,29,35,.06),rgba(245,108,90,.05));border:1.5px solid var(--r3);border-radius:14px;padding:1.4rem 1.7rem;margin-bottom:1.5rem}
@@ -107,7 +107,6 @@ footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monosp
   .hero-grid{grid-template-columns:1fr;text-align:left}
   .logo-badge{justify-content:flex-start}
   .logo-badge-circle{width:104px;height:104px}
-  .logo-badge-circle img{width:66px}
   h1{font-size:1.6rem}
   .hero{padding:1.6rem 1.4rem}
   .contact-strip{flex-direction:column;align-items:flex-start;text-align:left}
