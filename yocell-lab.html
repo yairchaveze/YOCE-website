@@ -2,88 +2,138 @@
 <html lang="es">
 <head>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>YoCell Lab | Laboratorio de Análisis Clínicos · San Buenaventura, Coahuila</title>
 <meta name="description" content="YoCell Lab: laboratorio de análisis clínicos de bajo costo en San Buenaventura, Coahuila. Biometría Hemática, Química Sanguínea y Examen General de Orina."/>
+<meta property="og:title" content="YoCell Lab | Laboratorio de Análisis Clínicos"/>
+<meta property="og:description" content="Laboratorio de análisis clínicos de bajo costo en San Buenaventura, Coahuila."/>
+<meta property="og:image" content="https://yocelltherapy.com/logo-ycl-full.png"/>
+<meta property="og:type" content="website"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --r:#6d1a36;--rl:#8f2447;--r2:rgba(109,26,54,0.08);--r3:rgba(109,26,54,0.14);
-  --teal:#1f6f6f;--teal2:rgba(31,111,111,0.1);
-  --bg:#f7f3f2;--card:#ffffff;
-  --bord2:rgba(15,23,42,0.09);
+  --r:#a41d23;--rl:#f56c5a;--rd:#6d1220;--r2:rgba(164,29,35,0.08);--r3:rgba(164,29,35,0.18);
+  --bg:#faf6f5;--card:#ffffff;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(164,29,35,0.32);
   --t:#0f172a;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.5}
 #bloodCanvas{position:fixed;inset:0;pointer-events:none;z-index:0}
-.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 3rem}
+.page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:1.4rem 1.25rem 3rem}
 
 /* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 1.6rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem;flex-wrap:wrap;gap:10px}
-.back-link{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--m2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;border-bottom:none;margin-bottom:2rem;flex-wrap:wrap;gap:10px;background:#fff;border:1px solid var(--bord2);border-radius:14px;box-shadow:0 3px 14px rgba(164,29,35,.05);position:relative;z-index:2}
+.back-link{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--m2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
 .back-link:hover{color:var(--r)}
-.lab-logo{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--r)}
-.lab-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--r)}
-.lab-logo img{height:26px;display:block}
+.lab-logo{display:flex;align-items:center}
+.lab-logo img{height:34px;display:block}
 
 /* HERO */
-.hero{background:var(--card);border:1px solid var(--bord2);border-radius:16px;padding:2rem 1.9rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(109,26,54,.05)}
-.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
-.kicker::before{content:'';width:16px;height:1.5px;background:var(--r)}
-h1{font-size:2.1rem;font-weight:600;color:var(--t);line-height:1.15;margin-bottom:.6rem}
+.hero{background:var(--card);border:1px solid var(--bord2);border-radius:18px;padding:2.1rem 2rem;margin-bottom:1.5rem;box-shadow:0 6px 28px rgba(164,29,35,.07);position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-100px;right:-100px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(164,29,35,.08) 0%,transparent 65%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 128px;gap:2rem;align-items:center;position:relative;z-index:1}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--r);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;font-weight:500}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--rl);border-radius:2px}
+h1{font-size:clamp(1.6rem,4vw,2.35rem);font-weight:700;color:var(--t);line-height:1.16;margin-bottom:.7rem;letter-spacing:-.02em}
 h1 span{color:var(--r)}
-.lead{font-size:1.05rem;color:var(--m);max-width:640px;margin-bottom:1.6rem}
+.loc-row{font-size:1.02rem;color:var(--m2);margin-bottom:1rem;display:flex;align-items:center;gap:5px}
+.loc-row::before{content:'◎';font-size:.8rem;color:var(--rl)}
+.lead{font-size:1.18rem;color:var(--m);max-width:640px;margin-bottom:1.6rem;line-height:1.75}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap}
-.cta-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;border:1.5px solid transparent}
+.cta-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;border:1.5px solid transparent}
 .cta-btn.primary{background:var(--r);color:#fff}
-.cta-btn.primary:hover{background:var(--rl);transform:translateY(-1px);box-shadow:0 6px 18px rgba(109,26,54,.3)}
+.cta-btn.primary:hover{background:var(--rd);transform:translateY(-1px);box-shadow:0 6px 18px rgba(164,29,35,.3)}
 .cta-btn.secondary{background:#fff;border-color:var(--bord2);color:var(--t)}
 .cta-btn.secondary:hover{border-color:var(--r);color:var(--r)}
+.logo-badge{display:flex;align-items:center;justify-content:center}
+.logo-badge-circle{width:118px;height:118px;border-radius:50%;background:#fff;border:2.5px solid var(--r3);box-shadow:0 0 0 6px rgba(164,29,35,.06),0 8px 22px rgba(164,29,35,.14);display:flex;align-items:center;justify-content:center}
+.logo-badge-circle img{width:64px;height:auto;display:block}
 
 /* MODAL DE ACCESO */
-.access-overlay{position:fixed;inset:0;background:rgba(15,10,12,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
+.access-overlay{position:fixed;inset:0;background:rgba(20,8,10,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
 .access-overlay.open{display:flex}
-.access-box{background:#fff;border-radius:14px;padding:1.8rem 1.7rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center;animation:accPop .18s ease-out}
+.access-box{background:#fff;border-radius:16px;padding:1.9rem 1.8rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center;animation:accPop .18s ease-out}
 @keyframes accPop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
-.access-box .lock{font-size:1.8rem;margin-bottom:.5rem}
-.access-box h3{font-size:1.05rem;color:var(--t);margin-bottom:.35rem}
-.access-box p{font-size:.85rem;color:var(--m);margin-bottom:1.1rem}
-.access-box input{width:100%;padding:10px 12px;border:1.5px solid var(--bord2);border-radius:8px;font-size:.95rem;text-align:center;letter-spacing:.08em;margin-bottom:.6rem}
+.access-box .lock{font-size:2rem;margin-bottom:.5rem}
+.access-box h3{font-size:1.2rem;color:var(--t);margin-bottom:.35rem}
+.access-box p{font-size:.95rem;color:var(--m);margin-bottom:1.1rem}
+.access-box input{width:100%;padding:10px 12px;border:1.5px solid var(--bord2);border-radius:8px;font-size:1.05rem;text-align:center;letter-spacing:.08em;margin-bottom:.6rem}
 .access-box input:focus{outline:none;border-color:var(--r)}
-.access-error{color:var(--r);font-size:.8rem;min-height:1.1rem;margin-bottom:.5rem}
+.access-error{color:var(--r);font-size:.9rem;min-height:1.1rem;margin-bottom:.5rem}
 .access-btns{display:flex;gap:8px}
-.access-btns button{flex:1;padding:10px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer}
+.access-btns button{flex:1;padding:10px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.98rem;cursor:pointer}
 .access-btns .go{background:var(--r);color:#fff}
-.access-btns .go:hover{background:var(--rl)}
+.access-btns .go:hover{background:var(--rd)}
 .access-btns .cancel{background:#f1eeec;color:var(--m)}
 .access-box.shake{animation:accShake .35s}
 @keyframes accShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
+/* SECTION LABEL */
+.sec-label{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--r);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.1rem;display:flex;align-items:center;gap:10px;font-weight:600}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--bord2)}
+
 /* MISION */
-.card{background:var(--card);border:1px solid var(--bord2);border-radius:14px;padding:1.6rem 1.8rem;margin-bottom:1.5rem}
-.card h2{font-size:1rem;text-transform:uppercase;letter-spacing:.04em;color:var(--r);margin-bottom:.9rem;font-family:'JetBrains Mono',monospace;font-weight:500}
-.card p{color:var(--m);font-size:.98rem;line-height:1.72}
+.card{background:var(--card);border:1px solid var(--bord2);border-radius:14px;padding:1.7rem 1.9rem;margin-bottom:1.6rem;box-shadow:0 3px 16px rgba(0,0,0,.04)}
+.card p{color:var(--m);font-size:1.1rem;line-height:1.78}
 .card p+p{margin-top:.7rem}
 
 /* ESTUDIOS */
 .studies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.study{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.3rem 1.2rem;position:relative;overflow:hidden}
-.study .num{position:absolute;top:10px;right:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--r3)}
-.study .icon{font-size:1.5rem;margin-bottom:.6rem}
-.study h3{font-size:1rem;font-weight:600;color:var(--t);margin-bottom:.4rem}
-.study .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:2px 8px;border-radius:5px;margin-bottom:.5rem}
-.study p{font-size:.88rem;color:var(--m);line-height:1.55}
+.study{background:#f3efee;border:1px solid var(--bord2);border-radius:13px;padding:1.4rem 1.3rem;position:relative;overflow:hidden;transition:all .22s}
+.study:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 8px 22px rgba(164,29,35,.1);background:#fff}
+.study::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--rl));opacity:0;transition:opacity .22s}
+.study:hover::before{opacity:1}
+.study .num{position:absolute;top:12px;right:14px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#8a4a3a}
+.study .icon{font-size:2.1rem;margin-bottom:.6rem;display:block}
+.study h3{font-size:1.22rem;font-weight:700;color:var(--t);margin-bottom:.45rem}
+.study .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:2px 9px;border-radius:6px;margin-bottom:.55rem;font-weight:600}
+.study p{font-size:1.02rem;color:var(--m);line-height:1.68}
 
-footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2)}
+/* CONTACTO */
+.contact-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:linear-gradient(135deg,rgba(164,29,35,.06),rgba(245,108,90,.05));border:1.5px solid var(--r3);border-radius:14px;padding:1.4rem 1.7rem;margin-bottom:1.5rem}
+.contact-strip p{font-size:1.12rem;color:var(--t);font-weight:500}
+.contact-strip p strong{color:var(--r)}
+
+footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--m2)}
 
 @media(max-width:700px){
   .studies-grid{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr;text-align:left}
+  .logo-badge{justify-content:flex-start}
+  .logo-badge-circle{width:84px;height:84px}
+  .logo-badge-circle img{width:46px}
   h1{font-size:1.6rem}
-  .hero{padding:1.5rem 1.3rem}
+  .hero{padding:1.6rem 1.4rem}
+  .contact-strip{flex-direction:column;align-items:flex-start;text-align:left}
+}
+/* UBICACIÓN & HORARIOS */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info-block{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.3rem 1.4rem}
+.info-block h4{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--r);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.7rem;font-weight:600;display:flex;align-items:center;gap:6px}
+.info-block p{font-size:1.06rem;color:var(--m);line-height:1.65}
+.info-block .addr-note{font-size:.9rem;color:var(--m2);font-style:italic;margin-top:.4rem}
+.sched-row{display:flex;justify-content:space-between;gap:10px;padding:.4rem 0;border-bottom:1px dashed var(--bord2);font-size:1.03rem}
+.sched-row:last-child{border-bottom:none}
+.sched-row span:first-child{color:var(--t);font-weight:600}
+.sched-row span:last-child{color:var(--m);font-family:'JetBrains Mono',monospace;font-size:.95rem}
+
+/* RESPALDO ACADÉMICO */
+.acad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.acad{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.15rem 1.1rem;text-align:center;transition:all .2s}
+.acad:hover{border-color:var(--bord3);box-shadow:0 5px 16px rgba(164,29,35,.08);transform:translateY(-2px)}
+.acad-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--r);background:var(--r2);border:1px solid var(--r3);padding:3px 10px;border-radius:6px;margin-bottom:.6rem}
+.acad h4{font-size:1.06rem;font-weight:600;color:var(--t);margin-bottom:.25rem;line-height:1.3}
+.acad p{font-size:.94rem;color:var(--m2)}
+
+@media(max-width:700px){
+  .info-grid{grid-template-columns:1fr}
+  .acad-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -109,54 +159,108 @@ footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monosp
 
 <nav>
   <a href="index.html" class="back-link">← Yair Omar Chávez-Estrada</a>
-  <div class="lab-logo" id="labLogo">
-    <img src="logo-ycl-full.png" alt="YoCell Lab" onerror="this.outerHTML='&lt;span class=&quot;dot&quot;&gt;&lt;/span&gt; YoCell Lab'">
+  <div class="lab-logo">
+    <img src="logo-ycl-full.png" alt="YoCell Lab">
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="kicker">Laboratorio de Análisis Clínicos</div>
-  <h1>YoCell Lab — <span>análisis clínicos accesibles</span> para San Buenaventura</h1>
-  <p class="lead">Un laboratorio de análisis clínicos de bajo costo, nacido en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
-  <div class="cta-row">
-    <a href="registro-etiquetas.html" class="cta-btn primary" onclick="return requestAccess(event,'registro-etiquetas.html')">🧪 Registro de pacientes →</a>
-    <a href="resultados.html" class="cta-btn secondary" onclick="return requestAccess(event,'resultados.html')">📄 Resultados</a>
+  <div class="hero-glow"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">Laboratorio de Análisis Clínicos</div>
+      <h1>YoCell Lab — <span>análisis clínicos accesibles</span> para San Buenaventura</h1>
+      <p class="loc-row">San Buenaventura, Coahuila</p>
+      <p class="lead">Un laboratorio de análisis clínicos de bajo costo, nacido en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
+      <div class="cta-row">
+        <a href="registro-etiquetas.html" class="cta-btn primary" onclick="return requestAccess(event,'registro-etiquetas.html')">🧪 Registro de pacientes →</a>
+        <a href="resultados.html" class="cta-btn secondary" onclick="return requestAccess(event,'resultados.html')">📄 Resultados</a>
+      </div>
+    </div>
+    <div class="logo-badge">
+      <div class="logo-badge-circle">
+        <img src="logo-ycl-icon.png" alt="YoCell Lab">
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- MISION -->
+<p class="sec-label">Sobre el Proyecto</p>
 <div class="card">
-  <h2>Sobre el proyecto</h2>
   <p>YoCell Lab busca ofrecer estudios de laboratorio esenciales a un costo accesible, comenzando en San Buenaventura, Coahuila — el municipio donde nací y donde quiero que la ciencia y el diagnóstico clínico de calidad también estén al alcance de la comunidad.</p>
   <p>Iniciamos con tres estudios básicos, de los más solicitados en consulta general, e iremos ampliando el catálogo conforme el proyecto crezca.</p>
 </div>
 
 <!-- ESTUDIOS -->
-<div class="card">
-  <h2>Estudios disponibles (fase inicial)</h2>
+<p class="sec-label">Estudios Disponibles · Fase Inicial</p>
+<div class="card" style="padding:1.4rem 1.4rem">
   <div class="studies-grid">
     <div class="study">
       <div class="num">01</div>
       <div class="icon">🩸</div>
       <span class="tag">BH</span>
       <h3>Biometría Hemática</h3>
-      <p>Evalúa glóbulos rojos, blancos y plaquetas. Útil para detectar anemia, infecciones y otras alteraciones generales de la sangre.</p>
+      <p>Evalúa glóbulos rojos, blancos y plaquetas. Útil para detectar <strong>anemia, infecciones y otras alteraciones generales de la sangre</strong>.</p>
     </div>
     <div class="study">
       <div class="num">02</div>
       <div class="icon">🧪</div>
-      <span class="tag">QS</span>
-      <h3>Química Sanguínea</h3>
-      <p>Mide glucosa, función renal y otros parámetros metabólicos básicos para el seguimiento de la salud general.</p>
+      <span class="tag">QS · 6 ELEMENTOS</span>
+      <h3>Química Sanguínea de 6 Elementos</h3>
+      <p>Glucosa, Ácido Úrico, Colesterol Total, Creatinina, Nitrógeno Ureico y Triglicéridos en suero. Útil para el seguimiento general de <strong>diabetes, función renal y niveles de colesterol y triglicéridos</strong>. Requiere ayuno de 8 horas (máximo 12).</p>
     </div>
     <div class="study">
       <div class="num">03</div>
       <div class="icon">🧫</div>
       <span class="tag">EGO</span>
       <h3>Examen General de Orina</h3>
-      <p>Análisis físico, químico y microscópico de la orina, de apoyo en el diagnóstico de infecciones y otras condiciones.</p>
+      <p>Análisis físico, químico y microscópico de la orina, de apoyo en el diagnóstico de <strong>infecciones urinarias y otras condiciones renales</strong>.</p>
     </div>
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="contact-strip">
+  <p>¿Quieres agendar tu estudio o resolver una duda? <strong>Escríbenos directamente.</strong></p>
+  <a href="mailto:laboratorio@yocelltherapy.com" class="cta-btn primary" style="white-space:nowrap">✉️ Contactar →</a>
+</div>
+
+<!-- UBICACIÓN Y HORARIOS -->
+<p class="sec-label">Ubicación &amp; Horarios</p>
+<div class="info-grid" style="margin-bottom:1.6rem">
+  <div class="info-block">
+    <h4>📍 Ubicación</h4>
+    <p>San Buenaventura, Coahuila<br>C.P. 25500</p>
+    <p class="addr-note">Dirección exacta próximamente — en trámite de autorización sanitaria.</p>
+  </div>
+  <div class="info-block">
+    <h4>🕐 Horario de Toma de Muestras</h4>
+    <div class="sched-row"><span>Sábado</span><span>7:00 – 17:00</span></div>
+    <div class="sched-row"><span>Domingo</span><span>9:00 – 12:00</span></div>
+  </div>
+</div>
+
+<!-- RESPALDO ACADÉMICO -->
+<p class="sec-label">Responsable Sanitario: Yair Omar Chávez-Estrada</p>
+<div class="acad-grid" style="margin-bottom:1.6rem">
+  <div class="acad">
+    <div class="acad-badge">QBP</div>
+    <h4>Químico Bacteriólogo Parasitólogo</h4>
+    <p>Universidad Autónoma de Nuevo León</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--r);margin-top:.35rem">Céd. Prof. 11639208</p>
+  </div>
+  <div class="acad">
+    <div class="acad-badge">M en C</div>
+    <h4>Maestría en Ciencias Médicas</h4>
+    <p>Universidad del Noreste</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--r);margin-top:.35rem">Céd. Prof. 14167483</p>
+  </div>
+  <div class="acad">
+    <div class="acad-badge">Dr en C</div>
+    <h4>Candidato a Doctor en Ciencias de la Salud</h4>
+    <p>Universidad Anáhuac México Norte</p>
   </div>
 </div>
 
@@ -169,25 +273,17 @@ const ACCESS_PASSWORD = 'YCL2026';
 const ACCESS_KEY = 'yclAccess';
 let pendingAccessUrl = null;
 
-function yaTieneAcceso(){
-  try{ return sessionStorage.getItem(ACCESS_KEY) === 'ok'; }catch(e){ return false; }
-}
-function marcarAcceso(){
-  try{ sessionStorage.setItem(ACCESS_KEY, 'ok'); }catch(e){}
-}
-
 function requestAccess(e, url){
   e.preventDefault();
-  if(yaTieneAcceso()){
+  if(sessionStorage.getItem(ACCESS_KEY) === '1'){
     window.location.href = url;
     return false;
   }
   pendingAccessUrl = url;
+  document.getElementById('accessInput').value = '';
   document.getElementById('accessError').textContent = '';
-  const input = document.getElementById('accessInput');
-  input.value = '';
   document.getElementById('accessOverlay').classList.add('open');
-  setTimeout(()=>input.focus(), 50);
+  setTimeout(()=>document.getElementById('accessInput').focus(), 50);
   return false;
 }
 function closeAccess(){
@@ -197,22 +293,26 @@ function closeAccess(){
 function checkAccess(){
   const val = document.getElementById('accessInput').value;
   if(val === ACCESS_PASSWORD){
-    marcarAcceso();
-    window.location.href = pendingAccessUrl;
-  }else{
-    document.getElementById('accessError').textContent = 'Contraseña incorrecta';
+    sessionStorage.setItem(ACCESS_KEY, '1');
+    const url = pendingAccessUrl;
+    closeAccess();
+    if(url) window.location.href = url;
+  } else {
     const box = document.getElementById('accessBox');
+    document.getElementById('accessError').textContent = 'Contraseña incorrecta';
     box.classList.remove('shake');
     void box.offsetWidth;
     box.classList.add('shake');
   }
 }
-document.getElementById('accessInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkAccess(); });
-document.getElementById('accessOverlay').addEventListener('click', e=>{ if(e.target.id==='accessOverlay') closeAccess(); });
-</script>
+document.getElementById('accessInput')?.addEventListener('keydown', e=>{
+  if(e.key === 'Enter') checkAccess();
+});
+document.getElementById('accessOverlay')?.addEventListener('click', e=>{
+  if(e.target.id === 'accessOverlay') closeAccess();
+});
 
-<script>
-/* ═══ ANIMACIÓN DE FONDO: gotas de sangre estilo logo YoCell Lab ═══ */
+/* ═══ FONDO ANIMADO — círculos rojos que flotan y aparecen/desaparecen ═══ */
 (function(){
   const canvas = document.getElementById('bloodCanvas');
   const ctx = canvas.getContext('2d');
@@ -221,143 +321,62 @@ document.getElementById('accessOverlay').addEventListener('click', e=>{ if(e.tar
   resize();
   window.addEventListener('resize', resize);
 
-  // Perfil de ancho de la gota (0 = punta arriba, 1 = base redonda abajo)
-  const PROFILE = [[0,0],[0.08,0.05],[0.18,0.14],[0.30,0.26],[0.42,0.36],[0.55,0.44],[0.68,0.48],[0.80,0.46],[0.90,0.36],[0.97,0.18],[1,0]];
-  function halfWidthAt(t){
-    for(let i=0;i<PROFILE.length-1;i++){
-      const [t0,w0]=PROFILE[i], [t1,w1]=PROFILE[i+1];
-      if(t>=t0 && t<=t1){ const f=(t-t0)/(t1-t0||1); return w0+(w1-w0)*f; }
-    }
-    return 0;
-  }
+  const REDS = ['#f6b3a6','#f56c5a','#ea7355','#e8574a','#d1392f','#c0392b','#a41d23','#8f2447','#6d1220'];
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-  // Genera las posiciones (normalizadas) de los círculos que forman una gota, al estilo del logo
-  function buildDropTemplate(n){
-    const circles = [];
-    let attempts = 0;
-    while(circles.length < n && attempts < 6000){
-      attempts++;
-      const t = Math.random();
-      const hw = halfWidthAt(t);
-      if(hw <= 0.015) continue;
-      const x = (Math.random()*2-1) * hw * 0.94;
-      const y = t;
-      const centerFactor = 1 - Math.min(1, Math.abs(x)/hw);
-      const baseR = 0.028 + centerFactor*0.085 + (t>0.28 && t<0.88 ? 0.02 : 0);
-      const r = baseR * (0.65 + Math.random()*0.7);
-      let ok = true;
-      for(const c of circles){
-        const dx = c.x-x, dy=(c.y-y)*1.25;
-        if(Math.sqrt(dx*dx+dy*dy) < (c.r+r)*0.5){ ok=false; break; }
-      }
-      if(!ok) continue;
-      circles.push({x, y, r, cf:centerFactor, t});
-    }
-    return circles;
-  }
-
-  const TEMPLATE = buildDropTemplate(30);
-
-  // Paletas de color (claro → oscuro) para variar el tono de cada gota
-  const PALETTES = [
-    ['#f4b8a8','#e8806b','#c94f4a','#9c2b3e','#6d1a36'],
-    ['#f0a898','#df7358','#c0392b','#8f2447','#5c1128'],
-    ['#f6c2ae','#ec9478','#d15b46','#a83252','#6d1a36'],
-  ];
-  function lerpColor(c1, c2, f){
-    const a = parseInt(c1.slice(1),16), b = parseInt(c2.slice(1),16);
-    const ar=(a>>16)&255, ag=(a>>8)&255, ab=a&255;
-    const br=(b>>16)&255, bg=(b>>8)&255, bb=b&255;
-    const r=Math.round(ar+(br-ar)*f), g=Math.round(ag+(bg-ag)*f), bl=Math.round(ab+(bb-ab)*f);
-    return `rgb(${r},${g},${bl})`;
-  }
-  function colorFor(circle, palette){
-    // más oscuro hacia el centro/abajo, más claro hacia el borde/punta
-    const f = Math.min(1, circle.cf*0.65 + circle.t*0.35);
-    const idx = f*(palette.length-1);
-    const i0 = Math.floor(idx), i1 = Math.min(palette.length-1, i0+1);
-    return lerpColor(palette[i0], palette[i1], idx-i0);
-  }
-
-  const STATES = { FORMING:'forming', HOLDING:'holding', DISPERSING:'dispersing', HIDDEN:'hidden' };
-
-  class BloodDrop{
+  class Circle{
     constructor(){ this.reset(true); }
     reset(initial){
       this.baseX = Math.random()*W;
       this.baseY = Math.random()*H;
-      this.scale = 26 + Math.random()*34; // altura aprox. de la gota en px
-      this.palette = PALETTES[Math.floor(Math.random()*PALETTES.length)];
+      this.r = 2 + Math.random()*Math.random()*16;
+      this.color = pick(REDS);
+      this.maxAlpha = 0.14 + Math.random()*0.28;
+      // ciclo de vida: aparece, se sostiene, desaparece
+      this.fadeIn = 1 + Math.random()*1.4;
+      this.hold = 1.2 + Math.random()*2.2;
+      this.fadeOut = 1 + Math.random()*1.6;
+      this.cycle = this.fadeIn + this.hold + this.fadeOut;
+      this.age = initial ? Math.random()*this.cycle : 0;
+      // flote y deriva más amplios y rápidos
       this.bobPhase = Math.random()*Math.PI*2;
-      this.bobSpeed = 0.25 + Math.random()*0.25;
-      this.state = initial ? (Math.random()<0.5?STATES.HOLDING:STATES.FORMING) : STATES.HIDDEN;
-      this.timer = initial ? Math.random()*2 : 0.4 + Math.random()*2.2;
-      this.formDur = 2.6 + Math.random()*1.2;
-      this.holdDur = 5 + Math.random()*5;
-      this.dispDur = 2 + Math.random()*1;
-      // puntos de dispersión aleatorios para cada círculo (offset grande respecto a su posición final)
-      this.scatter = TEMPLATE.map(()=>({
-        dx:(Math.random()-0.5)*W*0.5,
-        dy:(Math.random()-0.5)*H*0.5,
-      }));
+      this.bobSpeed = 0.5 + Math.random()*0.7;
+      this.bobAmp = 20 + Math.random()*34;
+      this.driftPhase = Math.random()*Math.PI*2;
+      this.driftSpeed = 0.4 + Math.random()*0.55;
+      this.driftAmp = 18 + Math.random()*30;
+      // pulso de tamaño
+      this.pulsePhase = Math.random()*Math.PI*2;
+      this.pulseSpeed = 0.6 + Math.random()*0.8;
+      this.pulseAmp = 0.25 + Math.random()*0.3;
     }
     update(dt){
-      this.timer -= dt;
-      if(this.state===STATES.FORMING && this.timer<=0){ this.state=STATES.HOLDING; this.timer=this.holdDur; }
-      else if(this.state===STATES.HOLDING && this.timer<=0){ this.state=STATES.DISPERSING; this.timer=this.dispDur; }
-      else if(this.state===STATES.DISPERSING && this.timer<=0){ this.reset(false); }
-      else if(this.state===STATES.HIDDEN && this.timer<=0){ this.state=STATES.FORMING; this.timer=this.formDur; }
+      this.age += dt;
+      if(this.age >= this.cycle){ this.reset(false); }
     }
-    progress(){
-      if(this.state===STATES.FORMING) return 1 - Math.max(0,this.timer)/this.formDur;
-      if(this.state===STATES.HOLDING) return 1;
-      if(this.state===STATES.DISPERSING) return Math.max(0,this.timer)/this.dispDur;
-      return 0;
+    alpha(){
+      if(this.age < this.fadeIn) return this.maxAlpha * (this.age/this.fadeIn);
+      if(this.age < this.fadeIn + this.hold) return this.maxAlpha;
+      const t = (this.age - this.fadeIn - this.hold)/this.fadeOut;
+      return this.maxAlpha * (1 - t);
     }
     draw(t){
-      const p = this.progress();
-      if(p<=0.001) return;
-      const ease = p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
-      const bob = Math.sin(t*this.bobSpeed + this.bobPhase) * 6;
-      const cx = this.baseX, cy = this.baseY + bob;
-      TEMPLATE.forEach((c, i)=>{
-        const targetX = cx + (c.x)*this.scale;
-        const targetY = cy + (c.y - 0.5)*this.scale*1.5;
-        const sc = this.scatter[i];
-        const x = targetX + sc.dx*(1-ease);
-        const y = targetY + sc.dy*(1-ease);
-        const r = Math.max(0.4, c.r*this.scale*ease*0.9);
-        const alpha = 0.55*ease;
-        if(alpha<=0.01 || r<=0.3) return;
-        ctx.beginPath();
-        ctx.arc(x,y,r,0,Math.PI*2);
-        ctx.fillStyle = colorFor(c, this.palette);
-        ctx.globalAlpha = alpha;
-        ctx.fill();
-      });
-      ctx.globalAlpha = 1;
+      const a = this.alpha();
+      if(a <= 0.002) return;
+      const x = this.baseX + Math.sin(t*this.driftSpeed + this.driftPhase)*this.driftAmp;
+      const y = this.baseY + Math.sin(t*this.bobSpeed + this.bobPhase)*this.bobAmp + Math.cos(t*this.driftSpeed*0.7 + this.driftPhase)*this.bobAmp*0.4;
+      const r = this.r * (1 + Math.sin(t*this.pulseSpeed + this.pulsePhase)*this.pulseAmp);
+      ctx.beginPath();
+      ctx.arc(x, y, Math.max(0.5,r), 0, Math.PI*2);
+      ctx.fillStyle = this.color;
+      ctx.globalAlpha = a;
+      ctx.fill();
     }
   }
 
-  const drops = [];
-  const N_DROPS = window.innerWidth < 700 ? 1 : 2;
-  for(let i=0;i<N_DROPS;i++) drops.push(new BloodDrop());
-
-  // Partículas ambientales: muchos círculos sueltos dispersos, sin formar figura
-  const ambient = [];
-  const N_AMBIENT = window.innerWidth < 700 ? 70 : 150;
-  for(let i=0;i<N_AMBIENT;i++){
-    const pal = PALETTES[Math.floor(Math.random()*PALETTES.length)];
-    ambient.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r: 1.5 + Math.random()*Math.random()*7,
-      vx:(Math.random()-0.5)*0.22, vy:(Math.random()-0.5)*0.22,
-      color: pal[Math.floor(Math.random()*pal.length)],
-      alpha: 0.12 + Math.random()*0.28,
-      pulsePhase: Math.random()*Math.PI*2,
-      pulseSpeed: 0.3 + Math.random()*0.5,
-    });
-  }
+  const N = window.innerWidth < 700 ? 110 : 200;
+  const circles = [];
+  for(let i=0;i<N;i++) circles.push(new Circle());
 
   let last = performance.now();
   function frame(now){
@@ -365,19 +384,8 @@ document.getElementById('accessOverlay').addEventListener('click', e=>{ if(e.tar
     last = now;
     const t = now/1000;
     ctx.clearRect(0,0,W,H);
-
-    ambient.forEach(a=>{
-      a.x=(a.x+a.vx+W)%W; a.y=(a.y+a.vy+H)%H;
-      const pulse = 0.85 + 0.15*Math.sin(t*a.pulseSpeed + a.pulsePhase);
-      ctx.beginPath();
-      ctx.arc(a.x,a.y,a.r*pulse,0,Math.PI*2);
-      ctx.fillStyle = a.color;
-      ctx.globalAlpha = a.alpha;
-      ctx.fill();
-    });
+    circles.forEach(c=>{ c.update(dt); c.draw(t); });
     ctx.globalAlpha = 1;
-
-    drops.forEach(d=>{ d.update(dt); d.draw(t); });
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -385,3 +393,4 @@ document.getElementById('accessOverlay').addEventListener('click', e=>{ if(e.tar
 </script>
 </body>
 </html>
+
