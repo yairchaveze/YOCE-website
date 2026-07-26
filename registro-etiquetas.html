@@ -178,10 +178,60 @@
         <label>Teléfono</label>
         <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
       </div>
+    </div>
+    <div class="grid3" style="margin-top:12px;">
       <div>
-        <label>Dirección</label>
-        <input id="f_direccion" type="text" placeholder="Calle, número, colonia">
+        <label>Calle y número</label>
+        <input id="f_calle" type="text" placeholder="Calle y número" oninput="actualizarDireccionCombinada()">
       </div>
+      <div>
+        <label>Colonia</label>
+        <input id="f_colonia" type="text" placeholder="Colonia" oninput="actualizarDireccionCombinada()">
+      </div>
+      <div>
+        <label>Municipio</label>
+        <select id="f_municipio" onchange="actualizarDireccionCombinada()">
+          <option value="San Buenaventura">San Buenaventura</option>
+          <option value="Abasolo">Abasolo</option>
+          <option value="Acuña">Acuña</option>
+          <option value="Allende">Allende</option>
+          <option value="Arteaga">Arteaga</option>
+          <option value="Candela">Candela</option>
+          <option value="Castaños">Castaños</option>
+          <option value="Cuatro Ciénegas">Cuatro Ciénegas</option>
+          <option value="Escobedo">Escobedo</option>
+          <option value="Francisco I. Madero">Francisco I. Madero</option>
+          <option value="Frontera">Frontera</option>
+          <option value="General Cepeda">General Cepeda</option>
+          <option value="Guerrero">Guerrero</option>
+          <option value="Hidalgo">Hidalgo</option>
+          <option value="Jiménez">Jiménez</option>
+          <option value="Juárez">Juárez</option>
+          <option value="Lamadrid">Lamadrid</option>
+          <option value="Matamoros">Matamoros</option>
+          <option value="Monclova">Monclova</option>
+          <option value="Morelos">Morelos</option>
+          <option value="Múzquiz">Múzquiz</option>
+          <option value="Nadadores">Nadadores</option>
+          <option value="Nava">Nava</option>
+          <option value="Ocampo">Ocampo</option>
+          <option value="Parras">Parras</option>
+          <option value="Piedras Negras">Piedras Negras</option>
+          <option value="Progreso">Progreso</option>
+          <option value="Ramos Arizpe">Ramos Arizpe</option>
+          <option value="Sabinas">Sabinas</option>
+          <option value="Sacramento">Sacramento</option>
+          <option value="Saltillo">Saltillo</option>
+          <option value="San Juan de Sabinas">San Juan de Sabinas</option>
+          <option value="San Pedro">San Pedro</option>
+          <option value="Sierra Mojada">Sierra Mojada</option>
+          <option value="Torreón">Torreón</option>
+          <option value="Viesca">Viesca</option>
+          <option value="Villa Unión">Villa Unión</option>
+          <option value="Zaragoza">Zaragoza</option>
+        </select>
+      </div>
+      <input id="f_direccion" type="hidden">
     </div>
 
     <div id="estadoPaciente" style="display:none;margin-top:12px;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;"></div>
@@ -453,6 +503,27 @@ function buscarPacienteJSONP(idPaciente){
   });
 }
 
+function actualizarDireccionCombinada(){
+  const calle = document.getElementById('f_calle').value.trim();
+  const colonia = document.getElementById('f_colonia').value.trim();
+  const municipio = document.getElementById('f_municipio').value;
+  const partes = [];
+  if(calle) partes.push(calle);
+  if(colonia) partes.push('Col. ' + colonia);
+  if(municipio) partes.push(municipio + ', Coahuila');
+  document.getElementById('f_direccion').value = partes.join(', ');
+}
+
+function cargarDireccionDesdeTexto(texto){
+  // Los registros previos guardaban la dirección como un solo texto; la ponemos
+  // completa en "Calle y número" y dejamos Municipio en San Buenaventura por
+  // default — la secretaria puede corregirlo si el paciente es de otro municipio.
+  document.getElementById('f_calle').value = texto || '';
+  document.getElementById('f_colonia').value = '';
+  document.getElementById('f_municipio').value = 'San Buenaventura';
+  actualizarDireccionCombinada();
+}
+
 async function buscarPacienteExistente(){
   actualizarIdPaciente();
   const id = document.getElementById('f_idpaciente').value.trim();
@@ -467,7 +538,7 @@ async function buscarPacienteExistente(){
   }
   const p = rows[0];
   if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
-  if(p.direccion) document.getElementById('f_direccion').value = p.direccion;
+  if(p.direccion) cargarDireccionDesdeTexto(p.direccion);
   if(p.medico && !document.getElementById('f_medico_generico').checked){
     document.getElementById('f_medico').value = p.medico;
   }
@@ -487,7 +558,7 @@ async function buscarPacienteAuto(){
   if(rows && rows.length > 0){
     const p = rows[0];
     if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
-    if(p.direccion) document.getElementById('f_direccion').value = p.direccion;
+    if(p.direccion) cargarDireccionDesdeTexto(p.direccion);
     if(p.medico && !document.getElementById('f_medico_generico').checked){
       document.getElementById('f_medico').value = p.medico;
     }
@@ -944,6 +1015,9 @@ function limpiarParaSiguiente(){
   document.getElementById('f_sexo').value = '';
   document.getElementById('f_fnac').value = '';
   document.getElementById('f_telefono').value = '';
+  document.getElementById('f_calle').value = '';
+  document.getElementById('f_colonia').value = '';
+  document.getElementById('f_municipio').value = 'San Buenaventura';
   document.getElementById('f_direccion').value = '';
   document.getElementById('f_idpaciente').value = '';
   ultimoIdBuscado = '';
