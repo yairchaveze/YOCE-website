@@ -392,16 +392,22 @@ async function extraerLineasPdf(file){
 const PANELES_CONOCIDOS = [
   { patron: /qu[ií]mica\s+sangu[ií]nea\s*6/i, codigo: 'QS6' },
   { patron: /qu[ií]mica\s+sangu[ií]nea/i, codigo: 'QS' },
-  { patron: /biometr[ií]a\s+hem[aá]tica/i, codigo: 'BH' },
+  { patron: /biometr[ií]a\s+h[eé]m[aá]tica/i, codigo: 'BH' },
   { patron: /examen\s+general\s+de\s+orina/i, codigo: 'EGO' },
   { patron: /general\s+de\s+orina/i, codigo: 'EGO' },
 ];
 
 // Prefijos de líneas que NO son datos de analitos (encabezados, métodos, notas legales)
-const LINEAS_IGNORAR = /^(metodologia|fcsi|tipo muestra|validado por|resultado fuera|fc si|origen|cliente|paciente|medico|sexo|fecha de|orden|estudio$|resultado\s+unidades|p[aá]gina|responsable sanitario|c[eé]d\.?\s*prof|laboratorio (clínico|certificado)|la interpretaci[oó]n|en cumplimiento|global standards|química clínica$|qu[ií]mica sangu[ií]nea|biometr[ií]a hem[aá]tica|examen general de orina)/i;
+const LINEAS_IGNORAR = /^(metodologia|fcsi|tipo muestra|validado por|resultado fuera|fc si|origen|cliente|paciente|medico|sexo|fecha de|orden|estudio$|resultado\s+unidades|p[aá]gina|responsable sanitario|c[eé]d\.?\s*prof|laboratorio (clínico|certificado)|la interpretaci[oó]n|en cumplimiento|global standards|química clínica$|qu[ií]mica sangu[ií]nea|biometr[ií]a\s+h[eé]m[aá]tica|examen general de orina|observaciones|formula (roja|blanca)$|plaquetas$)/i;
 
+// Fragmento de unidades — incluye el formato "x10 ^N / mm3" / "x 10 ^N /uL" que
+// usa Micro-Tec en Biometría Hemática (espacios variables entre x/10/^/N/unidad)
+const UNIDADES_FRAG = '(x\\s*10\\s*\\^?\\s*\\d*\\s*\\/\\s*(?:mm3|u?L|µL)|mg\\/dL|g\\/dL|g\\/L|U\\/L|mmol\\/L|µmol\\/L|umol\\/L|%|mEq\\/L|ng\\/mL|pg\\/mL|mUI\\/mL|UI\\/mL|células\\/µL|cel\\/campo|seg|min|mil\\/µL|mill\\/µL|fL|pg)';
 // Línea de analito: nombre (con o sin "(A) " al inicio) + número + unidad + resto (rango)
-const LINEA_ANALITO = /^(?:\(A\)\s*)?([A-Za-zÁÉÍÓÚÑÜáéíóúñü][A-Za-zÁÉÍÓÚÑÜáéíóúñü .()%/-]*?)\s+([\d]+[.,]\d+|[\d]+)\s+(mg\/dL|g\/dL|g\/L|U\/L|mmol\/L|µmol\/L|umol\/L|%|mEq\/L|ng\/mL|pg\/mL|mUI\/mL|UI\/mL|células\/µL|cel\/campo|x10\^?\d?\/?µ?L?|seg|min|mil\/µL|mill\/µL|fL|pg)\s*(.*)$/i;
+const LINEA_ANALITO = new RegExp('^(?:\\(A\\)\\s*)?([A-Za-zÁÉÍÓÚÑÜáéíóúñü][A-Za-zÁÉÍÓÚÑÜáéíóúñü .()%/-]*?)\\s+([\\d]+[.,]\\d+|[\\d]+)\\s+' + UNIDADES_FRAG + '\\s*(.*)$', 'i');
+// Igual que arriba pero SIN el valor numérico — a veces el resultado queda en su
+// propio renglón, separado del nombre/unidad/rango (layout raro de algunos PDFs)
+const LINEA_ANALITO_SIN_VALOR = new RegExp('^([A-Za-zÁÉÍÓÚÑÜáéíóúñü][A-Za-zÁÉÍÓÚÑÜáéíóúñü .()%/-]*?)\\s+' + UNIDADES_FRAG + '\\s*(.*)$', 'i');
 
 // Líneas que continúan un rango de referencia categórico partido en varios
 // renglones del PDF (ej. "Aconsejable: <200" / "Limítrofe: 200-239" / "Alto: >=240")
@@ -478,9 +484,20 @@ function parsearLineasAResultados(lineas){
       continue;
     }
     if(LINEAS_IGNORAR.test(linea)) continue;
-    const m = linea.match(LINEA_ANALITO);
+    let m = linea.match(LINEA_ANALITO);
+    let valorSueltoSiguiente = false;
+    if(!m){
+      // A veces el resultado queda solo en el siguiente renglón (layout raro
+      // de algunos PDFs, ej. "Hemoglobina Corpuscular Media (HCM) pg 26.8 - 33.2"
+      // seguido de una línea aparte con solo "22.6").
+      const sinValor = linea.match(LINEA_ANALITO_SIN_VALOR);
+      if(sinValor && i + 1 < lineas.length && /^[\d.,]+$/.test(lineas[i+1].trim())){
+        m = [null, sinValor[1], lineas[i+1].trim(), sinValor[2], sinValor[3]];
+        valorSueltoSiguiente = true;
+      }
+    }
     if(m){
-      const nombre = m[1].trim().replace(/\s+en\s+suero$/i, '').trim();
+      const nombre = m[1].trim().replace(/\s+en\s+suero$/i, '').replace(/\s*%$/, '').trim();
       let rango = (m[4]||'').trim();
 
       // La cláusula "Aconsejable/Normal" a veces queda en el renglón justo ANTES
@@ -490,6 +507,9 @@ function parsearLineasAResultados(lineas){
       if(i - 1 > ultimoConsumidoHasta && i - 1 >= 0 && CONTINUACION_RANGO.test(lineas[i-1])){
         rango = lineas[i-1].trim() + (rango ? '\n' + rango : '');
       }
+
+      // Si el valor vino de un renglón separado, saltamos esa línea extra
+      if(valorSueltoSiguiente) i++;
 
       // Juntamos los renglones siguientes que sean continuación del mismo rango
       let j = i + 1;
