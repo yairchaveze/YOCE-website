@@ -88,7 +88,7 @@
   #resTable{width:100%;border-collapse:collapse;font-size:12.5px;}
   #resTable th{background:var(--teal-light);color:var(--teal);text-align:left;padding:7px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
   #resTable td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:middle;}
-  #resTable input,#resTable select{padding:5px 6px;font-size:12.5px;}
+  #resTable input,#resTable select,#resTable textarea{padding:5px 6px;font-size:12.5px;font-family:inherit;resize:vertical;}
   #resTable tr.fuera-rango{background:#fdeaea;}
   #resTable tr.fuera-rango .c-resultado{color:#c0273c;font-weight:700;}
   #resTable .flagcell{text-align:center;}
@@ -434,7 +434,7 @@ function parsearLineasAResultados(lineas){
       // Juntamos los renglones siguientes que sean continuación del mismo rango
       let j = i + 1;
       while(j < lineas.length && CONTINUACION_RANGO.test(lineas[j])){
-        rango += (rango ? ' · ' : '') + lineas[j].trim();
+        rango += (rango ? '\n' : '') + lineas[j].trim();
         j++;
       }
       i = j - 1;
@@ -503,7 +503,7 @@ function agregarFila(f){
     <td><input class="c-analito" value="${escapeAttr(f.analito)}" placeholder="Nombre del analito"></td>
     <td><input class="c-resultado" value="${escapeAttr(f.resultado)}" placeholder="Valor"></td>
     <td><input class="c-unidades" value="${escapeAttr(f.unidades)}" placeholder="mg/dL"></td>
-    <td><input class="c-rango" value="${escapeAttr(f.rangoRef)}" placeholder="Ej. 17.90 - 54.90"></td>
+    <td><textarea class="c-rango" rows="2" placeholder="Ej. 17.90 - 54.90">${escapeHtml(f.rangoRef)}</textarea></td>
     <td class="flagcell"><input type="checkbox" class="c-fuera" ${f.fueraDeRango ? 'checked' : ''}></td>
     <td><button class="btn btn-outline btn-sm" style="color:#c0273c;border-color:#c0273c;" onclick="this.closest('tr').remove()">🗑</button></td>
   `;
@@ -525,6 +525,10 @@ function agregarFila(f){
 
 function escapeAttr(s){
   return String(s==null?'':s).replace(/"/g,'&quot;');
+}
+
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 /* ═══ PDF DE RESULTADOS ═══ */
@@ -607,9 +611,16 @@ function buildResultadosPdf(){
     margin: { left: marginL, right: marginL },
     head: [['Estudio','Analito','Resultado','Unidades','Rango de referencia','']],
     body: body,
-    styles: { fontSize: 8.5, cellPadding: 4 },
+    styles: { fontSize: 8.5, cellPadding: 4, overflow: 'linebreak' },
     headStyles: { fillColor: [109,26,54], textColor: 255, fontStyle: 'bold' },
-    columnStyles: { 5: { cellWidth: 0.5, halign: 'center' } },
+    columnStyles: {
+      0: { cellWidth: 0.7 },
+      1: { cellWidth: 1.55 },
+      2: { cellWidth: 0.75 },
+      3: { cellWidth: 0.7 },
+      4: { cellWidth: 2.6 },
+      5: { cellWidth: 0.5, halign: 'center' }
+    },
     didParseCell: function(data){
       if(data.section === 'body' && filas[data.row.index] && filas[data.row.index].fueraDeRango){
         data.cell.styles.textColor = [192, 39, 60];
