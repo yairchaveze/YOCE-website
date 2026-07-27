@@ -410,13 +410,28 @@ function evaluarFueraDeRango(resultadoStr, rangoTexto){
     const lo = parseFloat(simple[1]), hi = parseFloat(simple[2]);
     return val < lo || val > hi;
   }
-  // Rango categórico: primero el techo de lo normal/aconsejable/deseable (el
-  // límite real de "en rango"), y si no existe esa cláusula, el umbral de alto.
-  const normalMatch = rangoTexto.match(/(?:normal|aconsejable|deseable|[oó]ptimo)[^\d]*<\s*([\d.]+)/i);
-  if(normalMatch) return val >= parseFloat(normalMatch[1]);
-  const altoMatch = rangoTexto.match(/(?:muy alto|alto|elevado)[^\d]*(>=|>)\s*([\d.]+)/i);
-  if(altoMatch) return val >= parseFloat(altoMatch[2]);
+  // Rango con techo tipo "deseable/normal/aconsejable/óptimo" + "< N" (en cualquier orden)
+  const menorQue = rangoTexto.match(/<\s*([\d.]+)/);
+  if(menorQue && /normal|aconsejable|deseable|[oó]ptimo/i.test(rangoTexto)){
+    return val >= parseFloat(menorQue[1]);
+  }
+  // Rango con piso tipo "alto/elevado" + ">= N" (en cualquier orden)
+  const mayorIgual = rangoTexto.match(/(>=|>)\s*([\d.]+)/);
+  if(mayorIgual && /alto|elevado/i.test(rangoTexto)){
+    return val >= parseFloat(mayorIgual[2]);
+  }
   return false;
+}
+
+// Simplifica un rango categórico (varias cláusulas: Aconsejable/Limítrofe/Alto...)
+// al formato "< N (deseable)" que se usa en el formato de reporte de YoCell Lab —
+// evita ambigüedad y el problema de mostrar texto larguísimo en el PDF.
+function simplificarRangoCategorico(rangoCompleto){
+  const normalMatch = rangoCompleto.match(/(?:normal|aconsejable|deseable|[oó]ptimo)[^\d]*<\s*([\d.]+)/i);
+  if(normalMatch) return `< ${normalMatch[1]} (deseable)`;
+  const altoMatch = rangoCompleto.match(/(?:muy alto|alto|elevado)[^\d]*(>=|>)\s*([\d.]+)/i);
+  if(altoMatch) return `${altoMatch[1]} ${altoMatch[2]}`;
+  return rangoCompleto;
 }
 
 function parsearLineasAResultados(lineas){
@@ -437,7 +452,9 @@ function parsearLineasAResultados(lineas){
         rango += (rango ? '\n' : '') + lineas[j].trim();
         j++;
       }
+      const eraCategorico = j > i + 1;
       i = j - 1;
+      if(eraCategorico) rango = simplificarRangoCategorico(rango);
       const resultado = m[2].replace(',', '.');
       filas.push({
         estudio: estudioActual || '',
@@ -544,17 +561,6 @@ function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
   try{ pdf.addImage(img, 'PNG', px, y, w, h); }catch(e){ console.error(e); }
 }
 
-// Acorta el rango de referencia SOLO para el PDF (en la base se guarda completo).
-// La tabla de jspdf-autotable truena con "Maximum call stack size exceeded" cuando
-// le toca acomodar el texto categórico larguísimo (Aconsejable/Limítrofe/Alto...)
-// en una columna angosta, así que aquí solo mostramos la primera cláusula.
-function rangoParaPDF(rangoTexto){
-  if(!rangoTexto) return '';
-  const partes = String(rangoTexto).split('\n').map(s=>s.trim()).filter(Boolean);
-  if(partes.length <= 1) return partes[0] || '';
-  return partes[0] + ` (+${partes.length - 1} más)`;
-}
-
 function leerFilasDeTabla(){
   const filasDom = [...document.querySelectorAll('#resTableBody tr')];
   return filasDom.map(tr=>({
@@ -616,7 +622,7 @@ function buildResultadosPdf(){
   pdf.text(document.getElementById('f_labExterno').value || '', pageW/2 + 1.15, y);
   y += 0.3;
 
-  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, rangoParaPDF(f.rangoRef), f.fueraDeRango ? 'FUERA' : '']);
+  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, f.rangoRef, f.fueraDeRango ? 'FUERA' : '']);
   pdf.autoTable({
     startY: y,
     margin: { left: marginL, right: marginL },
