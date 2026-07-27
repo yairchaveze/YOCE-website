@@ -239,6 +239,15 @@ function hoyISO(){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+// Convierte 'YYYY-MM-DD' o un datetime ISO completo ('...T06:00:00.000Z') a DD/MM/AAAA
+function fmtFechaDMY(v){
+  if(!v) return '';
+  const soloFecha = String(v).split('T')[0];
+  const [yyyy, mm, dd] = soloFecha.split('-');
+  if(!yyyy || !mm || !dd) return v;
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function jsonpGet(params){
   return new Promise((resolve)=>{
     const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*1e6);
@@ -438,6 +447,7 @@ function simplificarRangoCategorico(rangoCompleto){
 function parsearLineasAResultados(lineas){
   const filas = [];
   let estudioActual = '';
+  let ultimoConsumidoHasta = -1; // última línea ya usada como parte de un rango anterior
   for(let i = 0; i < lineas.length; i++){
     const linea = lineas[i];
     const panel = PANELES_CONOCIDOS.find(p => p.patron.test(linea));
@@ -447,13 +457,23 @@ function parsearLineasAResultados(lineas){
     if(m){
       const nombre = m[1].trim().replace(/\s+en\s+suero$/i, '').trim();
       let rango = (m[4]||'').trim();
+
+      // La cláusula "Aconsejable/Normal" a veces queda en el renglón justo ANTES
+      // del nombre del analito (por cómo el PDF acomoda verticalmente una columna
+      // de rango de varias líneas junto a una fila de una sola línea). La buscamos
+      // ahí también, siempre que no haya sido ya usada por el analito anterior.
+      if(i - 1 > ultimoConsumidoHasta && i - 1 >= 0 && CONTINUACION_RANGO.test(lineas[i-1])){
+        rango = lineas[i-1].trim() + (rango ? '\n' + rango : '');
+      }
+
       // Juntamos los renglones siguientes que sean continuación del mismo rango
       let j = i + 1;
       while(j < lineas.length && CONTINUACION_RANGO.test(lineas[j])){
         rango += (rango ? '\n' : '') + lineas[j].trim();
         j++;
       }
-      const eraCategorico = j > i + 1;
+      const eraCategorico = /aconsejable|limítrofe|l[ií]mite|normal|[oó]ptimo|deseable|alto|elevado|bajo/i.test(rango);
+      ultimoConsumidoHasta = j - 1;
       i = j - 1;
       if(eraCategorico) rango = simplificarRangoCategorico(rango);
       const resultado = m[2].replace(',', '.');
@@ -574,6 +594,39 @@ function leerFilasDeTabla(){
   })).filter(f => f.analito && f.resultado);
 }
 
+const ESTUDIO_NOMBRES = {
+  'QS6': 'Química Sanguínea de 6 Elementos',
+  'QS': 'Química Sanguínea',
+  'BH': 'Biometría Hemática',
+  'EGO': 'Examen General de Orina'
+};
+function nombreEstudio(codigo){
+  return ESTUDIO_NOMBRES[codigo] || codigo || 'Estudio';
+}
+
+// Letra A (alto) / B (bajo) junto al resultado, según el mismo criterio que
+// evaluarFueraDeRango pero indicando la dirección.
+function letraAltoBajo(resultadoStr, rangoTexto){
+  const val = parseFloat(String(resultadoStr).replace(',', '.'));
+  if(isNaN(val) || !rangoTexto) return '';
+  const simple = rangoTexto.match(/^\s*([\d.]+)\s*-\s*([\d.]+)\s*$/);
+  if(simple){
+    const lo = parseFloat(simple[1]), hi = parseFloat(simple[2]);
+    if(val < lo) return 'B';
+    if(val > hi) return 'A';
+    return '';
+  }
+  const menorQue = rangoTexto.match(/<\s*([\d.]+)/);
+  if(menorQue && /deseable|normal|aconsejable|[oó]ptimo/i.test(rangoTexto)){
+    return val >= parseFloat(menorQue[1]) ? 'A' : '';
+  }
+  const mayorIgual = rangoTexto.match(/(>=|>)\s*([\d.]+)/);
+  if(mayorIgual && /alto|elevado/i.test(rangoTexto)){
+    return val >= parseFloat(mayorIgual[2]) ? 'A' : '';
+  }
+  return '';
+}
+
 function buildResultadosPdf(){
   if(!pacienteActual){ toast('Selecciona un paciente primero'); return null; }
   const filas = leerFilasDeTabla();
@@ -585,9 +638,12 @@ function buildResultadosPdf(){
 
   addLogoToPdf(pdf, 'logoFull', marginL, 0.45, 1.5, 0.7, 'left');
   pdf.setFont('helvetica','bold'); pdf.setFontSize(15);
-  pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.65, { align:'right' });
+  pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.6, { align:'right' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
-  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW - marginL, 0.85, { align:'right' });
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW - marginL, 0.8, { align:'right' });
+  pdf.setFontSize(7.5); pdf.setTextColor(120);
+  pdf.text('FCAL-05-01', pageW - marginL, 0.95, { align:'right' });
+  pdf.setTextColor(0);
 
   let y = 1.5;
   pdf.setDrawColor(200); pdf.line(marginL, y, pageW - marginL, y);
@@ -610,38 +666,70 @@ function buildResultadosPdf(){
   pdf.setFont('helvetica','bold');
   pdf.text('Fecha Nac.:', pageW/2 + 0.3, y);
   pdf.setFont('helvetica','normal');
-  pdf.text(pacienteActual.fechaNacimiento || '', pageW/2 + 1.15, y);
+  pdf.text(fmtFechaDMY(pacienteActual.fechaNacimiento) || '', pageW/2 + 1.15, y);
   y += 0.22;
 
   pdf.setFont('helvetica','bold');
   pdf.text('Fecha de reporte:', marginL, y);
   pdf.setFont('helvetica','normal');
-  pdf.text(document.getElementById('f_fechaReporte').value || '', marginL + 1.3, y);
-  pdf.setFont('helvetica','bold');
-  pdf.text('Laboratorio:', pageW/2 + 0.3, y);
-  pdf.setFont('helvetica','normal');
-  pdf.text(document.getElementById('f_labExterno').value || '', pageW/2 + 1.15, y);
+  pdf.text(fmtFechaDMY(document.getElementById('f_fechaReporte').value) || '', marginL + 1.3, y);
   y += 0.3;
 
-  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, f.rangoRef, f.fueraDeRango ? 'FUERA' : '']);
-  pdf.autoTable({
-    startY: y,
-    margin: { left: marginL, right: marginL },
-    head: [['Estudio','Analito','Resultado','Unidades','Rango de referencia','']],
-    body: body,
-    styles: { font: 'helvetica', fontSize: 8.5, cellPadding: 0.07 },
-    headStyles: { fillColor: [109,26,54], textColor: 255 },
-    didParseCell: function(data){
-      if(data.section === 'body' && filas[data.row.index] && filas[data.row.index].fueraDeRango){
-        data.cell.styles.textColor = [192, 39, 60];
-        data.cell.styles.fillColor = [253, 234, 234];
-      }
-    }
+  // Agrupamos por estudio: el nombre del panel va arriba, una sola vez,
+  // en vez de repetirse en cada renglón de la tabla.
+  const grupos = [];
+  filas.forEach(f=>{
+    let g = grupos.find(g => g.estudio === f.estudio);
+    if(!g){ g = { estudio: f.estudio, filas: [] }; grupos.push(g); }
+    g.filas.push(f);
   });
 
-  let yFinal = pdf.lastAutoTable.finalY + 0.35;
+  grupos.forEach(grupo=>{
+    pdf.setFont('helvetica','bold'); pdf.setFontSize(11); pdf.setTextColor(109,26,54);
+    pdf.text(nombreEstudio(grupo.estudio), marginL, y);
+    pdf.setTextColor(0);
+    y += 0.12;
+
+    const body = grupo.filas.map(f => [
+      f.analito,
+      f.resultado,
+      letraAltoBajo(f.resultado, f.rangoRef),
+      f.unidades,
+      f.rangoRef
+    ]);
+    pdf.autoTable({
+      startY: y,
+      margin: { left: marginL, right: marginL },
+      head: [['Analito','Resultado','','Unidades','Rango de referencia']],
+      body: body,
+      styles: { font: 'helvetica', fontSize: 8.5, cellPadding: 0.07 },
+      headStyles: { fillColor: [109,26,54], textColor: 255 },
+      columnStyles: { 2: { halign: 'center', fontStyle: 'bold' } },
+      didParseCell: function(data){
+        if(data.section === 'body' && grupo.filas[data.row.index]){
+          const f = grupo.filas[data.row.index];
+          const fuera = f.fueraDeRango === true || f.fueraDeRango === 'Sí' || f.fueraDeRango === 'true';
+          if(fuera){
+            data.cell.styles.textColor = [192, 39, 60];
+            data.cell.styles.fillColor = [253, 234, 234];
+          }
+        }
+      }
+    });
+    y = pdf.lastAutoTable.finalY + 0.3;
+  });
+
+  let yFinal = y + 0.05;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.5); pdf.setTextColor(120);
-  pdf.text('Rojo = resultado fuera del intervalo de referencia. La interpretación clínica corresponde a un médico certificado.', marginL, yFinal);
+  pdf.text('Rojo = resultado fuera del intervalo de referencia. A = Alto · B = Bajo. La interpretación clínica corresponde a un médico certificado.', marginL, yFinal);
+  yFinal += 0.16;
+  pdf.text('Referencia nacional: ' + (document.getElementById('f_labExterno').value || ''), marginL, yFinal);
+  yFinal += 0.2;
+  const notaLegal = 'Esta información no debe reproducirse, excepto en su totalidad, sin la aprobación por escrito de YoCell Lab. La interpretación de estos estudios clínicos es esencial para obtener un tratamiento preciso y eficaz; su uso es exclusivo de un médico certificado para la obtención de un diagnóstico certero.';
+  const notaLineas = pdf.splitTextToSize(notaLegal, pageW - marginL*2);
+  pdf.text(notaLineas, marginL, yFinal);
+  yFinal += notaLineas.length * 0.13 + 0.05;
+  pdf.text('Página 1 de 1', pageW/2, yFinal, { align:'center' });
   pdf.setTextColor(0);
 
   // Firma, alineada a la derecha, con el texto de responsable sanitario debajo
