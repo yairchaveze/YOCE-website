@@ -102,6 +102,7 @@
   <h1>Captura de Resultados de Laboratorio Externo</h1>
   <div class="sub">YoCell Lab · San Buenaventura, Coahuila — sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
   <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
+  <img id="firmaImg" src="firma-ycl.png" alt="Firma" style="display:none;">
 
   <!-- PASO 1: PACIENTE -->
   <div class="card">
@@ -641,9 +642,21 @@ function buildResultadosPdf(){
   let yFinal = pdf.lastAutoTable.finalY + 0.35;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7.5); pdf.setTextColor(120);
   pdf.text('Rojo = resultado fuera del intervalo de referencia. La interpretación clínica corresponde a un médico certificado.', marginL, yFinal);
-  yFinal += 0.25;
-  pdf.text('Responsable Sanitario: QBP. M en C. Yair Omar Chávez-Estrada · Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', marginL, yFinal);
   pdf.setTextColor(0);
+
+  // Firma, alineada a la derecha, con el texto de responsable sanitario debajo
+  const firmaW = 1.5, firmaH = 0.62;
+  const firmaX = pageW - marginL - firmaW;
+  const firmaY = yFinal + 0.15;
+  addLogoToPdf(pdf, 'firmaImg', firmaX, firmaY, firmaW, firmaH, 'left');
+  const lineaY = firmaY + firmaH + 0.03;
+  pdf.setDrawColor(0);
+  pdf.line(firmaX, lineaY, firmaX + firmaW, lineaY);
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(8);
+  pdf.text('QBP. M en C. Yair Omar Chávez-Estrada', firmaX + firmaW/2, lineaY + 0.15, { align:'center' });
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(7);
+  pdf.text('Responsable Sanitario', firmaX + firmaW/2, lineaY + 0.28, { align:'center' });
+  pdf.text('Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', firmaX + firmaW/2, lineaY + 0.4, { align:'center' });
 
   return pdf;
 }
