@@ -699,12 +699,10 @@ function buildResultadosPdf(){
   pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.6, { align:'right' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
   pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW - marginL, 0.8, { align:'right' });
-  pdf.setFontSize(7.5); pdf.setTextColor(120);
-  pdf.text('FCAL-05-01', pageW - marginL, 0.95, { align:'right' });
   pdf.setTextColor(0);
 
   let y = 1.5;
-  pdf.setDrawColor(200); pdf.line(marginL, y, pageW - marginL, y);
+  pdf.setDrawColor(200); pdf.setLineWidth(0.01); pdf.line(marginL, y, pageW - marginL, y);
   y += 0.25;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
@@ -838,6 +836,7 @@ function buildResultadosPdf(){
   pdf.text('Céd. Prof. 11639208 (QBP)', firmaX + firmaW/2, text3Y, { align:'center' });
   pdf.text('Céd. Prof. 14167483 (M en C)', firmaX + firmaW/2, text4Y, { align:'center' });
   pdf.setDrawColor(0);
+  pdf.setLineWidth(0.01);
   pdf.line(firmaX, lineaFirmaY, firmaX + firmaW, lineaFirmaY);
   pdf.setFillColor(255,255,255);
   pdf.rect(firmaX, firmaImgY, firmaW, firmaH, 'F');
