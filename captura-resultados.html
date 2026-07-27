@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Captura de Resultados | YoCell Lab</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+  .site-nav{max-width:1000px;margin:0 auto;padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;font-family:'Segoe UI',system-ui,sans-serif;}
+  .site-nav a{font-size:13px;color:#6d1a36;text-decoration:none;font-weight:600;}
+  .site-nav a:hover{text-decoration:underline;}
+  .site-nav .lab{display:flex;align-items:center;gap:8px;font-weight:700;color:#6d1a36;font-size:13px;}
+  .site-nav .dot{width:8px;height:8px;border-radius:50%;background:#6d1a36;}
+  #gateOverlay{position:fixed;inset:0;background:#faf8f6;display:flex;align-items:center;justify-content:center;z-index:900;padding:1rem;font-family:'Segoe UI',system-ui,sans-serif;}
+  .gate-box{background:#fff;border-radius:14px;padding:2rem 1.8rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.12);text-align:center;}
+  .gate-box .lock{font-size:1.9rem;margin-bottom:.5rem;}
+  .gate-box h3{font-size:1.05rem;color:#26232a;margin-bottom:.35rem;}
+  .gate-box p{font-size:.85rem;color:#6b6b6b;margin-bottom:1.1rem;}
+  .gate-box input{width:100%;padding:10px 12px;border:1.5px solid #cfcac6;border-radius:8px;font-size:.95rem;text-align:center;letter-spacing:.08em;margin-bottom:.6rem;box-sizing:border-box;}
+  .gate-box input:focus{outline:none;border-color:#6d1a36;}
+  .gate-error{color:#6d1a36;font-size:.8rem;min-height:1.1rem;margin-bottom:.5rem;}
+  .gate-box button{width:100%;padding:10px;border-radius:8px;border:none;background:#6d1a36;color:#fff;font-weight:600;font-size:.9rem;cursor:pointer;}
+  .gate-box button:hover{background:#4a1024;}
+  .gate-box.shake{animation:gateShake .35s;}
+  @keyframes gateShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  #siteContent{display:none;}
+</style>
+</head>
+<body style="margin:0;">
+
+<div id="gateOverlay">
+  <div class="gate-box" id="gateBox">
+    <div class="lock">🔒</div>
+    <h3>Acceso restringido</h3>
+    <p>Ingresa la contraseña para entrar.</p>
+    <input type="password" id="gateInput" placeholder="Contraseña" autocomplete="off">
+    <div class="gate-error" id="gateError"></div>
+    <button onclick="checkGate()">Entrar</button>
+  </div>
+</div>
+
+<div id="siteContent">
+<div class="site-nav">
+  <a href="yocell-lab.html">← YoCell Lab</a>
+  <div class="lab"><span class="dot"></span> YoCell Lab</div>
+</div>
+<style>
+  :root{
+    --burgundy:#6d1a36;
+    --burgundy-dark:#4a1024;
+    --teal:#1f6f6f;
+    --teal-light:#e7f3f2;
+    --ink:#26232a;
+    --paper:#faf8f6;
+    --line:#e3dcd8;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--paper);margin:0;padding:0;}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px;}
+  h1{font-size:20px;color:var(--burgundy);margin:0 0 4px;}
+  .sub{color:#6b6b6b;font-size:13px;margin-bottom:20px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:18px;}
+  .card h2{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--teal);margin:0 0 14px;border-bottom:2px solid var(--teal-light);padding-bottom:8px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px;}
+  input,select{width:100%;padding:8px 10px;border:1px solid #cfcac6;border-radius:6px;font-size:13px;background:#fff;}
+  input:focus,select:focus{outline:2px solid var(--teal-light);border-color:var(--teal);}
+  .btn{border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;}
+  .btn-primary{background:var(--burgundy);color:#fff;}
+  .btn-primary:hover{background:var(--burgundy-dark);}
+  .btn-teal{background:var(--teal);color:#fff;}
+  .btn-teal:hover{background:#175656;}
+  .btn-outline{background:#fff;border:1px solid var(--teal);color:var(--teal);}
+  .btn-sm{padding:4px 9px;font-size:11px;border-radius:5px;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+  .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .hint{font-size:11px;color:#888;margin-top:4px;}
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:999;}
+  .toast.show{opacity:1;transform:translateY(0);}
+  .countpill{display:inline-block;background:var(--teal-light);color:var(--teal);font-weight:700;font-size:12px;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+  .pacBox{border:1.5px solid var(--teal);background:var(--teal-light);border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;}
+  .pacBox b{color:var(--burgundy);}
+  .warnBox{border:1.5px solid #c0273c;background:#fdeaea;border-radius:8px;padding:10px 14px;font-size:13px;color:#8a1f1f;margin-top:10px;}
+  #resTable{width:100%;border-collapse:collapse;font-size:12.5px;}
+  #resTable th{background:var(--teal-light);color:var(--teal);text-align:left;padding:7px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  #resTable td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:middle;}
+  #resTable input,#resTable select{padding:5px 6px;font-size:12.5px;}
+  #resTable tr.fuera-rango{background:#fff4e5;}
+  #resTable .flagcell{text-align:center;}
+  #dropZone{border:2.5px dashed var(--line);border-radius:10px;padding:28px 14px;text-align:center;cursor:pointer;transition:.2s;background:#fbfaf9;}
+  #dropZone.drag{border-color:var(--teal);background:var(--teal-light);}
+  #dropZone .icon{font-size:2rem;margin-bottom:6px;}
+  #fileNombre{font-size:12px;color:var(--teal);font-weight:600;margin-top:8px;}
+</style>
+
+<div class="wrap" id="app">
+  <h1>Captura de Resultados de Laboratorio Externo</h1>
+  <div class="sub">YoCell Lab · San Buenaventura, Coahuila — sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
+
+  <!-- PASO 1: PACIENTE -->
+  <div class="card">
+    <h2>1. Selecciona al paciente</h2>
+    <div class="grid">
+      <div>
+        <label>Buscar en la lista de trabajo de hoy</label>
+        <select id="selPacienteHoy" onchange="seleccionarPacienteDeLista()">
+          <option value="">— Selecciona —</option>
+        </select>
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="cargarListaHoyParaSelect()">🔄 Actualizar lista de hoy</button>
+      </div>
+      <div>
+        <label>...o busca por folio (si ya no está en "hoy")</label>
+        <input id="f_buscarFolio" type="text" placeholder="Ej. 260726-001">
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="buscarPorFolio()">🔍 Buscar folio</button>
+      </div>
+    </div>
+    <div id="pacSeleccionado" style="display:none;"></div>
+    <div id="pacResultadosPrevios" style="display:none;"></div>
+  </div>
+
+  <!-- PASO 2: PDF -->
+  <div class="card">
+    <h2>2. Sube el PDF de resultados</h2>
+    <div class="grid" style="margin-bottom:14px;">
+      <div>
+        <label>Laboratorio externo</label>
+        <input id="f_labExterno" type="text" value="Grupo Micro-Tec">
+      </div>
+      <div>
+        <label>Fecha de reporte</label>
+        <input id="f_fechaReporte" type="date">
+      </div>
+    </div>
+    <div id="dropZone" onclick="document.getElementById('f_pdf').click()">
+      <div class="icon">📄</div>
+      <div><b>Haz clic aquí o arrastra el PDF</b></div>
+      <div class="hint">Solo funciona con PDFs que tengan texto real (no fotos/escaneos)</div>
+      <div id="fileNombre"></div>
+    </div>
+    <input id="f_pdf" type="file" accept="application/pdf" style="display:none;" onchange="onArchivoSeleccionado(this.files[0])">
+    <div class="actions">
+      <button class="btn btn-teal" id="btnLeerPdf" onclick="leerPdf()" disabled>🔍 Leer PDF y extraer resultados</button>
+    </div>
+    <div id="pdfStatus" class="hint"></div>
+  </div>
+
+  <!-- PASO 3: REVISIÓN -->
+  <div class="card" id="cardRevision" style="display:none;">
+    <h2>3. Revisa y corrige antes de guardar</h2>
+    <div class="hint" style="margin-bottom:10px;">La lectura automática puede fallar en algún renglón — revisa cada fila contra el PDF original antes de guardar. Puedes editar cualquier casilla, agregar filas o borrarlas.</div>
+    <div style="overflow-x:auto;">
+      <table id="resTable">
+        <thead>
+          <tr>
+            <th style="width:16%;">Estudio</th>
+            <th style="width:24%;">Analito</th>
+            <th style="width:12%;">Resultado</th>
+            <th style="width:10%;">Unidades</th>
+            <th style="width:20%;">Rango de referencia</th>
+            <th style="width:8%;" class="flagcell">Fuera de rango</th>
+            <th style="width:5%;"></th>
+          </tr>
+        </thead>
+        <tbody id="resTableBody"></tbody>
+      </table>
+    </div>
+    <div class="actions">
+      <button class="btn btn-outline btn-sm" onclick="agregarFilaVacia()">➕ Agregar fila</button>
+    </div>
+    <div class="actions" style="margin-top:18px;">
+      <button class="btn btn-primary" id="btnGuardarResultados" onclick="guardarResultados()">💾 Guardar resultados en la base</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+</div>
+
+<script>
+/* ═══ ACCESO ═══ */
+const SITE_PASSWORD = 'YCL2026';
+function checkGate(){
+  const val = document.getElementById('gateInput').value;
+  if(val === SITE_PASSWORD){
+    sessionStorage.setItem('yclGate','1');
+    document.getElementById('gateOverlay').style.display='none';
+    document.getElementById('siteContent').style.display='block';
+    init();
+  }else{
+    const box = document.getElementById('gateBox');
+    document.getElementById('gateError').textContent = 'Contraseña incorrecta';
+    box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+  }
+}
+document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkGate(); });
+if(sessionStorage.getItem('yclGate') === '1'){
+  document.getElementById('gateOverlay').style.display='none';
+  document.getElementById('siteContent').style.display='block';
+  window.addEventListener('DOMContentLoaded', init);
+}
+
+/* ═══ CONFIG ═══ */
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyXCrb5Qlnopc0QJ68BE56w0AQq5NhKqZ0CKOeLM_OcPJr522J5486emziH46V5DJF4/exec';
+function baseConfigurada(){ return GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes('PEGA_AQUI'); }
+if(window.pdfjsLib){
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+function hoyISO(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function jsonpGet(params){
+  return new Promise((resolve)=>{
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*1e6);
+    window[cbName] = function(data){
+      delete window[cbName];
+      script.remove();
+      resolve(data);
+    };
+    const qs = Object.keys(params).map(k=>`${k}=${encodeURIComponent(params[k])}`).join('&');
+    const script = document.createElement('script');
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${cbName}&${qs}&t=${Date.now()}`;
+    script.onerror = function(){ delete window[cbName]; resolve(null); };
+    document.head.appendChild(script);
+  });
+}
+
+function init(){
+  document.getElementById('f_fechaReporte').value = hoyISO();
+  cargarListaHoyParaSelect();
+  const params = new URLSearchParams(window.location.search);
+  const folioURL = params.get('folio');
+  if(folioURL){
+    document.getElementById('f_buscarFolio').value = folioURL;
+    buscarPorFolio();
+  }
+}
+
+/* ═══ PASO 1: SELECCIÓN DE PACIENTE ═══ */
+let pacienteActual = null;
+
+async function cargarListaHoyParaSelect(){
+  if(!baseConfigurada()) return;
+  const sel = document.getElementById('selPacienteHoy');
+  sel.innerHTML = '<option value="">Cargando…</option>';
+  const rows = await jsonpGet({ fecha: hoyISO() });
+  sel.innerHTML = '<option value="">— Selecciona —</option>';
+  (rows||[]).forEach((r,i)=>{
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${r.folio} · ${r.nombreCompleto}`;
+    opt.dataset.json = JSON.stringify(r);
+    sel.appendChild(opt);
+  });
+  sel._rows = rows || [];
+}
+
+function seleccionarPacienteDeLista(){
+  const sel = document.getElementById('selPacienteHoy');
+  const idx = sel.value;
+  if(idx === '') return;
+  const r = sel._rows[idx];
+  fijarPacienteActual(r);
+}
+
+async function buscarPorFolio(){
+  const folio = document.getElementById('f_buscarFolio').value.trim();
+  if(!folio){ toast('Escribe un folio'); return; }
+  if(!baseConfigurada()){ toast('Falta configurar la base de datos'); return; }
+  toast('Buscando…');
+  const rows = await jsonpGet({ folio: folio });
+  if(!rows || rows.length === 0){
+    toast('No se encontró ese folio en "Registros"');
+    return;
+  }
+  fijarPacienteActual(rows[0]);
+}
+
+async function fijarPacienteActual(r){
+  pacienteActual = r;
+  const box = document.getElementById('pacSeleccionado');
+  box.style.display = 'block';
+  box.innerHTML = `<div class="pacBox">✅ Paciente seleccionado: <b>${r.nombreCompleto||''}</b> · Folio ${r.folio||''} · ID ${r.idPaciente||''} · ${r.sexo||''} · Nac. ${r.fechaNacimiento||''}</div>`;
+
+  // Avisar si ya hay resultados guardados para este folio (evitar cargar el mismo PDF 2 veces)
+  const prevBox = document.getElementById('pacResultadosPrevios');
+  if(baseConfigurada() && r.folio){
+    const previos = await jsonpGet({ resultadosFolio: r.folio });
+    if(previos && previos.length > 0){
+      prevBox.style.display = 'block';
+      prevBox.innerHTML = `<div class="warnBox">⚠️ Este folio ya tiene <b>${previos.length}</b> resultado(s) guardado(s) en la base. Si subes el PDF de nuevo, se van a duplicar — revisa antes de guardar otra vez.</div>`;
+    }else{
+      prevBox.style.display = 'none';
+      prevBox.innerHTML = '';
+    }
+  }
+  actualizarBotonLeer();
+}
+
+/* ═══ PASO 2: LECTURA DEL PDF ═══ */
+let archivoActual = null;
+
+function onArchivoSeleccionado(file){
+  if(!file) return;
+  archivoActual = file;
+  document.getElementById('fileNombre').textContent = '📎 ' + file.name;
+  actualizarBotonLeer();
+}
+
+function actualizarBotonLeer(){
+  document.getElementById('btnLeerPdf').disabled = !(archivoActual && pacienteActual);
+}
+
+const dropZone = document.getElementById('dropZone');
+['dragenter','dragover'].forEach(ev=>dropZone.addEventListener(ev, e=>{ e.preventDefault(); dropZone.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev=>dropZone.addEventListener(ev, e=>{ e.preventDefault(); dropZone.classList.remove('drag'); }));
+dropZone.addEventListener('drop', e=>{
+  const file = e.dataTransfer.files[0];
+  if(file && file.type === 'application/pdf'){
+    document.getElementById('f_pdf').files = e.dataTransfer.files;
+    onArchivoSeleccionado(file);
+  }else{
+    toast('Solo se aceptan archivos PDF');
+  }
+});
+
+// Reconstruye el texto del PDF línea por línea, agrupando por posición Y
+// (pdf.js regresa "palabras" sueltas, no líneas, así que hay que reagrupar).
+async function extraerLineasPdf(file){
+  const buffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+  const lineas = [];
+  for(let p=1; p<=pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const porY = {};
+    content.items.forEach(it=>{
+      const y = Math.round(it.transform[5]);
+      if(!porY[y]) porY[y] = [];
+      porY[y].push({ x: it.transform[4], str: it.str });
+    });
+    const ys = Object.keys(porY).map(Number).sort((a,b)=>b-a);
+    ys.forEach(y=>{
+      const texto = porY[y].sort((a,b)=>a.x-b.x).map(it=>it.str).join(' ').replace(/\s+/g,' ').trim();
+      if(texto) lineas.push(texto);
+    });
+  }
+  return lineas;
+}
+
+// Detecta nombres de paneles/estudios conocidos dentro de las líneas del PDF
+const PANELES_CONOCIDOS = [
+  { patron: /qu[ií]mica\s+sangu[ií]nea\s*6/i, codigo: 'QS6' },
+  { patron: /qu[ií]mica\s+sangu[ií]nea/i, codigo: 'QS' },
+  { patron: /biometr[ií]a\s+hem[aá]tica/i, codigo: 'BH' },
+  { patron: /examen\s+general\s+de\s+orina/i, codigo: 'EGO' },
+  { patron: /general\s+de\s+orina/i, codigo: 'EGO' },
+];
+
+// Prefijos de líneas que NO son datos de analitos (encabezados, métodos, notas legales)
+const LINEAS_IGNORAR = /^(metodologia|fcsi|tipo muestra|validado por|resultado fuera|fc si|origen|cliente|paciente|medico|sexo|fecha de|orden|estudio$|resultado\s+unidades|p[aá]gina|responsable sanitario|c[eé]d\.?\s*prof|laboratorio (clínico|certificado)|la interpretaci[oó]n|en cumplimiento|global standards|química clínica$|qu[ií]mica sangu[ií]nea|biometr[ií]a hem[aá]tica|examen general de orina)/i;
+
+// Línea de analito: nombre (con o sin "(A) " al inicio) + número + unidad + resto (rango)
+const LINEA_ANALITO = /^(?:\(A\)\s*)?([A-Za-zÁÉÍÓÚÑÜáéíóúñü][A-Za-zÁÉÍÓÚÑÜáéíóúñü .()%/-]*?)\s+([\d]+[.,]\d+|[\d]+)\s+(mg\/dL|g\/dL|g\/L|U\/L|mmol\/L|µmol\/L|umol\/L|%|mEq\/L|ng\/mL|pg\/mL|mUI\/mL|UI\/mL|células\/µL|cel\/campo|x10\^?\d?\/?µ?L?|seg|min|mil\/µL|mill\/µL|fL|pg)\s*(.*)$/i;
+
+function parsearLineasAResultados(lineas){
+  const filas = [];
+  let estudioActual = '';
+  lineas.forEach(linea=>{
+    const panel = PANELES_CONOCIDOS.find(p => p.patron.test(linea));
+    if(panel){ estudioActual = panel.codigo; return; }
+    if(LINEAS_IGNORAR.test(linea)) return;
+    const m = linea.match(LINEA_ANALITO);
+    if(m){
+      const nombre = m[1].trim().replace(/\s+en\s+suero$/i, '').trim();
+      filas.push({
+        estudio: estudioActual || '',
+        analito: nombre,
+        resultado: m[2].replace(',', '.'),
+        unidades: m[3],
+        rangoRef: (m[4]||'').trim(),
+        fueraDeRango: false
+      });
+    }
+  });
+  return filas;
+}
+
+async function leerPdf(){
+  if(!archivoActual || !pacienteActual) return;
+  if(typeof pdfjsLib === 'undefined'){
+    toast('No se pudo cargar el lector de PDF (revisa tu conexión a internet)');
+    return;
+  }
+  document.getElementById('pdfStatus').textContent = 'Leyendo PDF…';
+  try{
+    const lineas = await extraerLineasPdf(archivoActual);
+    if(lineas.length === 0){
+      document.getElementById('pdfStatus').textContent = '⚠️ No se pudo extraer texto — es posible que el PDF sea un escaneo/foto, no texto real.';
+      return;
+    }
+    const filas = parsearLineasAResultados(lineas);
+    document.getElementById('pdfStatus').textContent =
+      filas.length > 0
+        ? `✅ Se detectaron ${filas.length} analito(s). Revísalos abajo antes de guardar.`
+        : '⚠️ Se leyó el PDF pero no se reconoció ningún analito automáticamente — agrégalos a mano abajo.';
+    mostrarTablaRevision(filas);
+  }catch(err){
+    console.error(err);
+    document.getElementById('pdfStatus').textContent = '❌ Error leyendo el PDF: ' + err.message;
+  }
+}
+
+/* ═══ PASO 3: TABLA DE REVISIÓN ═══ */
+function mostrarTablaRevision(filas){
+  document.getElementById('cardRevision').style.display = 'block';
+  const tbody = document.getElementById('resTableBody');
+  tbody.innerHTML = '';
+  if(filas.length === 0){ agregarFilaVacia(); return; }
+  filas.forEach(f => agregarFila(f));
+  document.getElementById('cardRevision').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function agregarFilaVacia(){
+  agregarFila({ estudio:'', analito:'', resultado:'', unidades:'', rangoRef:'', fueraDeRango:false });
+}
+
+function agregarFila(f){
+  const tbody = document.getElementById('resTableBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input class="c-estudio" value="${escapeAttr(f.estudio)}" placeholder="QS6/BH/EGO"></td>
+    <td><input class="c-analito" value="${escapeAttr(f.analito)}" placeholder="Nombre del analito"></td>
+    <td><input class="c-resultado" value="${escapeAttr(f.resultado)}" placeholder="Valor"></td>
+    <td><input class="c-unidades" value="${escapeAttr(f.unidades)}" placeholder="mg/dL"></td>
+    <td><input class="c-rango" value="${escapeAttr(f.rangoRef)}" placeholder="Ej. 17.90 - 54.90"></td>
+    <td class="flagcell"><input type="checkbox" class="c-fuera" ${f.fueraDeRango ? 'checked' : ''}></td>
+    <td><button class="btn btn-outline btn-sm" style="color:#c0273c;border-color:#c0273c;" onclick="this.closest('tr').remove()">🗑</button></td>
+  `;
+  tr.querySelector('.c-fuera').addEventListener('change', function(){
+    tr.classList.toggle('fuera-rango', this.checked);
+  });
+  if(f.fueraDeRango) tr.classList.add('fuera-rango');
+  tbody.appendChild(tr);
+}
+
+function escapeAttr(s){
+  return String(s==null?'':s).replace(/"/g,'&quot;');
+}
+
+/* ═══ GUARDAR ═══ */
+async function guardarResultados(){
+  if(!pacienteActual){ toast('Selecciona un paciente primero'); return; }
+  if(!baseConfigurada()){ toast('Falta configurar la base de datos'); return; }
+  const filasDom = [...document.querySelectorAll('#resTableBody tr')];
+  const filas = filasDom.map(tr=>({
+    folio: pacienteActual.folio || '',
+    idPaciente: pacienteActual.idPaciente || '',
+    nombreCompleto: pacienteActual.nombreCompleto || '',
+    fechaNacimiento: pacienteActual.fechaNacimiento || '',
+    sexo: pacienteActual.sexo || '',
+    estudio: tr.querySelector('.c-estudio').value.trim(),
+    analito: tr.querySelector('.c-analito').value.trim(),
+    resultado: tr.querySelector('.c-resultado').value.trim(),
+    unidades: tr.querySelector('.c-unidades').value.trim(),
+    rangoRef: tr.querySelector('.c-rango').value.trim(),
+    fueraDeRango: tr.querySelector('.c-fuera').checked ? 'Sí' : 'No',
+    fechaReporte: document.getElementById('f_fechaReporte').value || '',
+    laboratorioExterno: document.getElementById('f_labExterno').value.trim(),
+    validadoPor: ''
+  })).filter(f => f.analito && f.resultado);
+
+  if(filas.length === 0){ toast('No hay filas con analito y resultado para guardar'); return; }
+
+  const ok1 = confirm(`Vas a guardar ${filas.length} resultado(s) para ${pacienteActual.nombreCompleto} (folio ${pacienteActual.folio}). ¿Confirmas?`);
+  if(!ok1) return;
+
+  document.getElementById('btnGuardarResultados').disabled = true;
+  toast('Guardando…');
+  try{
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ tipo: 'resultados', filas }),
+      mode: 'no-cors'
+    });
+    toast(`${filas.length} resultado(s) guardado(s) ✓`);
+    setTimeout(()=>{
+      document.getElementById('cardRevision').style.display = 'none';
+      document.getElementById('resTableBody').innerHTML = '';
+      document.getElementById('f_pdf').value = '';
+      document.getElementById('fileNombre').textContent = '';
+      archivoActual = null;
+      actualizarBotonLeer();
+      fijarPacienteActual(pacienteActual); // refresca el aviso de "ya tiene resultados"
+    }, 600);
+  }catch(err){
+    console.error(err);
+    toast('No se pudo guardar. Revisa la conexión.');
+  }finally{
+    document.getElementById('btnGuardarResultados').disabled = false;
+  }
+}
+</script>
+</body>
+</html>

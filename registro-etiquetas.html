@@ -928,9 +928,7 @@ function renderListaTrabajo(){
 }
 
 function reportarEstudio(folio){
-  // Aún en desarrollo: aquí vamos a conectar la forma de reportar resultados
-  // por analito una vez que definamos el formato exacto (documento pendiente).
-  toast(`Reportar estudio de ${folio} — en construcción, muy pronto 🚧`);
+  window.open(`captura-resultados.html?folio=${encodeURIComponent(folio)}`, '_blank');
 }
 
 function eliminarRegistroJSONP(row){
