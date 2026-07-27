@@ -187,6 +187,15 @@
 </div>
 
 <script>
+/* ═══ CAPTOR DE ERRORES — para diagnosticar sin abrir la consola ═══ */
+window.onerror = function(msg, url, line, col, error){
+  alert('❌ ERROR EN LA PÁGINA:\n\n' + msg + '\n\nLínea: ' + line + (error && error.stack ? '\n\nDetalle:\n' + error.stack : ''));
+  return false;
+};
+window.addEventListener('unhandledrejection', function(e){
+  alert('❌ ERROR (promesa):\n\n' + (e.reason && e.reason.message ? e.reason.message : e.reason));
+});
+
 /* ═══ ACCESO ═══ */
 const SITE_PASSWORD = 'YCL2026';
 function checkGate(){
@@ -621,16 +630,24 @@ function buildResultadosPdf(){
 }
 
 function imprimirResultados(){
-  const pdf = buildResultadosPdf();
-  if(!pdf) return;
-  pdf.autoPrint();
-  window.open(pdf.output('bloburl'), '_blank');
+  try{
+    const pdf = buildResultadosPdf();
+    if(!pdf) return;
+    pdf.autoPrint();
+    window.open(pdf.output('bloburl'), '_blank');
+  }catch(err){
+    alert('❌ Error al imprimir:\n\n' + err.message);
+  }
 }
 
 function descargarResultadosPDF(){
-  const pdf = buildResultadosPdf();
-  if(!pdf) return;
-  pdf.save(`resultados_${pacienteActual.folio||'sinfolio'}.pdf`);
+  try{
+    const pdf = buildResultadosPdf();
+    if(!pdf) return;
+    pdf.save(`resultados_${pacienteActual.folio||'sinfolio'}.pdf`);
+  }catch(err){
+    alert('❌ Error al descargar:\n\n' + err.message);
+  }
 }
 
 /* ═══ ENVIAR POR CORREO ═══ */
@@ -735,6 +752,7 @@ async function guardarResultados(){
     toast(`${filas.length} resultado(s) guardado(s) ✓ — la tabla se queda visible para que puedas imprimir, descargar o enviar`);
   }catch(err){
     console.error(err);
+    alert('❌ Error al guardar:\n\n' + err.message);
     toast('No se pudo guardar. Revisa la conexión.');
   }finally{
     document.getElementById('btnGuardarResultados').disabled = false;
