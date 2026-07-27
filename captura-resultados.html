@@ -258,6 +258,7 @@ function init(){
 
 /* ═══ PASO 1: SELECCIÓN DE PACIENTE ═══ */
 let pacienteActual = null;
+let yaGuardadoEstaTabla = false;
 
 async function cargarListaHoyParaSelect(){
   if(!baseConfigurada()) return;
@@ -470,6 +471,10 @@ async function leerPdf(){
 /* ═══ PASO 3: TABLA DE REVISIÓN ═══ */
 function mostrarTablaRevision(filas){
   document.getElementById('cardRevision').style.display = 'block';
+  yaGuardadoEstaTabla = false;
+  const btn = document.getElementById('btnGuardarResultados');
+  btn.textContent = '💾 Guardar resultados en la base';
+  btn.style.background = '';
   const tbody = document.getElementById('resTableBody');
   tbody.innerHTML = '';
   if(filas.length === 0){ agregarFilaVacia(); return; }
@@ -706,6 +711,11 @@ async function guardarResultados(){
 
   if(filas.length === 0){ toast('No hay filas con analito y resultado para guardar'); return; }
 
+  if(yaGuardadoEstaTabla){
+    const seguro = confirm('Ya guardaste estos resultados en esta sesión. Si le sigues, se van a DUPLICAR en la base.\n\n¿Guardar de todas formas?');
+    if(!seguro) return;
+  }
+
   const ok1 = confirm(`Vas a guardar ${filas.length} resultado(s) para ${pacienteActual.nombreCompleto} (folio ${pacienteActual.folio}). ¿Confirmas?`);
   if(!ok1) return;
 
@@ -718,16 +728,11 @@ async function guardarResultados(){
       body: JSON.stringify({ tipo: 'resultados', filas }),
       mode: 'no-cors'
     });
-    toast(`${filas.length} resultado(s) guardado(s) ✓`);
-    setTimeout(()=>{
-      document.getElementById('cardRevision').style.display = 'none';
-      document.getElementById('resTableBody').innerHTML = '';
-      document.getElementById('f_pdf').value = '';
-      document.getElementById('fileNombre').textContent = '';
-      archivoActual = null;
-      actualizarBotonLeer();
-      fijarPacienteActual(pacienteActual); // refresca el aviso de "ya tiene resultados"
-    }, 600);
+    yaGuardadoEstaTabla = true;
+    const btn = document.getElementById('btnGuardarResultados');
+    btn.textContent = '✓ Resultados guardados — puedes imprimir/enviar abajo';
+    btn.style.background = '#2e7d32';
+    toast(`${filas.length} resultado(s) guardado(s) ✓ — la tabla se queda visible para que puedas imprimir, descargar o enviar`);
   }catch(err){
     console.error(err);
     toast('No se pudo guardar. Revisa la conexión.');
