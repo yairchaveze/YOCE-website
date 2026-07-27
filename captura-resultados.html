@@ -544,6 +544,17 @@ function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
   try{ pdf.addImage(img, 'PNG', px, y, w, h); }catch(e){ console.error(e); }
 }
 
+// Acorta el rango de referencia SOLO para el PDF (en la base se guarda completo).
+// La tabla de jspdf-autotable truena con "Maximum call stack size exceeded" cuando
+// le toca acomodar el texto categórico larguísimo (Aconsejable/Limítrofe/Alto...)
+// en una columna angosta, así que aquí solo mostramos la primera cláusula.
+function rangoParaPDF(rangoTexto){
+  if(!rangoTexto) return '';
+  const partes = String(rangoTexto).split('\n').map(s=>s.trim()).filter(Boolean);
+  if(partes.length <= 1) return partes[0] || '';
+  return partes[0] + ` (+${partes.length - 1} más)`;
+}
+
 function leerFilasDeTabla(){
   const filasDom = [...document.querySelectorAll('#resTableBody tr')];
   return filasDom.map(tr=>({
@@ -605,26 +616,17 @@ function buildResultadosPdf(){
   pdf.text(document.getElementById('f_labExterno').value || '', pageW/2 + 1.15, y);
   y += 0.3;
 
-  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, f.rangoRef, f.fueraDeRango ? 'FUERA' : '']);
+  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, rangoParaPDF(f.rangoRef), f.fueraDeRango ? 'FUERA' : '']);
   pdf.autoTable({
     startY: y,
     margin: { left: marginL, right: marginL },
     head: [['Estudio','Analito','Resultado','Unidades','Rango de referencia','']],
     body: body,
-    styles: { fontSize: 8.5, cellPadding: 4, overflow: 'linebreak' },
-    headStyles: { fillColor: [109,26,54], textColor: 255, fontStyle: 'bold' },
-    columnStyles: {
-      0: { cellWidth: 0.7 },
-      1: { cellWidth: 1.55 },
-      2: { cellWidth: 0.75 },
-      3: { cellWidth: 0.7 },
-      4: { cellWidth: 2.6 },
-      5: { cellWidth: 0.5, halign: 'center' }
-    },
+    styles: { font: 'helvetica', fontSize: 8.5, cellPadding: 0.07 },
+    headStyles: { fillColor: [109,26,54], textColor: 255 },
     didParseCell: function(data){
       if(data.section === 'body' && filas[data.row.index] && filas[data.row.index].fueraDeRango){
         data.cell.styles.textColor = [192, 39, 60];
-        data.cell.styles.fontStyle = 'bold';
         data.cell.styles.fillColor = [253, 234, 234];
       }
     }
