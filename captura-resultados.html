@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Captura de Resultados | YoCell Lab</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
   .site-nav{max-width:1000px;margin:0 auto;padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;font-family:'Segoe UI',system-ui,sans-serif;}
   .site-nav a{font-size:13px;color:#6d1a36;text-decoration:none;font-weight:600;}
@@ -87,7 +89,8 @@
   #resTable th{background:var(--teal-light);color:var(--teal);text-align:left;padding:7px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
   #resTable td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:middle;}
   #resTable input,#resTable select{padding:5px 6px;font-size:12.5px;}
-  #resTable tr.fuera-rango{background:#fff4e5;}
+  #resTable tr.fuera-rango{background:#fdeaea;}
+  #resTable tr.fuera-rango .c-resultado{color:#c0273c;font-weight:700;}
   #resTable .flagcell{text-align:center;}
   #dropZone{border:2.5px dashed var(--line);border-radius:10px;padding:28px 14px;text-align:center;cursor:pointer;transition:.2s;background:#fbfaf9;}
   #dropZone.drag{border-color:var(--teal);background:var(--teal-light);}
@@ -98,6 +101,7 @@
 <div class="wrap" id="app">
   <h1>Captura de Resultados de Laboratorio Externo</h1>
   <div class="sub">YoCell Lab · San Buenaventura, Coahuila — sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
+  <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
 
   <!-- PASO 1: PACIENTE -->
   <div class="card">
@@ -171,6 +175,10 @@
     </div>
     <div class="actions" style="margin-top:18px;">
       <button class="btn btn-primary" id="btnGuardarResultados" onclick="guardarResultados()">💾 Guardar resultados en la base</button>
+      <button class="btn btn-teal" onclick="imprimirResultados()">🖨️ Imprimir Resultado</button>
+      <button class="btn btn-outline" onclick="descargarResultadosPDF()">⬇️ Descargar PDF</button>
+      <button class="btn btn-outline" onclick="enviarPorCorreo()">✉️ Enviar por correo</button>
+      <button class="btn btn-outline" style="color:#25D366;border-color:#25D366;" onclick="enviarPorWhatsApp()">📱 Enviar por WhatsApp</button>
     </div>
   </div>
 
@@ -375,26 +383,62 @@ const LINEAS_IGNORAR = /^(metodologia|fcsi|tipo muestra|validado por|resultado f
 // Línea de analito: nombre (con o sin "(A) " al inicio) + número + unidad + resto (rango)
 const LINEA_ANALITO = /^(?:\(A\)\s*)?([A-Za-zÁÉÍÓÚÑÜáéíóúñü][A-Za-zÁÉÍÓÚÑÜáéíóúñü .()%/-]*?)\s+([\d]+[.,]\d+|[\d]+)\s+(mg\/dL|g\/dL|g\/L|U\/L|mmol\/L|µmol\/L|umol\/L|%|mEq\/L|ng\/mL|pg\/mL|mUI\/mL|UI\/mL|células\/µL|cel\/campo|x10\^?\d?\/?µ?L?|seg|min|mil\/µL|mill\/µL|fL|pg)\s*(.*)$/i;
 
+// Líneas que continúan un rango de referencia categórico partido en varios
+// renglones del PDF (ej. "Aconsejable: <200" / "Limítrofe: 200-239" / "Alto: >=240")
+const CONTINUACION_RANGO = /^(Aconsejable|Limítrofe|L[ií]mite|Alto|Muy alto|Normal|En el l[ií]mite|Bajo|[oÓ]ptimo|Deseable|Elevado)\b.*[:].*[\d]/i;
+
+// A partir del texto de rango (que puede traer varias cláusulas tipo
+// "Alto: >= 240 mg/dL"), decide si el resultado está fuera de rango.
+// Difícilmente estos rangos van a cambiar, así que sí conviene automatizarlo,
+// pero la fila queda siempre editable por si acaso.
+function evaluarFueraDeRango(resultadoStr, rangoTexto){
+  const val = parseFloat(String(resultadoStr).replace(',', '.'));
+  if(isNaN(val) || !rangoTexto) return false;
+  // Rango simple: "17.90 - 54.90"
+  const simple = rangoTexto.match(/^\s*([\d.]+)\s*-\s*([\d.]+)\s*$/);
+  if(simple){
+    const lo = parseFloat(simple[1]), hi = parseFloat(simple[2]);
+    return val < lo || val > hi;
+  }
+  // Rango categórico: primero el techo de lo normal/aconsejable/deseable (el
+  // límite real de "en rango"), y si no existe esa cláusula, el umbral de alto.
+  const normalMatch = rangoTexto.match(/(?:normal|aconsejable|deseable|[oó]ptimo)[^\d]*<\s*([\d.]+)/i);
+  if(normalMatch) return val >= parseFloat(normalMatch[1]);
+  const altoMatch = rangoTexto.match(/(?:muy alto|alto|elevado)[^\d]*(>=|>)\s*([\d.]+)/i);
+  if(altoMatch) return val >= parseFloat(altoMatch[2]);
+  return false;
+}
+
 function parsearLineasAResultados(lineas){
   const filas = [];
   let estudioActual = '';
-  lineas.forEach(linea=>{
+  for(let i = 0; i < lineas.length; i++){
+    const linea = lineas[i];
     const panel = PANELES_CONOCIDOS.find(p => p.patron.test(linea));
-    if(panel){ estudioActual = panel.codigo; return; }
-    if(LINEAS_IGNORAR.test(linea)) return;
+    if(panel){ estudioActual = panel.codigo; continue; }
+    if(LINEAS_IGNORAR.test(linea)) continue;
     const m = linea.match(LINEA_ANALITO);
     if(m){
       const nombre = m[1].trim().replace(/\s+en\s+suero$/i, '').trim();
+      let rango = (m[4]||'').trim();
+      // Juntamos los renglones siguientes que sean continuación del mismo rango
+      let j = i + 1;
+      while(j < lineas.length && CONTINUACION_RANGO.test(lineas[j])){
+        rango += (rango ? ' · ' : '') + lineas[j].trim();
+        j++;
+      }
+      i = j - 1;
+      const resultado = m[2].replace(',', '.');
       filas.push({
         estudio: estudioActual || '',
         analito: nombre,
-        resultado: m[2].replace(',', '.'),
+        resultado: resultado,
         unidades: m[3],
-        rangoRef: (m[4]||'').trim(),
-        fueraDeRango: false
+        rangoRef: rango,
+        fueraDeRango: evaluarFueraDeRango(resultado, rango)
       });
     }
-  });
+  }
   return filas;
 }
 
@@ -452,12 +496,190 @@ function agregarFila(f){
   tr.querySelector('.c-fuera').addEventListener('change', function(){
     tr.classList.toggle('fuera-rango', this.checked);
   });
+  function recalcular(){
+    const val = tr.querySelector('.c-resultado').value;
+    const rango = tr.querySelector('.c-rango').value;
+    const fuera = evaluarFueraDeRango(val, rango);
+    tr.querySelector('.c-fuera').checked = fuera;
+    tr.classList.toggle('fuera-rango', fuera);
+  }
+  tr.querySelector('.c-resultado').addEventListener('input', recalcular);
+  tr.querySelector('.c-rango').addEventListener('input', recalcular);
   if(f.fueraDeRango) tr.classList.add('fuera-rango');
   tbody.appendChild(tr);
 }
 
 function escapeAttr(s){
   return String(s==null?'':s).replace(/"/g,'&quot;');
+}
+
+/* ═══ PDF DE RESULTADOS ═══ */
+function addLogoToPdf(pdf, imgId, x, y, maxW, maxH, align){
+  const img = document.getElementById(imgId);
+  if(!img || !img.complete || img.naturalWidth === 0) return;
+  const ratio = img.naturalWidth / img.naturalHeight;
+  let w = maxW, h = maxW / ratio;
+  if(h > maxH){ h = maxH; w = maxH * ratio; }
+  let px = x;
+  if(align === 'right') px = x - w;
+  else if(align === 'center') px = x - w/2;
+  try{ pdf.addImage(img, 'PNG', px, y, w, h); }catch(e){ console.error(e); }
+}
+
+function leerFilasDeTabla(){
+  const filasDom = [...document.querySelectorAll('#resTableBody tr')];
+  return filasDom.map(tr=>({
+    estudio: tr.querySelector('.c-estudio').value.trim(),
+    analito: tr.querySelector('.c-analito').value.trim(),
+    resultado: tr.querySelector('.c-resultado').value.trim(),
+    unidades: tr.querySelector('.c-unidades').value.trim(),
+    rangoRef: tr.querySelector('.c-rango').value.trim(),
+    fueraDeRango: tr.querySelector('.c-fuera').checked
+  })).filter(f => f.analito && f.resultado);
+}
+
+function buildResultadosPdf(){
+  if(!pacienteActual){ toast('Selecciona un paciente primero'); return null; }
+  const filas = leerFilasDeTabla();
+  if(filas.length === 0){ toast('No hay resultados en la tabla'); return null; }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation:'portrait', unit:'in', format:'letter' });
+  const marginL = 0.6, pageW = 8.5;
+
+  addLogoToPdf(pdf, 'logoFull', marginL, 0.45, 1.5, 0.7, 'left');
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(15);
+  pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.65, { align:'right' });
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
+  pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW - marginL, 0.85, { align:'right' });
+
+  let y = 1.5;
+  pdf.setDrawColor(200); pdf.line(marginL, y, pageW - marginL, y);
+  y += 0.25;
+
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(10);
+  pdf.text('Paciente:', marginL, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(pacienteActual.nombreCompleto || '', marginL + 0.9, y);
+  pdf.setFont('helvetica','bold');
+  pdf.text('Folio:', pageW/2 + 0.3, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(`${pacienteActual.folio||''}  ·  ID: ${pacienteActual.idPaciente||''}`, pageW/2 + 0.85, y);
+  y += 0.22;
+
+  pdf.setFont('helvetica','bold');
+  pdf.text('Sexo:', marginL, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(pacienteActual.sexo || '—', marginL + 0.9, y);
+  pdf.setFont('helvetica','bold');
+  pdf.text('Fecha Nac.:', pageW/2 + 0.3, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(pacienteActual.fechaNacimiento || '', pageW/2 + 1.15, y);
+  y += 0.22;
+
+  pdf.setFont('helvetica','bold');
+  pdf.text('Fecha de reporte:', marginL, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(document.getElementById('f_fechaReporte').value || '', marginL + 1.3, y);
+  pdf.setFont('helvetica','bold');
+  pdf.text('Laboratorio:', pageW/2 + 0.3, y);
+  pdf.setFont('helvetica','normal');
+  pdf.text(document.getElementById('f_labExterno').value || '', pageW/2 + 1.15, y);
+  y += 0.3;
+
+  const body = filas.map(f => [f.estudio, f.analito, f.resultado, f.unidades, f.rangoRef, f.fueraDeRango ? 'FUERA' : '']);
+  pdf.autoTable({
+    startY: y,
+    margin: { left: marginL, right: marginL },
+    head: [['Estudio','Analito','Resultado','Unidades','Rango de referencia','']],
+    body: body,
+    styles: { fontSize: 8.5, cellPadding: 4 },
+    headStyles: { fillColor: [109,26,54], textColor: 255, fontStyle: 'bold' },
+    columnStyles: { 5: { cellWidth: 0.5, halign: 'center' } },
+    didParseCell: function(data){
+      if(data.section === 'body' && filas[data.row.index] && filas[data.row.index].fueraDeRango){
+        data.cell.styles.textColor = [192, 39, 60];
+        data.cell.styles.fontStyle = 'bold';
+        data.cell.styles.fillColor = [253, 234, 234];
+      }
+    }
+  });
+
+  let yFinal = pdf.lastAutoTable.finalY + 0.35;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(7.5); pdf.setTextColor(120);
+  pdf.text('Rojo = resultado fuera del intervalo de referencia. La interpretación clínica corresponde a un médico certificado.', marginL, yFinal);
+  yFinal += 0.25;
+  pdf.text('Responsable Sanitario: QBP. M en C. Yair Omar Chávez-Estrada · Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', marginL, yFinal);
+  pdf.setTextColor(0);
+
+  return pdf;
+}
+
+function imprimirResultados(){
+  const pdf = buildResultadosPdf();
+  if(!pdf) return;
+  pdf.autoPrint();
+  window.open(pdf.output('bloburl'), '_blank');
+}
+
+function descargarResultadosPDF(){
+  const pdf = buildResultadosPdf();
+  if(!pdf) return;
+  pdf.save(`resultados_${pacienteActual.folio||'sinfolio'}.pdf`);
+}
+
+/* ═══ ENVIAR POR CORREO ═══ */
+async function enviarPorCorreo(){
+  if(!pacienteActual){ toast('Selecciona un paciente primero'); return; }
+  if(!baseConfigurada()){ toast('Falta configurar la base de datos'); return; }
+  const pdf = buildResultadosPdf();
+  if(!pdf) return;
+
+  const destinatario = prompt('¿A qué correo se envía?', pacienteActual.correo || '');
+  if(!destinatario) return;
+
+  const dataUri = pdf.output('datauristring');
+  const base64 = dataUri.split(',')[1];
+  const asunto = `Resultados de laboratorio — Folio ${pacienteActual.folio||''}`;
+  const cuerpo = `Hola ${pacienteActual.nombreCompleto||''},\n\nAdjunto encontrarás tu reporte de resultados de YoCell Lab (folio ${pacienteActual.folio||''}).\n\nCualquier duda, no dudes en contactarnos.\n\nYoCell Lab · San Buenaventura, Coahuila`;
+
+  toast('Enviando correo…');
+  try{
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        tipo: 'enviarCorreo',
+        destinatario, asunto, cuerpo,
+        pdfBase64: base64,
+        nombreArchivo: `resultados_${pacienteActual.folio||'sinfolio'}.pdf`
+      }),
+      mode: 'no-cors'
+    });
+    toast(`Correo enviado a ${destinatario} ✓ (no se puede confirmar entrega desde aquí — revisa si rebota)`);
+  }catch(err){
+    console.error(err);
+    toast('No se pudo enviar el correo. Revisa la conexión.');
+  }
+}
+
+/* ═══ ENVIAR POR WHATSAPP ═══ */
+function limpiarTelefonoMX(tel){
+  let digits = String(tel||'').replace(/\D/g,'');
+  if(digits.length === 10) digits = '52' + digits; // agrega código de país si falta
+  return digits;
+}
+
+function enviarPorWhatsApp(){
+  if(!pacienteActual){ toast('Selecciona un paciente primero'); return; }
+  const tel = limpiarTelefonoMX(pacienteActual.telefono);
+  if(!tel || tel.length < 12){
+    toast('Este paciente no tiene un teléfono válido guardado');
+    return;
+  }
+  const mensaje = `Hola ${pacienteActual.nombreCompleto||''}, tus resultados de laboratorio de YoCell Lab ya están listos (folio ${pacienteActual.folio||''}). Te los adjunto en un momento por este mismo chat.`;
+  window.open(`https://wa.me/${tel}?text=${encodeURIComponent(mensaje)}`, '_blank');
+  toast('Se abrió WhatsApp — descarga el PDF y adjúntalo manualmente en el chat (WhatsApp no permite adjuntar archivos automáticamente desde un link)');
 }
 
 /* ═══ GUARDAR ═══ */

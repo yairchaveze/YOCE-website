@@ -178,6 +178,10 @@
         <label>Teléfono</label>
         <input id="f_telefono" type="tel" placeholder="Para avisar cuando estén los estudios">
       </div>
+      <div>
+        <label>Correo electrónico</label>
+        <input id="f_correo" type="email" placeholder="Para enviar el reporte de resultados">
+      </div>
     </div>
     <div class="grid3" style="margin-top:12px;">
       <div>
@@ -538,6 +542,7 @@ async function buscarPacienteExistente(){
   }
   const p = rows[0];
   if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
+  if(p.correo) document.getElementById('f_correo').value = p.correo;
   if(p.direccion) cargarDireccionDesdeTexto(p.direccion);
   if(p.medico && !document.getElementById('f_medico_generico').checked){
     document.getElementById('f_medico').value = p.medico;
@@ -558,6 +563,7 @@ async function buscarPacienteAuto(){
   if(rows && rows.length > 0){
     const p = rows[0];
     if(p.telefono) document.getElementById('f_telefono').value = p.telefono;
+    if(p.correo) document.getElementById('f_correo').value = p.correo;
     if(p.direccion) cargarDireccionDesdeTexto(p.direccion);
     if(p.medico && !document.getElementById('f_medico_generico').checked){
       document.getElementById('f_medico').value = p.medico;
@@ -658,6 +664,7 @@ function readPaciente(){
     sexo: document.getElementById('f_sexo').value,
     fnac: document.getElementById('f_fnac').value,
     telefono: document.getElementById('f_telefono').value.trim(),
+    correo: document.getElementById('f_correo').value.trim(),
     direccion: document.getElementById('f_direccion').value.trim(),
     medico: document.getElementById('f_medico').value.trim(),
     fechatoma: document.getElementById('f_fechatoma').value,
@@ -1079,6 +1086,7 @@ function limpiarParaSiguiente(){
   document.getElementById('f_sexo').value = '';
   document.getElementById('f_fnac').value = '';
   document.getElementById('f_telefono').value = '';
+  document.getElementById('f_correo').value = '';
   document.getElementById('f_calle').value = '';
   document.getElementById('f_colonia').value = '';
   document.getElementById('f_municipio').value = 'San Buenaventura';
