@@ -699,6 +699,8 @@ function buildResultadosPdf(){
   pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.6, { align:'right' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
   pdf.text('YoCell Lab · San Buenaventura, Coahuila', pageW - marginL, 0.8, { align:'right' });
+  pdf.setFontSize(7.5); pdf.setTextColor(120);
+  pdf.text('laboratorio@yocelltherapy.com', pageW - marginL, 0.95, { align:'right' });
   pdf.setTextColor(0);
 
   let y = 1.5;
@@ -735,7 +737,9 @@ function buildResultadosPdf(){
   const anchoLabelReporte = pdf.getTextWidth(labelReporte);
   pdf.setFont('helvetica','normal');
   pdf.text(fmtFechaHoraAhora(), pageW/2 + 0.3 + anchoLabelReporte + 0.08, y);
-  y += 0.3;
+  y += 0.18;
+  pdf.setDrawColor(200); pdf.setLineWidth(0.01); pdf.line(marginL, y, pageW - marginL, y);
+  y += 0.22;
 
   // Agrupamos por estudio: el nombre del panel va arriba, una sola vez,
   // en vez de repetirse en cada renglón de la tabla.
