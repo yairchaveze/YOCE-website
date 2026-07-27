@@ -336,8 +336,8 @@
   </div>
 
   <!-- GUARDAR PACIENTE — aparte y llamativo para que no se le pase a la secretaria -->
-  <div class="card" style="background:#fdeaea;border:2px solid #c0273c;text-align:center;">
-    <button class="btn" style="background:#c0273c;color:#fff;font-size:16px;font-weight:700;padding:14px 28px;width:100%;box-shadow:0 3px 10px rgba(192,39,60,.35);" onclick="guardarRegistro()">💾 GUARDAR PACIENTE EN LA BASE</button>
+  <div class="card" id="cardGuardarPaciente" style="background:#fdeaea;border:2px solid #c0273c;text-align:center;">
+    <button class="btn" id="btnGuardarPaciente" style="background:#c0273c;color:#fff;font-size:16px;font-weight:700;padding:14px 28px;width:100%;box-shadow:0 3px 10px rgba(192,39,60,.35);" onclick="guardarRegistro()">💾 GUARDAR PACIENTE EN LA BASE</button>
     <div class="hint" style="text-align:center;margin-top:8px;font-size:12px;">⚠️ No olvides este paso — sin guardar, el paciente no queda registrado en el sistema.</div>
   </div>
 
@@ -917,7 +917,10 @@ function renderListaTrabajo(){
       <td style="padding:6px;">${r.sexo||''}</td>
       <td style="padding:6px;">${r.telefono||''}</td>
       <td style="padding:6px;">${r.estudios||''}</td>
-      <td style="padding:6px;"><button class="btn btn-outline btn-sm" onclick="reportarEstudio('${r.folio}')">📝 Reportar estudio</button></td>
+      <td style="padding:6px;">
+        <button class="btn btn-outline btn-sm" onclick="reportarEstudio('${r.folio}')">📝 Reportar estudio</button>
+        <button class="btn btn-outline btn-sm" style="color:#c0273c;border-color:#c0273c;margin-left:4px;" onclick="eliminarRegistroDeLista(${r._row}, ${JSON.stringify(r.folio||'')}, ${JSON.stringify(r.nombreCompleto||'')})">🗑️ Eliminar</button>
+      </td>
     </tr>`;
   });
   html += '</tbody></table>';
@@ -928,6 +931,38 @@ function reportarEstudio(folio){
   // Aún en desarrollo: aquí vamos a conectar la forma de reportar resultados
   // por analito una vez que definamos el formato exacto (documento pendiente).
   toast(`Reportar estudio de ${folio} — en construcción, muy pronto 🚧`);
+}
+
+function eliminarRegistroJSONP(row){
+  return new Promise((resolve)=>{
+    const cbName = 'cbElim_' + Date.now();
+    window[cbName] = function(data){
+      delete window[cbName];
+      document.getElementById('jsonp-elim')?.remove();
+      resolve(data || { ok:false });
+    };
+    const script = document.createElement('script');
+    script.id = 'jsonp-elim';
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${cbName}&action=eliminarRegistro&row=${encodeURIComponent(row)}&t=${Date.now()}`;
+    script.onerror = function(){ delete window[cbName]; resolve({ ok:false }); };
+    document.head.appendChild(script);
+  });
+}
+
+async function eliminarRegistroDeLista(row, folioTxt, nombreTxt){
+  if(!baseConfigurada()){ toast('Falta configurar la base de datos'); return; }
+  if(!row){ toast('No se pudo identificar la fila a borrar'); return; }
+  const ok1 = confirm(`¿Eliminar el registro de "${nombreTxt||'este paciente'}" (folio ${folioTxt||''}) de la lista de trabajo de hoy?\n\nEsto NO borra su expediente permanente — solo esta visita/orden de hoy.`);
+  if(!ok1) return;
+  toast('Eliminando…');
+  const res = await eliminarRegistroJSONP(row);
+  if(res && res.ok){
+    toast('Registro eliminado ✓');
+    await cargarListaTrabajo(false);
+  }else{
+    const detalle = res && res.error ? ` (${res.error})` : '';
+    toast(`No se pudo eliminar${detalle}`);
+  }
 }
 
 function cerrarTurnoJSONP(){
@@ -969,12 +1004,18 @@ function prepararSiguienteFolio(){
   document.getElementById('f_folio').value = datePrefixToday() + '-' + String(n).padStart(3,'0');
 }
 
+let folioYaGuardado = null;
+
 async function guardarRegistro(){
   const data = readPaciente();
   if(!data.nombres && !data.apellidoP){ toast('Falta el nombre del paciente'); return; }
   if(!baseConfigurada()){
     toast('Falta configurar tu Google Sheet (GOOGLE_SCRIPT_URL) para poder guardar');
     return;
+  }
+  if(folioYaGuardado && folioYaGuardado === data.folio){
+    const confirmar = confirm(`Este folio (${data.folio}) ya se guardó en esta sesión.\n\nSi le das "Aceptar" se va a GUARDAR DE NUEVO y vas a tener un registro duplicado en la lista de trabajo.\n\n¿Seguro que quieres continuar?`);
+    if(!confirmar) return;
   }
   const etiquetas = computeEtiquetas();
   const estudiosTxt = etiquetas.map(e => e.codigo ? `${e.codigo} (${e.muestra})` : e.muestra).join(', ');
@@ -1000,11 +1041,36 @@ async function guardarRegistro(){
   toast('Guardando…');
   const ok = await enviarRegistro(record);
   if(ok){
+    folioYaGuardado = data.folio;
+    marcarGuardarComoHecho();
     toast('Paciente guardado en la base ✓ — el folio se queda igual hasta que le des "Limpiar para siguiente paciente"');
     setTimeout(()=>cargarListaTrabajo(false), 900);
   }else{
     toast('No se pudo guardar. Revisa la conexión con Google Sheets.');
   }
+}
+
+function marcarGuardarComoHecho(){
+  const btn = document.getElementById('btnGuardarPaciente');
+  const card = document.getElementById('cardGuardarPaciente');
+  if(!btn || !card) return;
+  btn.textContent = '✓ Paciente ya guardado — este folio (clic de nuevo solo si es necesario)';
+  btn.style.background = '#2e7d32';
+  btn.style.boxShadow = '0 3px 10px rgba(46,125,50,.3)';
+  card.style.background = '#eaf7ec';
+  card.style.borderColor = '#2e7d32';
+}
+
+function resetGuardarBoton(){
+  folioYaGuardado = null;
+  const btn = document.getElementById('btnGuardarPaciente');
+  const card = document.getElementById('cardGuardarPaciente');
+  if(!btn || !card) return;
+  btn.textContent = '💾 GUARDAR PACIENTE EN LA BASE';
+  btn.style.background = '#c0273c';
+  btn.style.boxShadow = '0 3px 10px rgba(192,39,60,.35)';
+  card.style.background = '#fdeaea';
+  card.style.borderColor = '#c0273c';
 }
 
 function limpiarParaSiguiente(){
@@ -1036,6 +1102,7 @@ function limpiarParaSiguiente(){
   if(ayunoAdecuado) ayunoAdecuado.checked = true;
   renderAyunoAviso();
   ocultarEstadoPaciente();
+  resetGuardarBoton();
   setDefaultDateTime();
   prepararSiguienteFolio();
   renderLabels();
