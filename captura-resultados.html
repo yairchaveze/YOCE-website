@@ -637,6 +637,22 @@ function sexoCompleto(s){
   return s;
 }
 
+// Igual que fmtFechaDMY pero con hora, en formato 24h. Si Google Sheets convirtió
+// el texto guardado en una fecha real, viene como ISO en UTC — le restamos 6 horas
+// para volver a la hora local de México antes de mostrarla.
+function fmtFechaHoraDMY(v){
+  if(!v) return '—';
+  const str = String(v);
+  if(!/^\d{4}-\d{2}-\d{2}T/.test(str)) return str; // ya viene como texto plano
+  const d = new Date(str);
+  d.setUTCHours(d.getUTCHours() - 6);
+  const dd = String(d.getUTCDate()).padStart(2,'0');
+  const mm = String(d.getUTCMonth()+1).padStart(2,'0');
+  const hh = String(d.getUTCHours()).padStart(2,'0');
+  const mi = String(d.getUTCMinutes()).padStart(2,'0');
+  return `${dd}/${mm}/${d.getUTCFullYear()} ${hh}:${mi}`;
+}
+
 function fmtFechaHoraAhora(){
   const d = new Date();
   const dd = String(d.getDate()).padStart(2,'0');
@@ -655,7 +671,7 @@ function buildResultadosPdf(){
   const pdf = new jsPDF({ orientation:'portrait', unit:'in', format:'letter' });
   const marginL = 0.6, pageW = 8.5, pageH = 11;
 
-  addLogoToPdf(pdf, 'logoFull', marginL, 0.45, 1.5, 0.7, 'left');
+  addLogoToPdf(pdf, 'logoFull', marginL, 0.35, 2.1, 0.95, 'left');
   pdf.setFont('helvetica','bold'); pdf.setFontSize(15);
   pdf.text('REPORTE DE RESULTADOS', pageW - marginL, 0.6, { align:'right' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(9);
@@ -691,11 +707,13 @@ function buildResultadosPdf(){
   pdf.setFont('helvetica','bold');
   pdf.text('Fecha de toma:', marginL, y);
   pdf.setFont('helvetica','normal');
-  pdf.text(pacienteActual.fechaToma || '—', marginL + 1.1, y);
+  pdf.text(fmtFechaHoraDMY(pacienteActual.fechaToma), marginL + 1.1, y);
   pdf.setFont('helvetica','bold');
-  pdf.text('Fecha y hora de reporte:', pageW/2 + 0.3, y);
+  const labelReporte = 'Fecha y hora de reporte:';
+  pdf.text(labelReporte, pageW/2 + 0.3, y);
+  const anchoLabelReporte = pdf.getTextWidth(labelReporte);
   pdf.setFont('helvetica','normal');
-  pdf.text(fmtFechaHoraAhora(), pageW/2 + 1.9, y);
+  pdf.text(fmtFechaHoraAhora(), pageW/2 + 0.3 + anchoLabelReporte + 0.08, y);
   y += 0.3;
 
   // Agrupamos por estudio: el nombre del panel va arriba, una sola vez,
@@ -765,7 +783,7 @@ function buildResultadosPdf(){
   pdf.setTextColor(0);
 
   // Firma, alineada a la derecha, justo arriba de la nota de "Rojo = ..."
-  const firmaW = 1.5, firmaH = 0.62;
+  const firmaW = 2.1, firmaH = 0.87;
   const firmaX = pageW - marginL - firmaW;
   const text3Y = rojoY - 0.18;
   const text2Y = text3Y - 0.13;
@@ -774,7 +792,7 @@ function buildResultadosPdf(){
   const firmaImgY = lineaFirmaY - 0.03 - firmaH;
 
   pdf.setFont('helvetica','bold'); pdf.setFontSize(8); pdf.setTextColor(0);
-  pdf.text('QBP. M en C. Yair Omar Chávez-Estrada', firmaX + firmaW/2, text1Y, { align:'center' });
+  pdf.text('M en C. Yair Omar Chávez-Estrada', firmaX + firmaW/2, text1Y, { align:'center' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7);
   pdf.text('Responsable Sanitario', firmaX + firmaW/2, text2Y, { align:'center' });
   pdf.text('Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', firmaX + firmaW/2, text3Y, { align:'center' });
