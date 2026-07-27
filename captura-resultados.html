@@ -798,6 +798,8 @@ function buildResultadosPdf(){
   pdf.text('Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', firmaX + firmaW/2, text3Y, { align:'center' });
   pdf.setDrawColor(0);
   pdf.line(firmaX, lineaFirmaY, firmaX + firmaW, lineaFirmaY);
+  pdf.setFillColor(255,255,255);
+  pdf.rect(firmaX, firmaImgY, firmaW, firmaH, 'F');
   addLogoToPdf(pdf, 'firmaImg', firmaX, firmaImgY, firmaW, firmaH, 'left');
 
   return pdf;
