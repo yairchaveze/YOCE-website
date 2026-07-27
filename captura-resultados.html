@@ -102,7 +102,7 @@
   <h1>Captura de Resultados de Laboratorio Externo</h1>
   <div class="sub">YoCell Lab · San Buenaventura, Coahuila — sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
   <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
-  <img id="firmaImg" src="firma-ycl.png" alt="Firma" style="display:none;">
+  <img id="firmaImg" src="firma-ycl.png?v=2" alt="Firma" style="display:none;">
 
   <!-- PASO 1: PACIENTE -->
   <div class="card">
@@ -446,14 +446,37 @@ function simplificarRangoCategorico(rangoCompleto){
   return rangoCompleto;
 }
 
+let metaEstudios = {};
+
 function parsearLineasAResultados(lineas){
   const filas = [];
+  metaEstudios = {};
   let estudioActual = '';
   let ultimoConsumidoHasta = -1; // última línea ya usada como parte de un rango anterior
   for(let i = 0; i < lineas.length; i++){
     const linea = lineas[i];
     const panel = PANELES_CONOCIDOS.find(p => p.patron.test(linea));
-    if(panel){ estudioActual = panel.codigo; continue; }
+    if(panel){
+      estudioActual = panel.codigo;
+      if(!metaEstudios[estudioActual]) metaEstudios[estudioActual] = { muestra: '', metodologias: new Set() };
+      continue;
+    }
+    const muestraMatch = linea.match(/^tipo\s+muestra\s*:\s*(.+)$/i);
+    if(muestraMatch){
+      if(estudioActual){
+        if(!metaEstudios[estudioActual]) metaEstudios[estudioActual] = { muestra: '', metodologias: new Set() };
+        metaEstudios[estudioActual].muestra = muestraMatch[1].trim();
+      }
+      continue;
+    }
+    const metodMatch = linea.match(/^metodologia\s*:\s*(.+)$/i);
+    if(metodMatch){
+      if(estudioActual){
+        if(!metaEstudios[estudioActual]) metaEstudios[estudioActual] = { muestra: '', metodologias: new Set() };
+        metaEstudios[estudioActual].metodologias.add(metodMatch[1].trim());
+      }
+      continue;
+    }
     if(LINEAS_IGNORAR.test(linea)) continue;
     const m = linea.match(LINEA_ANALITO);
     if(m){
@@ -757,7 +780,23 @@ function buildResultadosPdf(){
         }
       }
     });
-    y = pdf.lastAutoTable.finalY + 0.3;
+    y = pdf.lastAutoTable.finalY + 0.15;
+    const meta = metaEstudios[grupo.estudio];
+    if(meta && (meta.muestra || meta.metodologias.size)){
+      pdf.setFont('helvetica','normal'); pdf.setFontSize(7.5); pdf.setTextColor(120);
+      if(meta.muestra){
+        pdf.text('Tipo de muestra: ' + meta.muestra, marginL, y);
+        y += 0.14;
+      }
+      if(meta.metodologias.size){
+        const metodTxt = 'Metodología: ' + Array.from(meta.metodologias).join(', ');
+        const metodLineas = pdf.splitTextToSize(metodTxt, pageW - marginL*2);
+        pdf.text(metodLineas, marginL, y);
+        y += metodLineas.length * 0.12;
+      }
+      pdf.setTextColor(0);
+    }
+    y += 0.15;
   });
 
   // ═══ PIE DE PÁGINA — anclado hasta abajo, se calcula de abajo hacia arriba ═══
@@ -785,7 +824,8 @@ function buildResultadosPdf(){
   // Firma, alineada a la derecha, justo arriba de la nota de "Rojo = ..."
   const firmaW = 2.1, firmaH = 0.87;
   const firmaX = pageW - marginL - firmaW;
-  const text3Y = rojoY - 0.18;
+  const text4Y = rojoY - 0.18;
+  const text3Y = text4Y - 0.13;
   const text2Y = text3Y - 0.13;
   const text1Y = text2Y - 0.13;
   const lineaFirmaY = text1Y - 0.1;
@@ -795,7 +835,8 @@ function buildResultadosPdf(){
   pdf.text('M en C. Yair Omar Chávez-Estrada', firmaX + firmaW/2, text1Y, { align:'center' });
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7);
   pdf.text('Responsable Sanitario', firmaX + firmaW/2, text2Y, { align:'center' });
-  pdf.text('Céd. Prof. 11639208 (QBP) / 14167483 (M en C)', firmaX + firmaW/2, text3Y, { align:'center' });
+  pdf.text('Céd. Prof. 11639208 (QBP)', firmaX + firmaW/2, text3Y, { align:'center' });
+  pdf.text('Céd. Prof. 14167483 (M en C)', firmaX + firmaW/2, text4Y, { align:'center' });
   pdf.setDrawColor(0);
   pdf.line(firmaX, lineaFirmaY, firmaX + firmaW, lineaFirmaY);
   pdf.setFillColor(255,255,255);
