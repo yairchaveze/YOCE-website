@@ -803,6 +803,11 @@ function buildResultadosPdf(){
       }
     });
     y = pdf.lastAutoTable.finalY + 0.15;
+
+    // Si la tabla llegó muy abajo (paneles largos como BH), no quepa el bloque
+    // de tipo de muestra/metodología encimado — saltamos a una hoja nueva.
+    if(y > pageH - 1.3){ pdf.addPage(); y = 0.6; }
+
     const meta = metaEstudios[grupo.estudio];
     if(meta && (meta.muestra || meta.metodologias.size)){
       pdf.setFont('helvetica','normal'); pdf.setFontSize(7.5); pdf.setTextColor(120);
@@ -821,6 +826,10 @@ function buildResultadosPdf(){
     y += 0.15;
   });
 
+  // Si no queda espacio suficiente para el pie de página + firma (~2.8in),
+  // los mandamos a una hoja nueva en vez de encimarlos con la tabla.
+  if(y > pageH - 2.8){ pdf.addPage(); y = 0.6; }
+
   // ═══ PIE DE PÁGINA — anclado hasta abajo, se calcula de abajo hacia arriba ═══
   const lineaBaseY = pageH - 0.5;
   pdf.setFont('helvetica','normal'); pdf.setFontSize(7); pdf.setTextColor(120);
@@ -828,8 +837,6 @@ function buildResultadosPdf(){
   pdf.text('FCAL-05-01', pageW - marginL, lineaBaseY, { align:'right' });
 
   const paginaY = lineaBaseY - 0.18;
-  pdf.setFontSize(7.5);
-  pdf.text('Página 1 de 1', pageW/2, paginaY, { align:'center' });
 
   const notaLegal = 'Esta información no debe reproducirse, excepto en su totalidad, sin la aprobación por escrito de YoCell Lab. La interpretación de estos estudios clínicos es esencial para obtener un tratamiento preciso y eficaz; su uso es exclusivo de un médico certificado para la obtención de un diagnóstico certero.';
   const notaLineas = pdf.splitTextToSize(notaLegal, pageW - marginL*2);
@@ -865,6 +872,15 @@ function buildResultadosPdf(){
   pdf.setFillColor(255,255,255);
   pdf.rect(firmaX, firmaImgY, firmaW, firmaH, 'F');
   addLogoToPdf(pdf, 'firmaImg', firmaX, firmaImgY, firmaW, firmaH, 'left');
+
+  // Numerar todas las hojas (por si el reporte ocupó más de una, ej. BH con muchos analitos)
+  const totalPaginas = pdf.internal.getNumberOfPages();
+  for(let p = 1; p <= totalPaginas; p++){
+    pdf.setPage(p);
+    pdf.setFont('helvetica','normal'); pdf.setFontSize(7); pdf.setTextColor(120);
+    pdf.text(`Página ${p} de ${totalPaginas}`, pageW/2, pageH - 0.68, { align:'center' });
+    pdf.setTextColor(0);
+  }
 
   return pdf;
 }
