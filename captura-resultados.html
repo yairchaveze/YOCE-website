@@ -125,30 +125,48 @@
     <div id="pacResultadosPrevios" style="display:none;"></div>
   </div>
 
-  <!-- PASO 2: PDF -->
+  <!-- PASO 2: PDF o EGO manual -->
   <div class="card">
-    <h2>2. Sube el PDF de resultados</h2>
+    <h2>2. Estudio</h2>
     <div class="grid" style="margin-bottom:14px;">
       <div>
-        <label>Laboratorio externo</label>
-        <input id="f_labExterno" type="text" value="Grupo Micro-Tec">
+        <label>Tipo de captura</label>
+        <select id="f_modoCaptura" onchange="cambiarModoCaptura()">
+          <option value="pdf">📄 Subir PDF de laboratorio externo (QS6 / BH)</option>
+          <option value="ego">🔬 Llenar EGO manual (lectura propia)</option>
+        </select>
       </div>
       <div>
         <label>Fecha de reporte</label>
         <input id="f_fechaReporte" type="date">
       </div>
     </div>
-    <div id="dropZone" onclick="document.getElementById('f_pdf').click()">
-      <div class="icon">📄</div>
-      <div><b>Haz clic aquí o arrastra el PDF</b></div>
-      <div class="hint">Solo funciona con PDFs que tengan texto real (no fotos/escaneos)</div>
-      <div id="fileNombre"></div>
+
+    <!-- Modo PDF -->
+    <div id="bloquePdf">
+      <label>Laboratorio externo</label>
+      <input id="f_labExterno" type="text" value="Grupo Micro-Tec" style="margin-bottom:14px;">
+      <div id="dropZone" onclick="document.getElementById('f_pdf').click()">
+        <div class="icon">📄</div>
+        <div><b>Haz clic aquí o arrastra el PDF</b></div>
+        <div class="hint">Solo funciona con PDFs que tengan texto real (no fotos/escaneos)</div>
+        <div id="fileNombre"></div>
+      </div>
+      <input id="f_pdf" type="file" accept="application/pdf" style="display:none;" onchange="onArchivoSeleccionado(this.files[0])">
+      <div class="actions">
+        <button class="btn btn-teal" id="btnLeerPdf" onclick="leerPdf()" disabled>🔍 Leer PDF y extraer resultados</button>
+      </div>
+      <div id="pdfStatus" class="hint"></div>
     </div>
-    <input id="f_pdf" type="file" accept="application/pdf" style="display:none;" onchange="onArchivoSeleccionado(this.files[0])">
-    <div class="actions">
-      <button class="btn btn-teal" id="btnLeerPdf" onclick="leerPdf()" disabled>🔍 Leer PDF y extraer resultados</button>
+
+    <!-- Modo EGO manual -->
+    <div id="bloqueEgo" style="display:none;">
+      <div class="hint" style="margin-bottom:12px;">Llena lo que observaste — ya vienen precargados los valores normales típicos, solo cambia lo que salga distinto.</div>
+      <div class="grid3" id="egoGrid" style="row-gap:10px;"></div>
+      <div class="actions">
+        <button class="btn btn-teal" onclick="generarPlantillaEgo()">🧫 Generar plantilla EGO</button>
+      </div>
     </div>
-    <div id="pdfStatus" class="hint"></div>
   </div>
 
   <!-- PASO 3: REVISIÓN -->
@@ -267,12 +285,85 @@ function jsonpGet(params){
 function init(){
   document.getElementById('f_fechaReporte').value = hoyISO();
   cargarListaHoyParaSelect();
+  construirFormularioEgo();
   const params = new URLSearchParams(window.location.search);
   const folioURL = params.get('folio');
   if(folioURL){
     document.getElementById('f_buscarFolio').value = folioURL;
     buscarPorFolio();
   }
+}
+
+/* ═══ MODO DE CAPTURA: PDF vs EGO MANUAL ═══ */
+function cambiarModoCaptura(){
+  const modo = document.getElementById('f_modoCaptura').value;
+  document.getElementById('bloquePdf').style.display = modo === 'pdf' ? 'block' : 'none';
+  document.getElementById('bloqueEgo').style.display = modo === 'ego' ? 'block' : 'none';
+}
+
+// [nombre, valor por default (normal), referencia a mostrar, opciones | null=input libre]
+const CAMPOS_EGO = [
+  ['Color', 'Amarillo', 'Amarillo', ['Amarillo','Amarillo claro','Amarillo oscuro','Ámbar','Incoloro','Naranja','Rojo','Café']],
+  ['Aspecto', 'Claro', 'Claro', ['Claro','Ligeramente turbio','Turbio','Muy turbio']],
+  ['Densidad', '1.015', '1.00 - 1.03', null],
+  ['pH', '6', '5.00 - 6.50', null],
+  ['Proteínas', 'Negativo', 'Negativo / Menor a 20 (Normal)', ['Negativo','Trazas','30 mg/dL (+)','100 mg/dL (++)','300 mg/dL (+++)','≥2000 mg/dL (++++)']],
+  ['Glucosa', 'Negativo', 'Negativo / Menor a 20 (Normal)', ['Negativo','Trazas','50 mg/dL','100 mg/dL','250 mg/dL','500 mg/dL','≥1000 mg/dL']],
+  ['Cetonas', 'Negativo', 'Negativo', ['Negativo','Trazas','Pequeña cantidad','Moderada cantidad','Gran cantidad']],
+  ['Bilirrubina', 'Negativo', 'Negativo', ['Negativo','Positivo (+)','Positivo (++)','Positivo (+++)']],
+  ['Hemoglobina', 'Negativo', 'Negativo', ['Negativo','Trazas','Positivo (+)','Positivo (++)','Positivo (+++)']],
+  ['Urobilinógeno', 'Normal', 'Menor a 2 (Normal)', ['Normal','Menor a 2','Aumentado']],
+  ['Nitritos', 'Negativo', 'Negativo', ['Negativo','Positivo']],
+  ['Esterasa leucocitaria', 'Negativo', 'Negativo', ['Negativo','Trazas','Positivo (+)','Positivo (++)','Positivo (+++)']],
+  ['Leucocitos', '0 a 2 por campo', '0 a 2 por campo', ['0 a 2 por campo','2 a 5 por campo','5 a 10 por campo','10 a 20 por campo','20 a 50 por campo','Abundantes por campo']],
+  ['Eritrocitos', '0 a 2 por campo', '0 a 2 por campo', ['0 a 2 por campo','2 a 5 por campo','5 a 10 por campo','10 a 20 por campo','20 a 50 por campo','Abundantes por campo']],
+  ['Bacterias', 'Ausentes', 'Ausente', ['Ausentes','Escasas','Regular cantidad','Abundantes']],
+  ['Cilindros patológicos', 'Ausentes', 'Ausente', ['Ausentes','Granulosos','Hialino-granulosos','Céreos','Hemáticos','Leucocitarios']],
+  ['Cilindros hialinos', 'Ausentes', 'Ausente', ['Ausentes','Escasos','Regular cantidad','Abundantes']],
+  ['Cristales', 'Ausentes', 'Ausente', ['Ausentes','Oxalato de calcio','Ácido úrico','Fosfatos amorfos','Uratos amorfos','Triple fosfato']],
+  ['Células epiteliales', 'Escasas', 'Escasas', ['Ausentes','Escasas','Regulares','Abundantes']],
+  ['Células renales', 'Ausentes', 'Ausente', ['Ausentes','Escasas','Presentes']],
+  ['Levaduras', 'Ausentes', 'Ausente', ['Ausentes','Escasas','Presentes','Abundantes']],
+  ['Filamento mucoso', 'Ausentes', 'Ausente', ['Ausente','Escaso','Regular','Abundante']],
+  ['Espermatozoides', 'Ausentes', 'Ausente', ['Ausentes','Escasos','Presentes']],
+  ['Observaciones', 'Ninguna', 'Ninguna', null],
+];
+
+function construirFormularioEgo(){
+  const cont = document.getElementById('egoGrid');
+  cont.innerHTML = CAMPOS_EGO.map((c,i)=>{
+    const [nombre, valorDefault, , opciones] = c;
+    let campo;
+    if(opciones){
+      campo = `<select class="ego-campo" data-idx="${i}">` +
+        opciones.map(op => `<option value="${op.replace(/"/g,'&quot;')}" ${op===valorDefault?'selected':''}>${op}</option>`).join('') +
+        `</select>`;
+    }else{
+      campo = `<input class="ego-campo" data-idx="${i}" value="${valorDefault.replace(/"/g,'&quot;')}">`;
+    }
+    return `<div><label>${nombre}</label>${campo}</div>`;
+  }).join('');
+}
+
+function generarPlantillaEgo(){
+  if(!pacienteActual){ toast('Selecciona un paciente primero'); return; }
+  const inputs = [...document.querySelectorAll('.ego-campo')];
+  const filas = inputs.map(inp=>{
+    const idx = parseInt(inp.dataset.idx, 10);
+    const [nombre, , referencia] = CAMPOS_EGO[idx];
+    const valor = inp.value.trim();
+    const esNormal = valor.toLowerCase() === CAMPOS_EGO[idx][1].toLowerCase();
+    return {
+      estudio: 'EGO',
+      analito: nombre,
+      resultado: valor,
+      unidades: '',
+      rangoRef: referencia,
+      fueraDeRango: !esNormal
+    };
+  }).filter(f => f.resultado);
+  document.getElementById('f_labExterno').value = 'Lectura propia (YoCell Lab)';
+  mostrarTablaRevision(filas);
 }
 
 /* ═══ PASO 1: SELECCIÓN DE PACIENTE ═══ */
@@ -389,6 +480,249 @@ async function extraerLineasPdf(file){
 }
 
 // Detecta nombres de paneles/estudios conocidos dentro de las líneas del PDF
+/* ═══════════ FORMATO "LASER" (Laboratorio de Asesoría y Servicio Referido) ═══════════
+ * Este proveedor NO imprime un solo rango de referencia por analito — imprime
+ * decenas de renglones (uno por cada banda de edad/sexo). En vez de tratar de leer
+ * esa tabla enorme, guardamos AQUÍ los mismos valores (tal cual los trae su propio
+ * PDF) y elegimos nosotros el renglón correcto según la edad y sexo reales del
+ * paciente al momento de generar el reporte.
+ */
+function esFormatoLaser(lineas){
+  return lineas.some(l => /laboratorio de asesor[ií]a y servicio referido/i.test(l) || /laserlab\.com\.mx/i.test(l));
+}
+
+// edad tipo "15D", "2M", "1A", "99A" -> días (D=día, M=mes≈30d, A=año=365d)
+function edadTextoADias(txt){
+  const m = String(txt).trim().match(/^(\d+)\s*([DMA])$/i);
+  if(!m) return null;
+  const n = parseInt(m[1], 10);
+  const u = m[2].toUpperCase();
+  return u === 'D' ? n : u === 'M' ? n*30 : n*365;
+}
+
+function edadPacienteEnDias(fechaNacimiento){
+  if(!fechaNacimiento) return null;
+  const soloFecha = String(fechaNacimiento).split('T')[0];
+  const [yyyy, mm, dd] = soloFecha.split('-').map(Number);
+  if(!yyyy || !mm || !dd) return null;
+  const fn = new Date(yyyy, mm-1, dd);
+  const hoy = new Date();
+  return Math.floor((hoy - fn) / 86400000);
+}
+
+function normalizarSexo(s){
+  const t = String(s||'').trim().toLowerCase();
+  if(t.startsWith('m')) return 'Masc';
+  if(t.startsWith('f')) return 'Fem';
+  return null;
+}
+
+// tabla: [edadMinTxt, edadMaxTxt, sexo|null, lo, hi]
+function buscarRangoLaser(tabla, edadDias, sexo){
+  if(!tabla || edadDias == null) return null;
+  const sx = normalizarSexo(sexo);
+  for(const [eMin, eMax, filaSexo, lo, hi] of tabla){
+    const minD = edadTextoADias(eMin), maxD = edadTextoADias(eMax);
+    if(minD == null || maxD == null) continue;
+    if(edadDias < minD || edadDias > maxD) continue;
+    if(filaSexo && sx && filaSexo !== sx) continue;
+    return { lo, hi };
+  }
+  return null;
+}
+
+// Colesterol/Triglicéridos en Laser vienen por categorías (no un solo rango numérico)
+function buscarCategoriaLaser(tablaCategorica, edadDias, resultado){
+  if(!tablaCategorica || edadDias == null) return null;
+  for(const grupo of tablaCategorica){
+    const minD = edadTextoADias(grupo.edadMin), maxD = edadTextoADias(grupo.edadMax);
+    if(edadDias < minD || edadDias > maxD) continue;
+    const val = parseFloat(String(resultado).replace(',', '.'));
+    for(const cat of grupo.categorias){
+      const okMin = cat.min == null || val >= cat.min;
+      const okMax = cat.max == null || val < cat.max;
+      if(okMin && okMax) return cat;
+    }
+  }
+  return null;
+}
+
+const REFERENCIAS_LASER_BH = {
+  'ERITROCITOS': [
+    ['0D','1D',null,4.10,6.10],['2D','4D',null,4.36,5.96],['5D','7D',null,4.20,5.80],['8D','14D',null,4.00,5.60],
+    ['15D','30D',null,3.20,5.00],['1M','2M',null,3.40,5.00],['3M','5M',null,3.65,5.05],['6M','11M',null,3.60,5.20],
+    ['1A','3A',null,3.40,5.20],['4A','7A',null,4.00,5.20],['8A','13A',null,4.00,5.40],
+    ['14A','15A','Masc',4.62,6.05],['14A','15A','Fem',4.33,5.63],
+    ['16A','20A','Masc',4.81,6.18],['16A','20A','Fem',4.00,5.46],
+    ['20A','99A','Masc',4.39,6.10],['20A','99A','Fem',3.87,5.44]
+  ],
+  'HEMOGLOBINA': [
+    ['0D','1D',null,16.50,21.50],['2D','4D',null,16.40,20.80],['5D','7D',null,15.20,20.40],['8D','14D',null,15.00,19.60],
+    ['15D','30D',null,12.20,18.00],['1M','2M',null,10.60,16.40],['3M','5M',null,10.40,16.00],['6M','11M',null,10.40,15.60],
+    ['1A','3A',null,9.60,15.60],['4A','7A',null,10.20,15.20],['8A','13A',null,12.00,15.00],
+    ['14A','15A','Masc',13.20,17.62],['14A','15A','Fem',12.90,16.30],
+    ['16A','20A','Masc',14.90,18.65],['16A','20A','Fem',12.20,16.20],
+    ['20A','99A','Masc',13.80,18.50],['20A','99A','Fem',11.70,16.30]
+  ],
+  'HEMATOCRITO': [
+    ['0D','1D',null,48.00,68.00],['2D','4D',null,48.00,68.00],['5D','7D',null,50.00,64.00],['8D','14D',null,46.00,62.00],
+    ['15D','30D',null,38.00,53.00],['1M','2M',null,32.00,50.00],['3M','5M',null,35.00,51.00],['6M','11M',null,35.00,51.00],
+    ['1A','3A',null,34.00,48.00],['4A','7A',null,36.00,46.00],['8A','13A',null,35.00,49.00],
+    ['14A','15A',null,39.50,49.15],['16A','20A',null,36.60,49.17],
+    ['20A','99A','Masc',35.40,49.40],['20A','99A','Fem',36.00,49.20]
+  ],
+  'V C M': [
+    ['0D','1D',null,95.00,125.00],['2D','4D',null,98.00,118.00],['5D','7D',null,100.00,120.00],['8D','14D',null,95.00,115.00],
+    ['15D','30D',null,93.00,113.00],['1M','2M',null,83.00,107.00],['3M','5M',null,83.00,107.00],['6M','11M',null,78.00,102.00],
+    ['1A','3A',null,76.00,92.00],['4A','7A',null,78.00,94.00],['8A','13A',null,80.00,94.00],
+    ['14A','15A','Masc',81.20,94.10],['14A','15A','Fem',80.92,96.57],
+    ['16A','20A','Masc',84.15,97.60],['16A','20A','Fem',82.90,98.60],
+    ['20A','99A','Masc',84.40,100.00],['20A','99A','Fem',83.30,100.00]
+  ],
+  'H C M': [
+    ['0D','1D',null,30.00,42.00],['2D','4D',null,30.00,42.00],['5D','7D',null,30.00,42.00],['8D','14D',null,30.00,42.00],
+    ['15D','30D',null,28.00,40.00],['1M','2M',null,27.00,37.00],['3M','5M',null,25.00,35.00],['6M','11M',null,23.00,31.00],
+    ['1A','3A',null,23.00,31.00],['4A','7A',null,23.00,31.00],['8A','13A',null,26.00,32.00],
+    ['14A','99A','Masc',27.10,33.50],['14A','99A','Fem',26.80,33.20]
+  ],
+  'C H C M': [
+    ['0D','1D',null,30.00,34.00],['2D','4D',null,30.00,34.00],['5D','7D',null,30.00,34.00],['8D','14D',null,30.00,34.00],
+    ['15D','30D',null,30.00,34.00],['1M','2M',null,31.00,37.00],['3M','5M',null,32.00,36.00],['6M','11M',null,32.00,36.00],
+    ['1A','3A',null,32.00,36.00],['4A','7A',null,32.00,36.00],['8A','13A',null,32.00,36.00],
+    ['14A','99A','Masc',31.60,34.80],['14A','99A','Fem',31.00,34.40]
+  ],
+  'ANCHO DE DISTRIBUCION ERITROCITARIA': [
+    ['0D','6M',null,14.20,19.90],['6M','14A',null,11.50,14.50],
+    ['14A','99A','Masc',11.80,17.60],['14A','99A','Fem',12.00,17.70]
+  ],
+  'LEUCOCITOS TOTALES': [
+    ['0D','7D',null,9.40,34.00],['8D','14D',null,5.00,21.00],['15D','31D',null,5.00,20.00],['1M','5M',null,5.00,15.00],
+    ['5M','2A',null,6.00,11.00],['2A','3A',null,5.00,12.00],['3A','5A',null,4.00,12.00],
+    ['5A','11A',null,3.40,9.50],['11A','15A',null,3.60,9.10],['15A','90A',null,3.50,10.50]
+  ],
+  'NEUTROFILOS/SEGMENTADOS': [
+    ['0D','1D',null,37.00,67.00],['2D','4D',null,30.00,60.00],['5D','7D',null,27.00,51.00],['8D','14D',null,22.00,46.00],
+    ['15D','2M',null,20.00,40.00],['3M','5M',null,18.00,38.00],['6M','11M',null,20.00,40.00],
+    ['1A','3A',null,22.00,46.00],['4A','7A',null,30.00,60.00],['8A','13A',null,35.00,65.00],['13A','90A',null,50.00,70.00]
+  ],
+  '#NEUTROFILOS': [
+    ['1D','7D',null,1.50,10.00],['8D','14D',null,1.00,9.50],['15D','31D',null,1.00,9.00],['1M','5M',null,1.00,8.50],
+    ['6M','11A',null,1.50,8.50],['12A','15A',null,1.80,8.00],['15A','90A',null,1.70,7.00]
+  ],
+  'LINFOCITOS': [
+    ['0D','1D',null,18.00,38.00],['2D','4D',null,16.00,46.00],['5D','7D',null,24.00,54.00],['8D','14D',null,30.00,62.00],
+    ['15D','30D',null,41.00,61.00],['1M','3M',null,42.00,72.00],['3M','6M',null,45.00,75.00],['6M','12M',null,48.00,78.00],
+    ['1A','4A',null,37.00,73.00],['4A','8A',null,29.00,65.00],['8A','13A',null,23.00,53.00],['13A','90A',null,18.00,42.00]
+  ],
+  '#LINFOCITOS': [
+    ['1D','7D',null,2.00,17.00],['8D','14D',null,5.00,16.50],['15D','60D',null,4.00,13.50],['2M','5M',null,4.00,10.50],
+    ['6M','5A',null,1.50,7.00],['6A','11A',null,1.50,6.50],['12A','15A',null,1.20,5.20],['15A','90A',null,0.90,2.90]
+  ],
+  'MONOCITOS': [
+    ['0D','1D',null,1.00,12.00],['2D','4D',null,3.00,14.00],['5D','14D',null,4.00,17.00],['15D','30D',null,2.00,15.00],
+    ['1M','2M',null,3.00,14.00],['3M','90A',null,2.00,11.00]
+  ],
+  '#MONOCITOS': [
+    ['0D','14D',null,0.40,1.80],['15D','11M',null,0.05,1.10],['1A','15A',null,0.00,0.80],['15A','90A',null,0.30,0.90]
+  ],
+  'EOSINOFILOS': [
+    ['0D','1D',null,1.00,4.00],['2D','4D',null,1.00,5.00],['5D','7D',null,2.00,6.00],['8D','30D',null,1.00,5.00],
+    ['1M','13A',null,1.00,4.00],['13A','90A',null,1.00,3.00]
+  ],
+  '#EOSINOFILOS': [
+    ['0D','5M',null,0.02,0.85],['6M','11M',null,0.05,0.70],['1A','5A',null,0.00,0.65],['6A','15A',null,0.00,0.50],['15A','90A',null,0.05,0.50]
+  ],
+  'BASOFILOS': [ ['0D','90A',null,0.00,2.00] ],
+  '#BASOFILOS': [ ['0D','5M',null,0.00,0.60],['6M','16A',null,0.00,0.20],['16A','90A',null,0.00,0.30] ],
+  'BANDAS': [ ['0D','120A',null,0.00,5.00] ],
+  'PLAQUETAS': [ ['0D','90A',null,150.00,450.00] ],
+  'V P M': [ ['0D','90A',null,6.50,11.00] ]
+};
+
+const REFERENCIAS_LASER_QS6 = {
+  'ÁCIDO ÚRICO EN SUERO': [
+    ['0D','30D','Fem',2.00,6.20],['31D','16A','Fem',2.50,5.50],['17A','120A','Fem',2.60,6.00],
+    ['0D','30D','Masc',2.00,6.20],['31D','16A','Masc',2.50,5.50],['17A','120A','Masc',3.50,7.20]
+  ],
+  'CREATININA EN SUERO': [
+    ['0D','7D',null,0.70,1.20],['1M','12M',null,0.20,0.50],['1A','9A',null,0.20,0.80],['10A','17A',null,0.50,1.10],
+    ['18A','120A','Fem',0.55,1.02],['18A','120A','Masc',0.70,1.30]
+  ],
+  'GLUCOSA EN SUERO': [
+    ['0D','1D',null,40.00,60.00],['2D','7D',null,50.00,80.00],['8D','17A',null,60.00,100.00],
+    ['18A','60A',null,70.00,105.00],['61A','70A',null,80.00,115.00],['71A','120A',null,83.00,110.00]
+  ],
+  'NITRÓGENO UREICO': [
+    ['0D','14D',null,2.80,23.00],['15D','364D',null,3.40,16.80],['1A','9A',null,9.00,22.10],
+    ['10A','18A',null,7.30,19.00],['19A','60A',null,6.00,20.00],['61A','120A',null,8.00,23.00]
+  ]
+};
+
+const REFERENCIAS_LASER_CATEGORICO = {
+  'COLESTEROL TOTAL': [
+    { edadMin:'0A', edadMax:'17A', categorias: [ {max:170, label:'ACONSEJABLE'}, {min:170,max:200,label:'RIESGO MODERADO'}, {min:200,label:'RIESGO ALTO'} ] },
+    { edadMin:'18A', edadMax:'120A', categorias: [ {max:200, label:'ACONSEJABLE'}, {min:200,max:240,label:'RIESGO MODERADO'}, {min:240,label:'RIESGO ALTO'} ] }
+  ],
+  'TRIGLICÉRIDOS': [
+    { edadMin:'0A', edadMax:'120A', categorias: [ {max:150,label:'NORMAL'}, {min:150,max:200,label:'EN EL LÍMITE ALTO'}, {min:200,max:500,label:'ALTO'}, {min:500,label:'MUY ALTO'} ] }
+  ]
+};
+
+// Detecta a qué panel/estudio pertenece un nombre de analito de Laser
+function panelLaserDeAnalito(nombre){
+  const n = nombre.toUpperCase().trim();
+  if(REFERENCIAS_LASER_BH[n]) return { codigo:'BH', tabla: REFERENCIAS_LASER_BH[n] };
+  if(REFERENCIAS_LASER_QS6[n]) return { codigo:'QS6', tabla: REFERENCIAS_LASER_QS6[n] };
+  if(REFERENCIAS_LASER_CATEGORICO[n]) return { codigo:'QS6', categorico: REFERENCIAS_LASER_CATEGORICO[n] };
+  return null;
+}
+
+// Analitos que Laser reporta pero no queremos incluir en el reporte final
+const ANALITOS_EXCLUIR_LASER = /^(MIELOCITOS|METAMIELOCITOS|PROMIELOCITOS)$/i;
+
+const LINEA_LASER = /^(\d+)\s+([A-ZÁÉÍÓÚÑ0-9#\s\.]+?)\s+([\d]+[.,]\d+|[\d]+)\s+(\S+)/;
+
+function parsearLineasLaser(lineas){
+  const filas = [];
+  const edadDias = edadPacienteEnDias(pacienteActual && pacienteActual.fechaNacimiento);
+  const sexo = pacienteActual && pacienteActual.sexo;
+  lineas.forEach(linea=>{
+    const m = linea.match(LINEA_LASER);
+    if(!m) return;
+    const nombre = m[2].replace(/\s+/g,' ').trim();
+    if(ANALITOS_EXCLUIR_LASER.test(nombre.replace(/\s/g,''))) return;
+    const resultado = m[3].replace(',', '.');
+    const panel = panelLaserDeAnalito(nombre);
+    let rangoRef = '', fueraDeRango = false, estudio = '';
+    if(panel){
+      estudio = panel.codigo;
+      if(panel.tabla){
+        const r = buscarRangoLaser(panel.tabla, edadDias, sexo);
+        if(r){
+          rangoRef = `${r.lo} - ${r.hi}`;
+          const val = parseFloat(resultado);
+          fueraDeRango = !isNaN(val) && (val < r.lo || val > r.hi);
+        }
+      } else if(panel.categorico){
+        const cat = buscarCategoriaLaser(panel.categorico, edadDias, resultado);
+        if(cat){
+          rangoRef = cat.label + (cat.max!=null ? ` (< ${cat.max})` : cat.min!=null ? ` (≥ ${cat.min})` : '');
+          fueraDeRango = /alto/i.test(cat.label) && !/riesgo moderado/i.test(cat.label) ? true : /riesgo/i.test(cat.label);
+        }
+      }
+    }
+    filas.push({
+      estudio: estudio,
+      analito: nombre,
+      resultado: resultado,
+      unidades: m[4],
+      rangoRef: rangoRef,
+      fueraDeRango: fueraDeRango
+    });
+  });
+  return filas;
+}
+
 const PANELES_CONOCIDOS = [
   { patron: /qu[ií]mica\s+sangu[ií]nea\s*6/i, codigo: 'QS6' },
   { patron: /qu[ií]mica\s+sangu[ií]nea/i, codigo: 'QS' },
@@ -522,14 +856,18 @@ function parsearLineasAResultados(lineas){
       i = j - 1;
       if(eraCategorico) rango = simplificarRangoCategorico(rango);
       const resultado = m[2].replace(',', '.');
-      filas.push({
-        estudio: estudioActual || '',
-        analito: nombre,
-        resultado: resultado,
-        unidades: m[3],
-        rangoRef: rango,
-        fueraDeRango: evaluarFueraDeRango(resultado, rango)
-      });
+      // Analitos que no se quieren reportar aunque el PDF los traiga
+      const ANALITOS_EXCLUIR = /^(mielocitos|metamielocitos|promielocitos)$/i;
+      if(!ANALITOS_EXCLUIR.test(nombre)){
+        filas.push({
+          estudio: estudioActual || '',
+          analito: nombre,
+          resultado: resultado,
+          unidades: m[3],
+          rangoRef: rango,
+          fueraDeRango: evaluarFueraDeRango(resultado, rango)
+        });
+      }
     }
   }
   return filas;
@@ -548,7 +886,9 @@ async function leerPdf(){
       document.getElementById('pdfStatus').textContent = '⚠️ No se pudo extraer texto — es posible que el PDF sea un escaneo/foto, no texto real.';
       return;
     }
-    const filas = parsearLineasAResultados(lineas);
+    const esLaser = esFormatoLaser(lineas);
+    if(esLaser) document.getElementById('f_labExterno').value = 'Laser (Laboratorio de Asesoría y Servicio Referido)';
+    const filas = esLaser ? parsearLineasLaser(lineas) : parsearLineasAResultados(lineas);
     document.getElementById('pdfStatus').textContent =
       filas.length > 0
         ? `✅ Se detectaron ${filas.length} analito(s). Revísalos abajo antes de guardar.`
