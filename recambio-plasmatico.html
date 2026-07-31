@@ -63,6 +63,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .ig label{display:block;font-size:14px;color:var(--m2);margin-bottom:4px}
 input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--bord2);border-radius:8px;font-size:16px;color:var(--t);background:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
 input[type=number]:focus,select:focus{outline:none;border-color:var(--gl)}
+input[type=number]::placeholder{color:#b6bfca;font-style:italic}
+input[type=number].missing{border-color:#e53e3e;background:rgba(239,68,68,0.06)}
+.req-mark{color:#e53e3e;font-weight:700;margin-left:3px;display:none}
+.req-mark.show{display:inline}
 
 /* FORMULA BOX */
 .fb{background:var(--b2);border:1px solid rgba(33,150,243,.2);border-radius:8px;padding:.6rem .9rem;font-size:14px;color:var(--b);font-family:'JetBrains Mono',monospace;margin-bottom:.85rem;white-space:pre-wrap;line-height:1.6}
@@ -138,9 +142,9 @@ footer p{font-size:13px;color:var(--m2)}
     ✓ Fórmula de Nadler — Nadler SB et al. <em>Surgery.</em> 1962;51(2):224–232
   </div>
   <div class="ir">
-    <div class="ig"><label>Peso (kg)</label><input type="number" id="peso" value="107.8" step="0.1" oninput="calc()"></div>
-    <div class="ig"><label>Talla (cm)</label><input type="number" id="talla" value="179" step="1" oninput="calc()"></div>
-    <div class="ig"><label>Hematocrito — HTo (%)</label><input type="number" id="hto" value="25.3" step="0.1" min="1" max="99" oninput="calc()"></div>
+    <div class="ig"><label>Peso (kg)<span class="req-mark" id="rm-peso">*</span></label><input type="number" id="peso" placeholder="107.8" step="0.1" oninput="calc()"></div>
+    <div class="ig"><label>Talla (cm)<span class="req-mark" id="rm-talla">*</span></label><input type="number" id="talla" placeholder="179" step="1" oninput="calc()"></div>
+    <div class="ig"><label>Hematocrito — HTo (%)<span class="req-mark" id="rm-hto">*</span></label><input type="number" id="hto" placeholder="25.3" step="0.1" min="1" max="99" oninput="calc()"></div>
 
   </div>
   <div class="fb" id="f-vst">—</div>
@@ -274,10 +278,25 @@ function setVol(v,btn){
   calc();
 }
 
+function markField(id, rmId, isEmpty){
+  const el=document.getElementById(id);
+  const rm=rmId?document.getElementById(rmId):null;
+  if(!el)return;
+  if(isEmpty){el.classList.add('missing');if(rm)rm.classList.add('show');}
+  else{el.classList.remove('missing');if(rm)rm.classList.remove('show');}
+}
+
 function calc(){
-  const peso=parseFloat(document.getElementById('peso').value)||0;
-  const talla=parseFloat(document.getElementById('talla').value)||0;
-  const hto=parseFloat(document.getElementById('hto').value)||0;
+  const pesoVal=document.getElementById('peso').value;
+  const tallaVal=document.getElementById('talla').value;
+  const htoVal=document.getElementById('hto').value;
+  markField('peso','rm-peso',pesoVal==='');
+  markField('talla','rm-talla',tallaVal==='');
+  markField('hto','rm-hto',htoVal==='');
+
+  const peso=parseFloat(pesoVal)||0;
+  const talla=parseFloat(tallaVal)||0;
+  const hto=parseFloat(htoVal)||0;
   const concAlb=parseFloat(document.getElementById('conc-alb').value)||20;
   const volFrasco=parseFloat(document.getElementById('vol-frasco').value)||50;
   if(document.getElementById('custom-input').style.display!=='none'){
