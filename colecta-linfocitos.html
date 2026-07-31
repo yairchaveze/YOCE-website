@@ -63,6 +63,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .ig label{display:block;font-size:14px;color:var(--m2);margin-bottom:4px}
 input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--bord2);border-radius:8px;font-size:16px;color:var(--t);background:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
 input[type=number]:focus,select:focus{outline:none;border-color:var(--pl)}
+input[type=number]::placeholder{color:#b6bfca;font-style:italic}
+input[type=number].missing{border-color:#e53e3e;background:rgba(239,68,68,0.06)}
+.req-mark{color:#e53e3e;font-weight:700;margin-left:3px;display:none}
+.req-mark.show{display:inline}
 
 /* SEX TABS */
 .vt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
@@ -139,8 +143,8 @@ footer p{font-size:13px;color:var(--m2)}
     <button class="vb" onclick="setSex('M',this)">Hombre</button>
   </div>
   <div class="ir">
-    <div class="ig"><label>Peso (kg)</label><input type="number" id="peso" value="86.5" step="0.1" oninput="calc()"></div>
-    <div class="ig"><label>Talla (m)</label><input type="number" id="talla" value="1.67" step="0.01" oninput="calc()"></div>
+    <div class="ig"><label>Peso (kg)<span class="req-mark" id="rm-peso">*</span></label><input type="number" id="peso" placeholder="86.5" step="0.1" oninput="calc()"></div>
+    <div class="ig"><label>Talla (m)<span class="req-mark" id="rm-talla">*</span></label><input type="number" id="talla" placeholder="1.67" step="0.01" oninput="calc()"></div>
   </div>
   <div class="fb" id="f-vb">—</div>
   <div class="rg">
@@ -156,9 +160,9 @@ footer p{font-size:13px;color:var(--m2)}
   </p>
   <div class="ir">
     <div class="ig">
-      <label>Concentración CD3+ en sangre</label>
+      <label>Concentración CD3+ en sangre<span class="req-mark" id="rm-cpre">*</span></label>
       <div style="display:flex;gap:6px">
-        <input type="number" id="cpre" value="0.593" step="0.001" oninput="calc()" style="flex:1">
+        <input type="number" id="cpre" placeholder="0.593" step="0.001" oninput="calc()" style="flex:1">
         <select id="cpre-exp" oninput="calc()" style="flex:0 0 150px">
           <option value="3" selected>× 10³ cél./µL</option>
           <option value="6">× 10⁶ cél./µL</option>
@@ -166,8 +170,8 @@ footer p{font-size:13px;color:var(--m2)}
       </div>
     </div>
     <div class="ig">
-      <label>Meta de recolección (T) — total en la cosecha (× 10⁶ células)</label>
-      <input type="number" id="tobj" value="4000" step="10" oninput="calc()">
+      <label>Meta de recolección (T) — total en la cosecha (× 10⁶ células)<span class="req-mark" id="rm-tobj">*</span></label>
+      <input type="number" id="tobj" placeholder="4,000.0 millones" step="10" oninput="calc()">
     </div>
   </div>
   <div style="font-size:13px;color:var(--m2);line-height:1.6">
@@ -189,7 +193,7 @@ footer p{font-size:13px;color:var(--m2)}
 
   <div id="mode-plan">
     <div class="ir">
-      <div class="ig"><label>Eficiencia de recolección esperada — CE (%)</label><input type="number" id="ce-plan" value="43" step="1" min="1" max="100" oninput="calc()"></div>
+      <div class="ig"><label>Eficiencia de recolección esperada — CE (%)<span class="req-mark" id="rm-ceplan">*</span></label><input type="number" id="ce-plan" placeholder="43" step="1" min="1" max="100" oninput="calc()"></div>
     </div>
     <div class="fb" id="f-vt-plan">—</div>
     <div class="rg">
@@ -199,11 +203,23 @@ footer p{font-size:13px;color:var(--m2)}
 
   <div id="mode-real" style="display:none">
     <div class="ir">
-      <div class="ig"><label>Volumen total de sangre ya procesado (L)</label><input type="number" id="vt-real" value="15.69" step="0.1" oninput="calc()"></div>
+      <div class="ig"><label>Volumen total de sangre ya procesado (L)<span class="req-mark" id="rm-vtreal">*</span></label><input type="number" id="vt-real" placeholder="15.69" step="0.1" oninput="calc()"></div>
     </div>
     <div class="fb" id="f-ce-real">—</div>
     <div class="rg">
       <div class="rc p"><div class="rl">Eficiencia de recolección real (CE%)</div><div class="rv" id="r-ce-real">—</div><div class="ru">%</div></div>
+    </div>
+  </div>
+
+  <!-- CONTROL DE INTERFASE -->
+  <div style="background:var(--p2);border:1px solid rgba(109,40,217,.25);border-radius:10px;padding:1.1rem 1.25rem;margin-top:1rem">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--p);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:600">👷 Personal capacitado — control de interfase</div>
+    <p style="font-size:14px;color:var(--m);line-height:1.75;margin-bottom:.9rem">
+      El CE% obtenido en la práctica no depende solo de los parámetros del equipo: depende en gran medida del <strong>control de la interfase</strong> por un aferesista capacitado. En el separador celular <strong>Optia Spectra (Kit IDL)</strong>, la capa de células mononucleares (MNC) —donde se encuentran los linfocitos T circulantes— se ubica entre la capa densa de eritrocitos/granulocitos y la capa menos densa de plaquetas. Ajustar correctamente esa interfase durante todo el procedimiento es lo que determina si la recolección se acerca al CE% esperado o cae muy por debajo de él.
+    </p>
+    <img src="colorgram-interfase.png" alt="Densidad del colorgrama y gradiente de interfase — Optia Spectra Kit IDL" style="width:100%;max-width:640px;display:block;margin:0 auto .6rem;border-radius:8px;border:1px solid var(--bord2)" onerror="this.style.display='none'">
+    <div style="font-size:12px;color:var(--m2);line-height:1.7">
+      Inspirado en el gradiente de densidad del WBC Colorgram™ (Spectra Optia) y en la figura de interfase de: Fesnak A, Lin C, Siegel DL, Maus MV. CAR-T Cell Therapies From the Transfusion Medicine Perspective. <em>Transfus Med Rev.</em> 2016;30(3):139–145. doi: 10.1016/j.tmrv.2016.03.001. PMID: 27067907; PMCID: PMC4914456.
     </div>
   </div>
 </div>
@@ -215,7 +231,7 @@ footer p{font-size:13px;color:var(--m2)}
     A partir del flujo promedio de entrada del separador celular se estima la <strong>duración del procedimiento</strong> y el número de <strong>volemias procesadas</strong> (V<sub>T</sub> / V<sub>B</sub>).
   </p>
   <div class="ir">
-    <div class="ig"><label>Flujo promedio de entrada (mL/min)</label><input type="number" id="flujo" value="140" step="1" oninput="calc()"></div>
+    <div class="ig"><label>Flujo promedio de entrada (mL/min)<span class="req-mark" id="rm-flujo">*</span></label><input type="number" id="flujo" placeholder="140" step="1" oninput="calc()"></div>
   </div>
   <div class="fb" id="f-tiempo">—</div>
   <div class="rg">
@@ -283,12 +299,37 @@ function setMode(m,btn){
   calc();
 }
 
+function markField(id, rmId, isEmpty){
+  const el=document.getElementById(id);
+  const rm=rmId?document.getElementById(rmId):null;
+  if(!el)return;
+  if(isEmpty){el.classList.add('missing');if(rm)rm.classList.add('show');}
+  else{el.classList.remove('missing');if(rm)rm.classList.remove('show');}
+}
+
 function calc(){
-  const peso=parseFloat(document.getElementById('peso').value)||0;
-  const talla=parseFloat(document.getElementById('talla').value)||0;
-  const cpre=parseFloat(document.getElementById('cpre').value)||0;
-  const tobj=parseFloat(document.getElementById('tobj').value)||0;
-  const flujo=parseFloat(document.getElementById('flujo').value)||0;
+  const pesoVal=document.getElementById('peso').value;
+  const tallaVal=document.getElementById('talla').value;
+  const cpreVal=document.getElementById('cpre').value;
+  const tobjVal=document.getElementById('tobj').value;
+  const flujoVal=document.getElementById('flujo').value;
+
+  markField('peso','rm-peso',pesoVal==='');
+  markField('talla','rm-talla',tallaVal==='');
+  markField('cpre','rm-cpre',cpreVal==='');
+  markField('tobj','rm-tobj',tobjVal==='');
+  markField('flujo','rm-flujo',flujoVal==='');
+  if(mode==='plan'){
+    markField('ce-plan','rm-ceplan',document.getElementById('ce-plan').value==='');
+  } else {
+    markField('vt-real','rm-vtreal',document.getElementById('vt-real').value==='');
+  }
+
+  const peso=parseFloat(pesoVal)||0;
+  const talla=parseFloat(tallaVal)||0;
+  const cpre=parseFloat(cpreVal)||0;
+  const tobj=parseFloat(tobjVal)||0;
+  const flujo=parseFloat(flujoVal)||0;
   if(!peso||!talla||!cpre||!tobj)return;
 
   // Paso 1 — VB Nadler
