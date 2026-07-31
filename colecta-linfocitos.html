@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Calculadora de Colecta de Linfocitos T · CAR-T · YoCellTherapy</title>
+<meta name="description" content="Calculadora clínica para leucoaféresis de linfocitos T CD3+ en manufactura de CAR-T. Cálculo de eficiencia de recolección (CE%) y volumen a procesar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+  --warn:#92400e;--warn-bg:rgba(251,191,36,0.1);--warn-bord:rgba(251,191,36,0.35);
+  --danger:#991b1b;--danger-bg:rgba(239,68,68,0.08);--danger-bord:rgba(239,68,68,0.25);
+  --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--p2);border:1px solid rgba(109,40,217,.35);display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
+
+/* HERO */
+.hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
+.hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
+.hero p{font-size:18px;color:var(--m);line-height:1.82}
+.asfa-badge{display:inline-flex;align-items:center;gap:5px;background:var(--p2);border:1px solid rgba(109,40,217,.3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--p);padding:4px 11px;letter-spacing:.1em;margin-top:.8rem;font-weight:500}
+
+/* DISCLAIMER */
+.disclaimer{background:var(--danger-bg);border:1px solid var(--danger-bord);border-radius:10px;padding:.85rem 1.1rem;font-size:15px;color:var(--danger);margin-bottom:1.5rem;line-height:1.7}
+.disclaimer strong{font-weight:600}
+
+/* STEP CARDS */
+.sc{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:14px;padding:1.25rem;margin-bottom:1rem;backdrop-filter:blur(4px)}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:.6rem}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--p2);color:var(--p);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;border:1px solid rgba(109,40,217,.3)}
+.st{font-size:18px;font-weight:600;color:var(--t)}
+.sd{font-size:15px;color:var(--m);margin-bottom:.85rem;line-height:1.7}
+.ref-tag{display:inline-block;background:var(--success-bg);color:var(--g);border:0.5px solid var(--success-bord);border-radius:4px;font-size:11px;padding:1px 7px;margin-left:6px;font-weight:500;font-family:'JetBrains Mono',monospace}
+
+/* MODE / FORMULA SELECTOR */
+.formula-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.fs-btn{padding:6px 15px;border-radius:8px;border:1px solid var(--bord2);font-size:14px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.fs-btn.a{background:var(--p2);border-color:rgba(109,40,217,.35);color:var(--p);font-weight:500}
+
+/* INPUTS */
+.ir{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:.85rem}
+.ig label{display:block;font-size:14px;color:var(--m2);margin-bottom:4px}
+input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--bord2);border-radius:8px;font-size:16px;color:var(--t);background:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--pl)}
+
+/* SEX TABS */
+.vt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:15px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.vb.a{background:var(--p2);border-color:rgba(109,40,217,.35);color:var(--p);font-weight:500}
+
+/* FORMULA BOX */
+.fb{background:var(--b2);border:1px solid rgba(33,150,243,.2);border-radius:8px;padding:.6rem .9rem;font-size:14px;color:var(--b);font-family:'JetBrains Mono',monospace;margin-bottom:.85rem;white-space:pre-wrap;line-height:1.6}
+
+/* RESULT GRID */
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.rc{background:rgba(255,255,255,0.7);border:1px solid var(--bord2);border-radius:10px;padding:.75rem 1rem}
+.rl{font-size:13px;color:var(--m2);margin-bottom:4px;line-height:1.4}
+.rv{font-size:25px;font-weight:600;color:var(--t)}
+.ru{font-size:13px;color:var(--m)}
+.rc.success{background:var(--success-bg);border-color:var(--success-bord)}.rc.success .rv{color:var(--g)}.rc.success .rl{color:var(--g)}
+.rc.warn{background:var(--warn-bg);border-color:var(--warn-bord)}.rc.warn .rv{color:var(--warn)}.rc.warn .rl{color:var(--warn)}
+.rc.p{background:var(--p2);border-color:rgba(109,40,217,.3)}.rc.p .rv{color:var(--p)}.rc.p .rl{color:var(--p)}
+
+/* WARN BOX */
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-bord);border-radius:8px;padding:.6rem .9rem;font-size:14.5px;color:var(--warn);margin-bottom:.85rem;display:none;line-height:1.6}
+
+/* SUMMARY */
+.sum-box{background:rgba(255,255,255,0.85);border:1px solid var(--success-bord);border-radius:10px;padding:1rem 1.25rem;font-size:15.5px;color:var(--t);line-height:2.1}
+.sum-box strong{color:var(--g)}
+.refs{margin-top:1rem;font-size:12px;color:var(--m2);line-height:1.8;padding-top:.75rem;border-top:1px solid var(--bord2)}
+.refs em{font-style:italic}
+
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:2rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:13px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--g);letter-spacing:.12em;font-weight:500}
+
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+  .rg{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="page">
+
+<nav>
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size:9px;color:#6d28d9;font-weight:600>YOCE</span>'"/>
+    </div>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </a>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">🧫 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <h1>Calculadora de Colecta de Linfocitos T para CAR-T</h1>
+  <p>Herramienta didáctica para planear la leucoaféresis de linfocitos T CD3+ previa a la manufactura de CAR-T: cálculo del Volumen Sanguíneo Total (VST), la Eficiencia de Recolección (CE%) y el volumen total de sangre a procesar (V<sub>T</sub>).</p>
+  <div class="asfa-badge">📋 Basado en el modelo de eficiencia de recolección de aféresis (Huang et al. 2022) · Curso Universidad de los Andes / TERUMO BCT / GCIAMT</div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>⚠ Nota importante:</strong> Esta calculadora es una herramienta de apoyo didáctico únicamente. Los resultados deben ser siempre revisados y validados por el personal de aféresis certificado y/o el médico tratante antes de iniciar cualquier procedimiento. No sustituye el juicio clínico profesional.
+</div>
+
+<!-- PASO 1 -->
+<div class="sc">
+  <div class="sh"><div class="sn">1</div><div class="st">Datos del paciente</div></div>
+  <p class="sd">
+    El <strong>Volumen Sanguíneo Total (V<sub>B</sub>)</strong> se calcula con la fórmula de <strong>Nadler</strong>, distinguiendo entre hombres y mujeres.
+  </p>
+  <div class="vt">
+    <button class="vb a" onclick="setSex('F',this)">Mujer</button>
+    <button class="vb" onclick="setSex('M',this)">Hombre</button>
+  </div>
+  <div class="ir">
+    <div class="ig"><label>Peso (kg)</label><input type="number" id="peso" value="86.5" step="0.1" oninput="calc()"></div>
+    <div class="ig"><label>Talla (m)</label><input type="number" id="talla" value="1.67" step="0.01" oninput="calc()"></div>
+  </div>
+  <div class="fb" id="f-vb">—</div>
+  <div class="rg">
+    <div class="rc success"><div class="rl">Volumen Sanguíneo Total (V<sub>B</sub>)</div><div class="rv" id="r-vb">—</div><div class="ru">L</div></div>
+  </div>
+</div>
+
+<!-- PASO 2 -->
+<div class="sc">
+  <div class="sh"><div class="sn">2</div><div class="st">Objetivo de recolección</div></div>
+  <p class="sd">
+    Define la <strong>concentración de linfocitos T CD3+</strong> en sangre del paciente (idealmente el promedio antes/después del procedimiento), tal como se reporta en la Biometría Hemática (BH), y la <strong>meta de células a recolectar</strong> para iniciar la manufactura de CAR-T.
+  </p>
+  <div class="ir">
+    <div class="ig">
+      <label>Concentración CD3+ en sangre</label>
+      <div style="display:flex;gap:6px">
+        <input type="number" id="cpre" value="0.593" step="0.001" oninput="calc()" style="flex:1">
+        <select id="cpre-exp" oninput="calc()" style="flex:0 0 150px">
+          <option value="3" selected>× 10³ cél./µL</option>
+          <option value="6">× 10⁶ cél./µL</option>
+        </select>
+      </div>
+    </div>
+    <div class="ig">
+      <label>Meta de recolección (T) — total en la cosecha (× 10⁶ células)</label>
+      <input type="number" id="tobj" value="4000" step="10" oninput="calc()">
+    </div>
+  </div>
+  <div style="font-size:13px;color:var(--m2);line-height:1.6">
+    ℹ️ <strong>T</strong> es el número <strong>total absoluto</strong> de células CD3+ recolectadas en toda la bolsa de cosecha (producto final), independientemente del volumen que ocupe esa bolsa — no es una concentración.
+  </div>
+</div>
+
+<!-- PASO 3 -->
+<div class="sc">
+  <div class="sh"><div class="sn">3</div><div class="st">Eficiencia de recolección — CE% <span class="ref-tag">Huang 2022</span></div></div>
+  <p class="sd">
+    <strong>CE(%) = T / (C<sub>pro</sub> · V<sub>T</sub>)</strong>, donde T es el número de células recolectadas, C<sub>pro</sub> la concentración de células de interés en sangre y V<sub>T</sub> el volumen total de sangre procesado.
+    <br>Elige el modo según lo que quieras calcular:
+  </p>
+  <div class="formula-sel">
+    <button class="fs-btn a" onclick="setMode('plan',this)">📐 Planear procedimiento (dado CE% típico)</button>
+    <button class="fs-btn" onclick="setMode('real',this)">📊 Calcular CE% real (de una colecta ya hecha)</button>
+  </div>
+
+  <div id="mode-plan">
+    <div class="ir">
+      <div class="ig"><label>Eficiencia de recolección esperada — CE (%)</label><input type="number" id="ce-plan" value="43" step="1" min="1" max="100" oninput="calc()"></div>
+    </div>
+    <div class="fb" id="f-vt-plan">—</div>
+    <div class="rg">
+      <div class="rc p"><div class="rl">Volumen total de sangre a procesar (V<sub>T</sub>)</div><div class="rv" id="r-vt-plan">—</div><div class="ru">L</div></div>
+    </div>
+  </div>
+
+  <div id="mode-real" style="display:none">
+    <div class="ir">
+      <div class="ig"><label>Volumen total de sangre ya procesado (L)</label><input type="number" id="vt-real" value="15.69" step="0.1" oninput="calc()"></div>
+    </div>
+    <div class="fb" id="f-ce-real">—</div>
+    <div class="rg">
+      <div class="rc p"><div class="rl">Eficiencia de recolección real (CE%)</div><div class="rv" id="r-ce-real">—</div><div class="ru">%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 4 -->
+<div class="sc">
+  <div class="sh"><div class="sn">4</div><div class="st">Parámetros del equipo de aféresis</div></div>
+  <p class="sd">
+    A partir del flujo promedio de entrada del separador celular se estima la <strong>duración del procedimiento</strong> y el número de <strong>volemias procesadas</strong> (V<sub>T</sub> / V<sub>B</sub>).
+  </p>
+  <div class="ir">
+    <div class="ig"><label>Flujo promedio de entrada (mL/min)</label><input type="number" id="flujo" value="140" step="1" oninput="calc()"></div>
+  </div>
+  <div class="fb" id="f-tiempo">—</div>
+  <div class="rg">
+    <div class="rc"><div class="rl">Duración estimada del procedimiento</div><div class="rv" id="r-tiempo">—</div><div class="ru">min</div></div>
+    <div class="rc"><div class="rl">Duración en horas</div><div class="rv" id="r-tiempo-h">—</div><div class="ru">h</div></div>
+    <div class="rc success"><div class="rl">Volemias procesadas (V<sub>T</sub>/V<sub>B</sub>)</div><div class="rv" id="r-volemias">—</div><div class="ru">× V<sub>B</sub></div></div>
+  </div>
+  <div class="warn-box" id="warn-volemias">⚠ El volumen a procesar supera <strong>3 volemias</strong>. Procedimientos prolongados requieren vigilancia estrecha de citrato/calcio, acceso vascular y tolerancia del paciente.</div>
+</div>
+
+<!-- PASO 5 RESUMEN -->
+<div class="sc" style="background:var(--success-bg);border-color:var(--success-bord)">
+  <div class="sh">
+    <div class="sn" style="background:var(--g);color:#fff;border-color:var(--g)">5</div>
+    <div class="st" style="color:var(--g)">Resumen de la colecta</div>
+  </div>
+  <div class="sum-box" id="r-sum">—</div>
+  <div class="refs">
+    <strong>Referencias bibliográficas:</strong><br>
+    1. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224–232.<br>
+    2. Huang H, et al. Modelo logarítmico de eficiencia de recolección en leucoaféresis de linfocitos T CD3+ (adaptado). 2022.<br>
+    3. Curso "Cálculos de aféresis" — Universidad de los Andes / TERUMO Blood and Cell Technologies / GCIAMT, 2026.
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE · Herramienta didáctica</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
+
+<!-- CANVAS ANIMATION — Linfocitos flotantes -->
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const CC='0,107,82',TC='109,40,217';
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'33,150,243',CC);requestAnimationFrame(frame);}
+frame();
+</script>
+
+<!-- CALCULADORA -->
+<script>
+let sex='F';
+let mode='plan';
+
+function setSex(s,btn){
+  sex=s;
+  document.querySelectorAll('#step1-tabs .vb, .vt .vb').forEach(()=>{});
+  document.querySelectorAll('.vt').forEach(group=>{
+    if(group.contains(btn)) group.querySelectorAll('.vb').forEach(b=>b.classList.remove('a'));
+  });
+  btn.classList.add('a');
+  calc();
+}
+
+function setMode(m,btn){
+  mode=m;
+  document.querySelectorAll('.formula-sel .fs-btn').forEach(b=>b.classList.remove('a'));
+  btn.classList.add('a');
+  document.getElementById('mode-plan').style.display = m==='plan' ? 'block' : 'none';
+  document.getElementById('mode-real').style.display = m==='real' ? 'block' : 'none';
+  calc();
+}
+
+function calc(){
+  const peso=parseFloat(document.getElementById('peso').value)||0;
+  const talla=parseFloat(document.getElementById('talla').value)||0;
+  const cpre=parseFloat(document.getElementById('cpre').value)||0;
+  const tobj=parseFloat(document.getElementById('tobj').value)||0;
+  const flujo=parseFloat(document.getElementById('flujo').value)||0;
+  if(!peso||!talla||!cpre||!tobj)return;
+
+  // Paso 1 — VB Nadler
+  let vb;
+  if(sex==='M'){
+    vb=0.3669*Math.pow(talla,3)+0.03219*peso+0.6041;
+    document.getElementById('f-vb').textContent=
+      'V_B (Nadler, hombre) = (0.3669 × '+talla.toFixed(2)+'³) + (0.03219 × '+peso+') + 0.6041\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+  } else {
+    vb=0.3561*Math.pow(talla,3)+0.03308*peso+0.1833;
+    document.getElementById('f-vb').textContent=
+      'V_B (Nadler, mujer) = (0.3561 × '+talla.toFixed(2)+'³) + (0.03308 × '+peso+') + 0.1833\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+  }
+  document.getElementById('r-vb').textContent=vb.toFixed(2);
+
+  // Conversión de unidades: cpre viene en x10^exp células/µL -> células/L ; tobj en millones -> células
+  const cpreExp = parseInt(document.getElementById('cpre-exp').value) || 3;
+  const cpreCelulasPorUL = cpre * Math.pow(10, cpreExp);
+  const cproCelulasPorL = cpreCelulasPorUL * 1e6; // 1 L = 1e6 µL
+  const tCelulas = tobj*1e6;
+  const cpreLabel = cpre+' × 10'+(cpreExp===3?'³':'⁶')+' cél./µL';
+
+  let vt; // volumen total procesado, en L
+  let cePct;
+
+  if(mode==='plan'){
+    cePct=parseFloat(document.getElementById('ce-plan').value)||0;
+    if(!cePct)return;
+    vt = tCelulas / (cproCelulasPorL * (cePct/100));
+    document.getElementById('f-vt-plan').textContent=
+      'V_T = T / (C_pro · CE%)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+(cePct/100).toFixed(2)+')\n= '+vt.toFixed(2)+' L';
+    document.getElementById('r-vt-plan').textContent=vt.toFixed(2);
+  } else {
+    vt=parseFloat(document.getElementById('vt-real').value)||0;
+    if(!vt)return;
+    cePct = (tCelulas / (cproCelulasPorL * vt)) * 100;
+    document.getElementById('f-ce-real').textContent=
+      'CE(%) = T / (C_pro · V_T)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+vt.toFixed(2)+' L)\n= '+cePct.toFixed(1)+' %';
+    document.getElementById('r-ce-real').textContent=cePct.toFixed(1);
+  }
+
+  // Paso 4 — tiempo y volemias
+  let tiempoMin=0,tiempoH=0,volemias=0;
+  if(flujo>0){
+    tiempoMin = (vt*1000)/flujo;
+    tiempoH = tiempoMin/60;
+    volemias = vt/vb;
+    document.getElementById('f-tiempo').textContent=
+      't = V_T / v = '+vt.toFixed(2)+' L / '+(flujo/1000).toFixed(3)+' L/min = '+tiempoMin.toFixed(0)+' min ≈ '+tiempoH.toFixed(1)+' horas\nV_T / V_B = '+vt.toFixed(2)+' L / '+vb.toFixed(2)+' L = '+volemias.toFixed(1)+'×';
+    document.getElementById('r-tiempo').textContent=tiempoMin.toFixed(0);
+    document.getElementById('r-tiempo-h').textContent=tiempoH.toFixed(1);
+    document.getElementById('r-volemias').textContent=volemias.toFixed(1)+'×';
+    document.getElementById('warn-volemias').style.display = volemias>3 ? 'block':'none';
+  }
+
+  document.getElementById('r-sum').innerHTML=
+    '<strong>Paciente:</strong> '+(sex==='M'?'Hombre':'Mujer')+' · '+peso+' kg · '+talla+' m<br>'+
+    '<strong>Volumen Sanguíneo Total (V<sub>B</sub>, Nadler):</strong> <strong>'+vb.toFixed(2)+' L</strong><br>'+
+    '<strong>Concentración CD3+ en sangre:</strong> '+cpreLabel+'<br>'+
+    '<strong>Meta de recolección (T, total en cosecha):</strong> '+tobj.toLocaleString('es-MX')+' × 10⁶ células<br>'+
+    '<strong>Eficiencia de recolección (CE%):</strong> '+cePct.toFixed(1)+' %<br>'+
+    '<strong>Volumen total a procesar (V<sub>T</sub>):</strong> '+vt.toFixed(2)+' L<br>'+
+    (flujo>0 ? '<strong>Duración estimada:</strong> '+tiempoMin.toFixed(0)+' min (≈'+tiempoH.toFixed(1)+' h) · <strong>'+volemias.toFixed(1)+'×</strong> volemias procesadas<br>' : '')+
+    '<strong>Producto esperado:</strong> ~'+tobj.toLocaleString('es-MX')+' × 10⁶ linfocitos T CD3+ para manufactura CAR-T';
+}
+calc();
+</script>
+</body>
+</html>
