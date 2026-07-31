@@ -330,69 +330,108 @@ function calc(){
   const cpre=parseFloat(cpreVal)||0;
   const tobj=parseFloat(tobjVal)||0;
   const flujo=parseFloat(flujoVal)||0;
-  if(!peso||!talla||!cpre||!tobj)return;
 
-  // Paso 1 — VB Nadler
-  let vb;
-  if(sex==='M'){
-    vb=0.3669*Math.pow(talla,3)+0.03219*peso+0.6041;
-    document.getElementById('f-vb').textContent=
-      'V_B (Nadler, hombre) = (0.3669 × '+talla.toFixed(2)+'³) + (0.03219 × '+peso+') + 0.6041\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+  // Paso 1 — VB Nadler (independiente de los demás pasos)
+  let vb=0;
+  if(peso&&talla){
+    if(sex==='M'){
+      vb=0.3669*Math.pow(talla,3)+0.03219*peso+0.6041;
+      document.getElementById('f-vb').textContent=
+        'V_B (Nadler, hombre) = (0.3669 × '+talla.toFixed(2)+'³) + (0.03219 × '+peso+') + 0.6041\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+    } else {
+      vb=0.3561*Math.pow(talla,3)+0.03308*peso+0.1833;
+      document.getElementById('f-vb').textContent=
+        'V_B (Nadler, mujer) = (0.3561 × '+talla.toFixed(2)+'³) + (0.03308 × '+peso+') + 0.1833\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
+    }
+    document.getElementById('r-vb').textContent=vb.toFixed(2);
   } else {
-    vb=0.3561*Math.pow(talla,3)+0.03308*peso+0.1833;
-    document.getElementById('f-vb').textContent=
-      'V_B (Nadler, mujer) = (0.3561 × '+talla.toFixed(2)+'³) + (0.03308 × '+peso+') + 0.1833\n= '+vb.toFixed(2)+' L\nRef: Nadler SB et al. Surgery. 1962;51(2):224–232';
-  }
-  document.getElementById('r-vb').textContent=vb.toFixed(2);
-
-  // Conversión de unidades: cpre viene en x10^exp células/µL -> células/L ; tobj en millones -> células
-  const cpreExp = parseInt(document.getElementById('cpre-exp').value) || 3;
-  const cpreCelulasPorUL = cpre * Math.pow(10, cpreExp);
-  const cproCelulasPorL = cpreCelulasPorUL * 1e6; // 1 L = 1e6 µL
-  const tCelulas = tobj*1e6;
-  const cpreLabel = cpre+' × 10'+(cpreExp===3?'³':'⁶')+' cél./µL';
-
-  let vt; // volumen total procesado, en L
-  let cePct;
-
-  if(mode==='plan'){
-    cePct=parseFloat(document.getElementById('ce-plan').value)||0;
-    if(!cePct)return;
-    vt = tCelulas / (cproCelulasPorL * (cePct/100));
-    document.getElementById('f-vt-plan').textContent=
-      'V_T = T / (C_pro · CE%)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+(cePct/100).toFixed(2)+')\n= '+vt.toFixed(2)+' L';
-    document.getElementById('r-vt-plan').textContent=vt.toFixed(2);
-  } else {
-    vt=parseFloat(document.getElementById('vt-real').value)||0;
-    if(!vt)return;
-    cePct = (tCelulas / (cproCelulasPorL * vt)) * 100;
-    document.getElementById('f-ce-real').textContent=
-      'CE(%) = T / (C_pro · V_T)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+vt.toFixed(2)+' L)\n= '+cePct.toFixed(1)+' %';
-    document.getElementById('r-ce-real').textContent=cePct.toFixed(1);
+    document.getElementById('f-vb').textContent='—';
+    document.getElementById('r-vb').textContent='—';
   }
 
-  // Paso 4 — tiempo y volemias
+  // Paso 3 — CE% / VT (independiente de Paso 1; solo necesita cpre y tobj)
+  let vt=0, cePct=0, paso3ok=false;
+  if(cpre&&tobj){
+    const cpreExp = parseInt(document.getElementById('cpre-exp').value) || 3;
+    const cpreCelulasPorUL = cpre * Math.pow(10, cpreExp);
+    const cproCelulasPorL = cpreCelulasPorUL * 1e6; // 1 L = 1e6 µL
+    const tCelulas = tobj*1e6;
+    const cpreLabel = cpre+' × 10'+(cpreExp===3?'³':'⁶')+' cél./µL';
+
+    if(mode==='plan'){
+      cePct=parseFloat(document.getElementById('ce-plan').value)||0;
+      if(cePct){
+        vt = tCelulas / (cproCelulasPorL * (cePct/100));
+        document.getElementById('f-vt-plan').textContent=
+          'V_T = T / (C_pro · CE%)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+(cePct/100).toFixed(2)+')\n= '+vt.toFixed(2)+' L';
+        document.getElementById('r-vt-plan').textContent=vt.toFixed(2);
+        paso3ok=true;
+      } else {
+        document.getElementById('f-vt-plan').textContent='—';
+        document.getElementById('r-vt-plan').textContent='—';
+      }
+    } else {
+      vt=parseFloat(document.getElementById('vt-real').value)||0;
+      if(vt){
+        cePct = (tCelulas / (cproCelulasPorL * vt)) * 100;
+        document.getElementById('f-ce-real').textContent=
+          'CE(%) = T / (C_pro · V_T)\n= ('+tobj+'×10⁶) / ('+cpreLabel+' · 1000 µL/mL · 1000 mL/L · '+vt.toFixed(2)+' L)\n= '+cePct.toFixed(1)+' %';
+        document.getElementById('r-ce-real').textContent=cePct.toFixed(1);
+        paso3ok=true;
+      } else {
+        document.getElementById('f-ce-real').textContent='—';
+        document.getElementById('r-ce-real').textContent='—';
+      }
+    }
+  } else {
+    document.getElementById('f-vt-plan').textContent='—';
+    document.getElementById('r-vt-plan').textContent='—';
+    document.getElementById('f-ce-real').textContent='—';
+    document.getElementById('r-ce-real').textContent='—';
+  }
+
+  // Paso 4 — tiempo y volemias (necesita VT del paso 3, y VB del paso 1 para la razón)
   let tiempoMin=0,tiempoH=0,volemias=0;
-  if(flujo>0){
+  if(flujo>0 && paso3ok){
     tiempoMin = (vt*1000)/flujo;
     tiempoH = tiempoMin/60;
-    volemias = vt/vb;
-    document.getElementById('f-tiempo').textContent=
-      't = V_T / v = '+vt.toFixed(2)+' L / '+(flujo/1000).toFixed(3)+' L/min = '+tiempoMin.toFixed(0)+' min ≈ '+tiempoH.toFixed(1)+' horas\nV_T / V_B = '+vt.toFixed(2)+' L / '+vb.toFixed(2)+' L = '+volemias.toFixed(1)+'×';
     document.getElementById('r-tiempo').textContent=tiempoMin.toFixed(0);
     document.getElementById('r-tiempo-h').textContent=tiempoH.toFixed(1);
-    document.getElementById('r-volemias').textContent=volemias.toFixed(1)+'×';
-    document.getElementById('warn-volemias').style.display = volemias>3 ? 'block':'none';
+    let fTiempo = 't = V_T / v = '+vt.toFixed(2)+' L / '+(flujo/1000).toFixed(3)+' L/min = '+tiempoMin.toFixed(0)+' min ≈ '+tiempoH.toFixed(1)+' horas';
+    if(vb){
+      volemias = vt/vb;
+      document.getElementById('r-volemias').textContent=volemias.toFixed(1)+'×';
+      document.getElementById('warn-volemias').style.display = volemias>3 ? 'block':'none';
+      fTiempo += '\nV_T / V_B = '+vt.toFixed(2)+' L / '+vb.toFixed(2)+' L = '+volemias.toFixed(1)+'×';
+    } else {
+      document.getElementById('r-volemias').textContent='—';
+      document.getElementById('warn-volemias').style.display='none';
+      fTiempo += '\nV_T / V_B: completa el Paso 1 (peso/talla) para calcular las volemias procesadas';
+    }
+    document.getElementById('f-tiempo').textContent=fTiempo;
+  } else {
+    document.getElementById('f-tiempo').textContent='—';
+    document.getElementById('r-tiempo').textContent='—';
+    document.getElementById('r-tiempo-h').textContent='—';
+    document.getElementById('r-volemias').textContent='—';
+    document.getElementById('warn-volemias').style.display='none';
   }
 
+  // Resumen — solo si al menos el Paso 3 está completo
+  if(!paso3ok){
+    document.getElementById('r-sum').textContent='Completa los datos de arriba para ver el resumen de la colecta.';
+    return;
+  }
+  const cpreExpSum = parseInt(document.getElementById('cpre-exp').value) || 3;
+  const cpreLabelSum = cpre+' × 10'+(cpreExpSum===3?'³':'⁶')+' cél./µL';
   document.getElementById('r-sum').innerHTML=
-    '<strong>Paciente:</strong> '+(sex==='M'?'Hombre':'Mujer')+' · '+peso+' kg · '+talla+' m<br>'+
-    '<strong>Volumen Sanguíneo Total (V<sub>B</sub>, Nadler):</strong> <strong>'+vb.toFixed(2)+' L</strong><br>'+
-    '<strong>Concentración CD3+ en sangre:</strong> '+cpreLabel+'<br>'+
+    (peso&&talla ? '<strong>Paciente:</strong> '+(sex==='M'?'Hombre':'Mujer')+' · '+peso+' kg · '+talla+' m<br>' : '')+
+    (vb ? '<strong>Volumen Sanguíneo Total (V<sub>B</sub>, Nadler):</strong> <strong>'+vb.toFixed(2)+' L</strong><br>' : '')+
+    '<strong>Concentración CD3+ en sangre:</strong> '+cpreLabelSum+'<br>'+
     '<strong>Meta de recolección (T, total en cosecha):</strong> '+tobj.toLocaleString('es-MX')+' × 10⁶ células<br>'+
     '<strong>Eficiencia de recolección (CE%):</strong> '+cePct.toFixed(1)+' %<br>'+
     '<strong>Volumen total a procesar (V<sub>T</sub>):</strong> '+vt.toFixed(2)+' L<br>'+
-    (flujo>0 ? '<strong>Duración estimada:</strong> '+tiempoMin.toFixed(0)+' min (≈'+tiempoH.toFixed(1)+' h) · <strong>'+volemias.toFixed(1)+'×</strong> volemias procesadas<br>' : '')+
+    (flujo>0 ? '<strong>Duración estimada:</strong> '+tiempoMin.toFixed(0)+' min (≈'+tiempoH.toFixed(1)+' h)'+(vb?' · <strong>'+volemias.toFixed(1)+'×</strong> volemias procesadas':'')+'<br>' : '')+
     '<strong>Producto esperado:</strong> ~'+tobj.toLocaleString('es-MX')+' × 10⁶ linfocitos T CD3+ para manufactura CAR-T';
 }
 calc();
