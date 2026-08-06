@@ -171,13 +171,31 @@ footer p{font-size:13px;color:var(--m2)}
 <div class="sc">
   <div class="sh">
     <div class="sn">3</div>
-    <div class="st">VEC DEL EQUIPO</div>
+    <div class="st">PROCEDIMIENTO & VEC</div>
   </div>
-  <div class="sd">Ingresa el VEC del equipo de aféresis. Para Spectra Optia CMN: 147 ml típico, máximo 191 ml</div>
+  <div class="sd">Selecciona el tipo de procedimiento para auto-llenar VEC típico, o ingresa un valor personalizado</div>
+  <div class="ir">
+    <div class="ig">
+      <label>Tipo de Procedimiento (Spectra Optia)</label>
+      <select id="procedimiento" onchange="selectProcedimiento()">
+        <option value="">-- Selecciona procedimiento --</option>
+        <option value="cmn">Recolección de CMN (Estándar) - 147 ml</option>
+        <option value="cmnc">CMNC (IDL) - 253 ml</option>
+        <option value="pmn">Recolección de PMN (IDL) - 253 ml</option>
+        <option value="leu">Reducción de LEU (IDL) - 253 ml</option>
+        <option value="plt">Reducción de PLT (IDL) - 253 ml</option>
+        <option value="rbcx">Plasmaféresis · RBCX (Intercambio) - 141 ml</option>
+        <option value="custom">Personalizado</option>
+      </select>
+    </div>
+  </div>
   <div class="ir">
     <div class="ig">
       <label>VEC del Equipo (ml)</label>
       <input type="number" id="vec" placeholder="Ej: 147" step="1" min="0">
+    </div>
+    <div class="ig" style="font-size: 13px; color: var(--m2); display: flex; align-items: flex-end;">
+      <span id="vec-info">—</span>
     </div>
   </div>
 </div>
@@ -247,6 +265,36 @@ function updateFormula() {
   const grupo = document.getElementById('grupo').value;
   document.getElementById('paso2-ped').style.display = grupo !== 'adulto' && grupo ? 'block' : 'none';
   document.getElementById('paso2-adult').style.display = grupo === 'adulto' ? 'block' : 'none';
+}
+
+function selectProcedimiento() {
+  const proc = document.getElementById('procedimiento').value;
+  const vecInput = document.getElementById('vec');
+  const vecInfo = document.getElementById('vec-info');
+  
+  const procedimientos = {
+    'cmn': { vec: 147, max: 191, desc: 'CMN Estándar' },
+    'cmnc': { vec: 253, max: 297, desc: 'CMNC (IDL)' },
+    'pmn': { vec: 253, max: 297, desc: 'Recolección PMN' },
+    'leu': { vec: 253, max: 297, desc: 'Reducción LEU' },
+    'plt': { vec: 253, max: 297, desc: 'Reducción PLT' },
+    'rbcx': { vec: 141, max: 185, desc: 'Plasmaféresis RBCX' }
+  };
+
+  if (proc && procedimientos[proc]) {
+    const p = procedimientos[proc];
+    vecInput.value = p.vec;
+    vecInfo.textContent = `✓ ${p.desc} | Máximo: ${p.max} ml`;
+    vecInput.disabled = false;
+  } else if (proc === 'custom') {
+    vecInput.value = '';
+    vecInfo.textContent = 'Ingresa VEC personalizado';
+    vecInput.disabled = false;
+  } else {
+    vecInput.value = '';
+    vecInfo.textContent = '—';
+    vecInput.disabled = false;
+  }
 }
 
 function calcularVEC() {
