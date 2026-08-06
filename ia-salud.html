@@ -39,7 +39,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .hero p{font-size:18px;color:var(--m);line-height:1.82}
 .sec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1rem}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:16px;margin-bottom:1rem}
 .tool-card{background:#fff;border:1.5px solid var(--bord2);border-radius:14px;padding:1.5rem;text-decoration:none;display:flex;flex-direction:column;transition:all .2s;position:relative;overflow:hidden}
 .tool-card:hover{border-color:var(--bord3);box-shadow:0 8px 28px rgba(0,107,82,.12);transform:translateY(-2px)}
 .tool-icon{font-size:30px;margin-bottom:.9rem}
@@ -109,12 +109,21 @@ footer p{font-size:14px;color:var(--m2)}
       <div class="tool-cta">Abrir herramienta →</div>
     </a>
 
-    <div class="tool-card soon">
-      <span class="tool-badge">Próximamente</span>
-      <div class="tool-icon">🧪</div>
-      <div class="tool-title">Nueva herramienta en desarrollo</div>
-      <div class="tool-desc">Estamos trabajando en más modelos de IA aplicados a manufactura de ATMPs, hematología y medicina transfusional.</div>
-    </div>
+    <a href="ce2-calculator-yoce.html" class="tool-card">
+      <span class="tool-badge">CE2% · LIVE</span>
+      <div class="tool-icon">📊</div>
+      <div class="tool-title">Calculadora CE2% CD34+</div>
+      <div class="tool-desc">Collection Efficiency para aféresis de CD34+ en trasplante alogénico e haploidentical. Fórmula: CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100</div>
+      <div class="tool-cta">Abrir herramienta →</div>
+    </a>
+
+    <a href="calculadora-vec-pediatrico.html" class="tool-card">
+      <span class="tool-badge">Pediátrico · Seguridad</span>
+      <div class="tool-icon">👶</div>
+      <div class="tool-title">Calculadora VEC Pediátrico</div>
+      <div class="tool-desc">Volumen Extracorpóreo en aféresis pediátrica. Calcula VST según edad, evalúa seguridad (10-15%) y monitorea riesgo de hipovolemia en infantes.</div>
+      <div class="tool-cta">Abrir herramienta →</div>
+    </a>
 
   </div>
 </section>
