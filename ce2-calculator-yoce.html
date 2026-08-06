@@ -1,581 +1,279 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora CE2% YoCell | YoCell Therapy</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Calculadora CE2% CD34+ · YoCellTherapy</title>
+<meta name="description" content="Calculadora de Collection Efficiency (CE2%) para aféresis de CD34+ en trasplante alogénico. Fórmula YoCell basada en pre-cuenta, volumen procesado y CD34+ en volumen total.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
+  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
+  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
+  --bg:#f0f4f8;
+  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
+  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
+  --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
+}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+#c{position:fixed;inset:0;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
+.logo-wrap{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
+.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--b2);border:1px solid rgba(33,150,243,.35);display:flex;align-items:center;justify-content:center}
+.logo-text{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
+.logo-text span{display:block;font-size:10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
+.back-btn{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
+.back-btn:hover{color:var(--g)}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: bgShift 15s ease infinite;
-        }
+/* HERO */
+.hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--b),var(--g),var(--p));border-radius:16px 16px 0 0}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--b);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker::before{content:'';width:16px;height:1.5px;background:var(--bl);border-radius:2px}
+.hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
+.hero p{font-size:18px;color:var(--m);line-height:1.82}
+.badge{display:inline-flex;align-items:center;gap:5px;background:var(--b2);border:1px solid rgba(33,150,243,.3);border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--b);padding:4px 11px;letter-spacing:.1em;margin-top:.8rem;font-weight:500}
 
-        @keyframes bgShift {
-            0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-            50% { background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); }
-        }
+/* STEP CARDS */
+.sc{background:rgba(255,255,255,0.88);border:1px solid var(--bord2);border-radius:14px;padding:1.25rem;margin-bottom:1rem;backdrop-filter:blur(4px)}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:.6rem}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--b2);color:var(--b);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;border:1px solid rgba(33,150,243,.3)}
+.st{font-size:18px;font-weight:600;color:var(--t)}
+.sd{font-size:15px;color:var(--m);margin-bottom:.85rem;line-height:1.7}
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
-            max-width: 650px;
-            width: 100%;
-            padding: 50px;
-            animation: fadeInUp 0.8s ease-out;
-            overflow: hidden;
-            position: relative;
-        }
+/* INPUTS */
+.ir{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:.85rem}
+.ig label{display:block;font-size:14px;color:var(--m2);margin-bottom:4px}
+input[type=number],select{width:100%;padding:8px 10px;border:1px solid var(--bord2);border-radius:8px;font-size:16px;color:var(--t);background:rgba(255,255,255,0.9);font-family:'Plus Jakarta Sans',sans-serif;transition:border-color .2s}
+input[type=number]:focus,select:focus{outline:none;border-color:var(--bl)}
+input[type=number]::placeholder{color:#b6bfca;font-style:italic}
+input[type=number].missing{border-color:#e53e3e;background:rgba(239,68,68,0.06)}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* FORMULA BOX */
+.fb{background:var(--b2);border:1px solid rgba(33,150,243,.2);border-radius:8px;padding:.6rem .9rem;font-size:14px;color:var(--b);font-family:'JetBrains Mono',monospace;margin-bottom:.85rem;white-space:pre-wrap;line-height:1.6}
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.8s ease-out 0.2s both;
-        }
+/* RESULT GRID */
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.rc{background:rgba(255,255,255,0.7);border:1px solid var(--bord2);border-radius:10px;padding:.75rem 1rem}
+.rl{font-size:13px;color:var(--m2);margin-bottom:4px;line-height:1.4}
+.rv{font-size:25px;font-weight:600;color:var(--t)}
+.ru{font-size:13px;color:var(--m)}
+.rc.success{background:var(--success-bg);border-color:var(--success-bord)}.rc.success .rv{color:var(--g)}.rc.success .rl{color:var(--g)}
 
-        .header h1 {
-            color: #2d3748;
-            font-size: 32px;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
+/* SUMMARY */
+.sum-box{background:rgba(255,255,255,0.85);border:1px solid var(--success-bord);border-radius:10px;padding:1rem 1.25rem;font-size:15.5px;color:var(--t);line-height:2.1}
+.sum-box strong{color:var(--g)}
+.refs{margin-top:1rem;font-size:12px;color:var(--m2);line-height:1.8;padding-top:.75rem;border-top:1px solid var(--bord2)}
 
-        .header p {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.8;
-        }
+footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:2rem;flex-wrap:wrap;gap:.5rem}
+footer p{font-size:13px;color:var(--m2)}
+.f-mark{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--g);letter-spacing:.12em;font-weight:500}
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .formula-box {
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-left: 5px solid #667eea;
-            padding: 16px 20px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            font-size: 13px;
-            color: #2d3748;
-            font-family: 'Courier New', monospace;
-            line-height: 1.8;
-            animation: slideInRight 0.8s ease-out 0.3s both;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .params-box {
-            background: linear-gradient(135deg, #f0fdf4 0%, #e6ffec 100%);
-            border: 1px solid #86efac;
-            border-left: 4px solid #22c55e;
-            padding: 14px 18px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            font-size: 12px;
-            color: #166534;
-            line-height: 1.8;
-            animation: slideInLeft 0.8s ease-out 0.4s both;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .input-group {
-            margin-bottom: 22px;
-            animation: fadeIn 0.6s ease-out forwards;
-            opacity: 0;
-        }
-
-        .input-group:nth-child(1) { animation-delay: 0.5s; }
-        .input-group:nth-child(2) { animation-delay: 0.6s; }
-        .input-group:nth-child(3) { animation-delay: 0.7s; }
-        .input-group:nth-child(4) { animation-delay: 0.8s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2d3748;
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .input-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .info-note {
-            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
-            border: 1px solid #fbd38d;
-            border-left: 4px solid #ed8936;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-size: 11px;
-            color: #975a16;
-            line-height: 1.7;
-            animation: slideInUp 0.8s ease-out 0.9s both;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 30px;
-            display: none;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
-        }
-
-        .result-box.show {
-            display: block;
-            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes popIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .result-value {
-            font-size: 48px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-details {
-            font-size: 12px;
-            opacity: 0.95;
-            line-height: 1.8;
-            margin-bottom: 12px;
-        }
-
-        .result-status {
-            font-size: 12px;
-            opacity: 0.9;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            animation: fadeInUp 0.8s ease-out 1s both;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 14px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.3s ease;
-            z-index: 1;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-calculate {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-calculate:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-calculate:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-reset {
-            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
-            color: #4a5568;
-        }
-
-        .btn-reset:hover {
-            background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
-            transform: translateY(-3px);
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, #edf2f7 0%, #e0e7ff 100%);
-            border: 1px solid #c7d2e0;
-            border-left: 4px solid #667eea;
-            padding: 16px 18px;
-            border-radius: 10px;
-            font-size: 12px;
-            color: #4a5568;
-            margin-top: 25px;
-            line-height: 1.8;
-            animation: fadeInUp 0.8s ease-out 1.1s both;
-        }
-
-        .footer-link {
-            text-align: center;
-            margin-top: 25px;
-            animation: fadeIn 0.8s ease-out 1.2s both;
-        }
-
-        .footer-link p {
-            font-size: 10px;
-            color: #a0aec0;
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .footer-link a {
-            display: inline-block;
-            color: #667eea;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            padding: 6px 12px;
-            border-radius: 6px;
-        }
-
-        .footer-link a:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateX(-3px);
-        }
-
-        .error-message {
-            color: #c53030;
-            font-size: 11px;
-            margin-top: 6px;
-            display: none;
-            font-weight: 500;
-            animation: shake 0.4s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .separator {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-            margin: 30px 0;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
-
-            .input-row {
-                grid-template-columns: 1fr;
-            }
-
-            .result-value {
-                font-size: 36px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-        }
-    </style>
+@media(max-width:680px){
+  .page{padding:0 .9rem 3rem}
+  .rg{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔬 CE2% CD34+</h1>
-            <p>Calculadora de Collection Efficiency<br>YoCell Lab | Hematología UANL</p>
-        </div>
+<canvas id="c"></canvas>
+<div class="page">
 
-        <div class="formula-box">
-            <strong>CE2% = CD34+ Volumen Total / (Pre-Cuenta × Volumen Sangre Procesada) × 100</strong><br><br>
-            Volumen Sangre Procesada (L) = (Vol. Total Procesado - ACD) / 1000
-        </div>
-
-        <div class="params-box">
-            <strong>📋 Parámetros:</strong><br>
-            <strong>CD34+ EN EL VOLUMEN TOTAL:</strong> Se calcula multiplicando Cuenta Absoluta CD34+ (cel/µL) × Volumen Recibido (mL) ÷ 1000<br>
-            <strong>Pre-Cuenta Día 5:</strong> Conteo en sangre periférica antes de aféresis<br>
-            <strong>Volumen Sangre Procesada:</strong> Sangre procesada menos anticoagulante, expresado en litros
-        </div>
-
-        <div class="input-group">
-            <label>📊 CD34+ EN EL VOLUMEN TOTAL (× 10⁶)</label>
-            <input type="number" id="cd34_total" placeholder="Ej: 279.4" step="0.1">
-            <div class="error-message"></div>
-        </div>
-
-        <div class="input-group">
-            <label>🩸 Pre-Cuenta Día 5 (cel/µL)</label>
-            <input type="number" id="precuenta" placeholder="Ej: 27.1" step="0.1">
-            <div class="error-message"></div>
-        </div>
-
-        <div class="input-row">
-            <div class="input-group">
-                <label>💉 Vol. Total Procesado (mL)</label>
-                <input type="number" id="vol_total" placeholder="Ej: 20301" step="1">
-                <div class="error-message"></div>
-            </div>
-            <div class="input-group">
-                <label>⚗️ ACD Total (mL)</label>
-                <input type="number" id="acd_total" placeholder="Ej: 989" step="1">
-                <div class="error-message"></div>
-            </div>
-        </div>
-
-        <div class="info-note">
-            <strong>💡 Volumen Sangre Procesada:</strong> Es el volumen neto de sangre sin anticoagulante. Se calcula restando el ACD (anticoagulante) del volumen total y dividiendo entre 1000 para expresar en litros.
-        </div>
-
-        <div class="result-box" id="resultBox">
-            <div class="result-value" id="resultValue">—</div>
-            <div class="result-details" id="resultDetails"></div>
-            <div class="result-status" id="resultStatus"></div>
-        </div>
-
-        <div class="button-group">
-            <button class="btn btn-calculate" onclick="calculateCE2()">Calcular CE2%</button>
-            <button class="btn btn-reset" onclick="resetForm()">Limpiar</button>
-        </div>
-
-        <div class="separator"></div>
-
-        <div class="info-box">
-            <strong>📊 Interpretación CE2%:</strong><br>
-            • <strong>≥ 100%:</strong> ✅ Excelente eficiencia de colección<br>
-            • <strong>80-100%:</strong> ✅ Buena eficiencia<br>
-            • <strong>60-80%:</strong> ⚠️ Eficiencia aceptable<br>
-            • <strong>&lt; 60%:</strong> ⚠️ Eficiencia baja - Revisar parámetros<br>
-        </div>
-
-        <div class="footer-link">
-            <p><strong>Fórmula YoCell:</strong> CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100<br>Yair Omar Chávez-Estrada | UANL Hematología | Monterrey, México</p>
-            <a href="https://yocelltherapy.com/ia-salud.html">← Volver a IA en Salud</a>
-        </div>
+<nav>
+  <a href="/" class="logo-wrap">
+    <div class="logo-mark">
+      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='<span style=font-family:monospace;font-size:9px;color:#2196f3;font-weight:600>YOCE</span>'"/>
     </div>
+    <div class="logo-text">Yair Omar Chávez-Estrada<span>Asesoría Científica · Cell Therapy</span></div>
+  </a>
+  <a href="/" class="back-btn">← Volver al inicio</a>
+</nav>
 
-    <script>
-        function calculateCE2() {
-            let ce2Value = null;
-            let volumenSangreProcesada = null;
-            let denominador = null;
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">📊 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <h1>Calculadora CE2% CD34+</h1>
+  <p>Collection Efficiency para aféresis de CD34+ en trasplante alogénico e haploidentical. Calcula eficiencia de recolección basada en pre-cuenta, volumen sanguíneo procesado y CD34+ total en cosecha.</p>
+  <div class="badge">🧬 Fórmula YoCell Therapy · Basada en reportes UANL Hematología</div>
+</div>
 
-            // Clear previous error messages
-            document.querySelectorAll('.error-message').forEach(e => {
-                e.style.display = 'none';
-                e.textContent = '';
-            });
+<!-- PASO 1 -->
+<div class="sc">
+  <div class="sh">
+    <div class="sn">1</div>
+    <div class="st">CD34+ EN EL VOLUMEN TOTAL</div>
+  </div>
+  <div class="sd">Ingresa el CD34+ total en la cosecha. Se calcula: Cuenta Absoluta CD34+ (cel/µL) × Volumen Recibido (ml) ÷ 1000</div>
+  <div class="ir">
+    <div class="ig">
+      <label>CD34+ Volumen Total (× 10⁶)</label>
+      <input type="number" id="cd34-vol" placeholder="Ej: 279.4" step="0.1" min="0">
+    </div>
+  </div>
+</div>
 
-            // Get input values
-            const cd34Total = parseFloat(document.getElementById('cd34_total').value);
-            const precuenta = parseFloat(document.getElementById('precuenta').value);
-            const volTotal = parseFloat(document.getElementById('vol_total').value);
-            const acdTotal = parseFloat(document.getElementById('acd_total').value);
+<!-- PASO 2 -->
+<div class="sc">
+  <div class="sh">
+    <div class="sn">2</div>
+    <div class="st">PRE-CUENTA SANGRE PERIFÉRICA</div>
+  </div>
+  <div class="sd">Conteo absoluto de CD34+ en sangre periférica antes de iniciar aféresis (Día 5 de movilización)</div>
+  <div class="ir">
+    <div class="ig">
+      <label>Pre-Cuenta Día 5 (cel/µL)</label>
+      <input type="number" id="precuenta" placeholder="Ej: 27.1" step="0.1" min="0">
+    </div>
+  </div>
+</div>
 
-            // Validate inputs
-            if (isNaN(cd34Total) || cd34Total < 0) {
-                showError('cd34_total', '⚠️ Ingresa un valor válido');
-                return;
-            }
+<!-- PASO 3 -->
+<div class="sc">
+  <div class="sh">
+    <div class="sn">3</div>
+    <div class="st">VOLUMEN SANGRE PROCESADA</div>
+  </div>
+  <div class="sd">Volumen neto de sangre sin anticoagulante: (Vol. Total Procesado - ACD) ÷ 1000 para expresar en litros</div>
+  <div class="ir">
+    <div class="ig">
+      <label>Vol. Total Procesado (ml)</label>
+      <input type="number" id="vol-total" placeholder="Ej: 20301" step="1" min="0">
+    </div>
+    <div class="ig">
+      <label>ACD Total Utilizado (ml)</label>
+      <input type="number" id="acd-total" placeholder="Ej: 989" step="1" min="0">
+    </div>
+  </div>
+</div>
 
-            if (isNaN(precuenta) || precuenta < 0) {
-                showError('precuenta', '⚠️ Ingresa un valor válido');
-                return;
-            }
+<!-- CÁLCULO -->
+<div class="sc">
+  <div class="sh">
+    <div class="sn">✓</div>
+    <div class="st">RESULTADOS CE2%</div>
+  </div>
+  <button onclick="calcularCE2()" style="width:100%;padding:10px;border:1px solid var(--bord2);border-radius:8px;background:rgba(33,150,243,0.1);color:var(--b);font-weight:600;cursor:pointer;margin-bottom:1rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">Calcular CE2%</button>
+  
+  <div class="fb" id="f-ce2">CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100</div>
+  
+  <div class="rg">
+    <div class="rc">
+      <div class="rl">Volumen Sangre Procesada</div>
+      <div class="rv" id="r-vsp">—</div>
+      <div class="ru">L</div>
+    </div>
+    <div class="rc">
+      <div class="rl">Denominador</div>
+      <div class="rv" id="r-denom">—</div>
+      <div class="ru">cel/µL × L</div>
+    </div>
+    <div class="rc success">
+      <div class="rl">CE2%</div>
+      <div class="rv" id="r-ce2">—</div>
+      <div class="ru">%</div>
+    </div>
+  </div>
 
-            if (isNaN(volTotal) || volTotal < 0) {
-                showError('vol_total', '⚠️ Ingresa un valor válido');
-                return;
-            }
+  <div class="sum-box" id="r-sum" style="margin-top:1rem;display:none">
+    <strong>Resumen de Eficiencia:</strong> Ingresa los datos arriba para ver el análisis completo.
+  </div>
+  <div class="refs" style="margin-top:1rem;font-size:12px;color:var(--m2)">
+    <strong>Referencia:</strong> Fórmula YoCell | UANL Hematología · Yair Omar Chávez-Estrada
+  </div>
+</div>
 
-            if (isNaN(acdTotal) || acdTotal < 0) {
-                showError('acd_total', '⚠️ Ingresa un valor válido');
-                return;
-            }
+<footer>
+  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <span class="f-mark">yocelltherapy.com</span>
+</footer>
+</div>
 
-            // Calculate
-            volumenSangreProcesada = (volTotal - acdTotal) / 1000;
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+let W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
+function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,'33,150,243','0,107,82');drawDNA(W-42,'109,40,217','33,150,243');requestAnimationFrame(frame);}
+frame();
 
-            if (volumenSangreProcesada <= 0) {
-                showError('vol_total', '⚠️ Volumen > ACD');
-                return;
-            }
+function calcularCE2() {
+  const cd34Vol = parseFloat(document.getElementById('cd34-vol').value);
+  const precuenta = parseFloat(document.getElementById('precuenta').value);
+  const volTotal = parseFloat(document.getElementById('vol-total').value);
+  const acdTotal = parseFloat(document.getElementById('acd-total').value);
 
-            denominador = precuenta * volumenSangreProcesada;
-            ce2Value = (cd34Total / denominador) * 100;
+  // Limpiar estilos de error
+  ['cd34-vol', 'precuenta', 'vol-total', 'acd-total'].forEach(id => {
+    document.getElementById(id).classList.remove('missing');
+  });
 
-            // Display result
-            const resultBox = document.getElementById('resultBox');
-            const resultValue = document.getElementById('resultValue');
-            const resultDetails = document.getElementById('resultDetails');
-            const resultStatus = document.getElementById('resultStatus');
-            
-            // Determine status
-            let estado = '';
-            let emoji = '';
-            if (ce2Value >= 100) {
-                estado = '✅ EXCELENTE EFICIENCIA';
-                emoji = '🎯';
-            } else if (ce2Value >= 80) {
-                estado = '✅ BUENA EFICIENCIA';
-                emoji = '✨';
-            } else if (ce2Value >= 60) {
-                estado = '⚠️ EFICIENCIA ACEPTABLE';
-                emoji = '📊';
-            } else {
-                estado = '⚠️ EFICIENCIA BAJA';
-                emoji = '🔍';
-            }
-            
-            resultValue.innerHTML = ce2Value.toFixed(2) + '%';
-            resultDetails.innerHTML = `<strong>Volumen Sangre Procesada:</strong> ${volumenSangreProcesada.toFixed(3)} L<br><strong>Denominador:</strong> ${denominador.toFixed(2)}`;
-            resultStatus.innerHTML = `${emoji} ${estado}`;
-            resultBox.classList.add('show');
-        }
+  // Validar
+  let ok = true;
+  if (isNaN(cd34Vol) || cd34Vol <= 0) {
+    document.getElementById('cd34-vol').classList.add('missing');
+    ok = false;
+  }
+  if (isNaN(precuenta) || precuenta <= 0) {
+    document.getElementById('precuenta').classList.add('missing');
+    ok = false;
+  }
+  if (isNaN(volTotal) || volTotal <= 0) {
+    document.getElementById('vol-total').classList.add('missing');
+    ok = false;
+  }
+  if (isNaN(acdTotal) || acdTotal < 0) {
+    document.getElementById('acd-total').classList.add('missing');
+    ok = false;
+  }
+  if (!ok) return;
 
-        function showError(inputId, message) {
-            const input = document.getElementById(inputId);
-            const errorDiv = input.parentElement.querySelector('.error-message');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
+  // Cálculos
+  const vsp = (volTotal - acdTotal) / 1000;
+  if (vsp <= 0) {
+    document.getElementById('vol-total').classList.add('missing');
+    return;
+  }
+  
+  const denom = precuenta * vsp;
+  const ce2 = (cd34Vol / denom) * 100;
 
-        function resetForm() {
-            document.querySelectorAll('input').forEach(input => input.value = '');
-            document.querySelectorAll('.error-message').forEach(e => {
-                e.style.display = 'none';
-                e.textContent = '';
-            });
-            document.getElementById('resultBox').classList.remove('show');
-        }
+  // Mostrar resultados
+  document.getElementById('r-vsp').textContent = vsp.toFixed(3);
+  document.getElementById('r-denom').textContent = denom.toFixed(2);
+  document.getElementById('r-ce2').textContent = ce2.toFixed(2);
 
-        // Allow Enter key to calculate
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') calculateCE2();
-            });
-        });
-    </script>
+  document.getElementById('f-ce2').textContent = 
+    'CE2% = ('+cd34Vol+') / ('+precuenta+' × '+vsp.toFixed(3)+')\n' +
+    '= ('+cd34Vol+') / '+denom.toFixed(2)+'\n' +
+    '= '+ce2.toFixed(2)+' %';
+
+  // Interpretación
+  let interp = '';
+  if (ce2 >= 100) interp = '✅ Excelente eficiencia';
+  else if (ce2 >= 80) interp = '✅ Buena eficiencia';
+  else if (ce2 >= 60) interp = '⚠️ Eficiencia aceptable';
+  else interp = '⚠️ Eficiencia baja';
+
+  document.getElementById('r-sum').style.display = 'block';
+  document.getElementById('r-sum').innerHTML = 
+    '<strong>CD34+ Cosecha:</strong> '+cd34Vol+' × 10⁶ células<br>' +
+    '<strong>Pre-Cuenta Día 5:</strong> '+precuenta+' cel/µL<br>' +
+    '<strong>Volumen Sangre Procesada:</strong> '+vsp.toFixed(3)+' L<br>' +
+    '<strong>CE2% Calculado:</strong> '+ce2.toFixed(2)+' %<br>' +
+    '<strong>Interpretación:</strong> '+interp;
+}
+
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') calcularCE2();
+  });
+});
+</script>
 </body>
 </html>
