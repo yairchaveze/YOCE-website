@@ -99,7 +99,7 @@ footer p{font-size:13px;color:var(--m2)}
   <div class="kicker">📊 IA en Ciencias de la Salud · Herramientas Clínicas</div>
   <h1>Calculadora CE2% CD34+</h1>
   <p>Collection Efficiency para aféresis de CD34+ en trasplante alogénico e haploidentical. Calcula eficiencia de recolección basada en pre-cuenta, volumen sanguíneo procesado y CD34+ total en cosecha.</p>
-  <div class="badge">🧬 Fórmula YoCell Therapy · Basada en reportes UANL Hematología</div>
+  <div class="badge">🧬 Fórmula YoCell Therapy · Calculadora Clínica</div>
 </div>
 
 <!-- PASO 1 -->
@@ -157,7 +157,8 @@ footer p{font-size:13px;color:var(--m2)}
     <div class="sn">✓</div>
     <div class="st">RESULTADOS CE2%</div>
   </div>
-  <button onclick="calcularCE2()" style="width:100%;padding:10px;border:1px solid var(--bord2);border-radius:8px;background:rgba(33,150,243,0.1);color:var(--b);font-weight:600;cursor:pointer;margin-bottom:1rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">Calcular CE2%</button>
+  <button onclick="calcularCE2()" style="width:48%;padding:10px;border:1px solid var(--bord2);border-radius:8px;background:rgba(33,150,243,0.1);color:var(--b);font-weight:600;cursor:pointer;margin-right:2%;margin-bottom:1rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">Calcular CE2%</button>
+  <button onclick="limpiarCE2()" style="width:48%;padding:10px;border:1px solid var(--bord2);border-radius:8px;background:rgba(0,0,0,0.04);color:var(--m);font-weight:600;cursor:pointer;margin-bottom:1rem;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s">Limpiar</button>
   
   <div class="fb" id="f-ce2">CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100</div>
   
@@ -183,12 +184,12 @@ footer p{font-size:13px;color:var(--m2)}
     <strong>Resumen de Eficiencia:</strong> Ingresa los datos arriba para ver el análisis completo.
   </div>
   <div class="refs" style="margin-top:1rem;font-size:12px;color:var(--m2)">
-    <strong>Referencia:</strong> Fórmula YoCell | UANL Hematología · Yair Omar Chávez-Estrada
+    <strong>Referencia:</strong> Fórmula YoCell · Basada en reportes de laboratorio de aféresis
   </div>
 </div>
 
 <footer>
-  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
+  <p>© 2026 YoCell Therapy</p>
   <span class="f-mark">yocelltherapy.com</span>
 </footer>
 </div>
@@ -267,6 +268,19 @@ function calcularCE2() {
     '<strong>Volumen Sangre Procesada:</strong> '+vsp.toFixed(3)+' L<br>' +
     '<strong>CE2% Calculado:</strong> '+ce2.toFixed(2)+' %<br>' +
     '<strong>Interpretación:</strong> '+interp;
+}
+
+function limpiarCE2() {
+  document.getElementById('cd34-vol').value = '';
+  document.getElementById('precuenta').value = '';
+  document.getElementById('vol-total').value = '';
+  document.getElementById('acd-total').value = '';
+  
+  document.getElementById('r-vsp').textContent = '—';
+  document.getElementById('r-denom').textContent = '—';
+  document.getElementById('r-ce2').textContent = '—';
+  document.getElementById('f-ce2').textContent = 'CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100';
+  document.getElementById('r-sum').style.display = 'none';
 }
 
 document.querySelectorAll('input').forEach(input => {
