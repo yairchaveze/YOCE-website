@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora de fraccionamiento de unidades de CD34+ con distribución de albúmina">
+    <title>Calculadora Fraccionamiento CD34+ · YoCellTherapy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-clear {
+            background: #f0f0f0;
+            color: #555;
+            flex: 1;
+        }
+
+        .btn-clear:hover {
+            background: #e0e0e0;
+        }
+
+        .results {
+            background: #f8f9ff;
+            border: 2px solid #e0e8ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .results-title::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .table-results {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .table-results th {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-results td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e8ff;
+            font-size: 14px;
+        }
+
+        .table-results tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-results tbody tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .table-results .label-col {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .footer {
+            background: #f5f7fa;
+            padding: 20px 30px;
+            font-size: 12px;
+            color: #999;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .formula-box {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .formula-box code {
+            background: #f5f7fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+        }
+
+        .auto-calculated {
+            background: #f5f7fa;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧬 Calculadora Fraccionamiento CD34+</h1>
+            <p>Distribución de unidades y cálculo de albúmina en fracciones</p>
+        </header>
+
+        <div class="content">
+            <!-- DATOS INICIALES -->
+            <div class="section">
+                <div class="section-title">Unidad Original</div>
+
+                <div class="row">
+                    <div class="input-group">
+                        <label for="volumenTotal">Volumen Total (mL)</label>
+                        <input type="number" id="volumenTotal" placeholder="188.1" step="0.1" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="cd34Total">CD34+ Total (× 10⁶)</label>
+                        <input type="number" id="cd34Total" placeholder="9.6" step="0.1" min="0">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-group">
+                        <label for="albuminaVolumen">Volumen Albúmina 5% (mL)</label>
+                        <input type="number" id="albuminaVolumen" placeholder="19" step="0.1" min="0">
+                    </div>
+                </div>
+
+                <div class="formula-box">
+                    Concentración CD34+ = Total CD34+ ÷ Volumen Total
+                </div>
+            </div>
+
+            <!-- FRACCIÓN A (PARA TRASPLANTAR) -->
+            <div class="section">
+                <div class="section-title">Fracción A (Para Trasplantar)</div>
+
+                <div class="input-group">
+                    <label for="cd34A">CD34+ Deseado (× 10⁶)</label>
+                    <input type="number" id="cd34A" placeholder="8.0" step="0.1" min="0" oninput="actualizarFraccionB()">
+                </div>
+            </div>
+
+            <!-- FRACCIÓN B (REMANENTE) -->
+            <div class="section">
+                <div class="section-title">Fracción B (Remanente)</div>
+
+                <div class="auto-calculated">
+                    <strong>CD34+ Calculado (× 10⁶):</strong> <span id="cd34BDisplay">—</span>
+                </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="button-group">
+                <button class="btn-calculate" onclick="calcular()">Calcular Fraccionamiento</button>
+                <button class="btn-clear" onclick="limpiar()">Limpiar</button>
+            </div>
+
+            <!-- RESULTADOS -->
+            <div class="results" id="resultados">
+                <div class="results-title">Cálculo de Fraccionamiento</div>
+
+                <table class="table-results">
+                    <thead>
+                        <tr>
+                            <th>Parámetro</th>
+                            <th>Fracción A (Trasplante)</th>
+                            <th>Fracción B (Remanente)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="label-col">CD34+ (× 10⁶)</td>
+                            <td><span id="resultCD34A">—</span></td>
+                            <td><span id="resultCD34B">—</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Volumen (mL)</td>
+                            <td><span id="resultVolA">—</span></td>
+                            <td><span id="resultVolB">—</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label-col">Albúmina (mL)</td>
+                            <td><span id="resultAlbA">—</span></td>
+                            <td><span id="resultAlbB">—</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="formula-box">
+                    <strong>Fórmulas utilizadas:</strong><br>
+                    • Fracción B CD34+ = CD34+ Total - Fracción A CD34+<br>
+                    • Concentración = CD34 Total ÷ Volumen Total<br>
+                    • Volumen Fracción = CD34 Fracción ÷ Concentración<br>
+                    • Proporción Albúmina = Volumen Albúmina ÷ Volumen Total<br>
+                    • Albúmina Fracción = Volumen Fracción × Proporción
+                </div>
+
+                <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 6px; font-size: 13px; color: #666;">
+                    <strong>Validación:</strong>
+                    CD34+ A + B = <span id="validationCD34">—</span> × 10⁶
+                    | Volumen A + B = <span id="validationVol">—</span> mL
+                    | Albúmina A + B = <span id="validationAlb">—</span> mL
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 YoCell Therapy · Calculadora Científica para Terapia Celular</p>
+            <p style="margin-top: 8px;">Referencia: Fraccionamiento de unidades CD34+ con distribución proporcional de suplementos</p>
+        </div>
+    </div>
+
+    <script>
+        function actualizarFraccionB() {
+            const cd34Total = parseFloat(document.getElementById('cd34Total').value);
+            const cd34A = parseFloat(document.getElementById('cd34A').value);
+
+            if (cd34Total && cd34A) {
+                const cd34B = cd34Total - cd34A;
+                document.getElementById('cd34BDisplay').textContent = cd34B >= 0 ? cd34B.toFixed(2) : '—';
+            } else {
+                document.getElementById('cd34BDisplay').textContent = '—';
+            }
+        }
+
+        function calcular() {
+            // Obtener valores
+            const volumenTotal = parseFloat(document.getElementById('volumenTotal').value);
+            const cd34Total = parseFloat(document.getElementById('cd34Total').value);
+            const albuminaVolumen = parseFloat(document.getElementById('albuminaVolumen').value);
+            const cd34A = parseFloat(document.getElementById('cd34A').value);
+
+            // Validar
+            if (!volumenTotal || !cd34Total || !albuminaVolumen || !cd34A) {
+                alert('Por favor ingresa todos los valores');
+                return;
+            }
+
+            // Calcular Fracción B automáticamente
+            const cd34B = cd34Total - cd34A;
+
+            if (cd34B < 0) {
+                alert('El CD34+ de Fracción A no puede ser mayor al total');
+                return;
+            }
+
+            // Cálculos
+            const concentracion = cd34Total / volumenTotal;
+            const volA = cd34A / concentracion;
+            const volB = cd34B / concentracion;
+            const proporcionAlbumin = albuminaVolumen / volumenTotal;
+            const albA = volA * proporcionAlbumin;
+            const albB = volB * proporcionAlbumin;
+
+            // Mostrar resultados
+            document.getElementById('resultCD34A').textContent = cd34A.toFixed(2);
+            document.getElementById('resultCD34B').textContent = cd34B.toFixed(2);
+            document.getElementById('resultVolA').textContent = volA.toFixed(1);
+            document.getElementById('resultVolB').textContent = volB.toFixed(1);
+            document.getElementById('resultAlbA').textContent = albA.toFixed(1);
+            document.getElementById('resultAlbB').textContent = albB.toFixed(1);
+
+            // Validación
+            document.getElementById('validationCD34').textContent = (cd34A + cd34B).toFixed(2);
+            document.getElementById('validationVol').textContent = (volA + volB).toFixed(1);
+            document.getElementById('validationAlb').textContent = (albA + albB).toFixed(1);
+
+            // Mostrar sección de resultados
+            document.getElementById('resultados').classList.add('visible');
+        }
+
+        function limpiar() {
+            document.getElementById('volumenTotal').value = '';
+            document.getElementById('cd34Total').value = '';
+            document.getElementById('albuminaVolumen').value = '';
+            document.getElementById('cd34A').value = '';
+            document.getElementById('cd34BDisplay').textContent = '—';
+            document.getElementById('resultados').classList.remove('visible');
+        }
+
+        // Permitir Enter para calcular
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calcular();
+            }
+        });
+    </script>
+</body>
+</html>
