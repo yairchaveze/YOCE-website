@@ -86,7 +86,8 @@
             letter-spacing: 0.5px;
         }
 
-        input {
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
             padding: 10px 12px;
             border: 2px solid #e0e0e0;
@@ -95,10 +96,18 @@
             transition: all 0.3s ease;
         }
 
-        input:focus {
+        input[type="number"]:focus,
+        input[type="text"]:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
         }
 
         .row {
@@ -200,6 +209,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            font-size: 14px;
         }
 
         .table-results th {
@@ -269,6 +279,23 @@
             border-left: 4px solid #667eea;
         }
 
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: 400;
+            text-transform: none;
+            font-size: 14px;
+        }
+
         @media (max-width: 600px) {
             .row {
                 grid-template-columns: 1fr;
@@ -282,8 +309,18 @@
                 flex-direction: column;
             }
 
-            table {
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .table-results {
                 font-size: 12px;
+            }
+
+            .table-results th,
+            .table-results td {
+                padding: 8px 6px;
             }
         }
     </style>
@@ -302,19 +339,44 @@
 
                 <div class="row">
                     <div class="input-group">
-                        <label for="volumenTotal">Volumen Total (mL)</label>
+                        <label for="volumenTotal">Volumen Total de la Cosecha (mL)</label>
                         <input type="number" id="volumenTotal" placeholder="188.1" step="0.1" min="0">
                     </div>
                     <div class="input-group">
-                        <label for="cd34Total">CD34+ Total (× 10⁶)</label>
+                        <label for="cd34Total">CD34+ Total · cel/kg receptor (× 10⁶)</label>
                         <input type="number" id="cd34Total" placeholder="9.6" step="0.1" min="0">
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="input-group">
-                        <label for="albuminaVolumen">Volumen Albúmina 5% (mL)</label>
-                        <input type="number" id="albuminaVolumen" placeholder="19" step="0.1" min="0">
+                <div class="input-group">
+                    <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0;">
+                        <span>¿Se suplementó con albúmina al 5%?</span>
+                        <input type="checkbox" id="conAlbumin" checked onchange="toggleAlbumin()">
+                    </label>
+                </div>
+
+                <div class="input-group" id="albuminaGroup" style="margin-bottom: 20px;">
+                    <label for="albuminaVolumen">Volumen Albúmina 5% (mL)</label>
+                    <input type="number" id="albuminaVolumen" placeholder="19" step="0.1" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label style="text-transform: none; letter-spacing: normal; font-weight: 400; font-size: 14px;">
+                        ¿Cuántas fracciones necesitas?
+                    </label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="numFracciones" value="2" checked onchange="cambiarFracciones()">
+                            2 fracciones (A, B)
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="numFracciones" value="3" onchange="cambiarFracciones()">
+                            3 fracciones (A, B, C)
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="numFracciones" value="4" onchange="cambiarFracciones()">
+                            4 fracciones (A, B, C, D)
+                        </label>
                     </div>
                 </div>
 
@@ -323,22 +385,39 @@
                 </div>
             </div>
 
-            <!-- FRACCIÓN A (PARA TRASPLANTAR) -->
+            <!-- FRACCIONES -->
             <div class="section">
                 <div class="section-title">Fracción A (Para Trasplantar)</div>
-
                 <div class="input-group">
                     <label for="cd34A">CD34+ Deseado (× 10⁶)</label>
-                    <input type="number" id="cd34A" placeholder="8.0" step="0.1" min="0" oninput="actualizarFraccionB()">
+                    <input type="number" id="cd34A" placeholder="8.0" step="0.1" min="0" oninput="actualizarRemanenteAutomatico()">
                 </div>
             </div>
 
-            <!-- FRACCIÓN B (REMANENTE) -->
             <div class="section">
-                <div class="section-title">Fracción B (Remanente)</div>
-
-                <div class="auto-calculated">
+                <div class="section-title">Fracción B</div>
+                <div class="input-group" id="inputCD34B" style="display: none;">
+                    <label for="cd34B">CD34+ Deseado (× 10⁶)</label>
+                    <input type="number" id="cd34B" placeholder="1.0" step="0.1" min="0" oninput="actualizarRemanenteAutomatico()">
+                </div>
+                <div class="auto-calculated" id="autoCd34B">
                     <strong>CD34+ Calculado (× 10⁶):</strong> <span id="cd34BDisplay">—</span>
+                </div>
+            </div>
+
+            <div class="section" id="seccionC" style="display: none;">
+                <div class="section-title">Fracción C</div>
+                <div class="input-group">
+                    <label for="cd34C">CD34+ Deseado (× 10⁶)</label>
+                    <input type="number" id="cd34C" placeholder="0.3" step="0.1" min="0" oninput="actualizarRemanenteAutomatico()">
+                </div>
+            </div>
+
+            <div class="section" id="seccionD" style="display: none;">
+                <div class="section-title">Fracción D</div>
+                <div class="input-group">
+                    <label for="cd34D">CD34+ Deseado (× 10⁶)</label>
+                    <input type="number" id="cd34D" placeholder="0.3" step="0.1" min="0" oninput="actualizarRemanenteAutomatico()">
                 </div>
             </div>
 
@@ -352,12 +431,14 @@
             <div class="results" id="resultados">
                 <div class="results-title">Cálculo de Fraccionamiento</div>
 
-                <table class="table-results">
+                <table class="table-results" id="tablaResultados">
                     <thead>
-                        <tr>
+                        <tr id="headerResultados">
                             <th>Parámetro</th>
-                            <th>Fracción A (Trasplante)</th>
-                            <th>Fracción B (Remanente)</th>
+                            <th>Fracción A</th>
+                            <th>Fracción B</th>
+                            <th id="headerC" style="display: none;">Fracción C</th>
+                            <th id="headerD" style="display: none;">Fracción D</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -365,23 +446,28 @@
                             <td class="label-col">CD34+ (× 10⁶)</td>
                             <td><span id="resultCD34A">—</span></td>
                             <td><span id="resultCD34B">—</span></td>
+                            <td id="cellCD34C" style="display: none;"><span id="resultCD34C">—</span></td>
+                            <td id="cellCD34D" style="display: none;"><span id="resultCD34D">—</span></td>
                         </tr>
                         <tr>
                             <td class="label-col">Volumen (mL)</td>
                             <td><span id="resultVolA">—</span></td>
                             <td><span id="resultVolB">—</span></td>
+                            <td id="cellVolC" style="display: none;"><span id="resultVolC">—</span></td>
+                            <td id="cellVolD" style="display: none;"><span id="resultVolD">—</span></td>
                         </tr>
                         <tr>
                             <td class="label-col">Albúmina (mL)</td>
                             <td><span id="resultAlbA">—</span></td>
                             <td><span id="resultAlbB">—</span></td>
+                            <td id="cellAlbC" style="display: none;"><span id="resultAlbC">—</span></td>
+                            <td id="cellAlbD" style="display: none;"><span id="resultAlbD">—</span></td>
                         </tr>
                     </tbody>
                 </table>
 
                 <div class="formula-box">
                     <strong>Fórmulas utilizadas:</strong><br>
-                    • Fracción B CD34+ = CD34+ Total - Fracción A CD34+<br>
                     • Concentración = CD34 Total ÷ Volumen Total<br>
                     • Volumen Fracción = CD34 Fracción ÷ Concentración<br>
                     • Proporción Albúmina = Volumen Albúmina ÷ Volumen Total<br>
@@ -390,9 +476,9 @@
 
                 <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 6px; font-size: 13px; color: #666;">
                     <strong>Validación:</strong>
-                    CD34+ A + B = <span id="validationCD34">—</span> × 10⁶
-                    | Volumen A + B = <span id="validationVol">—</span> mL
-                    | Albúmina A + B = <span id="validationAlb">—</span> mL
+                    CD34+ Total = <span id="validationCD34">—</span> × 10⁶
+                    | Volumen Total = <span id="validationVol">—</span> mL
+                    | Albúmina Total = <span id="validationAlb">—</span> mL
                 </div>
             </div>
         </div>
@@ -404,61 +490,154 @@
     </div>
 
     <script>
-        function actualizarFraccionB() {
+        function toggleAlbumin() {
+            const conAlbumin = document.getElementById('conAlbumin').checked;
+            const albuminaGroup = document.getElementById('albuminaGroup');
+            const albuminaInput = document.getElementById('albuminaVolumen');
+
+            if (conAlbumin) {
+                albuminaGroup.style.display = '';
+                albuminaInput.required = true;
+            } else {
+                albuminaGroup.style.display = 'none';
+                albuminaInput.value = '';
+                albuminaInput.required = false;
+            }
+        }
+
+        function cambiarFracciones() {
+            const numFracciones = document.querySelector('input[name="numFracciones"]:checked').value;
+
+            // Mostrar/ocultar campos de entrada
+            document.getElementById('inputCD34B').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('autoCd34B').style.display = numFracciones === '2' ? '' : 'none';
+            document.getElementById('seccionC').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('seccionD').style.display = numFracciones === '4' ? '' : 'none';
+
+            // Mostrar/ocultar columnas en tabla
+            document.getElementById('headerC').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('headerD').style.display = numFracciones === '4' ? '' : 'none';
+            document.getElementById('cellCD34C').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('cellCD34D').style.display = numFracciones === '4' ? '' : 'none';
+            document.getElementById('cellVolC').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('cellVolD').style.display = numFracciones === '4' ? '' : 'none';
+            document.getElementById('cellAlbC').style.display = numFracciones >= 3 ? '' : 'none';
+            document.getElementById('cellAlbD').style.display = numFracciones === '4' ? '' : 'none';
+
+            // Limpiar valores de fracciones ocultas
+            if (numFracciones < 3) document.getElementById('cd34C').value = '';
+            if (numFracciones < 4) document.getElementById('cd34D').value = '';
+
+            actualizarRemanenteAutomatico();
+        }
+
+        function actualizarRemanenteAutomatico() {
+            const numFracciones = document.querySelector('input[name="numFracciones"]:checked').value;
             const cd34Total = parseFloat(document.getElementById('cd34Total').value);
             const cd34A = parseFloat(document.getElementById('cd34A').value);
+            const cd34C = parseFloat(document.getElementById('cd34C').value) || 0;
+            const cd34D = parseFloat(document.getElementById('cd34D').value) || 0;
 
             if (cd34Total && cd34A) {
-                const cd34B = cd34Total - cd34A;
-                document.getElementById('cd34BDisplay').textContent = cd34B >= 0 ? cd34B.toFixed(2) : '—';
+                if (numFracciones === '2') {
+                    const cd34B = cd34Total - cd34A;
+                    document.getElementById('cd34BDisplay').textContent = cd34B >= 0 ? cd34B.toFixed(2) : '—';
+                } else if (numFracciones === '3') {
+                    const cd34B = cd34Total - cd34A - cd34C;
+                    document.getElementById('cd34B').value = cd34B >= 0 ? cd34B.toFixed(2) : '';
+                } else if (numFracciones === '4') {
+                    const cd34B = cd34Total - cd34A - cd34C - cd34D;
+                    document.getElementById('cd34B').value = cd34B >= 0 ? cd34B.toFixed(2) : '';
+                }
             } else {
-                document.getElementById('cd34BDisplay').textContent = '—';
+                if (numFracciones === '2') {
+                    document.getElementById('cd34BDisplay').textContent = '—';
+                }
             }
         }
 
         function calcular() {
-            // Obtener valores
+            const numFracciones = document.querySelector('input[name="numFracciones"]:checked').value;
             const volumenTotal = parseFloat(document.getElementById('volumenTotal').value);
             const cd34Total = parseFloat(document.getElementById('cd34Total').value);
-            const albuminaVolumen = parseFloat(document.getElementById('albuminaVolumen').value);
             const cd34A = parseFloat(document.getElementById('cd34A').value);
+            const conAlbumin = document.getElementById('conAlbumin').checked;
+            const albuminaVolumen = conAlbumin ? parseFloat(document.getElementById('albuminaVolumen').value) : 0;
 
-            // Validar
-            if (!volumenTotal || !cd34Total || !albuminaVolumen || !cd34A) {
-                alert('Por favor ingresa todos los valores');
+            if (!volumenTotal || !cd34Total || !cd34A) {
+                alert('Por favor ingresa todos los valores requeridos');
                 return;
             }
 
-            // Calcular Fracción B automáticamente
-            const cd34B = cd34Total - cd34A;
-
-            if (cd34B < 0) {
-                alert('El CD34+ de Fracción A no puede ser mayor al total');
+            if (conAlbumin && !albuminaVolumen) {
+                alert('Por favor ingresa el volumen de albúmina');
                 return;
+            }
+
+            // Obtener valores de fracciones
+            let fracciones = {
+                A: cd34A
+            };
+
+            if (numFracciones === '2') {
+                fracciones.B = cd34Total - cd34A;
+            } else if (numFracciones === '3') {
+                const cd34C = parseFloat(document.getElementById('cd34C').value) || 0;
+                fracciones.B = cd34Total - cd34A - cd34C;
+                fracciones.C = cd34C;
+            } else if (numFracciones === '4') {
+                const cd34C = parseFloat(document.getElementById('cd34C').value) || 0;
+                const cd34D = parseFloat(document.getElementById('cd34D').value) || 0;
+                fracciones.B = cd34Total - cd34A - cd34C - cd34D;
+                fracciones.C = cd34C;
+                fracciones.D = cd34D;
+            }
+
+            // Validar que no hay fracciones negativas
+            for (let f in fracciones) {
+                if (fracciones[f] < 0) {
+                    alert('El total de CD34+ de las fracciones no puede ser mayor al total');
+                    return;
+                }
             }
 
             // Cálculos
             const concentracion = cd34Total / volumenTotal;
-            const volA = cd34A / concentracion;
-            const volB = cd34B / concentracion;
-            const proporcionAlbumin = albuminaVolumen / volumenTotal;
-            const albA = volA * proporcionAlbumin;
-            const albB = volB * proporcionAlbumin;
+            const proporcionAlbumin = conAlbumin ? (albuminaVolumen / volumenTotal) : 0;
 
             // Mostrar resultados
-            document.getElementById('resultCD34A').textContent = cd34A.toFixed(2);
-            document.getElementById('resultCD34B').textContent = cd34B.toFixed(2);
-            document.getElementById('resultVolA').textContent = volA.toFixed(1);
-            document.getElementById('resultVolB').textContent = volB.toFixed(1);
-            document.getElementById('resultAlbA').textContent = albA.toFixed(1);
-            document.getElementById('resultAlbB').textContent = albB.toFixed(1);
+            document.getElementById('resultCD34A').textContent = fracciones.A.toFixed(2);
+            document.getElementById('resultVolA').textContent = (fracciones.A / concentracion).toFixed(1);
+            document.getElementById('resultAlbA').textContent = conAlbumin ? ((fracciones.A / concentracion) * proporcionAlbumin).toFixed(1) : 'Sin suplemento';
 
-            // Validación
-            document.getElementById('validationCD34').textContent = (cd34A + cd34B).toFixed(2);
-            document.getElementById('validationVol').textContent = (volA + volB).toFixed(1);
-            document.getElementById('validationAlb').textContent = (albA + albB).toFixed(1);
+            document.getElementById('resultCD34B').textContent = fracciones.B.toFixed(2);
+            document.getElementById('resultVolB').textContent = (fracciones.B / concentracion).toFixed(1);
+            document.getElementById('resultAlbB').textContent = conAlbumin ? ((fracciones.B / concentracion) * proporcionAlbumin).toFixed(1) : 'Sin suplemento';
 
-            // Mostrar sección de resultados
+            if (numFracciones >= 3) {
+                document.getElementById('resultCD34C').textContent = fracciones.C.toFixed(2);
+                document.getElementById('resultVolC').textContent = (fracciones.C / concentracion).toFixed(1);
+                document.getElementById('resultAlbC').textContent = conAlbumin ? ((fracciones.C / concentracion) * proporcionAlbumin).toFixed(1) : 'Sin suplemento';
+            }
+
+            if (numFracciones === '4') {
+                document.getElementById('resultCD34D').textContent = fracciones.D.toFixed(2);
+                document.getElementById('resultVolD').textContent = (fracciones.D / concentracion).toFixed(1);
+                document.getElementById('resultAlbD').textContent = conAlbumin ? ((fracciones.D / concentracion) * proporcionAlbumin).toFixed(1) : 'Sin suplemento';
+            }
+
+            // Validación totales
+            let sumCD34 = 0, sumVol = 0, sumAlb = 0;
+            for (let f in fracciones) {
+                sumCD34 += fracciones[f];
+                sumVol += fracciones[f] / concentracion;
+                if (conAlbumin) sumAlb += (fracciones[f] / concentracion) * proporcionAlbumin;
+            }
+
+            document.getElementById('validationCD34').textContent = sumCD34.toFixed(2);
+            document.getElementById('validationVol').textContent = sumVol.toFixed(1);
+            document.getElementById('validationAlb').textContent = conAlbumin ? sumAlb.toFixed(1) : 'N/A';
+
             document.getElementById('resultados').classList.add('visible');
         }
 
@@ -467,8 +646,15 @@
             document.getElementById('cd34Total').value = '';
             document.getElementById('albuminaVolumen').value = '';
             document.getElementById('cd34A').value = '';
+            document.getElementById('cd34B').value = '';
+            document.getElementById('cd34C').value = '';
+            document.getElementById('cd34D').value = '';
+            document.getElementById('conAlbumin').checked = true;
+            document.querySelector('input[name="numFracciones"][value="2"]').checked = true;
             document.getElementById('cd34BDisplay').textContent = '—';
             document.getElementById('resultados').classList.remove('visible');
+            toggleAlbumin();
+            cambiarFracciones();
         }
 
         // Permitir Enter para calcular
