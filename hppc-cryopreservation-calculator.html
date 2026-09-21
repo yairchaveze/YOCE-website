@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Criopreservación - HPPC | YoCellTherapy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .label-hint {
+            font-size: 0.85em;
+            color: #999;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="number"]::placeholder {
+            color: #ccc;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .result-box.primary {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 100%);
+            border-left-color: #667eea;
+        }
+
+        .result-box.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-left-color: #28a745;
+        }
+
+        .result-box.warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left-color: #ffc107;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        .result-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: right;
+        }
+
+        .result-box.success .result-value {
+            color: #28a745;
+        }
+
+        .result-box.warning .result-value {
+            color: #ff9800;
+        }
+
+        .unit {
+            font-size: 0.85em;
+            font-weight: 400;
+            color: #666;
+            margin-left: 5px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .fractions-visual {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .fraction {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .fraction-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .fraction-value {
+            font-size: 1.1em;
+        }
+
+        .calculation-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #666;
+            border-left: 3px solid #999;
+        }
+
+        .calculation-details strong {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .option-box {
+            background: #f0f4ff;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .option-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .option-item {
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .option-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .option-item p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .option-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧊 Calculadora de Criopreservación</h1>
+            <p>Células Progenitoras Hematopoyéticas (HPPC)</p>
+        </header>
+
+        <!-- FORMULARIO DE ENTRADA -->
+        <div class="card">
+            <div class="section-title">📋 Parámetros de Entrada</div>
+
+            <div class="input-group">
+                <div class="form-field">
+                    <label for="wbc">
+                        WBC/µL (Cosecha)
+                        <div class="label-hint">Del diferencial de la biometría hemática</div>
+                    </label>
+                    <input type="number" id="wbc" placeholder="Ej: 50" min="0" step="0.1">
+                </div>
+
+                <div class="form-field">
+                    <label for="volume">
+                        Volumen Total a Congelar (mL)
+                        <div class="label-hint">Volumen disponible</div>
+                    </label>
+                    <input type="number" id="volume" placeholder="Ej: 200" min="0" step="1">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="form-field">
+                    <label for="cd34">
+                        CD34+ Totales (×10⁶)
+                        <div class="label-hint">Conteo absoluto disponible</div>
+                    </label>
+                    <input type="number" id="cd34" placeholder="Ej: 4" min="0" step="0.1">
+                </div>
+
+                <div class="form-field">
+                    <label for="weight">
+                        Peso del Receptor (kg) - <span style="color: #999;">Opcional</span>
+                        <div class="label-hint">Para cálculo informativo CD34+/kg</div>
+                    </label>
+                    <input type="number" id="weight" placeholder="Ej: 70" min="0" step="0.1">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-calculate" onclick="calculateCryopreservation()">Calcular Fracciones</button>
+                <button class="btn-reset" onclick="resetForm()">Limpiar</button>
+            </div>
+        </div>
+
+        <!-- ALERTAS -->
+        <div id="alertError" class="alert alert-warning">
+            <strong>⚠️ Validación:</strong> <span id="alertText"></span>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div id="resultsContainer" class="results-container">
+
+            <!-- RESUMEN GENERAL -->
+            <div class="card">
+                <div class="section-title">📊 Resumen General</div>
+
+                <div class="result-box primary">
+                    <div class="result-item">
+                        <span class="result-label">WBC Totales en Cosecha</span>
+                        <span class="result-value"><span id="wbcTotalResult">-</span> <span class="unit">×10⁸</span></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">CD34+ por mL de Cosecha</span>
+                        <span class="result-value"><span id="cd34PerMl">-</span> <span class="unit">×10⁶/mL</span></span>
+                    </div>
+                </div>
+
+                <div id="alertInfo" class="alert alert-info" style="display: none;">
+                    <strong>ℹ️ Nota:</strong> <span id="alertInfoText"></span>
+                </div>
+            </div>
+
+            <!-- OPCIÓN A: FRACCIONAR SIN REDUCIR -->
+            <div class="card">
+                <div class="section-title">✅ Opción A: Fraccionar sin Reducir Volumen</div>
+
+                <div class="result-box success">
+                    <div class="result-item">
+                        <span class="result-label">Número de Fracciones Recomendadas</span>
+                        <span class="result-value"><span id="numFractions">-</span></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Volumen por Fracción (Muestra)</span>
+                        <span class="result-value"><span id="volumePerFraction">-</span> <span class="unit">mL</span></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Volumen Final por Bolsa (Mezcla 1:1)</span>
+                        <span class="result-value"><span id="volumeFinalPerBag">-</span> <span class="unit">mL</span></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">CD34+ por Fracción</span>
+                        <span class="result-value"><span id="cd34PerFraction">-</span> <span class="unit">×10⁶</span></span>
+                    </div>
+                    <div id="cd34PerKgRow" class="result-item" style="display: none;">
+                        <span class="result-label">CD34+ por kg de Receptor</span>
+                        <span class="result-value"><span id="cd34PerKg">-</span> <span class="unit">×10⁶/kg</span></span>
+                    </div>
+                </div>
+
+                <div class="fractions-visual" id="fractionsVisual"></div>
+
+                <div class="calculation-details">
+                    <div><strong>Cálculo:</strong> WBC/µL × 1,000,000 × Volumen (mL) = WBC Totales (×10⁸)</div>
+                    <div style="margin-top: 10px;"><strong>Límite:</strong> Máx 500×10⁸ WBC por bolsa de 60 mL</div>
+                    <div style="margin-top: 10px;"><strong>Volumen de cada bolsa:</strong> 60 mL muestra + 60 mL medio crioprotector = 120 mL total</div>
+                </div>
+            </div>
+
+            <!-- OPCIÓN B: REDUCIR VOLUMEN (si aplica) -->
+            <div id="optionBContainer" class="card" style="display: none;">
+                <div class="section-title">💡 Opción B: Reducir Volumen (Concentrar)</div>
+
+                <div class="alert alert-info">
+                    <strong>⚠️ Considerar si:</strong> El CD34+ por fracción es muy bajo y requiere concentración para mayor eficiencia en descongelación.
+                </div>
+
+                <div class="option-box">
+                    <h3>🔄 Alternativa: Volumen Reducido</h3>
+
+                    <div class="result-box">
+                        <div class="result-item">
+                            <span class="result-label">Volumen Recomendado (Reducido)</span>
+                            <span class="result-value"><span id="volumeReduced">-</span> <span class="unit">mL</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Número de Fracciones</span>
+                            <span class="result-value"><span id="numFractionsReduced">-</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Volumen por Fracción (Muestra)</span>
+                            <span class="result-value"><span id="volumePerFractionReduced">-</span> <span class="unit">mL</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">CD34+ por Fracción (Concentrado)</span>
+                            <span class="result-value"><span id="cd34PerFractionReduced">-</span> <span class="unit">×10⁶</span></span>
+                        </div>
+                    </div>
+
+                    <div class="calculation-details">
+                        <div><strong>Proceso:</strong> Centrifugación (15 min @ 4°C, 2590 g) + Eliminación de plasma</div>
+                        <div style="margin-top: 10px;"><strong>Ventaja:</strong> Mayor concentración de CD34+ por bolsa, reduce bolsas a descongelar</div>
+                        <div style="margin-top: 10px;"><strong>Tiempo adicional:</strong> ~30 min</div>
+                    </div>
+                </div>
+
+                <div class="option-comparison">
+                    <div class="option-item">
+                        <h4>✅ Sin Reducir</h4>
+                        <p><strong>Fracciones:</strong> <span id="compA_fractions">-</span></p>
+                        <p><strong>CD34+/fracción:</strong> <span id="compA_cd34">-</span> ×10⁶</p>
+                        <p><strong>Ventaja:</strong> Menos manipulación</p>
+                    </div>
+                    <div class="option-item">
+                        <h4>💡 Reduciendo</h4>
+                        <p><strong>Fracciones:</strong> <span id="compB_fractions">-</span></p>
+                        <p><strong>CD34+/fracción:</strong> <span id="compB_cd34">-</span> ×10⁶</p>
+                        <p><strong>Ventaja:</strong> Mayor concentración</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE FRACCIONES DETALLADA -->
+            <div class="card">
+                <div class="section-title">📋 Detalle de Fracciones</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fracción</th>
+                            <th>Volumen Muestra (mL)</th>
+                            <th>CD34+ (×10⁶)</th>
+                            <th>WBC Totales (×10⁸)</th>
+                            <th>Volumen Final (mL)*</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fractionTable">
+                        <!-- Se genera dinámicamente -->
+                    </tbody>
+                </table>
+                <div class="calculation-details" style="margin-top: 15px;">
+                    <div><strong>* Volumen Final = Volumen Muestra × 2 (mezcla 1:1)</strong></div>
+                </div>
+            </div>
+
+            <!-- NOTAS -->
+            <div class="card">
+                <div class="section-title">📝 Observaciones</div>
+                <div class="alert alert-info">
+                    <div style="margin-bottom: 10px;"><strong>✓ Criterios de Aceptación:</strong></div>
+                    <ul style="margin-left: 20px;">
+                        <li>WBC totales ≤ 500×10⁸ por bolsa</li>
+                        <li>Viabilidad pre-mezcla ≥ 80%</li>
+                        <li>Cultivo microbiológico negativo</li>
+                    </ul>
+                </div>
+                <div class="calculation-details">
+                    <div><strong>Decongelación:</strong> Se esperaría pérdida de 10-20% de viabilidad post-descongelación</div>
+                    <div style="margin-top: 10px;"><strong>Almacenamiento:</strong> -140°C a -198°C (nitrógeno líquido)</div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>YoCellTherapy © 2026 | Calculadora de Criopreservación HPPC</p>
+            <p>Para uso clínico, validar siempre con el protocolo MCP-02 del hospital</p>
+        </footer>
+    </div>
+
+    <script>
+        function calculateCryopreservation() {
+            // Obtener valores
+            const wbc = parseFloat(document.getElementById('wbc').value);
+            const volume = parseFloat(document.getElementById('volume').value);
+            const cd34Total = parseFloat(document.getElementById('cd34').value);
+            const weight = parseFloat(document.getElementById('weight').value) || null;
+
+            // Validación
+            if (!wbc || !volume || !cd34Total) {
+                showAlert('Por favor completa todos los campos requeridos (WBC, Volumen, CD34+)');
+                return;
+            }
+
+            if (wbc < 0 || volume < 0 || cd34Total < 0) {
+                showAlert('Los valores no pueden ser negativos');
+                return;
+            }
+
+            // CÁLCULOS
+            // WBC totales en 10^8
+            const wbcTotal = (wbc * 1000000 * volume) / 100000000;
+            const wbcPerMl = (wbc * 1000000) / 1000000;
+            const cd34PerMl = cd34Total / volume;
+
+            // Número de fracciones (máx 500×10^8 por bolsa)
+            const maxWbcPerBag = 500;
+            const numFractions = Math.ceil(wbcTotal / maxWbcPerBag);
+
+            // Volumen por fracción (muestra)
+            const volumePerFraction = volume / numFractions;
+            const volumeFinal = volumePerFraction * 2; // 1:1 con medio
+
+            // CD34 por fracción
+            const cd34PerFraction = cd34Total / numFractions;
+
+            // CD34 por kg (si hay peso)
+            let cd34PerKg = null;
+            if (weight) {
+                cd34PerKg = (cd34Total * 1000000) / weight;
+            }
+
+            // Mostrar Opción A
+            document.getElementById('wbcTotalResult').textContent = wbcTotal.toFixed(1);
+            document.getElementById('cd34PerMl').textContent = cd34PerMl.toFixed(2);
+            document.getElementById('numFractions').textContent = numFractions;
+            document.getElementById('volumePerFraction').textContent = volumePerFraction.toFixed(1);
+            document.getElementById('volumeFinalPerBag').textContent = volumeFinal.toFixed(1);
+            document.getElementById('cd34PerFraction').textContent = cd34PerFraction.toFixed(2);
+
+            // Mostrar CD34/kg si aplica
+            if (weight && cd34PerKg) {
+                document.getElementById('cd34PerKgRow').style.display = 'flex';
+                document.getElementById('cd34PerKg').textContent = (cd34PerKg / 1000000).toFixed(2);
+            } else {
+                document.getElementById('cd34PerKgRow').style.display = 'none';
+            }
+
+            // Generar visualización de fracciones
+            generateFractionsVisual(numFractions, volumePerFraction, cd34PerFraction);
+
+            // Generar tabla
+            generateFractionTable(numFractions, volumePerFraction, cd34PerFraction, wbcPerMl);
+
+            // OPCIÓN B: Considerar si CD34 es muy bajo
+            const showOptionB = cd34PerFraction < 1; // Menos de 1M por fracción
+
+            if (showOptionB) {
+                document.getElementById('alertInfoText').textContent =
+                    `CD34+ por fracción es ${cd34PerFraction.toFixed(2)}M. Considera reducir volumen para concentrar.`;
+                document.getElementById('alertInfo').style.display = 'block';
+
+                // Calcular volumen reducido óptimo (para ~1-2M por fracción)
+                const optimalVolume = (cd34Total / (numFractions * 1.5)); // ~1.5M por fracción
+                const numFractionsReduced = numFractions - 1 > 0 ? numFractions - 1 : numFractions;
+                const volumePerFractionReduced = optimalVolume / numFractionsReduced;
+                const cd34PerFractionReduced = cd34Total / numFractionsReduced;
+
+                document.getElementById('optionBContainer').style.display = 'block';
+                document.getElementById('volumeReduced').textContent = optimalVolume.toFixed(1);
+                document.getElementById('numFractionsReduced').textContent = numFractionsReduced;
+                document.getElementById('volumePerFractionReduced').textContent = volumePerFractionReduced.toFixed(1);
+                document.getElementById('cd34PerFractionReduced').textContent = cd34PerFractionReduced.toFixed(2);
+
+                // Comparativo
+                document.getElementById('compA_fractions').textContent = numFractions;
+                document.getElementById('compA_cd34').textContent = cd34PerFraction.toFixed(2);
+                document.getElementById('compB_fractions').textContent = numFractionsReduced;
+                document.getElementById('compB_cd34').textContent = cd34PerFractionReduced.toFixed(2);
+            } else {
+                document.getElementById('optionBContainer').style.display = 'none';
+                document.getElementById('alertInfo').style.display = 'none';
+            }
+
+            // Mostrar resultados
+            document.getElementById('resultsContainer').classList.add('show');
+            window.scrollTo({ top: document.getElementById('resultsContainer').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function generateFractionsVisual(numFractions, volumePerFraction, cd34PerFraction) {
+            const container = document.getElementById('fractionsVisual');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= numFractions; i++) {
+                const fraction = document.createElement('div');
+                fraction.className = 'fraction';
+                fraction.innerHTML = `
+                    <div class="fraction-label">Bolsa ${i}</div>
+                    <div class="fraction-value">${volumePerFraction.toFixed(1)} mL</div>
+                    <div class="fraction-label">${cd34PerFraction.toFixed(2)}M CD34+</div>
+                `;
+                container.appendChild(fraction);
+            }
+        }
+
+        function generateFractionTable(numFractions, volumePerFraction, cd34PerFraction, wbcPerMl) {
+            const tbody = document.getElementById('fractionTable');
+            tbody.innerHTML = '';
+
+            const wbcPerFraction = (wbcPerMl * volumePerFraction * 1000000) / 100000000;
+
+            for (let i = 1; i <= numFractions; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>Bolsa ${i}</strong></td>
+                    <td>${volumePerFraction.toFixed(1)}</td>
+                    <td>${cd34PerFraction.toFixed(2)}</td>
+                    <td>${wbcPerFraction.toFixed(1)}</td>
+                    <td>${(volumePerFraction * 2).toFixed(1)}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function showAlert(message) {
+            const alert = document.getElementById('alertError');
+            document.getElementById('alertText').textContent = message;
+            alert.classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('wbc').value = '';
+            document.getElementById('volume').value = '';
+            document.getElementById('cd34').value = '';
+            document.getElementById('weight').value = '';
+            document.getElementById('resultsContainer').classList.remove('show');
+            document.getElementById('alertError').classList.remove('show');
+        }
+
+        // Enter para calcular
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateCryopreservation();
+            }
+        });
+    </script>
+</body>
+</html>
