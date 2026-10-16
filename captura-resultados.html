@@ -28,8 +28,22 @@
   @keyframes gateShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
   #siteContent{display:none;}
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="ycl-theme.css">
 </head>
 <body style="margin:0;">
+<!-- yct:header -->
+<div class="yct-nav"><div class="yct-wrap">
+<a class="yct-brand" href="yocell-lab.html"><img src="logo-ycl-drop.png" alt="" width="24" height="34" style="width:auto;height:34px"><span>Yo<b>Cell</b> Lab</span></a>
+<div class="yct-links" id="yctLinks" role="navigation" aria-label="Laboratorio">
+<a href="yocell-lab.html">Laboratorio</a><a href="resultados.html">Resultados</a><a href="/">YoCellTherapy</a>
+<a class="yct-m" href="resultados.html">Consultar resultados</a>
+</div>
+<a class="yct-btn" href="resultados.html">Consultar resultados</a>
+<button type="button" class="yct-burger" id="yctBurger" aria-expanded="false" aria-controls="yctLinks" aria-label="Menú"><span></span><span></span></button>
+</div></div>
+<!-- /yct:header -->
+
 
 <div id="gateOverlay">
   <div class="gate-box" id="gateBox">
@@ -43,10 +57,6 @@
 </div>
 
 <div id="siteContent">
-<div class="site-nav">
-  <a href="yocell-lab.html">← YoCell Lab</a>
-  <div class="lab"><span class="dot"></span> YoCell Lab</div>
-</div>
 <style>
   :root{
     --burgundy:#6d1a36;
@@ -1355,5 +1365,13 @@ async function guardarResultados(){
   }
 }
 </script>
+<!-- yct:footer -->
+<div class="yct-foot"><div class="yct-foot-in">
+<div><a class="yct-brand" href="yocell-lab.html"><img src="logo-ycl-drop.png" alt="" width="24" height="34" style="width:auto;height:34px"><span>Yo<b>Cell</b> Lab</span></a><p>Laboratorio de análisis clínicos en construcción en San Buenaventura, Coahuila.</p></div>
+<div><h4>Laboratorio</h4><ul><li><a href="yocell-lab.html">Inicio</a></li><li><a href="resultados.html">Consultar resultados</a></li></ul></div>
+<div><h4>YoCellTherapy</h4><ul><li><a href="/">Sitio principal</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+</div><div class="yct-foot-bot"><span>© 2026 YoCell Lab · San Buenaventura, Coahuila</span><span>Parte de YoCellTherapy</span></div></div>
+<script src="yct-site.js" defer></script>
+<!-- /yct:footer -->
 </body>
 </html>

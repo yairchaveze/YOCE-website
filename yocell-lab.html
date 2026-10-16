@@ -5,267 +5,272 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/ycl-favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/ycl-favicon-16x16.png">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>YoCell Lab | Laboratorio de Análisis Clínicos · San Buenaventura, Coahuila</title>
-<meta name="description" content="YoCell Lab: laboratorio de análisis clínicos de bajo costo en San Buenaventura, Coahuila. Biometría Hemática, Química Sanguínea y Examen General de Orina."/>
+<meta name="description" content="YoCell Lab: laboratorio de análisis clínicos accesible en San Buenaventura, Coahuila. Biometría Hemática, Química Sanguínea de 6 elementos y Examen General de Orina."/>
 <meta property="og:title" content="YoCell Lab | Laboratorio de Análisis Clínicos"/>
-<meta property="og:description" content="Laboratorio de análisis clínicos de bajo costo en San Buenaventura, Coahuila."/>
+<meta property="og:description" content="Análisis clínicos confiables, cerca de ti. San Buenaventura, Coahuila."/>
 <meta property="og:image" content="https://yocelltherapy.com/logo-ycl-full.png"/>
 <meta property="og:type" content="website"/>
+<meta name="theme-color" content="#1E1214">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="ycl-theme.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --r:#a41d23;--rl:#f56c5a;--rd:#6d1220;--r2:rgba(164,29,35,0.08);--r3:rgba(164,29,35,0.18);
-  --bg:#faf6f5;--card:#ffffff;
-  --bord2:rgba(15,23,42,0.09);--bord3:rgba(164,29,35,0.32);
-  --t:#0f172a;--m:#3d5166;--m2:#536880;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1.5}
-#bloodCanvas{position:fixed;inset:0;pointer-events:none;z-index:0}
-.page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:1.4rem 1.25rem 3rem}
+/* Layout: clinical editorial page — hero with an animated drop of cells, patient journey, study cards with collection tubes, responsible officer */
+*{box-sizing:border-box}
+body{font-size:17px;line-height:1.6}
+.lab{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--yct-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+h1,h2,h3{margin:0;font-family:var(--yct-display);letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--yct-accent);outline-offset:3px;border-radius:2px}
 
-/* NAV */
-nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.4rem;border-bottom:none;margin-bottom:2rem;flex-wrap:wrap;gap:10px;background:#fff;border:1px solid var(--bord2);border-radius:14px;box-shadow:0 3px 14px rgba(164,29,35,.05);position:relative;z-index:2}
-.back-link{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--m2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
-.back-link:hover{color:var(--r)}
-.lab-logo{display:flex;align-items:center}
-.lab-logo img{height:34px;display:block}
+/* Hero */
+.l-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;padding-block:64px 56px}
+.l-eyebrow{color:var(--yct-accent);display:flex;gap:10px;align-items:center}
+.l-eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--yct-accent);box-shadow:0 0 0 4px var(--yct-accent-soft);flex:none}
+.l-hero h1{font-weight:300;font-size:clamp(40px,5.8vw,74px);line-height:1.02;margin-top:20px}
+.l-hero h1 em{font-style:normal;font-weight:400;color:var(--yct-accent)}
+.l-lede{font-size:19px;color:var(--yct-muted);max-width:52ch;margin-top:22px}
+.l-status{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-family:var(--yct-mono);font-size:11px;letter-spacing:.06em;color:var(--yct-muted);border:1px dashed #C9AFB1;border-radius:999px;padding:5px 12px}
+.l-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#E8C35A}
+.l-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.l-btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;text-decoration:none;padding:12px 20px;border-radius:999px;border:1px solid var(--yct-ink);transition:background .2s,color .2s,border-color .2s}
+.l-btn.solid{background:var(--yct-ink);color:var(--yct-bg)}
+.l-btn.solid:hover{background:var(--yct-accent);border-color:var(--yct-accent)}
+.l-btn.ghost{color:var(--yct-ink)}
+.l-btn.ghost:hover{background:var(--yct-ink);color:var(--yct-bg)}
+.drop{position:relative;justify-self:end;width:100%;max-width:440px;aspect-ratio:1/1.06;margin:0;border-radius:12px;overflow:hidden;background:radial-gradient(120% 90% at 50% 70%,#FFFFFF 0%,#FBF4F3 55%,#F3E6E5 100%);border:1px solid var(--yct-line)}
+.drop canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.drop figcaption{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted)}
+@media (max-width:880px){.l-hero{grid-template-columns:1fr;gap:36px;padding-block:40px}.drop{justify-self:center;max-width:400px}}
 
-/* HERO */
-.hero{background:var(--card);border:1px solid var(--bord2);border-radius:18px;padding:2.1rem 2rem;margin-bottom:1.5rem;box-shadow:0 6px 28px rgba(164,29,35,.07);position:relative;overflow:hidden}
-.hero-glow{position:absolute;top:-100px;right:-100px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(164,29,35,.08) 0%,transparent 65%);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1fr 128px;gap:2rem;align-items:center;position:relative;z-index:1}
-.kicker{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--r);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px;font-weight:500}
-.kicker::before{content:'';width:16px;height:1.5px;background:var(--rl);border-radius:2px}
-h1{font-size:clamp(1.6rem,4vw,2.35rem);font-weight:700;color:var(--t);line-height:1.16;margin-bottom:.7rem;letter-spacing:-.02em}
-h1 span{color:var(--r)}
-.loc-row{font-size:1.02rem;color:var(--m2);margin-bottom:1rem;display:flex;align-items:center;gap:5px}
-.loc-row::before{content:'◎';font-size:.8rem;color:var(--rl)}
-.lead{font-size:1.18rem;color:var(--m);max-width:640px;margin-bottom:1.6rem;line-height:1.75}
-.cta-row{display:flex;gap:12px;flex-wrap:wrap}
-.cta-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s;border:1.5px solid transparent}
-.cta-btn.primary{background:var(--r);color:#fff}
-.cta-btn.primary:hover{background:var(--rd);transform:translateY(-1px);box-shadow:0 6px 18px rgba(164,29,35,.3)}
-.cta-btn.secondary{background:#fff;border-color:var(--bord2);color:var(--t)}
-.cta-btn.secondary:hover{border-color:var(--r);color:var(--r)}
-.logo-badge{display:flex;align-items:center;justify-content:center}
-.logo-badge-circle{width:150px;height:150px;border-radius:50%;background:#fff;border:2.5px solid var(--r3);box-shadow:0 0 0 6px rgba(164,29,35,.06),0 8px 22px rgba(164,29,35,.14);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.logo-badge-circle img{width:70%;height:70%;object-fit:contain;display:block}
+/* Trust strip */
+.trust{border-block:1px solid var(--yct-line)}
+.trust .lab{display:grid;grid-template-columns:repeat(4,1fr)}
+.t-item{padding:22px 20px 22px 0;display:grid;gap:4px}
+.t-item+.t-item{padding-left:20px;border-left:1px solid var(--yct-line)}
+.t-item strong{font-family:var(--yct-display);font-weight:400;font-size:19px;color:var(--yct-ink)}
+.t-item span{color:var(--yct-muted);font-size:14px;line-height:1.45}
+@media (max-width:820px){.trust .lab{grid-template-columns:1fr 1fr}.t-item:nth-child(3){padding-left:0;border-left:0}.t-item:nth-child(n+3){border-top:1px solid var(--yct-line)}}
 
-/* MODAL DE ACCESO */
-.access-overlay{position:fixed;inset:0;background:rgba(20,8,10,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
+/* Sections */
+.l-sec{padding-block:88px}
+.l-head{display:grid;grid-template-columns:220px 1fr;gap:32px;margin-bottom:44px}
+.l-head .mono{color:var(--yct-muted);padding-top:10px}
+.l-head h2{font-weight:300;font-size:clamp(30px,4vw,48px);line-height:1.06}
+.l-head p{color:var(--yct-muted);max-width:60ch;margin-top:16px;font-size:18px}
+@media (max-width:760px){.l-sec{padding-block:60px}.l-head{grid-template-columns:1fr;gap:10px}}
+
+/* Patient journey */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s}
+.steps li{position:relative;padding:0 22px 0 0;counter-increment:s}
+.steps li::before{content:counter(s,decimal-leading-zero);display:block;font-family:var(--yct-mono);font-size:12px;color:var(--yct-accent);margin-bottom:14px}
+.steps li::after{content:"";position:absolute;top:7px;left:34px;right:14px;height:1px;background:var(--yct-line)}
+.steps li:last-child::after{display:none}
+.steps h3{font-size:21px;font-weight:400;margin-bottom:8px}
+.steps p{color:var(--yct-muted);font-size:15.5px}
+@media (max-width:820px){.steps{grid-template-columns:1fr 1fr;row-gap:32px}.steps li:nth-child(2)::after{display:none}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}.steps li::after{display:none}}
+
+/* Studies */
+.studies{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.study{background:var(--yct-surface);border:1px solid var(--yct-line);border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.study .code{align-self:flex-start;font-family:var(--yct-mono);font-size:11px;letter-spacing:.06em;color:var(--yct-accent);border:1px solid var(--yct-accent);border-radius:3px;padding:2px 7px}
+.study h3{font-size:22px;font-weight:400}
+.study>p{color:var(--yct-muted);font-size:15.5px}
+.study dl{margin:auto 0 0;padding-top:14px;border-top:1px solid var(--yct-line);display:grid;gap:10px;font-size:14px}
+.study dt{font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted)}
+.study dd{margin:2px 0 0;color:var(--yct-ink);display:flex;align-items:center;gap:8px}
+.tube{width:10px;height:22px;border-radius:2px 2px 6px 6px;border:1px solid rgba(30,18,20,.25);position:relative;flex:none;background:linear-gradient(#fff 0 35%,var(--fill,#C0392B) 35%)}
+.tube::before{content:"";position:absolute;left:-2px;right:-2px;top:-5px;height:6px;border-radius:2px;background:var(--cap)}
+.studies-note{margin-top:22px;color:var(--yct-muted);font-size:15px;max-width:70ch}
+@media (max-width:900px){.studies{grid-template-columns:1fr}}
+
+/* Visit */
+.visit{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.v-card{background:var(--yct-surface);border:1px solid var(--yct-line);border-radius:8px;padding:26px;display:grid;gap:10px;align-content:start;min-width:0}
+.v-card h3{font-size:20px;font-weight:400}
+.v-card p{color:var(--yct-muted);font-size:15px}
+.sched{display:grid;gap:0}
+.sched div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--yct-line);font-variant-numeric:tabular-nums;font-size:15px}
+.sched div span:last-child{font-family:var(--yct-mono);font-size:13px}
+.v-card.dark{background:var(--yct-band);border-color:var(--yct-band);color:var(--yct-band-ink)}
+.v-card.dark p{color:var(--yct-band-muted)}
+.mailrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:6px}
+.mailrow code{font-family:var(--yct-mono);font-size:14px;user-select:all;color:var(--yct-band-ink);overflow-wrap:anywhere}
+.mailrow button{all:unset;cursor:pointer;font-family:var(--yct-mono);font-size:11.5px;border:1px solid rgba(244,236,235,.35);border-radius:999px;padding:5px 11px}
+.mailrow button:hover{border-color:#F28C80;color:#F28C80}
+@media (max-width:900px){.visit{grid-template-columns:1fr}}
+
+/* Responsible officer */
+.officer{display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:start}
+.officer figure{margin:0}
+.officer img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center 22%;border-radius:50%;border:6px solid var(--yct-surface);box-shadow:0 0 0 1px var(--yct-line);display:block;background:var(--yct-line)}
+.officer figcaption{margin-top:16px;text-align:center}
+.officer figcaption b{display:block;font-family:var(--yct-display);font-weight:400;font-size:20px}
+.officer figcaption span{color:var(--yct-muted);font-size:14px}
+.quote{font-family:var(--yct-display);font-weight:300;font-size:clamp(22px,2.6vw,30px);line-height:1.3;letter-spacing:-.01em;max-width:30ch}
+.quote::before{content:"“";color:var(--yct-accent)}
+.quote::after{content:"”";color:var(--yct-accent)}
+.creds{list-style:none;margin:30px 0 0;padding:0;display:grid}
+.creds li{display:grid;grid-template-columns:90px 1fr auto;gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid var(--yct-line);font-size:15.5px}
+.creds li:last-child{border-bottom:1px solid var(--yct-line)}
+.creds .deg{font-family:var(--yct-mono);font-size:12px;color:var(--yct-accent)}
+.creds small{display:block;color:var(--yct-muted);font-size:13.5px}
+.creds .ced{font-family:var(--yct-mono);font-size:12px;color:var(--yct-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:820px){.officer{grid-template-columns:1fr;gap:28px}.officer figure{max-width:220px}.creds li{grid-template-columns:70px 1fr}.creds .ced{grid-column:2}}
+
+.staff{padding-block:8px 24px;text-align:right}
+.staff a{font-family:var(--yct-mono);font-size:11px;letter-spacing:.06em;color:var(--yct-muted);text-decoration:none}
+.staff a:hover{color:var(--yct-accent)}
+
+/* Acceso con contraseña (personal) */
+.access-overlay{position:fixed;inset:0;background:rgba(30,18,20,.55);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem}
 .access-overlay.open{display:flex}
-.access-box{background:#fff;border-radius:16px;padding:1.9rem 1.8rem;max-width:340px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center;animation:accPop .18s ease-out}
-@keyframes accPop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
-.access-box .lock{font-size:2rem;margin-bottom:.5rem}
-.access-box h3{font-size:1.2rem;color:var(--t);margin-bottom:.35rem}
-.access-box p{font-size:.95rem;color:var(--m);margin-bottom:1.1rem}
-.access-box input{width:100%;padding:10px 12px;border:1.5px solid var(--bord2);border-radius:8px;font-size:1.05rem;text-align:center;letter-spacing:.08em;margin-bottom:.6rem}
-.access-box input:focus{outline:none;border-color:var(--r)}
-.access-error{color:var(--r);font-size:.9rem;min-height:1.1rem;margin-bottom:.5rem}
-.access-btns{display:flex;gap:8px}
-.access-btns button{flex:1;padding:10px;border-radius:8px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.98rem;cursor:pointer}
-.access-btns .go{background:var(--r);color:#fff}
-.access-btns .go:hover{background:var(--rd)}
-.access-btns .cancel{background:#f1eeec;color:var(--m)}
-.access-box.shake{animation:accShake .35s}
-@keyframes accShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-
-/* SECTION LABEL */
-.sec-label{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--r);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.1rem;display:flex;align-items:center;gap:10px;font-weight:600}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--bord2)}
-
-/* MISION */
-.card{background:var(--card);border:1px solid var(--bord2);border-radius:14px;padding:1.7rem 1.9rem;margin-bottom:1.6rem;box-shadow:0 3px 16px rgba(0,0,0,.04)}
-.card p{color:var(--m);font-size:1.1rem;line-height:1.78}
-.card p+p{margin-top:.7rem}
-
-/* ESTUDIOS */
-.studies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.study{background:#f3efee;border:1px solid var(--bord2);border-radius:13px;padding:1.4rem 1.3rem;position:relative;overflow:hidden;transition:all .22s}
-.study:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 8px 22px rgba(164,29,35,.1);background:#fff}
-.study::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--rl));opacity:0;transition:opacity .22s}
-.study:hover::before{opacity:1}
-.study .num{position:absolute;top:12px;right:14px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#8a4a3a}
-.study .icon{font-size:2.1rem;margin-bottom:.6rem;display:block}
-.study h3{font-size:1.22rem;font-weight:700;color:var(--t);margin-bottom:.45rem}
-.study .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--r2);color:var(--r);border:1px solid var(--r3);padding:2px 9px;border-radius:6px;margin-bottom:.55rem;font-weight:600}
-.study p{font-size:16px;color:var(--m);line-height:1.62}
-
-/* CONTACTO */
-.contact-strip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:linear-gradient(135deg,rgba(164,29,35,.06),rgba(245,108,90,.05));border:1.5px solid var(--r3);border-radius:14px;padding:1.4rem 1.7rem;margin-bottom:1.5rem}
-.contact-strip p{font-size:1.12rem;color:var(--t);font-weight:500}
-.contact-strip p strong{color:var(--r)}
-
-footer{text-align:center;padding:2rem 0 1rem;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--m2)}
-
-@media(max-width:700px){
-  .studies-grid{grid-template-columns:1fr}
-  .hero-grid{grid-template-columns:1fr;text-align:left}
-  .logo-badge{justify-content:flex-start}
-  .logo-badge-circle{width:104px;height:104px}
-  h1{font-size:1.6rem}
-  .hero{padding:1.6rem 1.4rem}
-  .contact-strip{flex-direction:column;align-items:flex-start;text-align:left}
-}
-/* UBICACIÓN & HORARIOS */
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.info-block{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.3rem 1.4rem}
-.info-block h4{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--r);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.7rem;font-weight:600;display:flex;align-items:center;gap:6px}
-.info-block p{font-size:1.06rem;color:var(--m);line-height:1.65}
-.info-block .addr-note{font-size:.9rem;color:var(--m2);font-style:italic;margin-top:.4rem}
-.sched-row{display:flex;justify-content:space-between;gap:10px;padding:.4rem 0;border-bottom:1px dashed var(--bord2);font-size:1.03rem}
-.sched-row:last-child{border-bottom:none}
-.sched-row span:first-child{color:var(--t);font-weight:600}
-.sched-row span:last-child{color:var(--m);font-family:'JetBrains Mono',monospace;font-size:.95rem}
-
-/* RESPALDO ACADÉMICO */
-.acad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.acad{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.15rem 1.1rem;text-align:center;transition:all .2s}
-.acad:hover{border-color:var(--bord3);box-shadow:0 5px 16px rgba(164,29,35,.08);transform:translateY(-2px)}
-.acad-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--r);background:var(--r2);border:1px solid var(--r3);padding:3px 10px;border-radius:6px;margin-bottom:.6rem}
-.acad h4{font-size:1.06rem;font-weight:600;color:var(--t);margin-bottom:.25rem;line-height:1.3}
-.acad p{font-size:.94rem;color:var(--m2)}
-
-@media(max-width:700px){
-  .info-grid{grid-template-columns:1fr}
-  .acad-grid{grid-template-columns:1fr}
-}
+.access-box{background:#fff;border-radius:12px;padding:28px 26px;max-width:340px;width:100%;text-align:center;border:1px solid var(--yct-line)}
+.access-box .lock{font-size:1.6rem}
+.access-box h3{font-size:22px;font-weight:400;margin:6px 0 4px}
+.access-box p{color:var(--yct-muted);font-size:14px;margin-bottom:14px}
+.access-box input{width:100%;padding:11px 14px;border:1px solid var(--yct-line);border-radius:8px;font-size:15px;text-align:center}
+.access-error{color:var(--yct-accent);font-size:13px;min-height:18px;margin:6px 0}
+.access-btns{display:flex;gap:10px}
+.access-btns button{flex:1;padding:11px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid var(--yct-ink)}
+.access-btns .cancel{background:transparent;color:var(--yct-ink)}
+.access-btns .go{background:var(--yct-ink);color:var(--yct-bg)}
+.shake{animation:sh .35s}
+@keyframes sh{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
 </style>
 </head>
 <body>
-<canvas id="bloodCanvas"></canvas>
+<!-- yct:header -->
+<div class="yct-nav"><div class="yct-wrap">
+<a class="yct-brand" href="yocell-lab.html"><img src="logo-ycl-drop.png" alt="" width="24" height="34" style="width:auto;height:34px"><span>Yo<b>Cell</b> Lab</span></a>
+<div class="yct-links" id="yctLinks" role="navigation" aria-label="Laboratorio">
+<a href="yocell-lab.html">Laboratorio</a><a href="resultados.html">Resultados</a><a href="/">YoCellTherapy</a>
+<a class="yct-m" href="resultados.html">Consultar resultados</a>
+</div>
+<a class="yct-btn" href="resultados.html">Consultar resultados</a>
+<button type="button" class="yct-burger" id="yctBurger" aria-expanded="false" aria-controls="yctLinks" aria-label="Menú"><span></span><span></span></button>
+</div></div>
+<!-- /yct:header -->
 
-<!-- MODAL DE ACCESO -->
+
+<!-- Acceso para personal (registro y resultados) -->
 <div class="access-overlay" id="accessOverlay">
-  <div class="access-box" id="accessBox">
-    <div class="lock">🔒</div>
-    <h3>Acceso restringido</h3>
+  <div class="access-box" id="accessBox" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+    <div class="lock" aria-hidden="true">🔒</div>
+    <h3 id="accTitle">Acceso restringido</h3>
     <p>Ingresa la contraseña para continuar.</p>
-    <input type="password" id="accessInput" placeholder="Contraseña" autocomplete="off">
+    <input type="password" id="accessInput" placeholder="Contraseña" autocomplete="off" aria-label="Contraseña">
     <div class="access-error" id="accessError"></div>
     <div class="access-btns">
-      <button class="cancel" onclick="closeAccess()">Cancelar</button>
-      <button class="go" onclick="checkAccess()">Entrar</button>
+      <button class="cancel" type="button" onclick="closeAccess()">Cancelar</button>
+      <button class="go" type="button" onclick="checkAccess()">Entrar</button>
     </div>
   </div>
 </div>
 
-<div class="page">
-
-<nav>
-  <a href="index.html" class="back-link">← Yair Omar Chávez-Estrada</a>
-  <div class="lab-logo">
-    <img src="logo-ycl-full.png" alt="YoCell Lab">
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-grid">
+<main>
+  <section class="lab l-hero">
     <div>
-      <div class="kicker">Laboratorio de Análisis Clínicos</div>
-      <h1>YoCell Lab — <span>análisis clínicos accesibles</span> para San Buenaventura</h1>
-      <p class="loc-row">San Buenaventura, Coahuila</p>
-      <p class="lead">Un laboratorio de análisis clínicos de bajo costo, nacido en el municipio de San Buenaventura, Coahuila, con el objetivo de acercar estudios básicos de calidad a la comunidad, con procesos claros y resultados confiables.</p>
-      <div class="cta-row">
-        <a href="registro-etiquetas.html" class="cta-btn primary" onclick="return requestAccess(event,'registro-etiquetas.html')">🧪 Registro de pacientes →</a>
-        <a href="resultados.html" class="cta-btn secondary" onclick="return requestAccess(event,'resultados.html')">📄 Resultados</a>
+      <div class="l-eyebrow mono">Laboratorio de análisis clínicos · San Buenaventura, Coahuila</div>
+      <h1>Análisis clínicos confiables, <em>cerca de ti.</em></h1>
+      <p class="l-lede">En YoCell Lab cuidamos cada muestra con el rigor de un laboratorio de especialidad y el trato cercano de tu comunidad. Resultados claros, precios accesibles y una persona responsable a la que puedes conocer.</p>
+      <span class="l-status">En construcción · en trámite de autorización sanitaria</span>
+      <div class="l-ctas">
+        <a class="l-btn solid" href="#estudios">Ver estudios</a>
+        <a class="l-btn ghost" href="resultados.html" onclick="return requestAccess(event,'resultados.html')">Consultar resultados</a>
       </div>
     </div>
-    <div class="logo-badge">
-      <div class="logo-badge-circle">
-        <img src="logo-ycl-drop.png" alt="YoCell Lab">
+    <figure class="drop" aria-label="Gota de sangre formada por células, animada">
+      <canvas id="dropCanvas" role="img" aria-label="Una gota formada por células rojas que laten suavemente"></canvas>
+      <figcaption><span>Una gota, muchas respuestas</span><span>YoCell Lab</span></figcaption>
+    </figure>
+  </section>
+
+  <div class="trust">
+    <div class="lab">
+      <div class="t-item"><strong>Responsable titulado</strong><span>QBP con cédula profesional 11639208</span></div>
+      <div class="t-item"><strong>Control de calidad</strong><span>Controles internos en cada corrida</span></div>
+      <div class="t-item"><strong>Resultados con folio</strong><span>Consulta privada en línea</span></div>
+      <div class="t-item"><strong>Precio accesible</strong><span>Estudios esenciales a bajo costo</span></div>
+    </div>
+  </div>
+
+  <section class="lab l-sec" id="proceso">
+    <div class="l-head"><div class="mono">Tu visita</div><div><h2>Así de sencillo es hacerte un estudio</h2><p>Te acompañamos en cada paso, desde la toma de muestra hasta que tienes tus resultados en la mano.</p></div></div>
+    <ol class="steps">
+      <li><h3>Llega a tu cita</h3><p>Acude en el horario de toma de muestras. Si tu estudio requiere ayuno, te lo indicamos antes.</p></li>
+      <li><h3>Toma de muestra</h3><p>Tomamos tu muestra con material estéril y de un solo uso, con calma y cuidado.</p></li>
+      <li><h3>Análisis</h3><p>Procesamos tu muestra en el laboratorio con controles de calidad en cada corrida.</p></li>
+      <li><h3>Tus resultados</h3><p>Consulta tus resultados con tu folio o recógelos directamente en el laboratorio.</p></li>
+    </ol>
+  </section>
+
+  <section class="lab l-sec" id="estudios" style="padding-top:0">
+    <div class="l-head"><div class="mono">Estudios · Fase inicial</div><div><h2>Estudios disponibles</h2><p>Iniciamos con tres estudios básicos, de los más solicitados en consulta general, e iremos ampliando el catálogo conforme el proyecto crezca.</p></div></div>
+    <div class="studies">
+      <article class="study">
+        <span class="code">BH</span>
+        <h3>Biometría Hemática</h3>
+        <p>Evalúa glóbulos rojos, blancos y plaquetas. Útil para detectar anemia, infecciones y otras alteraciones generales de la sangre.</p>
+        <dl>
+          <div><dt>Muestra</dt><dd><i class="tube" style="--cap:#9B8CF2"></i>Sangre venosa · tubo lila (EDTA)</dd></div>
+          <div><dt>Preparación</dt><dd>No requiere ayuno</dd></div>
+        </dl>
+      </article>
+      <article class="study">
+        <span class="code">QS · 6 elementos</span>
+        <h3>Química Sanguínea de 6 Elementos</h3>
+        <p>Glucosa, ácido úrico, colesterol total, creatinina, nitrógeno ureico y triglicéridos en suero. Útil para el seguimiento de diabetes, función renal, colesterol y triglicéridos.</p>
+        <dl>
+          <div><dt>Muestra</dt><dd><i class="tube" style="--cap:#E8C35A;--fill:#E9D79A"></i>Sangre venosa · suero</dd></div>
+          <div><dt>Preparación</dt><dd>Ayuno de 8 horas (máximo 12)</dd></div>
+        </dl>
+      </article>
+      <article class="study">
+        <span class="code">EGO</span>
+        <h3>Examen General de Orina</h3>
+        <p>Análisis físico, químico y microscópico de la orina, de apoyo en el diagnóstico de infecciones urinarias y otras condiciones renales.</p>
+        <dl>
+          <div><dt>Muestra</dt><dd><i class="tube" style="--cap:#F4ECEB;--fill:#EFD88A"></i>Frasco estéril · primera orina del día</dd></div>
+          <div><dt>Preparación</dt><dd>Chorro medio, previo aseo</dd></div>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="lab l-sec" id="visita" style="padding-top:0">
+    <div class="l-head"><div class="mono">Ubicación y horarios</div><div><h2>Te esperamos</h2></div></div>
+    <div class="visit">
+      <div class="v-card"><span class="mono" style="color:var(--yct-accent)">Ubicación</span><h3>San Buenaventura, Coahuila</h3><p>C.P. 25500</p><p>Dirección exacta próximamente, en trámite de autorización sanitaria.</p></div>
+      <div class="v-card"><span class="mono" style="color:var(--yct-accent)">Toma de muestras</span><h3>Fines de semana</h3><div class="sched"><div><span>Sábado</span><span>7:00 – 17:00</span></div><div><span>Domingo</span><span>9:00 – 12:00</span></div></div></div>
+      <div class="v-card dark"><span class="mono" style="color:#F28C80">Contacto</span><h3>¿Quieres agendar o tienes una duda?</h3><p>Escríbenos y te respondemos personalmente.</p><div class="mailrow"><code id="labMail">laboratorio@yocelltherapy.com</code><button type="button" id="copyMail">Copiar</button></div></div>
+    </div>
+  </section>
+
+  <section class="lab l-sec" id="responsable" style="padding-top:0">
+    <div class="l-head"><div class="mono">Responsable sanitario</div><div><h2>Una persona a la que puedes conocer</h2></div></div>
+    <div class="officer">
+      <figure><img src="yoce24.jpg" alt="Yair Omar Chávez-Estrada, responsable sanitario de YoCell Lab" loading="lazy"><figcaption><b>Yair Omar Chávez-Estrada</b><span>Responsable sanitario · QBP, MCM</span></figcaption></figure>
+      <div>
+        <p class="quote">Quiero que la ciencia y el diagnóstico clínico de calidad también estén al alcance de San Buenaventura, el municipio donde nací.</p>
+        <ul class="creds">
+          <li><span class="deg">QBP</span><div>Químico Bacteriólogo Parasitólogo<small>Universidad Autónoma de Nuevo León</small></div><span class="ced">Céd. 11639208</span></li>
+          <li><span class="deg">M en C</span><div>Maestría en Ciencias Médicas<small>Universidad del Noreste</small></div><span class="ced">Céd. 14167483</span></li>
+          <li><span class="deg">Dr en C</span><div>Candidato a Doctor en Ciencias de la Salud<small>Universidad Anáhuac México Norte</small></div><span class="ced">En curso</span></li>
+        </ul>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- MISION -->
-<p class="sec-label">Sobre el Proyecto</p>
-<div class="card">
-  <p>YoCell Lab busca ofrecer estudios de laboratorio esenciales a un costo accesible, comenzando en San Buenaventura, Coahuila — el municipio donde nací y donde quiero que la ciencia y el diagnóstico clínico de calidad también estén al alcance de la comunidad.</p>
-  <p>Iniciamos con tres estudios básicos, de los más solicitados en consulta general, e iremos ampliando el catálogo conforme el proyecto crezca.</p>
-</div>
+  <div class="lab staff"><a href="registro-etiquetas.html" onclick="return requestAccess(event,'registro-etiquetas.html')">Acceso para personal · Registro de pacientes</a></div>
+</main>
 
-<!-- ESTUDIOS -->
-<p class="sec-label">Estudios Disponibles · Fase Inicial</p>
-<div class="card" style="padding:1.4rem 1.4rem">
-  <div class="studies-grid">
-    <div class="study">
-      <div class="num">01</div>
-      <div class="icon">🩸</div>
-      <span class="tag">BH</span>
-      <h3>Biometría Hemática</h3>
-      <p>Evalúa glóbulos rojos, blancos y plaquetas. Útil para detectar <strong>anemia, infecciones y otras alteraciones generales de la sangre</strong>.</p>
-    </div>
-    <div class="study">
-      <div class="num">02</div>
-      <div class="icon">🧪</div>
-      <span class="tag">QS · 6 ELEMENTOS</span>
-      <h3>Química Sanguínea de 6 Elementos</h3>
-      <p>Glucosa, Ácido Úrico, Colesterol Total, Creatinina, Nitrógeno Ureico y Triglicéridos en suero. Útil para el seguimiento general de <strong>diabetes, función renal y niveles de colesterol y triglicéridos</strong>. Requiere ayuno de 8 horas (máximo 12).</p>
-    </div>
-    <div class="study">
-      <div class="num">03</div>
-      <div class="icon">🧫</div>
-      <span class="tag">EGO</span>
-      <h3>Examen General de Orina</h3>
-      <p>Análisis físico, químico y microscópico de la orina, de apoyo en el diagnóstico de <strong>infecciones urinarias y otras condiciones renales</strong>.</p>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACTO -->
-<div class="contact-strip">
-  <p>¿Quieres agendar tu estudio o resolver una duda? <strong>Escríbenos directamente.</strong></p>
-  <a href="mailto:laboratorio@yocelltherapy.com" class="cta-btn primary" style="white-space:nowrap">✉️ Contactar →</a>
-</div>
-
-<!-- UBICACIÓN Y HORARIOS -->
-<p class="sec-label">Ubicación &amp; Horarios</p>
-<div class="info-grid" style="margin-bottom:1.6rem">
-  <div class="info-block">
-    <h4>📍 Ubicación</h4>
-    <p>San Buenaventura, Coahuila<br>C.P. 25500</p>
-    <p class="addr-note">Dirección exacta próximamente — en trámite de autorización sanitaria.</p>
-  </div>
-  <div class="info-block">
-    <h4>🕐 Horario de Toma de Muestras</h4>
-    <div class="sched-row"><span>Sábado</span><span>7:00 – 17:00</span></div>
-    <div class="sched-row"><span>Domingo</span><span>9:00 – 12:00</span></div>
-  </div>
-</div>
-
-<!-- RESPALDO ACADÉMICO -->
-<p class="sec-label">Responsable Sanitario: Yair Omar Chávez-Estrada</p>
-<div class="acad-grid" style="margin-bottom:1.6rem">
-  <div class="acad">
-    <div class="acad-badge">QBP</div>
-    <h4>Químico Bacteriólogo Parasitólogo</h4>
-    <p>Universidad Autónoma de Nuevo León</p>
-    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--r);margin-top:.35rem">Céd. Prof. 11639208</p>
-  </div>
-  <div class="acad">
-    <div class="acad-badge">M en C</div>
-    <h4>Maestría en Ciencias Médicas</h4>
-    <p>Universidad del Noreste</p>
-    <p style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--r);margin-top:.35rem">Céd. Prof. 14167483</p>
-  </div>
-  <div class="acad">
-    <div class="acad-badge">Dr en C</div>
-    <h4>Candidato a Doctor en Ciencias de la Salud</h4>
-    <p>Universidad Anáhuac México Norte</p>
-  </div>
-</div>
-
-<footer>© 2026 YoCell Lab · San Buenaventura, Coahuila</footer>
-
-</div>
 <script>
 /* ═══ ACCESO CON CONTRASEÑA (Registro / Resultados) ═══ */
 const ACCESS_PASSWORD = 'YCL2026';
@@ -310,86 +315,72 @@ document.getElementById('accessInput')?.addEventListener('keydown', e=>{
 document.getElementById('accessOverlay')?.addEventListener('click', e=>{
   if(e.target.id === 'accessOverlay') closeAccess();
 });
+/* ═══ Copiar correo ═══ */
+document.getElementById('copyMail').addEventListener('click',function(){
+  var b=this,t=document.getElementById('labMail').textContent;
+  function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('labMail'));var s=getSelection();s.removeAllRanges();s.addRange(r)}
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){b.textContent='Copiado';setTimeout(function(){b.textContent='Copiar'},1600)}).catch(sel)}else sel();
+});
 
-/* ═══ FONDO ANIMADO — círculos rojos que flotan y aparecen/desaparecen ═══ */
+/* ═══ Gota de células animada ═══ */
 (function(){
-  const canvas = document.getElementById('bloodCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const REDS = ['#f6b3a6','#f56c5a','#ea7355','#e8574a','#d1392f','#c0392b','#a41d23','#8f2447','#6d1220'];
-  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  class Circle{
-    constructor(){ this.reset(true); }
-    reset(initial){
-      this.baseX = Math.random()*W;
-      this.baseY = Math.random()*H;
-      this.r = 2 + Math.random()*Math.random()*16;
-      this.color = pick(REDS);
-      this.maxAlpha = 0.14 + Math.random()*0.28;
-      // ciclo de vida: aparece, se sostiene, desaparece
-      this.fadeIn = 1 + Math.random()*1.4;
-      this.hold = 1.2 + Math.random()*2.2;
-      this.fadeOut = 1 + Math.random()*1.6;
-      this.cycle = this.fadeIn + this.hold + this.fadeOut;
-      this.age = initial ? Math.random()*this.cycle : 0;
-      // flote y deriva más amplios y rápidos
-      this.bobPhase = Math.random()*Math.PI*2;
-      this.bobSpeed = 0.5 + Math.random()*0.7;
-      this.bobAmp = 20 + Math.random()*34;
-      this.driftPhase = Math.random()*Math.PI*2;
-      this.driftSpeed = 0.4 + Math.random()*0.55;
-      this.driftAmp = 18 + Math.random()*30;
-      // pulso de tamaño
-      this.pulsePhase = Math.random()*Math.PI*2;
-      this.pulseSpeed = 0.6 + Math.random()*0.8;
-      this.pulseAmp = 0.25 + Math.random()*0.3;
-    }
-    update(dt){
-      this.age += dt;
-      if(this.age >= this.cycle){ this.reset(false); }
-    }
-    alpha(){
-      if(this.age < this.fadeIn) return this.maxAlpha * (this.age/this.fadeIn);
-      if(this.age < this.fadeIn + this.hold) return this.maxAlpha;
-      const t = (this.age - this.fadeIn - this.hold)/this.fadeOut;
-      return this.maxAlpha * (1 - t);
-    }
-    draw(t){
-      const a = this.alpha();
-      if(a <= 0.002) return;
-      const x = this.baseX + Math.sin(t*this.driftSpeed + this.driftPhase)*this.driftAmp;
-      const y = this.baseY + Math.sin(t*this.bobSpeed + this.bobPhase)*this.bobAmp + Math.cos(t*this.driftSpeed*0.7 + this.driftPhase)*this.bobAmp*0.4;
-      const r = this.r * (1 + Math.sin(t*this.pulseSpeed + this.pulsePhase)*this.pulseAmp);
-      ctx.beginPath();
-      ctx.arc(x, y, Math.max(0.5,r), 0, Math.PI*2);
-      ctx.fillStyle = this.color;
-      ctx.globalAlpha = a;
-      ctx.fill();
+  var cv=document.getElementById('dropCanvas'),ctx=cv.getContext('2d');
+  var PAL=['#F6B3A6','#F28C80','#EA7355','#E8574A','#D1392F','#C0392B','#A41D23','#8F2447','#6D1220'];
+  var W,H,cx,cy,R,tip,cells=[],seed=23;
+  function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+  function inside(x,y,m){
+    if((x-cx)*(x-cx)+(y-cy)*(y-cy)<=(R-m)*(R-m))return true;
+    if(y<tip+m||y>cy)return false;
+    var w=R*Math.pow((y-tip)/(cy-tip),1.25)-m*1.4;return Math.abs(x-cx)<=w;
+  }
+  function build(){
+    var r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;
+    cv.width=Math.round(W*d);cv.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);
+    R=Math.min(W*.27,H*.25);cx=W/2;cy=H*.58;tip=cy-R*2.05;cells=[];seed=23;
+    var rad=[];for(var i=0;i<900;i++)rad.push(R*(.035+Math.pow(rnd(),2.2)*.2));rad.sort(function(a,b){return b-a});
+    for(var k=0;k<rad.length;k++){var rr=rad[k];
+      for(var a=0;a<60;a++){var x=cx-R+rnd()*2*R,y=tip+rnd()*(cy+R-tip);
+        if(!inside(x,y,rr*.55))continue;var ok=true;
+        for(var j=0;j<cells.length;j++){var c=cells[j];var dx=c.x-x,dy=c.y-y;if(dx*dx+dy*dy<(c.r+rr+1.6)*(c.r+rr+1.6)){ok=false;break}}
+        if(ok){var tt=Math.max(0,Math.min(1,((cx-x)/R*.35+(y-tip)/(cy+R-tip))*.85+rnd()*.25));
+          cells.push({x:x,y:y,r:rr,c:PAL[Math.min(8,Math.floor(tt*9))],p:rnd()*6.283,s:.6+rnd()*.8});break}}
     }
   }
-
-  const N = window.innerWidth < 700 ? 110 : 200;
-  const circles = [];
-  for(let i=0;i<N;i++) circles.push(new Circle());
-
-  let last = performance.now();
-  function frame(now){
-    const dt = Math.min(0.05, (now-last)/1000);
-    last = now;
-    const t = now/1000;
+  function frame(t){
     ctx.clearRect(0,0,W,H);
-    circles.forEach(c=>{ c.update(dt); c.draw(t); });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(frame);
+    var beat=t%1.6,pulse=Math.max(0,1-beat/1.1);
+    var bob=Math.sin(t*.8)*3;
+    /* Halo del latido */
+    var k=beat/1.6;ctx.strokeStyle='rgba(163,36,58,'+(.22*(1-k))+')';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.ellipse(cx,cy+bob-R*.35,R*(1.25+k*.55),R*(1.55+k*.55),0,0,6.283);ctx.stroke();
+    /* Sombra */
+    var g=ctx.createRadialGradient(cx,cy+R*1.18,0,cx,cy+R*1.18,R*.9);g.addColorStop(0,'rgba(109,18,32,.18)');g.addColorStop(1,'rgba(109,18,32,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(cx,cy+R*1.18,R*.9,R*.16,0,0,6.283);ctx.fill();
+    var wave=(t*.35)%1.6-.3;
+    for(var i=0;i<cells.length;i++){var c=cells[i];
+      var br=1+.05*Math.sin(t*c.s*1.6+c.p)+.06*pulse*(1-(c.y-tip)/(cy+R-tip)*.4);
+      var x=c.x+Math.sin(t*c.s*.7+c.p)*.9,y=c.y+bob+Math.cos(t*c.s*.6+c.p)*.9;
+      ctx.globalAlpha=.92;ctx.fillStyle=c.c;ctx.beginPath();ctx.arc(x,y,c.r*br,0,6.283);ctx.fill();
+      var wy=tip+wave*(cy+R-tip)*1.2,dw=Math.abs(c.y-wy)/(R*.35);
+      if(dw<1){ctx.globalAlpha=.35*(1-dw);ctx.fillStyle='#FFFFFF';ctx.beginPath();ctx.arc(x-c.r*.25,y-c.r*.3,c.r*.45*br,0,6.283);ctx.fill()}
+    }
+    ctx.globalAlpha=1;
   }
-  requestAnimationFrame(frame);
+  build();
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,vis=true,raf=0;
+  function loop(n){frame(n/1000);if(vis&&!reduce)raf=requestAnimationFrame(loop)}
+  if(reduce)frame(.4);else raf=requestAnimationFrame(loop);
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis&&!reduce){cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}}).observe(cv);
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){build();frame(performance.now()/1000)},150)});
 })();
 </script>
+<!-- yct:footer -->
+<div class="yct-foot"><div class="yct-foot-in">
+<div><a class="yct-brand" href="yocell-lab.html"><img src="logo-ycl-drop.png" alt="" width="24" height="34" style="width:auto;height:34px"><span>Yo<b>Cell</b> Lab</span></a><p>Laboratorio de análisis clínicos en construcción en San Buenaventura, Coahuila.</p></div>
+<div><h4>Laboratorio</h4><ul><li><a href="yocell-lab.html">Inicio</a></li><li><a href="resultados.html">Consultar resultados</a></li></ul></div>
+<div><h4>YoCellTherapy</h4><ul><li><a href="/">Sitio principal</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+</div><div class="yct-foot-bot"><span>© 2026 YoCell Lab · San Buenaventura, Coahuila</span><span>Parte de YoCellTherapy</span></div></div>
+<script src="yct-site.js" defer></script>
+<!-- /yct:footer -->
 </body>
 </html>
-
