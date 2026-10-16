@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#0C1A1D">
 <title>YoCellTherapy | CAR-T, Terapia Celular e IA en Salud · México</title>
-<meta name="description" content="YoCellTherapy: consultoría científica en terapia celular y génica, manufactura cGMP de ATMPs, CAR-T e IA aplicada a la salud. Monterrey, México. Proyectos en LATAM."/>
+<meta name="description" content="YoCellTherapy: consultoría científica en terapia celular y génica, manufactura cGMP de medicamentos de terapia avanzada (ATMPs), CAR-T e IA aplicada a la salud. Monterrey, México. Proyectos en LATAM."/>
 <meta name="keywords" content="YoCellTherapy, CAR-T México, terapia celular México, YOCE, Yair Omar Chávez Estrada, cell therapy, CAR-T Monterrey, ATMPs México, biotech México, aféresis, criopreservación"/>
 <meta name="author" content="Yair Omar Chávez-Estrada"/>
 <meta property="og:title" content="YoCellTherapy | CAR-T, Terapia Celular e IA en Salud · México"/>
@@ -245,6 +245,18 @@ table.pipe{width:100%;min-width:760px;border-collapse:collapse;font-size:15px}
 .paper .jr{font-size:14px;margin-top:4px}
 .paper .jr i{font-style:italic}
 .paper .jr .c{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);margin-left:8px}
+.more-pubs{margin-top:18px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.more-pubs summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.more-pubs summary::-webkit-details-marker{display:none}
+.more-pubs summary::after{content:"+";font-family:var(--f-mono);color:var(--accent)}
+.more-pubs[open] summary::after{content:"−"}
+.more-pubs ol{list-style:none;margin:0;padding:0 18px 8px}
+.more-pubs li{display:grid;grid-template-columns:70px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px;line-height:1.4}
+.more-pubs .y{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
+.more-pubs b{font-weight:600}
+.more-pubs small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.more-pubs small b{font-weight:600;color:var(--ink)}
+@media (max-width:600px){.more-pubs li{grid-template-columns:1fr;gap:2px}}
 .video{display:flex;gap:16px;align-items:center;margin-top:26px;text-decoration:none;padding:16px 18px;border:1px solid var(--line);border-radius:6px}
 .video:hover{border-color:var(--accent)}
 .video .play{width:40px;height:40px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
@@ -361,7 +373,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <span class="mono pitch-k" data-en="What is YoCellTherapy?">¿Qué es YoCellTherapy?</span>
         <p class="hook" data-en="What does it take to bring a cell therapy from the research lab to cGMP manufacturing?">¿Qué se necesita para llevar una terapia celular del laboratorio de investigación a una manufactura cGMP?</p>
         <p class="answer" data-en="Rigorous science, quality control and data. That is where we come in.">Ciencia rigurosa, control de calidad y datos. Ahí es donde entramos.</p>
-        <p class="lede" data-en="YoCellTherapy brings scientific and technical expertise in genetically modified T lymphocytes (CAR-T), cGMP manufacturing of ATMPs and clinical artificial intelligence to hospitals, research groups and investors across the region.">YoCellTherapy aporta experiencia científica y técnica en linfocitos T genéticamente modificados (CAR-T), manufactura cGMP de ATMPs e inteligencia artificial clínica a hospitales, grupos de investigación e inversionistas de la región.</p>
+        <p class="lede" data-en="YoCellTherapy brings scientific and technical expertise in genetically modified T lymphocytes (CAR-T), cGMP manufacturing of ATMPs and clinical artificial intelligence to hospitals, research groups and investors across the region.">YoCellTherapy aporta experiencia científica y técnica en linfocitos T genéticamente modificados (CAR-T), manufactura cGMP de medicamentos de terapia avanzada (ATMPs) e inteligencia artificial clínica a hospitales, grupos de investigación e inversionistas de la región.</p>
         <div class="ctas">
           <a class="btn solid" href="#contacto" data-en="Book a consultation →">Agendar consultoría →</a>
           <a class="btn ghost" href="#pipeline" data-en="View pipeline">Ver pipeline</a>
@@ -380,7 +392,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="fact"><strong>1.º</strong><span data-en="decentralized CAR-T manufacturing program in Mexico">programa descentralizado de manufactura CAR-T en México</span></div>
       <div class="fact"><strong>JCO GO</strong><span data-en="Global Oncology, 2025 publication">Global Oncology, publicación 2025</span></div>
       <div class="fact"><strong>ISCT</strong><span data-en="ESP Committee · South &amp; Central America">Comité ESP · Sudamérica y Centroamérica</span></div>
-      <div class="fact"><strong>cGMP</strong><span data-en="Manufacturing standard for ATMPs">Estándar de manufactura de ATMPs</span></div>
+      <div class="fact"><strong>cGMP</strong><span data-en="Manufacturing standard for ATMPs">Estándar de manufactura de medicamentos de terapia avanzada (ATMPs)</span></div>
     </div>
   </div>
 
@@ -406,9 +418,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <p class="intro" data-en="Scientific consulting that covers the full lifecycle of an advanced therapy, from protocol design to batch release and investment evaluation.">Consultoría científica que cubre el ciclo completo de una terapia avanzada, desde el diseño del protocolo hasta la liberación del lote y la evaluación de inversión.</p></div>
       </div>
       <div class="grid6">
-        <div class="svc"><div class="svc-img"><img src="img/plataforma-terapia-celular.webp" alt="Linfocitos T translúcidos con núcleo" loading="lazy" width="800" height="500"><canvas data-scene="cells" aria-hidden="true"></canvas></div><span class="tag">ATMP</span><h3 data-en="Cell Therapy Advisory">Asesoría en Terapia Celular</h3><p data-en="Design, manufacturing and validation of ATMPs. cGMP strategy for CAR-T, stem cells and advanced biologics.">Diseño, manufactura y validación de ATMPs. Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados.</p></div>
+        <div class="svc"><div class="svc-img"><img src="img/plataforma-terapia-celular.webp" alt="Linfocitos T translúcidos con núcleo" loading="lazy" width="800" height="500"><canvas data-scene="cells" aria-hidden="true"></canvas></div><span class="tag">ATMP</span><h3 data-en="Cell Therapy Advisory">Asesoría en Terapia Celular</h3><p data-en="Design, manufacturing and validation of ATMPs. cGMP strategy for CAR-T, stem cells and advanced biologics.">Diseño, manufactura y validación de medicamentos de terapia avanzada (ATMPs). Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados.</p></div>
         <a class="svc" href="protocolos.html"><div class="svc-img"><img src="img/plataforma-bioestadistica.webp" alt="Diagrama de densidad con curvas de nivel" loading="lazy" width="800" height="500"><canvas data-scene="density" aria-hidden="true"></canvas></div><span class="tag">STAT</span><h3 data-en="Biostatistics &amp; Protocols">Bioestadística y Protocolos</h3><p data-en="Statistical design of clinical and preclinical studies, biomedical data analysis.">Diseño estadístico de estudios clínicos y preclínicos, análisis de datos biomédicos.</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
-        <a class="svc" href="ia-salud.html"><div class="svc-img"><img src="img/plataforma-ia.webp" alt="Red neuronal luminosa" loading="lazy" width="800" height="500"><canvas data-scene="network" aria-hidden="true"></canvas></div><span class="tag">ML</span><h3 data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p data-en="ML and clinical prediction models applied to flow cytometry, apheresis and ATMP manufacturing.">Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de ATMPs.</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
+        <a class="svc" href="ia-salud.html"><div class="svc-img"><img src="img/plataforma-ia.webp" alt="Red neuronal luminosa" loading="lazy" width="800" height="500"><canvas data-scene="network" aria-hidden="true"></canvas></div><span class="tag">ML</span><h3 data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p data-en="ML and clinical prediction models applied to flow cytometry, apheresis and ATMP manufacturing.">Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de medicamentos de terapia avanzada (ATMPs).</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
         <a class="svc" href="id-estrategico.html"><div class="svc-img"><img src="img/plataforma-id.webp" alt="Partículas lentivirales con glicoproteínas de envoltura" loading="lazy" width="800" height="500"><canvas data-scene="virions" aria-hidden="true"></canvas></div><span class="tag">R&amp;D</span><h3 data-en="Strategic R&amp;D">I+D Estratégico</h3><p data-en="Evaluation of research proposals, funding advice and pipeline development.">Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines.</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
         <div class="svc"><div class="svc-img"><img src="img/plataforma-calidad.webp" alt="Cámara de Neubauer con células bajo el microscopio" loading="lazy" width="800" height="500"><canvas data-scene="neubauer" aria-hidden="true"></canvas></div><span class="tag">QC</span><h3 data-en="Quality Control">Control de Calidad</h3><p data-en="Microbiological control of cryopreserved products, method validation, transfusion medicine.">Control microbiológico de criopreservados, validación de métodos, medicina transfusional.</p></div>
         <div class="svc"><div class="svc-img"><img src="img/plataforma-inversion.webp" alt="Campo de trayectorias de flujo" loading="lazy" width="800" height="500"><canvas data-scene="flow" aria-hidden="true"></canvas></div><span class="tag">DD</span><h3 data-en="Investor Advisory">Asesoría a Inversionistas</h3><p data-en="Scientific and technical due diligence, biotech startup evaluation and cell therapy feasibility in LATAM.">Due diligence científico-técnico, evaluación de startups biotech y viabilidad de terapia celular en LATAM.</p></div>
@@ -492,9 +504,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <figcaption><b>Yair Omar Chávez-Estrada</b><span data-en="Founder &amp; Scientific Advisor">Fundador y Asesor Científico</span><span>QBP · MCM · <span data-en="PhD candidate">Candidato a Doctor</span></span></figcaption>
         </figure>
         <div class="bio">
-          <p data-en="Scientist and researcher specializing in cell and gene therapy, ATMP manufacturing and hematopoietic cell transplantation. He leads quality control for the first decentralized CAR-T manufacturing program in Mexico, at the Hematology Transplant and Cell Therapy Unit of Hospital Universitario UANL.">Científico e investigador especializado en terapia celular y génica, manufactura de ATMPs y trasplante de células hematopoyéticas. Encabeza el control de calidad del primer programa descentralizado de manufactura CAR-T en México, en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario UANL.</p>
+          <p data-en="Scientist and researcher specializing in cell and gene therapy, ATMP manufacturing and hematopoietic cell transplantation. He takes part in quality control for the first decentralized CAR-T manufacturing program in Mexico, at the Hematology Transplant and Cell Therapy Unit of Hospital Universitario UANL.">Científico e investigador especializado en terapia celular y génica, manufactura de medicamentos de terapia avanzada (ATMPs) y trasplante de células hematopoyéticas. Participa en el control de calidad del primer programa descentralizado de manufactura CAR-T en México, en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario UANL.</p>
           <p data-en="Member of the ISCT ESP Committee for South and Central America. Experienced in science-to-clinic translation and in fostering collaborations between hospitals, academia and industry.">Miembro del comité ESP de la ISCT para Sudamérica y Centroamérica. Con experiencia en translación ciencia–clínica y en fomentar colaboraciones entre hospitales, academia e industria.</p>
-          <div class="creds"><span>CAR-T</span><span>cGMP ATMPs</span><span data-en="Apheresis">Aféresis</span><span data-en="Cryopreservation">Criopreservación</span><span data-en="Flow cytometry">Citometría de flujo</span><span data-en="Biostatistics">Bioestadística</span><span>Machine Learning</span><span>R · Python</span></div>
+          <div class="creds"><span>CAR-T</span><span data-en="cGMP · ATMPs">cGMP · Terapias avanzadas (ATMPs)</span><span data-en="Apheresis">Aféresis</span><span data-en="Cryopreservation">Criopreservación</span><span data-en="Flow cytometry">Citometría de flujo</span><span data-en="Biostatistics">Bioestadística</span><span>Machine Learning</span><span>R · Python</span></div>
           <div class="cv">
             <div><h4 data-en="Experience">Trayectoria</h4><ol>
               <li><time>2025–</time><div data-en="ISCT · ESP Committee Member<span>South &amp; Central America</span>">ISCT · ESP Committee Member<span>Sudamérica y Centroamérica</span></div></li>
@@ -506,7 +518,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
             <div><h4 data-en="Education">Formación</h4><ol>
               <li><time>2025–28</time><div data-en="PhD in Health Sciences<span>Universidad Anáhuac México Norte · protocol HE25-00023</span>">Doctorado en Ciencias de la Salud<span>Universidad Anáhuac México Norte · protocolo HE25-00023</span></div></li>
               <li><time>2020–22</time><div data-en="MSc in Medical Sciences<span>Universidad del Noreste</span>">Maestría en Ciencias Médicas<span>Universidad del Noreste</span></div></li>
-              <li><time>2017–18</time><div data-en="Exchange · Bioengineering, Microbiology &amp; Immunology<span>Universidad de Concepción · Chile</span>">Intercambio · Bioingeniería, Microbiología e Inmunología<span>Universidad de Concepción · Chile</span></div></li>
+              <li><time>2017–18</time><div data-en="International academic stay · Bioengineering, Microbiology &amp; Immunology<span>Universidad de Concepción · Chile</span>">Estancia académica internacional · Bioingeniería, Microbiología e Inmunología<span>Universidad de Concepción · Chile</span></div></li>
               <li><time>2014–19</time><div data-en="Chemist Bacteriologist Parasitologist (QBP)<span>Universidad Autónoma de Nuevo León</span>">Químico Bacteriólogo Parasitólogo<span>Universidad Autónoma de Nuevo León</span></div></li>
             </ol></div>
           </div>
@@ -523,21 +535,22 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <aside class="metrics">
           <span class="mono" style="color:var(--muted)">Google Scholar</span>
           <div class="row">
-            <div><div class="num">17</div><div class="lbl" data-en="Citations">Citas</div></div>
+            <div><div class="num">23</div><div class="lbl" data-en="Citations">Citas</div></div>
             <div><div class="num">2</div><div class="lbl" data-en="h-index">Índice h</div></div>
             <div><div class="num">1</div><div class="lbl" data-en="i10-index">Índice i10</div></div>
           </div>
-          <div class="spark" aria-label="Citas por año: 2024, 3; 2025, 10; 2026, 3">
-            <div style="height:30%"><span>3</span></div><div style="height:100%"><span>10</span></div><div style="height:30%"><span>3</span></div>
+          <span class="lbl" data-en="Citations by article">Citas por artículo</span>
+          <div class="spark" aria-label="Citas por artículo: JCO Global Oncology 18; Hematology 3; Medicina Universitaria 2">
+            <div style="height:100%"><span>18</span></div><div style="height:17%"><span>3</span></div><div style="height:11%"><span>2</span></div>
           </div>
-          <div class="spark-x"><span>2024</span><span>2025</span><span>2026</span></div>
+          <div class="spark-x"><span>JCO GO</span><span>Hematol.</span><span>Med. Univ.</span></div>
           <a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es" data-en="Full profile →">Perfil completo →</a>
         </aside>
         <div>
           <article class="paper"><div class="yr">2025</div><div>
             <h3><a href="https://ascopubs.org/doi/full/10.1200/GO-24-00581">Decentralized point-of-care manufacturing of CD19 chimeric antigen receptor T cells in Mexico</a></h3>
             <div class="auth">R Salazar-Riojas, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al.</div>
-            <div class="jr"><i>JCO Global Oncology</i> 11, e2400581<span class="c" data-en="9 citations">9 citas</span></div></div></article>
+            <div class="jr"><i>JCO Global Oncology</i> 11, e2400581<span class="c" data-en="18 citations">18 citas</span></div></div></article>
           <article class="paper"><div class="yr">2024</div><div>
             <h3>Reassessing blood product irradiation in haploidentical transplantation: a single-center perspective</h3>
             <div class="auth">JP Martínez-Hernández, YA López-Mora, R Salazar-Riojas, <b>YO Chávez-Estrada</b> et al.</div>
@@ -545,7 +558,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <article class="paper"><div class="yr">2025</div><div>
             <h3>Reference ranges for extended parameters in complete blood count on the Abbott Alinity hq: assessment of quality and dynamics</h3>
             <div class="auth">YK López-García, <b>YO Chávez-Estrada</b>, JE Montelongo-Cepeda et al.</div>
-            <div class="jr"><i>Medicina Universitaria</i> 27 (2), 43–50<span class="c" data-en="1 citation">1 cita</span></div></div></article>
+            <div class="jr"><i>Medicina Universitaria</i> 27 (2), 43–50<span class="c" data-en="2 citations">2 citas</span></div></div></article>
+<details class="more-pubs">
+            <summary data-en="More publications and conference abstracts">Más publicaciones y resúmenes de congreso</summary>
+            <ol>
+              <li><span class="y">2024</span><div><b>Immunophenotypic characterization of the first CD19⁺ CAR-T cells in Mexico</b><small><b>Y Chávez-Estrada</b>, R Salazar-Riojas, DM Alvarado-Navarro et al. · <i>Cytotherapy</i> 26 (6), S159 · <span data-en="Abstract">Resumen</span></small></div></li>
+              <li><span class="y">2024</span><div><b>Efficacy of autologous lymphapheresis for production and validation of the first CD19 CAR-T cell therapies in Mexico</b><small>MB Aké-Uc, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al. · <i>Vox Sanguinis</i> 119, P890 · <span data-en="Abstract">Resumen</span></small></div></li>
+              <li><span class="y">2023</span><div><b>Usefulness of an instrument to measure the pain perception of the hematopoietic cell donor during their collection</b><small><b>YO Chávez-Estrada</b>, AK Hernández-Navarro et al. · <i>Journal of Clinical Apheresis</i> 38 (3) · <span data-en="Abstract">Resumen</span></small></div></li>
+              <li><span class="y">2023</span><div><b>Utilidad de células nucleadas totales para colecta de hematoprogenitores en trasplante autólogo con enfermedades autoinmunes</b><small>DM Alvarado-Navarro, <b>YO Chávez-Estrada</b>, NK Moncada-Saucedo et al. · <i>Rev. Mex. Patol. Clín. Med. Lab.</i> 69 (2), 61–64</small></div></li>
+              <li><span class="y">2022</span><div><b>Prevalence of blood culture contamination in the collection of hematopoietic progenitor cells and blood components</b><small><b>YO Chávez-Estrada</b>, DM Alvarado-Navarro, AK Hernández-Navarro et al. · <i>Revista de Hematología</i> 23 (1), 28–35</small></div></li>
+              <li><span class="y">2021–24</span><div><b data-en="Free paper abstracts, AMMTAC Congresses (XVIII–XXI)">Resúmenes de trabajos libres, Congresos AMMTAC (XVIII–XXI)</b><small data-en="Mexican Association of Transfusion Medicine">Asociación Mexicana de Medicina Transfusional, AC</small></div></li>
+            </ol>
+          </details>
           <a class="video" href="https://www.youtube.com/watch?v=vFzSUHfblvo"><span class="play"></span><span><span data-en="Local Technology: The CAR-T Revolution in Mexico">Tecnología local: la revolución CAR-T en México</span><small data-en="Video summary · Salazar-Riojas et al., JCO Global Oncology 2025">Video resumen · Salazar-Riojas et al., JCO Global Oncology 2025</small></span></a>
         </div>
       </div>
