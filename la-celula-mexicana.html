@@ -41,9 +41,10 @@ p{margin:0}
 /* Header */
 .nav{position:sticky;top:0;z-index:50;background:rgba(11,11,15,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;gap:22px;height:64px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:800;font-size:17px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-weight:300;font-size:20px;letter-spacing:-.01em;line-height:1}
+.logo b{font-weight:400;color:var(--pink)}
 .logo .dot{width:14px;height:14px;border-radius:50%;background:var(--pink);box-shadow:0 0 0 4px var(--pink-soft),0 0 18px var(--pink)}
-.logo small{display:block;font-family:var(--f-mono);font-weight:400;font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-top:4px}
+.logo small{display:block;font-family:var(--f-mono);font-weight:400;font-size:9.5px;letter-spacing:.12em;color:var(--muted);margin-top:5px}
 .links{display:flex;gap:22px;margin-left:auto}
 .links a{text-decoration:none;color:var(--muted);font-size:14.5px}
 .links a:hover{color:var(--ink)}
@@ -56,8 +57,12 @@ p{margin:0}
 .badge{display:inline-flex;align-items:center;gap:8px;color:var(--pink-ink)}
 .badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px var(--pink);animation:live 1.6s ease-in-out infinite}
 @keyframes live{50%{opacity:.35}}
-.hero h1{font-weight:800;font-size:clamp(46px,8vw,104px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin-top:18px}
-.hero h1 span{display:block;color:var(--pink)}
+.hero h1{font-weight:300;font-size:clamp(48px,8vw,108px);line-height:.98;letter-spacing:-.025em;margin-top:18px}
+.hero h1 span{display:block;color:var(--pink);font-weight:400}
+.byyct{display:inline-flex;align-items:baseline;gap:8px;margin-top:16px;text-decoration:none;color:var(--muted);font-family:var(--f-mono);font-size:12px;letter-spacing:.08em}
+.byyct span{font-family:var(--f-display);font-size:20px;letter-spacing:-.01em;color:var(--ink);font-weight:300}
+.byyct span b{font-weight:600}
+.byyct:hover span{color:var(--pink-ink)}
 .hero .lede{font-size:19.5px;color:var(--muted);max-width:48ch;margin-top:24px}
 .hero .lede b{color:var(--ink);font-weight:500}
 .by{margin-top:18px;color:var(--muted)}
@@ -151,7 +156,7 @@ footer a:hover{color:var(--pink-ink)}
 
 <header class="nav">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="La Célula Mexicana, inicio"><span class="dot" aria-hidden="true"></span><span>La Célula Mexicana<small>Podcast de ciencia</small></span></a>
+    <a class="logo" href="#top" aria-label="La Célula Mexicana, inicio"><span class="dot" aria-hidden="true"></span><span>La Célula <b>Mexicana</b><small>by YoCellTherapy</small></span></a>
     <nav class="links" aria-label="Secciones">
       <a href="#episodios">Episodios</a><a href="#temas">Temas</a><a href="#sobre">Sobre el podcast</a><a href="#suscribete">Suscríbete</a>
     </nav>
@@ -164,6 +169,7 @@ footer a:hover{color:var(--pink-ink)}
     <div>
       <span class="badge mono">Temporada 1 · Próximamente</span>
       <h1>La Célula <span>Mexicana</span></h1>
+      <a class="byyct" href="/">by <span>Yo<b>Cell</b>Therapy</span></a>
       <p class="lede">Un podcast de ciencia para entender <b>células, ADN y las terapias</b> que están cambiando la medicina, contado desde México y en un lenguaje que cualquiera puede seguir.</p>
       <p class="by mono">Por Yair Omar Chávez Estrada</p>
       <div class="ctas">
