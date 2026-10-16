@@ -1,0 +1,50 @@
+/* ============================================================
+   YoCellTherapy · identidad visual compartida
+   Se carga al final del <head> de cada página para unificar
+   colores, tipografía y encabezado con el nuevo inicio.
+   Las páginas de YoCell Lab conservan su propia marca.
+   ============================================================ */
+:root{
+  /* Paleta nueva */
+  --yct-bg:#F2F5F4; --yct-surface:#FFFFFF; --yct-ink:#0C1A1D; --yct-muted:#506267;
+  --yct-line:#D3DDDB; --yct-accent:#0A6B57; --yct-accent-soft:#E0EEEA; --yct-pop:#2447C9;
+  --yct-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --yct-body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+
+  /* Tokens heredados de las páginas, re-mapeados a la paleta nueva */
+  --g:#0A6B57; --gl:#2FA88A; --g3:rgba(10,107,87,.10);
+  --b:#1F3FAE; --bl:#3E63DD; --b2:rgba(36,71,201,.08);
+  --p:#1F3FAE; --pl:#6E8BF0; --p2:rgba(31,63,174,.08);
+  --bg:#F2F5F4; --card:#FFFFFF;
+  --bord2:#D3DDDB; --bord3:rgba(10,107,87,.35);
+  --t:#0C1A1D; --t2:#1A2A2E; --m:#506267; --m2:#6B7C80;
+}
+
+body{background:var(--yct-bg);color:var(--yct-ink);font-family:var(--yct-body)}
+h1,h2,h3,h4{font-family:var(--yct-display);letter-spacing:-.02em;text-wrap:balance}
+h1{font-weight:400}
+
+/* Fondo animado anterior: se retira para un look más sobrio */
+#c{display:none}
+
+/* Encabezado */
+nav{border-bottom-color:var(--yct-line)}
+.logo-mark{width:34px;height:34px;border:0;background:url("yct-favicon.svg") center/contain no-repeat;border-radius:0;box-shadow:none}
+.logo-mark>*{display:none!important}
+.logo-text{font-family:var(--yct-display);font-size:20px;letter-spacing:-.01em;color:var(--yct-ink);line-height:1.15}
+.logo-text b{font-weight:600}
+.logo-text span{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--yct-muted)}
+.back-btn{border:1px solid var(--yct-ink);border-radius:999px;padding:7px 14px;color:var(--yct-ink);font-size:12px}
+.back-btn:hover{background:var(--yct-ink);color:var(--yct-bg)}
+
+/* Tarjetas: bordes finos, sin sombras pesadas */
+.hero,.hero-card,.card,.tool-card,.calc-card,.info-card,.ponente-card,.ponencia-card,.modulo-card,.px-card,.container{
+  border-radius:8px;box-shadow:none;border-color:var(--yct-line)}
+.hero::before,.hero-card::before{background:var(--yct-accent)}
+
+/* Botones y campos */
+button,.btn,input,select,textarea{font-family:var(--yct-body)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--yct-accent);outline-offset:1px}
+
+/* Pie de página */
+footer{border-top-color:var(--yct-line)}
