@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Herramientas internas de YoCell Lab (no deben aparecer en buscadores)
+Disallow: /captura-resultados.html
+Disallow: /registro-etiquetas.html
+
+Sitemap: https://yocelltherapy.com/sitemap.xml
