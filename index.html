@@ -226,15 +226,21 @@ table.pipe{width:100%;min-width:760px;border-collapse:collapse;font-size:15px}
 
 /* PUBLICATIONS */
 .pubs{display:grid;grid-template-columns:300px 1fr;gap:48px}
-.metrics{border:1px solid var(--line);border-radius:6px;padding:24px;background:var(--surface);display:grid;gap:18px;align-self:start}
+.metrics{border-radius:8px;padding:22px;background:#0C1A1D;color:#E7EFED;display:grid;gap:18px;align-self:start;position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}
+.sch-head{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:19px;font-weight:400}
+.sch-head svg{width:24px;height:24px;color:#43C6A5}
+.sch-viz{position:relative;aspect-ratio:1/0.82;border-radius:6px;overflow:hidden;background:#071518;max-width:100%}
+.sch-cap{position:absolute;left:12px;bottom:10px;font-size:10px;color:#7E9496;letter-spacing:.08em}
 .metrics .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.metrics .num{font-family:var(--f-display);font-size:36px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums}
-.metrics .lbl{font-size:12.5px;color:var(--muted)}
-.spark{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:end;height:90px;border-bottom:1px solid var(--line)}
-.spark div{background:var(--accent);border-radius:2px 2px 0 0;position:relative}
-.spark div span{position:absolute;top:-18px;left:0;right:0;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--ink)}
-.spark-x{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-top:-10px}
-.metrics a{font-size:14px;font-weight:600;color:var(--accent);text-decoration:none}
+.metrics .num{font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums;color:#E7EFED}
+.metrics .lbl{font-size:12.5px;color:#93A7AA;margin-top:4px}
+.sch-leg{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13.5px}
+.sch-leg li{display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;color:#C9D6D4}
+.sch-leg i{width:10px;height:10px;border-radius:50%}
+.sch-leg b{font-family:var(--f-mono);font-weight:500;color:#E7EFED;font-variant-numeric:tabular-nums}
+.sch-btn{justify-self:start;font-size:14px;font-weight:600;color:#0C1A1D;background:#43C6A5;border-radius:999px;padding:9px 16px;text-decoration:none}
+.sch-btn:hover{background:#E7EFED}
+@media (max-width:860px){.metrics{position:static}}
 .paper{display:grid;grid-template-columns:90px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
 .paper:last-of-type{border-bottom:1px solid var(--line)}
 .paper .yr{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:4px}
@@ -533,18 +539,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="sec-head"><div class="mono" data-en="Publications">Publicaciones</div><div><h2 data-en="Peer-reviewed evidence">Evidencia revisada por pares</h2></div></div>
       <div class="pubs">
         <aside class="metrics">
-          <span class="mono" style="color:var(--muted)">Google Scholar</span>
+          <div class="sch-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1.5 9 12 15l8.5-4.86V17h2V9L12 3Z" fill="currentColor"/><path d="M5.5 12.6V16c0 1.9 2.9 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.4L12 16.3l-6.5-3.7Z" fill="currentColor" opacity=".6"/></svg><span data-en="Google Scholar">Google Académico</span></div>
+          <div class="sch-viz"><canvas data-scene="citations" aria-hidden="true"></canvas><span class="sch-cap mono" data-en="each dot is a citation">cada punto es una cita</span></div>
           <div class="row">
-            <div><div class="num">23</div><div class="lbl" data-en="Citations">Citas</div></div>
-            <div><div class="num">2</div><div class="lbl" data-en="h-index">Índice h</div></div>
-            <div><div class="num">1</div><div class="lbl" data-en="i10-index">Índice i10</div></div>
+            <div><div class="num" data-count="23">23</div><div class="lbl" data-en="Citations">Citas</div></div>
+            <div><div class="num" data-count="2">2</div><div class="lbl" data-en="h-index">Índice h</div></div>
+            <div><div class="num" data-count="1">1</div><div class="lbl" data-en="i10-index">Índice i10</div></div>
           </div>
-          <span class="lbl" data-en="Citations by article">Citas por artículo</span>
-          <div class="spark" aria-label="Citas por artículo: JCO Global Oncology 18; Hematology 3; Medicina Universitaria 2">
-            <div style="height:100%"><span>18</span></div><div style="height:17%"><span>3</span></div><div style="height:11%"><span>2</span></div>
-          </div>
-          <div class="spark-x"><span>JCO GO</span><span>Hematol.</span><span>Med. Univ.</span></div>
-          <a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es" data-en="Full profile →">Perfil completo →</a>
+          <ul class="sch-leg">
+            <li><i style="background:#43C6A5"></i><span>JCO Global Oncology</span><b>18</b></li>
+            <li><i style="background:#7F9CFF"></i><span>Hematology</span><b>3</b></li>
+            <li><i style="background:#E8C35A"></i><span>Medicina Universitaria</span><b>2</b></li>
+          </ul>
+          <a class="sch-btn" href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es" data-en="View full profile →">Ver perfil completo →</a>
         </aside>
         <div>
           <article class="paper"><div class="yr">2025</div><div>
@@ -646,7 +653,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 /* ---------- Animated scientific scenes ---------- */
 (function(){
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce||!('IntersectionObserver' in window))return;
+  if(!('IntersectionObserver' in window))return;
   const C={deep:'#071518',deep2:'#0C2326',teal:'#0A6B57',mint:'#43C6A5',pop:'#7F9CFF',pale:'#E7EFED',lime:'#B8F2D9',rbc:'#D9655F',plasma:'#E9D79A'};
   const hx=h=>{const n=parseInt(h.slice(1),16);return [n>>16&255,n>>8&255,n&255]};
   const rgba=(h,a)=>{const c=hx(h);return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')'};
@@ -751,6 +758,23 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           ctx.restore();ctx.fillStyle=caps[i];ctx.beginPath();ctx.roundRect(x-3,top-H*.09,tw+6,H*.1,3);ctx.fill()}
         const sx=((t*.22)%1)*(W+40)-20;ctx.fillStyle=rgba(C.mint,.12);ctx.fillRect(sx-14,0,28,H);ctx.strokeStyle=rgba(C.mint,.8);ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(sx,0);ctx.lineTo(sx,H);ctx.stroke()}},
 
+    /* Constelación de citas: cada punto es una cita que orbita su artículo */
+    citations:{init(W,H,R){const S0=Math.min(W,H);const s={a:[{x:.36,y:.46,n:18,col:C.mint,l:'JCO GO'},{x:.77,y:.25,n:3,col:C.pop,l:'Hematology'},{x:.75,y:.73,n:2,col:'#E8C35A',l:'Med. Univ.'}],pulses:[],last:0};
+        for(const a of s.a){a.r=(7+Math.sqrt(a.n)*4.2)*S0/300;a.p=[];for(let i=0;i<a.n;i++)a.p.push({d:a.r*1.7+R()*S0*(a.n>5?.17:.08),ph:R()*TAU,w:(.25+R()*.5)*(R()<.5?-1:1),e:.75+R()*.25})}
+        motes(s,R,W,H,24);return s},
+      draw(ctx,s,t,W,H){bg(ctx,W,H,'#071518','#0B2226');drawMotes(ctx,s,t,W,H,C.pale);const S0=Math.min(W,H);
+        ctx.strokeStyle=rgba(C.pale,.07);ctx.lineWidth=1;const [a0,a1,a2]=s.a;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(a0.x*W,a0.y*H);ctx.lineTo(a1.x*W,a1.y*H);ctx.moveTo(a0.x*W,a0.y*H);ctx.lineTo(a2.x*W,a2.y*H);ctx.stroke();ctx.setLineDash([]);
+        if(t-s.last>1.3){s.last=t;let r=Math.random()*23,k=0;for(;k<2&&r>s.a[k].n;k++)r-=s.a[k].n;s.pulses.push({a:s.a[k],t0:t})}
+        s.pulses=s.pulses.filter(p=>t-p.t0<1.6);
+        for(const a of s.a){const x=a.x*W,y=a.y*H;glow(ctx,x,y,a.r*3.2,a.col,.22);
+          for(const p of a.p){const an=p.ph+t*p.w,px=x+Math.cos(an)*p.d,py=y+Math.sin(an)*p.d*p.e;ctx.strokeStyle=rgba(a.col,.13);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(px,py);ctx.stroke();glow(ctx,px,py,6,a.col,.5);ctx.fillStyle=rgba(C.pale,.95);ctx.beginPath();ctx.arc(px,py,1.6,0,TAU);ctx.fill()}}
+        for(const p of s.pulses){const k=(t-p.t0)/1.6;ctx.strokeStyle=rgba(p.a.col,.7*(1-k));ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.a.x*W,p.a.y*H,p.a.r+k*S0*.16,0,TAU);ctx.stroke()}
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        for(const a of s.a){const x=a.x*W,y=a.y*H;ctx.fillStyle=a.col;ctx.beginPath();ctx.arc(x,y,a.r,0,TAU);ctx.fill();
+          ctx.fillStyle='#071518';ctx.font='600 '+Math.round(a.r*.95)+'px "JetBrains Mono", monospace';ctx.fillText(a.n,x,y+1);
+          ctx.fillStyle=rgba(C.pale,.75);ctx.font='500 10px "JetBrains Mono", monospace';ctx.fillText(a.l.toUpperCase(),x,y+a.r+13)}
+        ctx.textAlign='left';ctx.textBaseline='alphabetic'}},
+
     /* Onda de audio formada por células (podcast) */
     wave:{init(W,H,R){const s={ph:[]};for(let i=0;i<48;i++)s.ph.push(R()*TAU);return s},
       draw(ctx,s,t,W,H){bg(ctx,W,H,'#14102A',C.deep);const n=s.ph.length,gap=W/(n+1),cy=H/2;
@@ -762,13 +786,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   const items=[];let seed=11;
   document.querySelectorAll('canvas[data-scene]').forEach(cv=>{const sc=S[cv.dataset.scene];if(sc)items.push({cv,ctx:cv.getContext('2d'),sc,s:null,vis:false,W:0,H:0,seed:seed+=7})});
   function size(it){const r=it.cv.getBoundingClientRect();if(!r.width)return;const d=Math.min(devicePixelRatio||1,2);it.W=r.width;it.H=r.height;it.cv.width=Math.round(r.width*d);it.cv.height=Math.round(r.height*d);it.ctx.setTransform(d,0,0,d,0,0);it.s=it.sc.init(it.W,it.H,rng(it.seed))}
-  const io=new IntersectionObserver(es=>es.forEach(e=>{const it=items.find(i=>i.cv===e.target);it.vis=e.isIntersecting;if(it.vis&&!it.s)size(it)}),{rootMargin:'120px'});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{const it=items.find(i=>i.cv===e.target);it.vis=e.isIntersecting;if(it.vis&&!it.s){size(it);if(reduce&&it.s){for(let k=0;k<60;k++)it.sc.draw(it.ctx,it.s,k*.07,it.W,it.H);it.cv.classList.add('on')}}}),{rootMargin:'120px'});
   items.forEach(it=>io.observe(it.cv));
   let last=0;
-  function loop(now){requestAnimationFrame(loop);if(now-last<30)return;last=now;const t=now/1000;
+  function loop(now){if(reduce)return;requestAnimationFrame(loop);if(now-last<30)return;last=now;const t=now/1000;
     for(const it of items){if(it.vis&&it.s){try{it.sc.draw(it.ctx,it.s,t,it.W,it.H);it.cv.classList.add('on')}catch(err){it.vis=false}}}}
   requestAnimationFrame(loop);
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>items.forEach(it=>{if(it.s)size(it)}),150)});
+})();
+
+/* ---------- Count-up numbers ---------- */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;io.unobserve(e.target);const el=e.target,to=+el.dataset.count,t0=performance.now(),d=1500;
+    (function f(n){const p=Math.min(1,(n-t0)/d);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}),{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(el=>{el.textContent='0';io.observe(el)});
 })();
 
 /* ---------- Generated text ---------- */
