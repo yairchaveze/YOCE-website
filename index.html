@@ -414,6 +414,15 @@ table.pipe{width:100%;min-width:760px;border-collapse:collapse;font-size:15px}
 .eco-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
 .soon{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);border:1px dashed var(--muted);border-radius:999px;padding:3px 9px}
 .soon::before{content:"";width:6px;height:6px;border-radius:50%;background:#E8C35A}
+.eco a.eco-lcm{background:#E6007E;border-color:#E6007E;color:#fff}
+.eco a.eco-lcm:hover{border-color:#0B0B0F}
+.eco a.eco-lcm .eco-img{background:#0B0B0F}
+.eco a.eco-lcm .k{color:#fff}
+.eco a.eco-lcm p{color:rgba(255,255,255,.88)}
+.eco a.eco-lcm .soon{color:#fff;border-color:rgba(255,255,255,.7)}
+.eco a.eco-lcm .soon::before{background:#fff}
+.lcm-title{font-weight:300}
+.lcm-title b{font-weight:400;color:#0B0B0F}
 .eco p{color:var(--muted);font-size:15px}
 .eco .k{color:var(--accent)}
 @media (max-width:860px){.eco{grid-template-columns:1fr}}
@@ -729,7 +738,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="sec-head"><div class="mono" data-en="Ecosystem">Ecosistema</div><div><h2 data-en="Beyond the laboratory">Más allá del laboratorio</h2></div></div>
       <div class="eco">
         <a href="yocell-lab.html"><div class="eco-img"><canvas data-scene="tubes" aria-hidden="true"></canvas></div><div class="eco-meta"><span class="mono k" data-en="Clinical laboratory">Laboratorio clínico</span><span class="soon mono" data-en="Under construction">En construcción</span></div><h3>YoCell Lab</h3><p data-en="Clinical analysis laboratory under construction in San Buenaventura, Coahuila.">Laboratorio de análisis clínicos en construcción en San Buenaventura, Coahuila.</p></a>
-        <a href="la-celula-mexicana.html"><div class="eco-img"><canvas data-scene="wave" aria-hidden="true"></canvas></div><div class="eco-meta"><span class="mono k" data-en="Science communication">Divulgación</span><span class="soon mono" data-en="Coming soon">Próximamente</span></div><h3>La Célula Mexicana</h3><p data-en="Science communication podcast about cell therapy, DNA and the cells behind modern medicine.">Podcast de divulgación científica sobre terapia celular, ADN y las células detrás de la medicina moderna.</p></a>
+        <a class="eco-lcm" href="la-celula-mexicana.html"><div class="eco-img"><canvas data-scene="lcmcell" aria-hidden="true"></canvas></div><div class="eco-meta"><span class="mono k" data-en="Science podcast">Podcast de ciencia</span><span class="soon mono" data-en="Season 1 · Coming soon">Temporada 1 · Próximamente</span></div><h3 class="lcm-title">La Célula <b>Mexicana</b></h3><p data-en="Science communication podcast about cell therapy, DNA and the cells behind modern medicine.">Podcast de divulgación científica sobre terapia celular, ADN y las células detrás de la medicina moderna.</p></a>
         <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517"><div class="eco-img"><img src="img/novela-portada.webp" alt="Portada de la novela No Soy Médico, Pero Estoy Aquí" loading="lazy" width="800" height="500"></div><span class="mono k" data-en="Novel · Editorial Musa 2025">Novela · Editorial Musa 2025</span><h3>No Soy Médico, Pero Estoy Aquí</h3><p data-en="A realistic hospital drama about home care, fragility and hope. Available as eBook and paperback.">Drama hospitalario realista sobre el cuidado del enfermo en casa, la fragilidad y la esperanza. En eBook y pasta blanda.</p></a>
       </div>
     </div>
@@ -902,6 +911,21 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           ctx.fillStyle='#071518';ctx.font='600 '+Math.round(a.r*.95)+'px "JetBrains Mono", monospace';ctx.fillText(a.n,x,y+1);
           ctx.fillStyle=rgba(C.pale,.75);ctx.font='500 10px "JetBrains Mono", monospace';ctx.fillText(a.l.toUpperCase(),x,y+a.r+13)}
         ctx.textAlign='left';ctx.textBaseline='alphabetic'}},
+
+    /* La Célula Mexicana: célula rosa que habla (núcleo, membrana viva, ondas de voz) */
+    lcmcell:{init(W,H,R){const s={o:[]};for(let i=0;i<8;i++)s.o.push({a:R()*6.283,d:.25+R()*.3,r:.03+R()*.035,w:(R()-.5)*.6,c:['#5B7BFF','#FF9F1C','#F2EDE4'][i%3]});return s},
+      draw(ctx,s,t,W,H){ctx.fillStyle='#0B0B0F';ctx.fillRect(0,0,W,H);const P='230,0,126',cx=W/2,cy=H/2,S0=Math.min(W,H),R=S0*.27;
+        const voice=.5+.5*Math.sin(t*2.1)*Math.sin(t*.7+1)+.25*Math.sin(t*5.3);
+        for(let k=0;k<3;k++){const p=((t*.45+k/3)%1);ctx.strokeStyle='rgba('+P+','+(.35*(1-p))+')';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(cx,cy,R*(1.1+p*.6),0,TAU);ctx.stroke()}
+        const N=48;ctx.lineCap='round';for(let i=0;i<N;i++){const a=i/N*TAU,amp=(.05+.09*Math.abs(Math.sin(i*1.7+t*3.2)*Math.sin(i*.6-t*1.4)))*voice,r0=R*1.08,r1=r0+S0*amp;
+          ctx.strokeStyle=i%8===0?'rgba(255,159,28,.9)':'rgba('+P+','+(.55+amp*3)+')';ctx.lineWidth=Math.max(1.4,S0*.009);ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*r0,cy+Math.sin(a)*r0);ctx.lineTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);ctx.stroke()}
+        const g=ctx.createRadialGradient(cx-R*.3,cy-R*.3,R*.1,cx,cy,R*1.05);g.addColorStop(0,'rgba('+P+',.2)');g.addColorStop(1,'rgba('+P+',.04)');
+        ctx.fillStyle=g;ctx.strokeStyle='rgba('+P+',.95)';ctx.lineWidth=Math.max(2,S0*.014);ctx.beginPath();
+        for(let i=0;i<=90;i++){const a=i/90*TAU,rr=R*(1+.03*Math.sin(a*5+t*1.3)+.02*Math.sin(a*3-t*.9));const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+        ctx.closePath();ctx.fill();ctx.stroke();
+        for(const o of s.o){const a=o.a+t*o.w;ctx.fillStyle=rgba(o.c,.8);ctx.beginPath();ctx.arc(cx+Math.cos(a)*R*o.d*1.6,cy+Math.sin(a)*R*o.d*1.6,S0*o.r*.5,0,TAU);ctx.fill()}
+        const nr=R*(.34+.04*voice);glow(ctx,cx,cy,nr*2.3,'#E6007E',.85);ctx.fillStyle='#E6007E';ctx.beginPath();ctx.arc(cx,cy,nr,0,TAU);ctx.fill();
+        ctx.fillStyle='rgba(242,237,228,.55)';ctx.beginPath();ctx.arc(cx-nr*.32,cy-nr*.34,nr*.22,0,TAU);ctx.fill()}},
 
     /* Onda de audio formada por células (podcast) */
     wave:{init(W,H,R){const s={ph:[]};for(let i=0;i<48;i++)s.ph.push(R()*TAU);return s},
