@@ -10,11 +10,23 @@ on:
       - '**.webp'
   workflow_dispatch:
 
+# Permiso para que el bot pueda guardar las imágenes optimizadas
+permissions:
+  contents: write
+  pull-requests: write
+
+# Evita choques con el flujo del sitemap: se ejecutan en fila, no al mismo tiempo
+concurrency:
+  group: auto-commit-main
+  cancel-in-progress: false
+
 jobs:
   optimize-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main   # parte de la versión más reciente para poder guardar sin conflictos
 
       - name: Optimizar imágenes
         uses: calibreapp/image-actions@main

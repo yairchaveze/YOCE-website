@@ -7,11 +7,22 @@ on:
       - '**.html'
   workflow_dispatch:
 
+# Permiso para que el bot pueda guardar sitemap.xml en el repositorio
+permissions:
+  contents: write
+
+# Evita choques con el flujo de imágenes: se ejecutan en fila, no al mismo tiempo
+concurrency:
+  group: auto-commit-main
+  cancel-in-progress: false
+
 jobs:
   generate-sitemap:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main   # parte de la versión más reciente para poder guardar sin conflictos
 
       - name: Generar sitemap.xml
         uses: cicirello/generate-sitemap@v1
