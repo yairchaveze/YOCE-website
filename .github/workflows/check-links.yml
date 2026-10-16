@@ -45,6 +45,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Mostrar links rotos como avisos
+        if: failure()
+        run: |
+          grep -E '\[(ERROR|[0-9]{3})\]|✗|\[TIMEOUT\]' lychee/out.md | head -50 | while IFS= read -r line; do
+            echo "::error title=Link roto::$line"
+          done || true
+
       - name: Crear reporte si hay errores
         if: failure()
         uses: actions/upload-artifact@v4
