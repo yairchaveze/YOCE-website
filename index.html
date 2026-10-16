@@ -30,6 +30,7 @@ body{margin:0}
   --f-body:"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
   --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --max:1160px;
+  --reel-bg:#0C1A1D; --reel-ink:#E7EFED; --reel-accent:#43C6A5; --reel-pop:#7F9CFF; --reel-muted:#7E9496;
 }
 
 *{box-sizing:border-box}
@@ -63,14 +64,15 @@ p{margin:0}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent)}
 .btn.ghost:hover{background:var(--ink);color:var(--bg)}
 .nav .btn{padding:8px 16px;font-size:14px}
-.links>a,.dd>a{padding-block:22px}
+.links{align-items:center}
+.links>a,.dd>a{display:block;padding-block:22px}
 .dd{position:relative}
 .dd>a::after{content:"";display:inline-block;width:5px;height:5px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin:0 0 3px 7px;opacity:.6}
 .menu{position:absolute;top:100%;left:-16px;min-width:250px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s;box-shadow:0 18px 40px -20px rgba(12,26,29,.35)}
 .dd:hover .menu,.dd:focus-within .menu{opacity:1;visibility:visible;transform:none}
 .menu a{padding:8px 10px;border-radius:4px;font-size:14px;color:var(--ink)}
 .menu a:hover{background:var(--accent-soft);color:var(--accent)}
-.m-only{display:none}
+.links>a.m-only{display:none}
 .burger{all:unset;display:none;cursor:pointer;width:36px;height:36px;position:relative}
 .burger span{position:absolute;left:8px;right:8px;height:1.5px;background:var(--ink);transition:transform .2s}
 .burger span:first-child{top:14px}.burger span:last-child{top:21px}
@@ -85,25 +87,26 @@ p{margin:0}
   .dd>a::after{display:none}
   .menu{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;background:transparent;padding:4px 0 10px 12px;min-width:0}
   .menu a{color:var(--muted);padding:6px 0;font-size:15px}
-  .m-only{display:block}
+  .links>a.m-only{display:block}
 }
 
 /* HERO */
 .hero{padding-block:72px 56px}
-.hero .wrap{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
 .eyebrow{color:var(--accent);display:flex;gap:10px;align-items:center}
 .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 .hero h1{font-size:clamp(40px,6vw,76px);line-height:1;margin-top:22px}
 .hero h1 em{font-style:normal;color:var(--accent);font-weight:400}
 .hero .lede{font-size:19px;color:var(--muted);max-width:56ch;margin-top:26px}
 .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.plot{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px 18px 14px;min-width:0}
-.plot-head{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-family:var(--f-mono);font-size:11.5px}
-.plot-head b{color:var(--ink);font-weight:500}
-.plot canvas{display:block;width:100%;aspect-ratio:1/0.86;max-width:100%;margin-top:10px}
-.plot-foot{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
-.plot-foot .car{color:var(--accent);font-weight:500}
-@media (max-width:880px){.hero .wrap{grid-template-columns:1fr;gap:40px}.hero{padding-block:44px 40px}}
+.reel{position:relative;justify-self:end;width:100%;max-width:430px;aspect-ratio:1/1.08;margin:0;border-radius:10px;overflow:hidden;background:var(--reel-bg)}
+.reel canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.reel-ui{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--reel-muted);font-variant-numeric:tabular-nums;pointer-events:none}
+.reel-btn{all:unset;position:absolute;right:14px;bottom:14px;width:30px;height:30px;border-radius:50%;border:1px solid color-mix(in srgb,var(--reel-ink) 30%,transparent);display:grid;place-items:center;cursor:pointer;color:var(--reel-ink)}
+.reel-btn:hover{border-color:var(--reel-accent);color:var(--reel-accent)}
+.reel-btn:focus-visible{outline:2px solid var(--reel-accent);outline-offset:2px}
+.reel-btn svg{width:12px;height:12px;fill:currentColor}
+@media (max-width:880px){.hero .wrap{grid-template-columns:1fr;gap:40px}.reel{justify-self:center;max-width:380px}.hero{padding-block:44px 40px}}
 
 /* FACT STRIP */
 .facts{border-block:1px solid var(--line)}
@@ -337,10 +340,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <a class="btn ghost" href="#pipeline" data-en="View pipeline">Ver pipeline</a>
         </div>
       </div>
-      <figure class="plot" aria-label="Diagrama de citometría de flujo simulado: expresión de CAR anti-CD19 en linfocitos T CD3+">
-        <div class="plot-head"><span><b>QC · CAR-T</b> &nbsp;CD3⁺ gate</span><span data-en="simulated">simulado</span></div>
-        <canvas id="facs" role="img" aria-label="Gráfico de dispersión: CD3 contra CAR anti-CD19"></canvas>
-        <div class="plot-foot"><span data-en-count="events">Eventos: <b id="ev">0</b></span><span class="car">CAR⁺ <b id="pct">—</b></span></div>
+      <figure class="reel" aria-label="Animación de marca de YoCellTherapy">
+        <canvas id="reel" role="img" aria-label="Partículas que forman una célula; dentro se dibuja la Y del logotipo YoCellTherapy, aparecen receptores CAR que reconocen células blanco y se muestran las capacidades de la empresa."></canvas>
+        <div class="reel-ui"><span>YoCellTherapy · Reel</span><span id="tc">00:00 / 00:16</span></div>
+        <button type="button" class="reel-btn" id="reelBtn" aria-label="Pausar animación"><svg viewBox="0 0 12 12" id="reelIco"><rect x="2" y="1.5" width="2.6" height="9"/><rect x="7.4" y="1.5" width="2.6" height="9"/></svg></button>
       </figure>
     </div>
   </div>
@@ -544,7 +547,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <div class="sec-head"><div class="mono" data-en="Ecosystem">Ecosistema</div><div><h2 data-en="Beyond the laboratory">Más allá del laboratorio</h2></div></div>
       <div class="eco">
         <a href="yocell-lab.html"><span class="mono k" data-en="Clinical laboratory">Laboratorio clínico</span><h3>YoCell Lab</h3><p data-en="Clinical analysis laboratory in San Buenaventura, Coahuila.">Laboratorio de análisis clínicos en San Buenaventura, Coahuila.</p></a>
-        <div class="eco-item"><span class="mono k" data-en="Science communication">Divulgación</span><h3>La Célula Mexicana</h3><p data-en="Cell therapy science podcast, co-hosted with Lilia Carolina León-Moreno.">Podcast de divulgación en terapia celular, co-conducido con Lilia Carolina León-Moreno.</p></div>
+        <div class="eco-item"><span class="mono k" data-en="Science communication">Divulgación</span><h3>La Célula Mexicana</h3><p data-en="Science communication podcast about cell therapy, DNA and the cells behind modern medicine.">Podcast de divulgación científica sobre terapia celular, ADN y las células detrás de la medicina moderna.</p></div>
         <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517"><span class="mono k" data-en="Novel · Editorial Musa 2025">Novela · Editorial Musa 2025</span><h3>No Soy Médico, Pero Estoy Aquí</h3><p data-en="A realistic hospital drama about home care, fragility and hope. Available as eBook and paperback.">Drama hospitalario realista sobre el cuidado del enfermo en casa, la fragilidad y la esperanza. En eBook y pasta blanda.</p></a>
       </div>
     </div>
@@ -585,8 +588,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     document.documentElement.lang=lang;
     document.getElementById('lang-es').setAttribute('aria-pressed',lang==='es');
     document.getElementById('lang-en').setAttribute('aria-pressed',lang==='en');
-    const ev=document.querySelector('[data-en-count]');
-    if(ev) ev.firstChild.nodeValue=lang==='en'?'Events: ':'Eventos: ';
     try{localStorage.setItem('yct-lang',lang)}catch(e){}
   }
   document.getElementById('lang-es').addEventListener('click',()=>set('es'));
@@ -610,54 +611,161 @@ document.getElementById('copy').addEventListener('click',function(){
   function sel(){const r=document.createRange();r.selectNodeContents(document.getElementById('email'));const s=getSelection();s.removeAllRanges();s.addRange(r)}
 });
 
-/* ---------- Flow cytometry plot (simulated acquisition) ---------- */
+/* ---------- Brand reel (16 s loop) ---------- */
 (function(){
-  const cv=document.getElementById('facs'), ctx=cv.getContext('2d');
-  const evEl=document.getElementById('ev'), pctEl=document.getElementById('pct');
-  const N=9000, pts=[];
-  let seed=19;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
-  const g=()=>{let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
-  for(let i=0;i<N;i++){
-    const r=rnd(); let x,y;
-    if(r<0.42){x=0.70+g()*0.065;y=0.70+g()*0.07}          // CAR+ CD3+
-    else if(r<0.90){x=0.68+g()*0.07;y=0.18+g()*0.06}      // CAR- CD3+
-    else{x=0.16+g()*0.07;y=0.16+g()*0.07}                 // CD3- residual
-    pts.push([Math.min(.98,Math.max(.02,x)),Math.min(.98,Math.max(.02,y))]);
-  }
-  const gate={x0:.5,x1:.95,y0:.46,y1:.95};
+  const cv=document.getElementById('reel'), ctx=cv.getContext('2d');
+  const tc=document.getElementById('tc'), btn=document.getElementById('reelBtn'), ico=document.getElementById('reelIco');
+  const L=16;
+  let W=0,H=0,S=0;
+  function size(){const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*d);cv.height=Math.round(H*d);ctx.setTransform(d,0,0,d,0,0);S=Math.min(W,H)}
+  let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+  const N=132, P=[];for(let i=0;i<N;i++)P.push({sx:rnd(),sy:rnd(),dx:rnd()*2-1,dy:rnd()*2-1,j:rnd()*6.283,a:i/N*Math.PI*2+(rnd()-.5)*.03});
+  const clamp=(x,a,b)=>Math.max(a===undefined?0:a,Math.min(b===undefined?1:b,x));
+  const seg=(t,a,b)=>clamp((t-a)/(b-a));
+  const eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+  const eo=p=>1-Math.pow(1-p,3);
   const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-  let W,H,pad,shown=0,raf;
-  function size(){const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);pad={l:38,b:30,t:8,r:8}}
-  const X=v=>pad.l+v*(W-pad.l-pad.r), Y=v=>H-pad.b-v*(H-pad.b-pad.t);
-  function frame(){
-    const ink=css('--ink'),muted=css('--muted'),line=css('--line'),acc=css('--accent'),pop=css('--pop');
-    ctx.clearRect(0,0,W,H);
-    ctx.strokeStyle=line;ctx.lineWidth=1;ctx.font='10.5px "JetBrains Mono", monospace';ctx.fillStyle=muted;
-    [0,.25,.5,.75,1].forEach((t,i)=>{
-      ctx.beginPath();ctx.moveTo(X(t),Y(0));ctx.lineTo(X(t),Y(1));ctx.moveTo(X(0),Y(t));ctx.lineTo(X(1),Y(t));ctx.globalAlpha=i===0?1:.5;ctx.stroke();ctx.globalAlpha=1;
-      ctx.textAlign='center';ctx.fillText(['0','10²','10³','10⁴','10⁵'][i],X(t),H-pad.b+14);
-      ctx.textAlign='right';ctx.fillText(['','10²','10³','10⁴','10⁵'][i],pad.l-6,Y(t)+3);
-    });
-    ctx.fillStyle=ink;ctx.textAlign='center';ctx.fillText('CD3',X(.5),H-3);
-    ctx.save();ctx.translate(10,Y(.5));ctx.rotate(-Math.PI/2);ctx.fillText('anti-CD19 CAR',0,0);ctx.restore();
-    let inG=0;
-    for(let i=0;i<shown;i++){const [x,y]=pts[i];const ing=x>gate.x0&&x<gate.x1&&y>gate.y0&&y<gate.y1;if(ing)inG++;
-      ctx.fillStyle=ing?acc:pop;ctx.globalAlpha=ing?.55:.32;ctx.fillRect(X(x),Y(y),1.6,1.6)}
-    ctx.globalAlpha=1;
-    ctx.strokeStyle=acc;ctx.lineWidth=1.4;ctx.setLineDash([4,3]);
-    ctx.strokeRect(X(gate.x0),Y(gate.y1),X(gate.x1)-X(gate.x0),Y(gate.y0)-Y(gate.y1));ctx.setLineDash([]);
-    ctx.fillStyle=acc;ctx.textAlign='left';ctx.font='500 11px "JetBrains Mono", monospace';ctx.fillText('CAR⁺',X(gate.x0)+5,Y(gate.y1)+14);
-    const cd3=pts.slice(0,shown).filter(p=>p[0]>.45).length;
-    evEl.textContent=(shown*4/3|0).toLocaleString('es-MX');
-    pctEl.textContent=cd3?(100*inG/cd3).toFixed(1)+'%':'—';
+  const rgba=(hex,a)=>{const n=parseInt(hex.replace('#',''),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')'};
+  const WORDS={es:['CAR-T','Manufactura cGMP','Control de calidad','IA clínica','Hecho en México'],en:['CAR-T','cGMP manufacturing','Quality control','Clinical AI','Made in Mexico']};
+  const TARGETS=[{t0:6.2,a:-2.45},{t0:8.4,a:.30},{t0:10.6,a:2.70}];
+
+  function line(x1,y1,x2,y2,p){if(p<=0)return;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x1+(x2-x1)*p,y1+(y2-y1)*p);ctx.stroke()}
+
+  function draw(t,still){
+    const bg=css('--reel-bg'),ink=css('--reel-ink'),acc=css('--reel-accent'),pop=css('--reel-pop');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    const cx=W/2, cy=H*.42, R=S*.25;
+
+    // Hemocytometer-style counting grid
+    const gs=S/12;ctx.lineWidth=1;
+    for(let k=0,x=(W%gs)/2;x<=W;x+=gs,k++){ctx.strokeStyle=rgba(ink,k%4===0?.09:.04);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let k=0,y=(H%gs)/2;y<=H;y+=gs,k++){ctx.strokeStyle=rgba(ink,k%4===0?.09:.04);ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+
+    const fin=1-seg(t,13.4,14.4);               // logo fade-out
+    const asm=eio(seg(t,.2,2.4));                // particles assemble
+    const ringP=seg(t,1.9,2.9);                  // membrane draws
+    const dis=eio(seg(t,13.6,15.6));             // particles disperse
+
+    // Particles
+    let pa=0;
+    if(t<2.9) pa=(.3+.6*asm)*(1-ringP);
+    else if(t>=13.4) pa=seg(t,13.4,13.9)*(1-seg(t,15,15.9))*.85;
+    if(pa>0){
+      ctx.fillStyle=rgba(acc,pa);
+      for(const p of P){
+        const rx=cx+Math.cos(p.a)*R, ry=cy+Math.sin(p.a)*R;
+        let x,y;
+        if(t<2.9){const w=(1-asm)*S*.02;x=p.sx*W+(rx-p.sx*W)*asm+Math.sin(t*1.7+p.j)*w;y=p.sy*H+(ry-p.sy*H)*asm+Math.cos(t*1.3+p.j)*w}
+        else{x=rx+p.dx*S*.55*dis;y=ry+p.dy*S*.55*dis}
+        ctx.beginPath();ctx.arc(x,y,S*.0055,0,6.283);ctx.fill();
+      }
+    }
+
+    // Membrane
+    if(ringP>0&&fin>0){
+      ctx.strokeStyle=rgba(acc,fin);ctx.lineWidth=S*.011;ctx.lineCap='round';
+      ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+6.283*ringP);ctx.stroke();
+    }
+    // Nucleus disk
+    const dp=eo(seg(t,2.4,3.4));
+    if(dp>0&&fin>0){ctx.fillStyle=rgba(acc,.17*fin);ctx.beginPath();ctx.arc(cx,cy,R*.64*dp,0,6.283);ctx.fill()}
+
+    // The Y (antibody / CAR)
+    const yp=eio(seg(t,3,4.3));
+    if(yp>0&&fin>0){
+      const arm=clamp(yp/.6), stem=clamp((yp-.6)/.4);
+      ctx.strokeStyle=rgba(ink,fin);ctx.lineWidth=S*.024;ctx.lineCap='round';ctx.lineJoin='round';
+      const bx=cx, by=cy+R*.03;
+      line(cx-R*.36,cy-R*.38,bx,by,arm);
+      line(cx+R*.36,cy-R*.38,bx,by,arm);
+      line(bx,by,bx,cy+R*.45,stem);
+    }
+
+    // Satellite dot (orbits in, lands upper right)
+    const sp=eo(seg(t,3.8,5.1));
+    if(t>3.8&&fin>0){
+      const ta=Math.atan2(-.48,.77), ang=ta-(1-sp)*Math.PI*3, rad=R*.91+(1-sp)*R*.85;
+      const x=cx+Math.cos(ang)*rad, y=cy+Math.sin(ang)*rad, a=seg(t,3.8,4.1)*fin;
+      const g=ctx.createRadialGradient(x,y,0,x,y,S*.06);g.addColorStop(0,rgba(pop,.45*a));g.addColorStop(1,rgba(pop,0));
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,S*.06,0,6.283);ctx.fill();
+      ctx.fillStyle=rgba(pop,a);ctx.beginPath();ctx.arc(x,y,S*.017,0,6.283);ctx.fill();
+    }
+
+    // CAR receptors on the membrane
+    const rp=eo(seg(t,5.4,6.4));
+    if(rp>0&&fin>0){
+      ctx.strokeStyle=rgba(acc,fin*.95);ctx.lineWidth=S*.0055;ctx.lineCap='round';
+      const l=S*.034*rp, rot=t*.07;
+      for(let k=0;k<14;k++){
+        const a=k/14*6.283+rot, c=Math.cos(a), s=Math.sin(a);
+        const r0=R+S*.01, r1=r0+l*.55;
+        line(cx+c*r0,cy+s*r0,cx+c*r1,cy+s*r1,1);
+        for(const o of [-.55,.55]){const c2=Math.cos(a+o),s2=Math.sin(a+o);line(cx+c*r1,cy+s*r1,cx+c*r1+c2*l*.5,cy+s*r1+s2*l*.5,1)}
+      }
+    }
+
+    // Target cells recognized and eliminated
+    if(!still&&t<13.4){
+      for(const tg of TARGETS){
+        const lt=t-tg.t0; if(lt<0||lt>2.7) continue;
+        const app=eo(clamp(lt/1.4)), d=S*.8-(S*.8-(R+S*.085))*app;
+        const x=cx+Math.cos(tg.a)*d, y=cy+Math.sin(tg.a)*d;
+        const kill=seg(lt,2,2.7), r=S*.042*(1-kill*.85), a=(1-kill)*Math.min(1,lt/.4);
+        if(lt>1.3&&lt<2.4){ // immune synapse pulse
+          const pu=.5+.5*Math.sin(lt*18);
+          ctx.strokeStyle=rgba(acc,.7*pu);ctx.lineWidth=S*.008;
+          line(cx+Math.cos(tg.a)*(R+S*.03),cy+Math.sin(tg.a)*(R+S*.03),x-Math.cos(tg.a)*r,y-Math.sin(tg.a)*r,1);
+          const g=ctx.createRadialGradient(x,y,0,x,y,r*2.2);g.addColorStop(0,rgba(acc,.28*pu));g.addColorStop(1,rgba(acc,0));
+          ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*2.2,0,6.283);ctx.fill();
+        }
+        ctx.fillStyle=rgba(pop,.28*a);ctx.strokeStyle=rgba(pop,.9*a);ctx.lineWidth=S*.005;
+        ctx.beginPath();ctx.arc(x,y,r,0,6.283);ctx.fill();ctx.stroke();
+        if(kill>0){ctx.fillStyle=rgba(pop,(1-kill)*.8);for(let f=0;f<7;f++){const fa=f/7*6.283+tg.a,fd=r+kill*S*.06;ctx.beginPath();ctx.arc(x+Math.cos(fa)*fd,y+Math.sin(fa)*fd,S*.006,0,6.283);ctx.fill()}}
+      }
+    }
+
+    // Wordmark
+    const wp=eo(seg(t,4.6,5.6));
+    if(wp>0&&fin>0){
+      const fs=S*.082, y=cy+R+S*.19+(1-wp)*S*.03;
+      ctx.textBaseline='alphabetic';
+      const f1='300 '+fs+'px "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif', f2='600 '+fs+'px "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif';
+      ctx.font=f1;const w1=ctx.measureText('Yo').width, w3=ctx.measureText('Therapy').width;
+      ctx.font=f2;const w2=ctx.measureText('Cell').width;
+      let x=cx-(w1+w2+w3)/2;ctx.textAlign='left';ctx.fillStyle=rgba(ink,wp*fin);
+      ctx.font=f1;ctx.fillText('Yo',x,y);x+=w1;
+      ctx.font=f2;ctx.fillStyle=rgba(acc,wp*fin);ctx.fillText('Cell',x,y);x+=w2;
+      ctx.font=f1;ctx.fillStyle=rgba(ink,wp*fin);ctx.fillText('Therapy',x,y);
+
+      // Rotating capability words
+      const words=WORDS[document.documentElement.lang==='en'?'en':'es'];
+      let word, wa;
+      if(still){word=words[0];wa=1}
+      else{const k=Math.floor(clamp((t-5.8)/1.52,0,4.999)), lt=(t-5.8)-k*1.52; word=words[k]; wa=t<5.8?0:Math.min(seg(lt,0,.3),1-seg(lt,1.2,1.52))}
+      if(t>13)wa*=fin;
+      ctx.font='500 '+(S*.032)+'px "JetBrains Mono", ui-monospace, monospace';
+      ctx.textAlign='center';ctx.fillStyle=rgba(ink,.72*wa);
+      if('letterSpacing' in ctx) ctx.letterSpacing=(S*.004)+'px';
+      ctx.fillText(word.toUpperCase(),cx,y+S*.075);
+      if('letterSpacing' in ctx) ctx.letterSpacing='0px';
+    }
+
+    tc.textContent='00:'+String(Math.floor(t)).padStart(2,'0')+' / 00:16';
   }
-  function run(){shown=Math.min(N,shown+150);frame();if(shown<N)raf=requestAnimationFrame(run)}
+
   size();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce){shown=N;frame()}else{shown=1500;frame();raf=requestAnimationFrame(run)}
-  addEventListener('resize',()=>{size();frame()});
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',frame);
-  new MutationObserver(frame).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  let playing=!reduce, start=performance.now(), pausedAt=reduce?11.6:0, visible=true, raf=0;
+  const now=()=>playing?((performance.now()-start)/1000)%L:pausedAt;
+  function loop(){draw(now(),false);if(playing&&visible)raf=requestAnimationFrame(loop)}
+  function setIcon(){ico.innerHTML=playing?'<rect x="2" y="1.5" width="2.6" height="9"/><rect x="7.4" y="1.5" width="2.6" height="9"/>':'<path d="M3 1.5v9l7.5-4.5z"/>';btn.setAttribute('aria-label',playing?'Pausar animación':'Reproducir animación')}
+  btn.addEventListener('click',()=>{if(playing){pausedAt=now();playing=false;cancelAnimationFrame(raf)}else{start=performance.now()-pausedAt*1000;playing=true;loop()}setIcon()});
+  setIcon();
+  if(reduce)draw(pausedAt,true);else loop();
+  if('IntersectionObserver' in window)new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible&&playing){cancelAnimationFrame(raf);loop()}}).observe(cv);
+  addEventListener('resize',()=>{size();draw(now(),!playing&&reduce)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!playing)draw(now(),reduce)});
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(!playing)draw(now(),reduce)});
 })();
 </script>
 
