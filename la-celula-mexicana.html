@@ -137,6 +137,19 @@ section{padding-block:80px}
 .sub::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.12)}
 @media (max-width:760px){.sub{grid-template-columns:1fr}}
 
+/* Intro del podcast */
+.trailer-sec{padding-block:8px 24px}
+.trailer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--line);max-width:100%}
+.trailer video{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;background:#000}
+.trailer-play{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-start;gap:14px;padding:clamp(16px,3vw,32px);background:linear-gradient(180deg,rgba(11,11,15,0) 45%,rgba(11,11,15,.75) 100%)}
+.trailer-play:focus-visible{outline:2px solid var(--pink);outline-offset:-4px}
+.tp-ico{width:clamp(52px,6vw,72px);height:clamp(52px,6vw,72px);border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 10px 30px rgba(230,0,126,.5);transition:transform .2s;flex:none}
+.tp-ico::after{content:"";border-left:18px solid #fff;border-block:11px solid transparent;margin-left:4px}
+.trailer-play:hover .tp-ico{transform:scale(1.06)}
+.tp-txt b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(20px,2.4vw,28px)}
+.tp-txt small{color:var(--muted)}
+.trailer.playing .trailer-play{display:none}
+
 /* Modal video */
 .modal{position:fixed;inset:0;z-index:100;background:rgba(5,5,8,.86);display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px}
 .modal.open{display:flex}
@@ -179,6 +192,13 @@ footer a:hover{color:var(--pink-ink)}
     </div>
     <figure class="stage" aria-hidden="true"><canvas id="cellCanvas"></canvas></figure>
   </div>
+
+  <section class="wrap trailer-sec" id="intro" aria-label="Intro del podcast">
+    <div class="trailer">
+      <video id="introVid" poster="img/intro-lcm-poster.webp" preload="none" playsinline width="1280" height="720"><source src="video/intro-la-celula-mexicana.mp4" type="video/mp4"><source src="video/intro-la-celula-mexicana.webm" type="video/webm"></video>
+      <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">33 s · con sonido</small></span></button>
+    </div>
+  </section>
 
   <section class="wrap" id="episodios">
     <div class="head"><div class="mono">Episodios</div><div><h2>Escucha y mira</h2><p>Cada episodio se publica en YouTube. Aquí encontrarás todos, del más reciente al primero.</p></div></div>
@@ -293,6 +313,13 @@ const EPISODIOS = [
   if(reduce)frame(1);else raf=requestAnimationFrame(loop);
   if('IntersectionObserver' in window)new IntersectionObserver(e=>{vis=e[0].isIntersecting;if(vis&&!reduce){cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}}).observe(cv);
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{size();frame(performance.now()/1000)},150)});
+})();
+
+/* ══ Intro del podcast ══ */
+(function(){
+  const v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
+  b.addEventListener('click',()=>{box.classList.add('playing');v.controls=true;v.muted=false;v.play().catch(()=>{})});
+  v.addEventListener('ended',()=>{box.classList.remove('playing');v.controls=false;v.currentTime=0;v.load()});
 })();
 </script>
 </body>
