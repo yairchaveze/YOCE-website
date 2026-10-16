@@ -29,7 +29,7 @@ jobs:
         with:
           base-url-path: https://yocelltherapy.com/
           include-html: true
-          exclude-paths: /google37673d14c4e8ed41.html   # excluye verificación de Google
+          exclude-paths: /google37673d14c4e8ed41.html /captura-resultados.html /registro-etiquetas.html   # excluye verificación de Google y herramientas internas
 
       - name: Commit sitemap
         uses: stefanzweifel/git-auto-commit-action@v5
