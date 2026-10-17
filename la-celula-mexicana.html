@@ -15,10 +15,6 @@
 <meta property="og:image:height" content="630"/>
 <meta property="og:image:alt" content="La Célula Mexicana · Podcast de ciencia con acento mexicano, by YoCellTherapy"/>
 <meta property="og:site_name" content="La Célula Mexicana"/>
-<meta property="og:video" content="https://yocelltherapy.com/video/intro-la-celula-mexicana.mp4"/>
-<meta property="og:video:type" content="video/mp4"/>
-<meta property="og:video:width" content="1920"/>
-<meta property="og:video:height" content="1080"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="La Célula Mexicana | Podcast de ciencia"/>
 <meta name="twitter:description" content="Podcast de ciencia con acento mexicano, by YoCellTherapy."/>
@@ -153,7 +149,7 @@ section{padding-block:80px}
 /* Intro del podcast */
 .trailer-sec{padding-block:8px 24px}
 .trailer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--line);max-width:100%}
-.trailer video{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;background:#000}
+.trailer img,.trailer iframe{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;background:#000;border:0}
 .trailer-play{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-start;gap:14px;padding:clamp(16px,3vw,32px);background:linear-gradient(180deg,rgba(11,11,15,0) 45%,rgba(11,11,15,.75) 100%)}
 .trailer-play:focus-visible{outline:2px solid var(--pink);outline-offset:-4px}
 .tp-ico{width:clamp(52px,6vw,72px);height:clamp(52px,6vw,72px);border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 10px 30px rgba(230,0,126,.5);transition:transform .2s;flex:none}
@@ -219,7 +215,7 @@ footer a:hover{color:var(--pink-ink)}
 
   <section class="wrap trailer-sec" id="intro" aria-label="Intro del podcast">
     <div class="trailer">
-      <video id="introVid" poster="img/intro-lcm-poster.webp?v=3" preload="none" playsinline width="1920" height="1080"><source src="video/intro-la-celula-mexicana.webm?v=4" type="video/webm"><source src="video/intro-la-celula-mexicana.mp4?v=4" type="video/mp4"></video>
+      <img id="introVid" src="img/intro-lcm-poster.webp?v=3" alt="" width="1920" height="1080" loading="lazy">
       <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">33 s · con sonido</small></span></button>
     </div>
     <div class="share" role="group" aria-label="Compartir el intro">
@@ -351,9 +347,12 @@ const EPISODIOS = [
 
 /* ══ Intro del podcast ══ */
 (function(){
-  const v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
-  b.addEventListener('click',()=>{box.classList.add('playing');v.controls=true;v.muted=false;v.play().catch(()=>{})});
-  v.addEventListener('ended',()=>{box.classList.remove('playing');v.controls=false;v.currentTime=0;v.load()});
+  const YT='3CtgfunC1GI',v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
+  /* El video se carga desde YouTube solo al dar clic (la página sigue ligera y las vistas cuentan en el canal) */
+  b.addEventListener('click',()=>{const f=document.createElement('iframe');
+    f.src='https://www.youtube-nocookie.com/embed/'+YT+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    f.title='Intro de La Célula Mexicana';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;
+    v.replaceWith(f);box.classList.add('playing')});
   /* Compartir */
   const url='https://yocelltherapy.com/la-celula-mexicana.html#intro',
         txt='Mira el intro de La Célula Mexicana 🧬 Podcast de ciencia con acento mexicano',
