@@ -10,6 +10,19 @@
 <meta property="og:description" content="Células, ADN y las terapias que están cambiando la medicina, contado desde México."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://yocelltherapy.com/la-celula-mexicana.html"/>
+<meta property="og:image" content="https://yocelltherapy.com/og-la-celula-mexicana.jpg?v=1"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="La Célula Mexicana · Podcast de ciencia con acento mexicano, by YoCellTherapy"/>
+<meta property="og:site_name" content="La Célula Mexicana"/>
+<meta property="og:video" content="https://yocelltherapy.com/video/intro-la-celula-mexicana.mp4"/>
+<meta property="og:video:type" content="video/mp4"/>
+<meta property="og:video:width" content="1920"/>
+<meta property="og:video:height" content="1080"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="La Célula Mexicana | Podcast de ciencia"/>
+<meta name="twitter:description" content="Podcast de ciencia con acento mexicano, by YoCellTherapy."/>
+<meta name="twitter:image" content="https://yocelltherapy.com/og-la-celula-mexicana.jpg?v=1"/>
 <meta name="theme-color" content="#0B0B0F">
 <link rel="canonical" href="https://yocelltherapy.com/la-celula-mexicana.html"/>
 <script type="application/ld+json">
@@ -149,6 +162,17 @@ section{padding-block:80px}
 .tp-txt b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(20px,2.4vw,28px)}
 .tp-txt small{color:var(--muted)}
 .trailer.playing .trailer-play{display:none}
+.share{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.share .mono{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sh{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px/1 var(--f-body);transition:border-color .2s,background .2s}
+.sh:hover{border-color:var(--pink);background:var(--pink-soft)}
+.sh:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.sh svg{width:18px;height:18px;flex:none}
+.sh[hidden]{display:none}
+.sh.main{background:var(--pink);border-color:var(--pink);color:#fff}
+.sh.main:hover{background:var(--pink-ink)}
+.sh-ok{font:500 13px var(--f-mono);color:var(--pink-ink);opacity:0;transition:opacity .2s}
+.sh-ok.on{opacity:1}
 
 /* Modal video */
 .modal{position:fixed;inset:0;z-index:100;background:rgba(5,5,8,.86);display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px}
@@ -197,6 +221,15 @@ footer a:hover{color:var(--pink-ink)}
     <div class="trailer">
       <video id="introVid" poster="img/intro-lcm-poster.webp?v=3" preload="none" playsinline width="1920" height="1080"><source src="video/intro-la-celula-mexicana.webm?v=3" type="video/webm"><source src="video/intro-la-celula-mexicana.mp4?v=3" type="video/mp4"></video>
       <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">33 s · con sonido</small></span></button>
+    </div>
+    <div class="share" role="group" aria-label="Compartir el intro">
+      <span class="mono">Compartir</span>
+      <button type="button" class="sh main" id="shNative" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir</button>
+      <a class="sh" id="shWa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1.2-.5-2.2-1.5-2.7-2.7l.8-1-1-2z"/></svg>WhatsApp</a>
+      <a class="sh" id="shFb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>Facebook</a>
+      <a class="sh" id="shX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>X</a>
+      <button type="button" class="sh" id="shCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>Copiar enlace</button>
+      <span class="sh-ok" id="shOk" role="status" aria-live="polite"></span>
     </div>
   </section>
 
@@ -320,6 +353,20 @@ const EPISODIOS = [
   const v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
   b.addEventListener('click',()=>{box.classList.add('playing');v.controls=true;v.muted=false;v.play().catch(()=>{})});
   v.addEventListener('ended',()=>{box.classList.remove('playing');v.controls=false;v.currentTime=0;v.load()});
+  /* Compartir */
+  const url='https://yocelltherapy.com/la-celula-mexicana.html#intro',
+        txt='Mira el intro de La Célula Mexicana 🧬 Podcast de ciencia con acento mexicano',
+        e=encodeURIComponent,$=id=>document.getElementById(id),ok=$('shOk');
+  $('shWa').href='https://wa.me/?text='+e(txt+' '+url);
+  $('shFb').href='https://www.facebook.com/sharer/sharer.php?u='+e(url);
+  $('shX').href='https://x.com/intent/post?text='+e(txt)+'&url='+e(url);
+  const msg=m=>{ok.textContent=m;ok.classList.add('on');clearTimeout(msg.t);msg.t=setTimeout(()=>ok.classList.remove('on'),2200)};
+  $('shCopy').addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(url);msg('¡Enlace copiado!')}
+    catch(_){const t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();try{document.execCommand('copy');msg('¡Enlace copiado!')}catch(__){msg(url)}t.remove()}
+  });
+  if(navigator.share){const n=$('shNative');n.hidden=false;
+    n.addEventListener('click',()=>navigator.share({title:'La Célula Mexicana',text:txt,url}).catch(()=>{}))}
 })();
 </script>
 </body>
