@@ -142,6 +142,10 @@ section{padding-block:80px}
 .sub h2{font-weight:800;font-size:clamp(30px,4.6vw,56px);line-height:.95;text-transform:uppercase}
 .sub p{margin-top:12px;font-size:18px;opacity:.9;max-width:46ch}
 .sub .btn{border-color:#fff;color:#fff}
+.sub-btns{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+.sub .btn svg{width:20px;height:20px;flex:none}
+.sub .btn.sp{background:#111;border-color:#111}
+.sub .btn.sp:hover{background:#1DB954;border-color:#1DB954;color:#111}
 .sub .btn:hover{background:#fff;color:var(--pink)}
 .sub::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.12)}
 @media (max-width:760px){.sub{grid-template-columns:1fr}}
@@ -267,8 +271,9 @@ footer a:hover{color:var(--pink-ink)}
 
   <section class="wrap" id="suscribete" style="padding-top:20px">
     <div class="sub">
-      <div><h2>No te pierdas ningún episodio</h2><p>Suscríbete al canal y activa la campana para enterarte cuando salga el siguiente.</p></div>
-      <a class="btn" id="ytChannel" href="https://www.youtube.com/@LaC%C3%A9lulaMexicana" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.8 15.1V8.9l5.7 3.1-5.7 3.1Z"/></svg>Ir a @LaCélulaMexicana</a>
+      <div><h2>No te pierdas ningún episodio</h2><p>Suscríbete en YouTube o síguenos en Spotify para enterarte cuando salga el siguiente.</p></div>
+      <div class="sub-btns"><a class="btn" id="ytChannel" href="https://www.youtube.com/@LaC%C3%A9lulaMexicana" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.8 15.1V8.9l5.7 3.1-5.7 3.1Z"/></svg>Ir a @LaCélulaMexicana</a>
+      <a class="btn sp" id="spShow" href="https://open.spotify.com/episode/6HCBynsz4jJVi4KyiKb7j8" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22Zm5 15.9a.7.7 0 0 1-.9.2c-2.6-1.6-5.8-1.9-9.6-1a.7.7 0 1 1-.3-1.3c4.2-1 7.7-.6 10.6 1.2.3.2.4.6.2.9Zm1.3-3a.9.9 0 0 1-1.2.3c-2.9-1.8-7.4-2.3-10.9-1.3a.9.9 0 1 1-.5-1.7c4-1.2 9-.6 12.3 1.5.4.3.5.8.3 1.2Zm.1-3.1C14.9 8.7 9 8.5 5.6 9.6a1 1 0 1 1-.6-2c3.9-1.2 10.4-1 14.5 1.5a1 1 0 0 1-1.1 1.7Z"/></svg>Escúchalo en Spotify</a></div>
     </div>
   </section>
 </main>
