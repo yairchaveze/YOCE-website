@@ -216,7 +216,7 @@ footer a:hover{color:var(--pink-ink)}
   <section class="wrap trailer-sec" id="intro" aria-label="Intro del podcast">
     <div class="trailer">
       <img id="introVid" src="img/intro-lcm-poster.webp?v=3" alt="" width="1920" height="1080" loading="lazy">
-      <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">33 s · con sonido</small></span></button>
+      <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">47 s · con sonido</small></span></button>
     </div>
     <div class="share" role="group" aria-label="Compartir el intro">
       <span class="mono">Compartir</span>
@@ -224,7 +224,7 @@ footer a:hover{color:var(--pink-ink)}
       <a class="sh" id="shWa" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1.2-.5-2.2-1.5-2.7-2.7l.8-1-1-2z"/></svg>WhatsApp</a>
       <a class="sh" id="shFb" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>Facebook</a>
       <a class="sh" id="shX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>X</a>
-      <a class="sh" id="shYt" href="https://youtu.be/3CtgfunC1GI" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg>Ver en YouTube</a>
+      <a class="sh" id="shYt" href="https://youtu.be/JBM1Y9FMEmU" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg>Ver en YouTube</a>
       <button type="button" class="sh" id="shCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg>Copiar enlace</button>
       <span class="sh-ok" id="shOk" role="status" aria-live="polite"></span>
     </div>
@@ -347,7 +347,7 @@ const EPISODIOS = [
 
 /* ══ Intro del podcast ══ */
 (function(){
-  const YT='3CtgfunC1GI',v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
+  const YT='JBM1Y9FMEmU',v=document.getElementById('introVid'),b=document.getElementById('introPlay'),box=v.closest('.trailer');
   /* El video se carga desde YouTube solo al dar clic (la página sigue ligera y las vistas cuentan en el canal) */
   b.addEventListener('click',()=>{const f=document.createElement('iframe');
     f.src='https://www.youtube-nocookie.com/embed/'+YT+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';
