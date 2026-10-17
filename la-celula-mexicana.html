@@ -150,13 +150,16 @@ section{padding-block:80px}
 .trailer-sec{padding-block:8px 24px}
 .trailer{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;border:1px solid var(--line);max-width:100%}
 .trailer img,.trailer iframe{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;background:#000;border:0}
-.trailer-play{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:flex-start;gap:14px;padding:clamp(16px,3vw,32px);background:linear-gradient(180deg,rgba(11,11,15,0) 45%,rgba(11,11,15,.75) 100%)}
+.trailer-play{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(ellipse at center,rgba(11,11,15,.15) 0%,rgba(11,11,15,.55) 100%);transition:background .25s}
+.trailer-play:hover{background:radial-gradient(ellipse at center,rgba(11,11,15,.05) 0%,rgba(11,11,15,.45) 100%)}
 .trailer-play:focus-visible{outline:2px solid var(--pink);outline-offset:-4px}
-.tp-ico{width:clamp(52px,6vw,72px);height:clamp(52px,6vw,72px);border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 10px 30px rgba(230,0,126,.5);transition:transform .2s;flex:none}
-.tp-ico::after{content:"";border-left:18px solid #fff;border-block:11px solid transparent;margin-left:4px}
-.trailer-play:hover .tp-ico{transform:scale(1.06)}
-.tp-txt b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(20px,2.4vw,28px)}
+.tp-ico{width:clamp(64px,9vw,104px);height:clamp(64px,9vw,104px);border-radius:50%;background:var(--pink);display:grid;place-items:center;box-shadow:0 0 0 10px rgba(230,0,126,.22),0 14px 40px rgba(0,0,0,.55);transition:transform .2s;flex:none}
+.tp-ico::after{content:"";border-left:clamp(18px,2.4vw,28px) solid #fff;border-block:clamp(11px,1.5vw,17px) solid transparent;margin-left:6px}
+.trailer-play:hover .tp-ico{transform:scale(1.07)}
+.tp-txt{text-align:center;background:rgba(11,11,15,.72);padding:8px 16px;border-radius:999px;backdrop-filter:blur(6px)}
+.tp-txt b{font-family:var(--f-display);font-weight:400;font-size:clamp(16px,1.8vw,20px);margin-right:10px}
 .tp-txt small{color:var(--muted)}
+.tp-dur{position:absolute;right:clamp(12px,2vw,20px);bottom:clamp(12px,2vw,20px);background:rgba(0,0,0,.78);color:#fff;font:500 13px var(--f-mono);padding:4px 8px;border-radius:6px}
 .trailer.playing .trailer-play{display:none}
 .share{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
 .share .mono{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
@@ -215,8 +218,8 @@ footer a:hover{color:var(--pink-ink)}
 
   <section class="wrap trailer-sec" id="intro" aria-label="Intro del podcast">
     <div class="trailer">
-      <img id="introVid" src="img/intro-lcm-poster.webp?v=3" alt="" width="1920" height="1080" loading="lazy">
-      <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">47 s · con sonido</small></span></button>
+      <img id="introVid" src="img/intro-lcm-poster.webp?v=4" alt="" width="1920" height="1080" loading="lazy">
+      <button type="button" class="trailer-play" id="introPlay" aria-label="Reproducir el intro con sonido"><span class="tp-ico" aria-hidden="true"></span><span class="tp-txt"><b>Mira el intro</b><small class="mono">con sonido</small></span><span class="tp-dur">0:47</span></button>
     </div>
     <div class="share" role="group" aria-label="Compartir el intro">
       <span class="mono">Compartir</span>
