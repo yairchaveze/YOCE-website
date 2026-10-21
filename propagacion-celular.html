@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propagación Celular · YoCellTherapy</title>
+<meta name="description" content="Calculadora de propagación de líneas celulares en suspensión (Raji, ATCC CCL-86): siembra desde el conteo, proyección de expansión hasta un banco celular, preparación de medio de cultivo y de congelación.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="yct-theme.css">
+<style>
+*{box-sizing:border-box}
+.page{max-width:1040px;margin:0 auto;padding:8px 20px 0;position:relative}
+.hero{margin-bottom:28px!important}
+.hero h1{margin:14px 0 14px}
+.kicker{display:flex;align-items:center;gap:10px;text-transform:uppercase}
+.kicker::before{content:""}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{font-family:var(--yct-mono);font-size:12px;letter-spacing:.04em;padding:5px 10px;border:1px solid var(--yct-line);border-radius:3px;color:var(--yct-muted);background:var(--yct-surface)}
+
+/* Índice de módulos */
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--yct-line);border-radius:8px;background:var(--yct-surface);margin-bottom:28px;overflow:hidden}
+.toc a{padding:14px 16px;text-decoration:none;color:var(--yct-ink);border-right:1px solid var(--yct-line);font-size:15px;line-height:1.35}
+.toc a:last-child{border-right:0}
+.toc a span{display:block;font-family:var(--yct-mono);font-size:11px;color:var(--yct-accent);letter-spacing:.08em;margin-bottom:4px}
+.toc a:hover{background:var(--yct-accent-soft)}
+
+/* Línea celular */
+.line-bar{display:grid;grid-template-columns:minmax(220px,320px) 1fr;gap:20px;align-items:start;background:var(--yct-surface);border:1px solid var(--yct-line);border-radius:8px;padding:20px;margin-bottom:28px}
+.line-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fact{border-left:2px solid var(--yct-accent-soft);padding:2px 0 2px 12px}
+.fact b{display:block;font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted);font-weight:400;margin-bottom:3px}
+.fact span{font-size:15px;color:var(--yct-ink);line-height:1.4}
+.custom-grid{display:none;grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;padding-top:14px;border-top:1px dashed var(--yct-line)}
+.custom-grid.on{display:grid}
+
+/* Módulos */
+.mod{background:var(--yct-surface);border:1px solid var(--yct-line);border-radius:8px;padding:26px 26px 24px;margin-bottom:24px;scroll-margin-top:84px}
+.mod-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.mod-n{font-family:var(--yct-mono);font-size:12px;color:var(--yct-accent);letter-spacing:.08em}
+.mod h2{font-weight:300;font-size:clamp(24px,3vw,32px);margin:0;color:var(--yct-ink)}
+.mod-sub{color:var(--yct-muted);font-size:16px;line-height:1.65;margin:4px 0 20px;max-width:70ch}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.f label{display:block;font-size:13.5px;color:var(--yct-muted);margin-bottom:6px;line-height:1.3}
+.f small{display:block;font-size:12px;color:var(--m2);margin-top:5px;line-height:1.4}
+.f input,.f select{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-radius:6px;font-size:16px;color:var(--yct-ink);background:#fff}
+.sci{display:flex;align-items:stretch}
+.sci input{border-radius:6px 0 0 6px}
+.sci select{width:auto;border-left:0;border-radius:0 6px 6px 0;background:var(--yct-bg);font-family:var(--yct-mono);font-size:14px}
+
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--yct-line);border:1px solid var(--yct-line);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.o{background:#fff;padding:14px 16px}
+.o b{display:block;font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted);font-weight:400;margin-bottom:6px}
+.o .v{font-family:var(--yct-display);font-size:26px;font-weight:400;color:var(--yct-ink);line-height:1.1}
+.o .u{font-size:13px;color:var(--yct-muted);margin-top:3px}
+.o.hl{background:var(--yct-accent-soft)}
+.o.hl .v{color:var(--yct-accent)}
+
+.note{border-left:3px solid var(--yct-accent);background:var(--yct-bg);padding:12px 16px;font-size:15px;line-height:1.6;color:var(--yct-ink);border-radius:0 6px 6px 0;margin-bottom:10px}
+.note.warn{border-color:#B7791F;background:#FBF4E6}
+.note.bad{border-color:#B83A3A;background:#FBECEC}
+.note:empty{display:none}
+.formula{font-family:var(--yct-mono);font-size:13px;color:var(--yct-muted);background:var(--yct-bg);border:1px solid var(--yct-line);border-radius:6px;padding:10px 12px;white-space:pre-wrap;line-height:1.7;margin-bottom:14px}
+
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--yct-line);border-radius:6px;margin-bottom:14px}
+th{font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--yct-muted);font-weight:400;text-align:left;padding:10px 12px;background:var(--yct-bg);border-bottom:1px solid var(--yct-line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--yct-line);color:var(--yct-ink);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tr.final td{background:var(--yct-accent-soft);font-weight:600}
+
+.recipe{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;padding:0 0 12px 36px;font-size:15.5px;line-height:1.6;color:var(--yct-ink)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;border:1px solid var(--yct-accent);color:var(--yct-accent);font-family:var(--yct-mono);font-size:12px;display:flex;align-items:center;justify-content:center}
+.h3{font-family:var(--yct-display);font-weight:400;font-size:19px;margin:0 0 12px;color:var(--yct-ink)}
+
+.btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.btn-s{all:unset;cursor:pointer;font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;border:1px solid var(--yct-ink);color:var(--yct-ink)}
+.btn-s:hover{background:var(--yct-ink);color:var(--yct-bg)}
+.btn-s:focus-visible{outline:2px solid var(--yct-accent);outline-offset:2px}
+
+.refs{font-size:14px;color:var(--yct-muted);line-height:1.75;border-top:1px solid var(--yct-line);padding-top:20px;margin-top:8px}
+.refs ol{padding-left:20px;margin:8px 0 0}
+.refs a{color:var(--yct-accent)}
+.disclaimer{font-size:13px;color:var(--m2);margin-top:14px;line-height:1.6}
+
+@media (max-width:760px){
+  .toc{grid-template-columns:1fr 1fr}
+  .toc a:nth-child(2){border-right:0}
+  .toc a:nth-child(-n+2){border-bottom:1px solid var(--yct-line)}
+  .line-bar{grid-template-columns:1fr}
+  .recipe{grid-template-columns:1fr}
+  .mod{padding:20px 16px}
+}
+@media print{.yct-nav,.yct-foot,.toc,.btn-row{display:none!important}.mod{break-inside:avoid}}
+</style>
+</head>
+<body>
+<!-- yct:header -->
+<div class="yct-nav"><div class="yct-wrap">
+<a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a>
+<div class="yct-links" id="yctLinks" role="navigation" aria-label="Principal">
+<div class="yct-dd"><a href="/#plataforma">Plataforma</a><div class="yct-menu"><a href="/#plataforma">Asesoría en Terapia Celular</a><a href="protocolos.html">Bioestadística y Protocolos</a><a href="ia-salud.html">IA en Ciencias de la Salud</a><a href="id-estrategico.html">I+D Estratégico</a><a href="/#plataforma">Control de Calidad</a><a href="/#plataforma">Asesoría a Inversionistas</a></div></div>
+<div class="yct-dd"><a href="cart-vector.html">CAR-T</a><div class="yct-menu"><a href="cart-vector.html">Vector Lentiviral CD19</a><a href="cart-vector.html#diseno">Diseño del constructo</a><a href="cart-vector.html#vector">Vector lentiviral</a><a href="cart-vector.html#manufactura">Manufactura cGMP</a><a href="cart-vector.html#calidad">Control de calidad</a></div></div>
+<div class="yct-dd"><a href="ia-salud.html">Herramientas</a><div class="yct-menu"><a href="recambio-plasmatico.html">Recambio plasmático</a><a href="hppc-cryopreservation-calculator.html">Criopreservación CPH</a><a href="fraccionamiento-cd34-calculator.html">Fraccionamiento CD34⁺</a><a href="ce2-calculator-yoce.html">CE2% CD34⁺</a><a href="colecta-linfocitos.html">Colecta de linfocitos T</a><a href="calculadora-vec-pediatrico.html">VEC pediátrico</a><a href="predictor.html">Predictor de volemia</a><a href="propagacion-celular.html">Propagación celular</a></div></div>
+<div class="yct-dd"><a href="/#ecosistema">Ecosistema</a><div class="yct-menu"><a href="la-celula-mexicana.html">La Célula Mexicana · Podcast</a><a href="yocell-lab.html">YoCell Lab</a></div></div>
+<a href="/#equipo">Liderazgo</a><a href="/#publicaciones">Publicaciones</a><a href="/#noticias">Noticias</a>
+<a class="yct-m" href="contacto.html">Contacto</a>
+</div>
+<a class="yct-btn" href="contacto.html">Contacto</a>
+<button type="button" class="yct-burger" id="yctBurger" aria-expanded="false" aria-controls="yctLinks" aria-label="Menú"><span></span><span></span></button>
+</div></div>
+<!-- /yct:header -->
+
+<div class="page">
+
+<header class="hero">
+  <div class="kicker">Herramientas · Cultivo celular</div>
+  <h1>Propagación celular, <span>del conteo al banco.</span></h1>
+  <p>Ingrese el conteo de su contador celular y obtenga el volumen de siembra, el frasco adecuado, la proyección de expansión hasta un banco celular y los volúmenes exactos de medio de cultivo y de congelación.</p>
+  <div class="chips"><span class="chip">Raji · ATCC CCL-86</span><span class="chip">Suspensión</span><span class="chip">BSL-2 · EBV</span><span class="chip">37 °C · 5 % CO₂</span></div>
+</header>
+
+<nav class="toc" aria-label="Módulos">
+  <a href="#siembra"><span>01</span>Siembra desde el conteo</a>
+  <a href="#proyeccion"><span>02</span>Proyección a banco</a>
+  <a href="#medio"><span>03</span>Medio de cultivo</a>
+  <a href="#congelacion"><span>04</span>Medio de congelación</a>
+</nav>
+
+<!-- LÍNEA CELULAR -->
+<section class="line-bar" aria-label="Línea celular">
+  <div class="f">
+    <label for="linea">Línea celular</label>
+    <select id="linea">
+      <option value="raji">Raji · ATCC CCL-86</option>
+      <option value="custom">Otra línea en suspensión (personalizada)</option>
+    </select>
+    <small>Los parámetros de la línea alimentan los cuatro módulos.</small>
+  </div>
+  <div class="line-facts" id="lineFacts"></div>
+  <div class="custom-grid" id="customGrid">
+    <div class="f"><label for="cSeed">Densidad de siembra (×10⁶/mL)</label><input id="cSeed" type="number" step="0.05" min="0.01" value="0.4"></div>
+    <div class="f"><label for="cHarv">Densidad para dividir (×10⁶/mL)</label><input id="cHarv" type="number" step="0.1" min="0.05" value="1.5"></div>
+    <div class="f"><label for="cMax">Densidad máxima (×10⁶/mL)</label><input id="cMax" type="number" step="0.1" min="0.1" value="3"></div>
+    <div class="f"><label for="cTd">Tiempo de duplicación (h)</label><input id="cTd" type="number" step="1" min="6" value="30"></div>
+    <div class="f"><label for="cBase">Medio base</label><input id="cBase" type="text" value="RPMI-1640" style="font-size:16px"></div>
+  </div>
+</section>
+
+<!-- 01 SIEMBRA -->
+<section class="mod" id="siembra">
+  <div class="mod-head"><span class="mod-n">01</span><h2>Siembra desde el conteo</h2></div>
+  <p class="mod-sub">Capture lo que reporta el contador (LUNA-FL u otro) y el volumen en que resuspendió el botón celular. El valor de células vivas del LUNA ya está corregido por el factor de dilución.</p>
+
+  <div class="grid">
+    <div class="f">
+      <label for="live">Células vivas / mL</label>
+      <div class="sci"><input id="live" type="number" step="0.01" min="0" placeholder="1.64"><select id="liveExp" aria-label="Exponente"><option value="4">×10⁴</option><option value="5" selected>×10⁵</option><option value="6">×10⁶</option></select></div>
+      <small>Como lo muestra el LUNA: 1.64×10e5 → 1.64 y ×10⁵</small>
+    </div>
+    <div class="f"><label for="viab">Viabilidad (%)</label><input id="viab" type="number" step="0.1" min="0" max="100" placeholder="92"></div>
+    <div class="f"><label for="vres">Volumen de resuspensión (mL)</label><input id="vres" type="number" step="0.1" min="0" placeholder="3"></div>
+    <div class="f"><label for="seedTarget">Densidad de siembra (×10⁶/mL)</label><input id="seedTarget" type="number" step="0.05" min="0.01"><small id="seedHint"></small></div>
+  </div>
+
+  <div class="out">
+    <div class="o hl"><b>Vivas totales</b><div class="v" id="oTot">—</div><div class="u">células</div></div>
+    <div class="o"><b>Volumen final</b><div class="v" id="oVol">—</div><div class="u">mL de cultivo</div></div>
+    <div class="o"><b>Medio a agregar</b><div class="v" id="oAdd">—</div><div class="u">mL de medio completo</div></div>
+    <div class="o hl"><b>Recipiente</b><div class="v" id="oFlask" style="font-size:21px">—</div><div class="u" id="oFlaskU">&nbsp;</div></div>
+  </div>
+  <div class="formula" id="fSiembra">Vivas totales = vivas/mL × volumen de resuspensión
+Volumen final = vivas totales ÷ densidad de siembra</div>
+  <div id="nSiembra"></div>
+
+  <details style="margin-top:6px">
+    <summary style="cursor:pointer;font-size:15px;color:var(--yct-accent)">Conteo en LUNA-FL con naranja de acridina / yoduro de propidio</summary>
+    <ol class="steps" style="margin-top:14px">
+      <li>Mezcle la suspensión con AO/PI en proporción <b>9 : 1</b> (18 µL + 2 µL, o 27 µL + 3 µL). Esa proporción corresponde al factor de dilución <b>1.11</b>.</li>
+      <li>Cargue <b>10–12 µL</b> en el portaobjetos de conteo.</li>
+      <li>Use el modo <i>FL cell counting</i>, enfoque en campo claro y cuente. AO tiñe de verde las células vivas y PI de rojo las muertas.</li>
+      <li>Para Raji, un protocolo con tamaño de 6–20 µm reduce el conteo de restos celulares.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- 02 PROYECCIÓN -->
+<section class="mod" id="proyeccion">
+  <div class="mod-head"><span class="mod-n">02</span><h2>Proyección a banco celular</h2></div>
+  <p class="mod-sub">Estima cuántos días y pases necesita para juntar las células de un banco nuevo de pase bajo, con un esquema que divide el cultivo cada vez que alcanza la densidad de corte y lo regresa a la densidad de siembra.</p>
+
+  <div class="grid">
+    <div class="f"><label for="pN0">Células vivas iniciales</label><div class="sci"><input id="pN0" type="number" step="0.01" min="0"><select id="pN0Exp" aria-label="Exponente"><option value="5">×10⁵</option><option value="6" selected>×10⁶</option><option value="7">×10⁷</option></select></div><small>Se llena con el módulo 01.</small></div>
+    <div class="f"><label for="pVials">Crioviales del banco</label><input id="pVials" type="number" step="1" min="1" value="10"></div>
+    <div class="f"><label for="pPerVial">Células por criovial (×10⁶)</label><input id="pPerVial" type="number" step="0.5" min="0.1" value="3"><small>PTC-14: 2–3 ×10⁶ en 1 mL</small></div>
+    <div class="f"><label for="pQC">Células extra para CC (×10⁶)</label><input id="pQC" type="number" step="0.5" min="0" value="5"><small>Citometría, micoplasma, esterilidad, conteo</small></div>
+    <div class="f"><label for="pTd">Tiempo de duplicación (h)</label><input id="pTd" type="number" step="1" min="6"><small>DSMZ: ~24–36 h. Ajústelo con su dato real.</small></div>
+    <div class="f"><label for="pLag">Fase de adaptación post-descongelación (h)</label><input id="pLag" type="number" step="6" min="0" value="48"></div>
+    <div class="f"><label for="pPass">Pase actual</label><input id="pPass" type="number" step="1" min="0" value="1"></div>
+  </div>
+
+  <div class="out">
+    <div class="o"><b>Células necesarias</b><div class="v" id="qNeed">—</div><div class="u">banco + control de calidad</div></div>
+    <div class="o"><b>Duplicaciones</b><div class="v" id="qDbl">—</div><div class="u">desde las células iniciales</div></div>
+    <div class="o hl"><b>Tiempo estimado</b><div class="v" id="qDays">—</div><div class="u">días hasta cosechar</div></div>
+    <div class="o"><b>Medio total</b><div class="v" id="qMed">—</div><div class="u">mL de medio completo (sin cambios)</div></div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Día</th><th>Evento</th><th>Pase</th><th>Vivas totales</th><th>Densidad</th><th>Volumen</th><th>Medio nuevo</th><th>Recipientes</th></tr></thead>
+    <tbody id="qTable"><tr><td colspan="8" style="color:var(--yct-muted)">Capture las células iniciales.</td></tr></tbody>
+  </table></div>
+  <div id="nProy"></div>
+  <div class="btn-row"><button type="button" class="btn-s" id="useMed">Calcular este medio en el módulo 03 →</button></div>
+  <div class="formula">Duplicaciones = log₂(células necesarias ÷ células iniciales)
+Tiempo = adaptación + duplicaciones × tiempo de duplicación
+Proyección teórica en fase exponencial: confirme cada pase con un conteo real.</div>
+</section>
+
+<!-- 03 MEDIO DE CULTIVO -->
+<section class="mod" id="medio">
+  <div class="mod-head"><span class="mod-n">03</span><h2>Medio de cultivo completo</h2></div>
+  <p class="mod-sub" id="medSub">RPMI-1640 + suero fetal bovino inactivado por calor + penicilina-estreptomicina. ATCC recomienda RPMI-1640 con 10 % de SFB; la penicilina-estreptomicina es opcional.</p>
+
+  <div class="grid">
+    <div class="f"><label for="mVol">Volumen a preparar (mL)</label><input id="mVol" type="number" step="5" min="1" value="50"></div>
+    <div class="f"><label for="mFbs">SFB (%)</label><select id="mFbs"><option value="10" selected>10 % · mantenimiento (ATCC)</option><option value="20">20 % · recuperación de baja viabilidad</option></select></div>
+    <div class="f"><label for="mPs">Penicilina-estreptomicina 100× (%)</label><select id="mPs"><option value="1" selected>1 % · 100 U/mL / 100 µg/mL</option><option value="0">Sin antibiótico</option></select></div>
+  </div>
+
+  <div class="out">
+    <div class="o"><b id="mBaseLbl">RPMI-1640</b><div class="v" id="mBase">—</div><div class="u">mL</div></div>
+    <div class="o"><b>SFB inactivado</b><div class="v" id="mF">—</div><div class="u">mL</div></div>
+    <div class="o"><b>Pen-strep 100×</b><div class="v" id="mP">—</div><div class="u">mL</div></div>
+    <div class="o hl"><b>Total</b><div class="v" id="mT">—</div><div class="u">mL de medio completo</div></div>
+  </div>
+  <div class="note" id="mBoost"></div>
+
+  <div class="recipe">
+    <div>
+      <p class="h3">Preparación</p>
+      <ol class="steps">
+        <li>Trabaje en campana de flujo laminar con material estéril.</li>
+        <li>En un tubo cónico de 50 mL agregue el <b>SFB inactivado por calor</b>.</li>
+        <li>Agregue la <b>penicilina-estreptomicina 100×</b>.</li>
+        <li>Lleve al volumen final con <b>RPMI-1640</b> usando una pipeta serológica estéril y mezcle por inversión suave.</li>
+        <li>Filtre con membrana de <b>0.22 µm</b> (PES de baja unión a proteínas). Una unidad de filtración al vacío rinde más que una jeringa.</li>
+        <li>Rotule con el nombre del medio, la fecha y sus iniciales.</li>
+      </ol>
+    </div>
+    <div>
+      <p class="h3">Control y almacenamiento</p>
+      <ol class="steps">
+        <li>Prueba de esterilidad: incube una alícuota <b>24 h a 37 °C con 5 % de CO₂</b>. Debe quedar transparente, sin turbidez ni cambio de color.</li>
+        <li>Almacene a <b>2–8 °C</b>, protegido de la luz, por un máximo de <b>1 semana</b>.</li>
+        <li>Antes de usarlo, atempere solo lo que va a ocupar.</li>
+        <li>Al descongelar, equilibre el frasco con medio en la incubadora <b>≥15 min</b> para que el pH quede entre 7.0 y 7.6.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MEDIO DE CONGELACIÓN -->
+<section class="mod" id="congelacion">
+  <div class="mod-head"><span class="mod-n">04</span><h2>Medio de congelación</h2></div>
+  <p class="mod-sub">ATCC indica medio de crecimiento completo suplementado con 10 % (v/v) de DMSO. Prepárelo el mismo día, en frío.</p>
+
+  <div class="grid">
+    <div class="f"><label for="cVials">Crioviales</label><input id="cVials" type="number" step="1" min="1" value="10"></div>
+    <div class="f"><label for="cCells">Células por criovial (×10⁶)</label><input id="cCells" type="number" step="0.5" min="0.1" value="3"></div>
+    <div class="f"><label for="cVolV">Volumen por criovial (mL)</label><input id="cVolV" type="number" step="0.1" min="0.1" value="1"></div>
+    <div class="f"><label for="cExtra">Excedente (%)</label><input id="cExtra" type="number" step="5" min="0" value="10"><small>Compensa pérdidas en puntas y tubos</small></div>
+    <div class="f"><label for="cForm">Fórmula</label><select id="cForm"><option value="atcc" selected>ATCC · 90/10</option><option value="dsmz">DSMZ · 70/20/10</option></select><small>Medio completo / SFB / DMSO</small></div>
+  </div>
+
+  <div class="out">
+    <div class="o hl"><b>Células a congelar</b><div class="v" id="kCells">—</div><div class="u">vivas</div></div>
+    <div class="o"><b>Medio de congelación</b><div class="v" id="kTot">—</div><div class="u">mL a preparar</div></div>
+    <div class="o"><b>Medio completo</b><div class="v" id="kMed">—</div><div class="u">mL</div></div>
+    <div class="o" id="kFbsBox"><b>SFB adicional</b><div class="v" id="kFbs">—</div><div class="u">mL</div></div>
+    <div class="o"><b>DMSO</b><div class="v" id="kDmso">—</div><div class="u">mL · 10 % (v/v)</div></div>
+  </div>
+  <div class="formula" id="fCong"></div>
+
+  <ol class="steps">
+    <li>Prepare el medio de congelación en frío (2–8 °C). Agregue el DMSO al final, gota a gota, mezclando: la reacción es exotérmica.</li>
+    <li>Cuente las células, centrifugue y retire el sobrenadante por completo.</li>
+    <li>Resuspenda el botón en el volumen de medio de congelación calculado para obtener la concentración por criovial.</li>
+    <li>Distribuya el volumen indicado por criovial rotulado (línea, pase, fecha, células por vial e iniciales).</li>
+    <li>Coloque los crioviales en un contenedor de congelación gradual (−1 °C/min, p. ej. Mr. Frosty con isopropanol) a −80 °C toda la noche.</li>
+    <li>Transfiera a la fase vapor de nitrógeno líquido (&lt; −130 °C) y registre la ubicación en el inventario del banco.</li>
+  </ol>
+  <div class="note">Antes de liberar el banco: prueba de <b>micoplasma</b>, esterilidad y descongelación de un vial de prueba para confirmar viabilidad e identidad por citometría (CD19⁺ CD20⁺ CD3⁻ en Raji).</div>
+</section>
+
+<!-- BIOSEGURIDAD Y REFERENCIAS -->
+<section class="mod" style="margin-bottom:0">
+  <div class="mod-head"><span class="mod-n">··</span><h2>Bioseguridad y referencias</h2></div>
+  <div class="note warn" style="margin-top:14px">Raji contiene secuencias del virus de Epstein-Barr (EBV) y se maneja en nivel de bioseguridad 2: use puntas con filtro, campana de seguridad biológica y el área asignada para productos positivos a virus. Almacene en la fase vapor del nitrógeno líquido: los viales sumergidos pueden llenarse de nitrógeno y estallar al descongelarse.</div>
+  <div class="refs">
+    <strong>Referencias</strong>
+    <ol>
+      <li>ATCC. <i>Raji (CCL-86™) Product Sheet</i>. Revisión 2025-12-03. <a href="https://www.atcc.org/products/ccl-86">atcc.org/products/ccl-86</a></li>
+      <li>DSMZ. <i>RAJI · ACC 319</i>: condiciones de cultivo y tiempo de duplicación. <a href="https://www.dsmz.de/catalogues/details/culture/ACC-319.html">dsmz.de</a></li>
+      <li>Cellosaurus. <i>Raji (CVCL_0511)</i>. <a href="https://www.cellosaurus.org/CVCL_0511">cellosaurus.org</a></li>
+      <li>Logos Biosystems. <i>LUNA-FL™ Quick Start Guide</i>. <a href="https://www.labtech.com/wp-content/uploads/2021/09/Luna-FL_Quick-Start-Guide-2013.pdf">labtech.com</a></li>
+    </ol>
+    <p class="disclaimer">Herramienta de apoyo para investigación en cultivo celular. Los resultados son estimaciones teóricas y no sustituyen los procedimientos normalizados de operación de cada laboratorio.</p>
+  </div>
+</section>
+
+<!-- yct:footer -->
+<div class="yct-foot"><div class="yct-foot-in">
+<div><a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a><p>Consultoría científica en terapia celular, manufactura cGMP e inteligencia artificial aplicada a la salud. Monterrey, México.</p></div>
+<div><h4>Sitio</h4><ul><li><a href="/#plataforma">Plataforma</a></li><li><a href="cart-vector.html">CAR-T</a></li><li><a href="ia-salud.html">Herramientas</a></li><li><a href="/#publicaciones">Publicaciones</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+<div><h4>Perfil</h4><ul><li><a href="https://www.linkedin.com/in/yair-chaveze/">LinkedIn</a></li><li><a href="https://orcid.org/0000-0002-8418-7655">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es">Google Académico</a></li><li><a href="https://www.instagram.com/yairchaveze/">Instagram</a></li><li><a href="yocell-lab.html">YoCell Lab</a></li><li><a href="la-celula-mexicana.html">La Célula Mexicana</a></li></ul></div>
+</div><div class="yct-foot-bot"><span>© 2026 YoCellTherapy · Yair Omar Chávez-Estrada</span><span>Cell Therapy · AI · R&amp;D</span></div></div>
+<script src="yct-site.js" defer></script>
+<!-- /yct:footer -->
+
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:NaN};
+
+/* Parámetros por línea (densidades en células/mL) */
+const LINES={
+  raji:{name:'Raji',base:'RPMI-1640',seed:4e5,harv:1.5e6,max:3e6,td:30,
+    facts:[['Medio','RPMI-1640 + 10 % SFB'],['Siembra','4 ×10⁵ vivas/mL'],['Máximo','3 ×10⁶ vivas/mL'],['Renovación','Cada 2–3 días'],['Duplicación','~24–36 h (DSMZ)'],['Congelación','Medio completo + 10 % DMSO']]}
+};
+function line(){
+  if($('linea').value==='raji')return LINES.raji;
+  const s=num('cSeed'),h=num('cHarv'),m=num('cMax'),t=num('cTd');
+  return {name:'Línea personalizada',base:($('cBase').value||'Medio base').trim(),
+    seed:(s>0?s:0.4)*1e6,harv:(h>0?h:1.5)*1e6,max:(m>0?m:3)*1e6,td:t>0?t:30,
+    facts:[['Siembra',fmtD((s>0?s:0.4)*1e6)],['Dividir a',fmtD((h>0?h:1.5)*1e6)],['Máximo',fmtD((m>0?m:3)*1e6)],['Duplicación',(t>0?t:30)+' h']]};
+}
+
+/* Formato científico: 1.64 ×10⁵ */
+const SUP={'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function sci(n,d){if(!isFinite(n))return '—';if(n===0)return '0';const e=Math.floor(Math.log10(Math.abs(n)));const m=n/Math.pow(10,e);return m.toFixed(d==null?2:d)+' ×10'+String(e).split('').map(c=>SUP[c]).join('')}
+function fmtD(n){return sci(n,1)+'/mL'}
+const ml=(v,d)=>isFinite(v)?(v<10?v.toFixed(d==null?2:d):v<100?v.toFixed(1):Math.round(v).toLocaleString('es-MX')):'—';
+
+/* Recipiente según volumen de cultivo */
+function vessel(v){
+  if(!(v>0))return {name:'—',note:'',list:'—'};
+  if(v<0.5)return {name:'Placa 48 pozos',note:'0.25–0.5 mL por pozo',list:'1 pozo (placa 48)'};
+  if(v<=1)return {name:'Placa 24 pozos',note:'0.5–1 mL por pozo',list:'1 pozo (placa 24)'};
+  if(v<=2)return {name:'Placa 12 pozos',note:'1–2 mL por pozo',list:'1 pozo (placa 12)'};
+  if(v<=3)return {name:'Placa 6 pozos',note:'2–3 mL por pozo',list:'1 pozo (placa 6)'};
+  if(v<5)return {name:'T25 vertical',note:'3–5 mL, frasco parado',list:'1 T25 vertical'};
+  if(v<=10)return {name:'1 × T25',note:'5–10 mL de trabajo',list:'1 T25'};
+  if(v<=30)return {name:'1 × T75',note:'15–30 mL de trabajo',list:'1 T75'};
+  if(v<=70)return {name:'1 × T175',note:'35–70 mL de trabajo',list:'1 T175'};
+  const n=Math.ceil(v/70);return {name:n+' × T175',note:'≈'+(v/n).toFixed(0)+' mL por frasco',list:n+' T175'};
+}
+
+function renderFacts(){
+  const L=line();
+  $('lineFacts').innerHTML=L.facts.map(f=>'<div class="fact"><b>'+f[0]+'</b><span>'+f[1]+'</span></div>').join('');
+  $('customGrid').classList.toggle('on',$('linea').value==='custom');
+  if(!$('seedTarget').dataset.touched)$('seedTarget').value=(L.seed/1e6).toFixed(2).replace(/0$/,'');
+  if(!$('pTd').dataset.touched)$('pTd').value=L.td;
+  $('seedHint').textContent='Recomendada: '+fmtD(L.seed)+' · máx. '+fmtD(L.max);
+  $('mBaseLbl').textContent=L.base;
+}
+
+/* 01 · Siembra */
+let lastTotal=NaN;
+function calcSiembra(){
+  const L=line();
+  const live=num('live')*Math.pow(10,+$('liveExp').value), viab=num('viab'), vres=num('vres');
+  const seed=(num('seedTarget')>0?num('seedTarget'):L.seed/1e6)*1e6;
+  const notes=[];
+  if(!(live>0)||!(vres>0)){['oTot','oVol','oAdd','oFlask'].forEach(i=>$(i).textContent='—');$('oFlaskU').innerHTML='&nbsp;';$('nSiembra').innerHTML='';lastTotal=NaN;return;}
+  const tot=live*vres, vfin=tot/seed, add=vfin-vres, ves=vessel(vfin);
+  lastTotal=tot;
+  $('oTot').textContent=sci(tot);
+  $('oVol').textContent=ml(vfin);
+  $('oAdd').textContent=add>=0?ml(add):'—';
+  $('oFlask').textContent=ves.name;$('oFlaskU').textContent=ves.note;
+  $('fSiembra').textContent='Vivas totales = '+sci(live)+'/mL × '+vres+' mL = '+sci(tot)+'\nVolumen final = '+sci(tot)+' ÷ '+fmtD(seed)+' = '+ml(vfin)+' mL\nMedio a agregar = '+ml(vfin)+' − '+vres+' = '+(add>=0?ml(add):'(concentrar)')+' mL';
+  if(add<0)notes.push(['warn','Las células están más diluidas que la densidad de siembra. Centrifugue y resuspenda el botón en <b>'+ml(vfin)+' mL</b> de medio completo.']);
+  if(seed>L.max)notes.push(['bad','La densidad de siembra supera el máximo de la línea ('+fmtD(L.max)+').']);
+  if(isFinite(viab)){
+    if(viab<50)notes.push(['bad','Viabilidad de <b>'+viab+' %</b>. Siembre todo en poco volumen (alta densidad, 0.5–1 ×10⁶/mL), use SFB al 20 % los primeros días, no cambie el medio en 3–4 días y considere un vial nuevo para el banco.']);
+    else if(viab<80)notes.push(['warn','Viabilidad de <b>'+viab+' %</b>, por debajo de lo ideal (≥ 80–90 %). Considere un lavado adicional para retirar restos celulares y siembre en la parte alta del rango de densidad.']);
+    else notes.push(['','Viabilidad adecuada. Siembre a '+fmtD(seed)+' y revise en 48–72 h: densidad, color del medio y grumos (Raji crece en agregados).']);
+  }
+  if(tot<1e6&&vfin<3)notes.push(['warn','Pocas células: un pozo de placa mantiene la densidad mejor que un frasco grande.']);
+  $('nSiembra').innerHTML=notes.map(n=>'<div class="note '+n[0]+'">'+n[1]+'</div>').join('');
+  if(!$('pN0').dataset.touched){const e=Math.floor(Math.log10(tot));const ex=Math.min(7,Math.max(5,e));$('pN0Exp').value=ex;$('pN0').value=+(tot/Math.pow(10,ex)).toFixed(3);}
+}
+
+/* 02 · Proyección */
+let lastMedium=NaN;
+function calcProy(){
+  const L=line();
+  const N0=num('pN0')*Math.pow(10,+$('pN0Exp').value);
+  const need=(num('pVials')||0)*(num('pPerVial')||0)*1e6+(num('pQC')||0)*1e6;
+  const td=num('pTd')>0?num('pTd'):L.td, lag=num('pLag')>=0?num('pLag'):0, p0=num('pPass')||0;
+  const seed=(num('seedTarget')>0?num('seedTarget'):L.seed/1e6)*1e6, harv=Math.min(L.harv,L.max);
+  $('qNeed').textContent=need>0?sci(need):'—';
+  if(!(N0>0)||!(need>0)){['qDbl','qDays','qMed'].forEach(i=>$(i).textContent='—');$('qTable').innerHTML='<tr><td colspan="8" style="color:var(--yct-muted)">Capture las células iniciales.</td></tr>';$('nProy').innerHTML='';lastMedium=NaN;return;}
+  const dbl=Math.max(0,Math.log2(need/N0));
+  $('qDbl').textContent=dbl.toFixed(1);
+  const rows=[];let t=0,N=N0,V=N0/seed,p=p0,med=V,first=true,guard=0;
+  rows.push({d:0,ev:'Siembra',p:p,N:N,dens:N/V,V:V,add:V});
+  const tCycle=td*Math.log2(harv/seed);
+  while(N<need&&guard<60){
+    guard++;
+    const tNeed=td*Math.log2(need/N); // tiempo hasta juntar lo necesario sin dividir
+    const tToHarv=tCycle+(first?lag:0);
+    const remaining=(first?lag:0)+tNeed;
+    if(remaining<=tToHarv){ // se alcanza la meta antes de llegar a la densidad de corte
+      t+=remaining;N=need;rows.push({d:t/24,ev:'Cosecha y congelación',p:p,N:N,dens:N/V,V:V,add:0,final:true});break;
+    }
+    t+=tToHarv;first=false;
+    N=V*harv;const Vn=N/seed;p+=1;const add=Vn-V;med+=add;
+    if(N>=need){rows.push({d:t/24,ev:'Cosecha y congelación',p:p-1,N:N,dens:harv,V:V,add:0,final:true});break;}
+    rows.push({d:t/24,ev:'Dividir',p:p,N:N,dens:seed,V:Vn,add:add});V=Vn;
+  }
+  const last=rows[rows.length-1];
+  $('qDays').textContent=(last.d).toFixed(1);
+  $('qMed').textContent=ml(med,1);lastMedium=med;
+  $('qTable').innerHTML=rows.map(r=>'<tr'+(r.final?' class="final"':'')+'><td>'+r.d.toFixed(1)+'</td><td>'+r.ev+'</td><td>P'+r.p+'</td><td>'+sci(r.N)+'</td><td>'+fmtD(r.dens)+'</td><td>'+ml(r.V,1)+' mL</td><td>'+(r.add>0?ml(r.add,1)+' mL':'—')+'</td><td>'+vessel(r.V).list+'</td></tr>').join('');
+  const notes=[];
+  notes.push(['','Esquema: sembrar a '+fmtD(seed)+', dividir al llegar a ~'+fmtD(harv)+' (cada ~'+(tCycle/24).toFixed(1)+' días) sin rebasar '+fmtD(L.max)+'. Entre divisiones, renueve medio cada 2–3 días.']);
+  if(p-p0>5)notes.push(['warn','La proyección suma <b>'+(p-p0)+' pases</b>. Para un banco de pase bajo, considere menos crioviales o iniciar con más células.']);
+  if(last.V>140)notes.push(['warn','El volumen final supera 140 mL: valore congelar en dos tandas o usar frascos de mayor capacidad.']);
+  $('nProy').innerHTML=notes.map(n=>'<div class="note '+n[0]+'">'+n[1]+'</div>').join('');
+}
+
+/* 03 · Medio de cultivo */
+function calcMedio(){
+  const L=line();
+  const v=num('mVol'), f=+$('mFbs').value/100, p=+$('mPs').value/100;
+  if(!(v>0)){['mBase','mF','mP','mT'].forEach(i=>$(i).textContent='—');return;}
+  $('mF').textContent=ml(v*f);$('mP').textContent=ml(v*p);$('mBase').textContent=ml(v*(1-f-p));$('mT').textContent=ml(v);
+  $('mBoost').innerHTML='Para llevar medio ya preparado al 10 % hasta 20 % de SFB: agregue <b>0.125 mL de SFB por cada mL</b> de medio (p. ej. 3 mL → 0.375 mL).';
+  $('medSub').textContent=L.base+' + suero fetal bovino inactivado por calor + penicilina-estreptomicina. '+(L===LINES.raji?'ATCC recomienda RPMI-1640 con 10 % de SFB; la penicilina-estreptomicina es opcional.':'Ajuste el medio base a la ficha técnica de su línea.');
+}
+
+/* 04 · Medio de congelación */
+function calcCong(){
+  const n=num('cVials'), c=num('cCells'), vv=num('cVolV'), ex=(num('cExtra')||0)/100, form=$('cForm').value;
+  if(!(n>0)||!(vv>0)){['kCells','kTot','kMed','kFbs','kDmso'].forEach(i=>$(i).textContent='—');$('fCong').textContent='';return;}
+  const cells=n*(c>0?c:0)*1e6, base=n*vv, tot=base*(1+ex), dmso=tot*0.10;
+  const med=form==='atcc'?tot*0.90:tot*0.70, fbs=form==='atcc'?0:tot*0.20;
+  $('kCells').textContent=cells>0?sci(cells):'—';
+  $('kTot').textContent=ml(tot);$('kMed').textContent=ml(med);$('kFbs').textContent=ml(fbs);$('kDmso').textContent=ml(dmso);
+  $('kFbsBox').style.display=form==='atcc'?'none':'';
+  $('fCong').textContent='Resuspender '+sci(cells)+' células en '+ml(base)+' mL → '+(c>0?sci(c*1e6/vv):'—')+' células/mL\nPreparar '+ml(tot)+' mL ('+Math.round(ex*100)+' % de excedente): '+ml(med)+' mL medio completo'+(fbs?' + '+ml(fbs)+' mL SFB':'')+' + '+ml(dmso)+' mL DMSO';
+}
+
+function all(){renderFacts();calcSiembra();calcProy();calcMedio();calcCong();}
+document.querySelectorAll('input,select').forEach(el=>{el.addEventListener('input',e=>{if(['seedTarget','pTd','pN0','pN0Exp'].includes(e.target.id))e.target.dataset.touched='1';all();});});
+$('linea').addEventListener('change',()=>{$('seedTarget').dataset.touched='';$('pTd').dataset.touched='';all();});
+$('pVials').addEventListener('input',()=>{$('cVials').value=$('pVials').value;calcCong();});
+$('pPerVial').addEventListener('input',()=>{$('cCells').value=$('pPerVial').value;calcCong();});
+$('useMed').addEventListener('click',()=>{if(lastMedium>0){$('mVol').value=Math.ceil(lastMedium*1.1/5)*5;calcMedio();location.hash='medio';}});
+all();
+})();
+</script>
+</body>
+</html>
