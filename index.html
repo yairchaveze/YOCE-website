@@ -1008,6 +1008,9 @@ document.getElementById('copy').addEventListener('click',function(){
   const rgba=(hex,a)=>{const n=parseInt(hex.replace('#',''),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')'};
   const WORDS={es:['CAR-T','Manufactura cGMP','Control de calidad','IA clínica','Hecho en México'],en:['CAR-T','cGMP manufacturing','Quality control','Clinical AI','Made in Mexico']};
   const TARGETS=[{t0:6.2,a:-2.45},{t0:8.4,a:.30},{t0:10.6,a:2.70}];
+  const BURST=[];{let bs=19;const br=()=>{bs=(bs*16807)%2147483647;return (bs-1)/2147483646};
+    const cols=['#FFFFFF','#E7EFED','#43C6A5','#43C6A5','#7F9CFF'];
+    for(let i=0;i<120;i++){const ling=br()<.22;BURST.push({a:br()*6.283,r0:1.06+br()*.07,travel:(ling?.05:.09)+br()*.22,len:.015+br()*.045,w:.004+br()*.005,delay:br()*.12,dur:ling?2.2+br()*.8:.9+br()*.6,ling,col:cols[Math.floor(br()*cols.length)]})}}
 
   function line(x1,y1,x2,y2,p){if(p<=0)return;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x1+(x2-x1)*p,y1+(y2-y1)*p);ctx.stroke()}
 
@@ -1041,24 +1044,51 @@ document.getElementById('copy').addEventListener('click',function(){
       }
     }
 
-    // Membrane
+    // Activation (the Y finishes forming): perfect-circle snap, flash, signal wave and radial burst
+    const ACT=4.3, ka=t-ACT;
+    const snap=ka<-.25?0:ka<0?(ka+.25)/.25:ka<.65?1:Math.max(0,1-(ka-.65)/1.4);
+    const wob=ringP>=1&&!still?S*.007*(1-snap):0;
+
+    // Membrane (alive, wobbling)
     if(ringP>0&&fin>0){
-      ctx.strokeStyle=rgba(acc,fin);ctx.lineWidth=S*.011;ctx.lineCap='round';
-      ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+6.283*ringP);ctx.stroke();
+      ctx.strokeStyle=rgba(acc,fin);ctx.lineWidth=S*.011;ctx.lineCap='round';ctx.lineJoin='round';
+      ctx.beginPath();
+      if(wob>0){for(let i=0;i<=96;i++){const a=i/96*6.283,rr=R+wob*(.5*Math.sin(3*a+t*.9)+.3*Math.sin(5*a-t*1.3)+.2*Math.sin(2*a+t*.6));const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath()}
+      else ctx.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+6.283*ringP);
+      ctx.stroke();
     }
     // Nucleus disk
     const dp=eo(seg(t,2.4,3.4));
     if(dp>0&&fin>0){ctx.fillStyle=rgba(acc,.17*fin);ctx.beginPath();ctx.arc(cx,cy,R*.64*dp,0,6.283);ctx.fill()}
 
-    // The Y (antibody / CAR)
-    const yp=eio(seg(t,3,4.3));
-    if(yp>0&&fin>0){
-      const arm=clamp(yp/.6), stem=clamp((yp-.6)/.4);
-      ctx.strokeStyle=rgba(ink,fin);ctx.lineWidth=S*.024;ctx.lineCap='round';ctx.lineJoin='round';
+    // The Y (antibody / CAR): born as a point at the center, then arms and stem extend
+    if(t>=3&&fin>0){
+      const wgt=eo(seg(t,3,3.35)), gp=seg(t,3.35,4.3);
+      const g=gp<=0?0:1+2.6*Math.pow(gp-1,3)+1.6*Math.pow(gp-1,2);
       const bx=cx, by=cy+R*.03;
-      line(cx-R*.36,cy-R*.38,bx,by,arm);
-      line(cx+R*.36,cy-R*.38,bx,by,arm);
-      line(bx,by,bx,cy+R*.45,stem);
+      ctx.strokeStyle=rgba(ink,fin);ctx.lineWidth=Math.max(.1,S*.024*wgt);ctx.lineCap='round';ctx.lineJoin='round';
+      ctx.beginPath();
+      ctx.moveTo(bx+(cx-R*.36-bx)*g,by+(cy-R*.38-by)*g);ctx.lineTo(bx,by);ctx.lineTo(bx+(cx+R*.36-bx)*g,by+(cy-R*.38-by)*g);
+      ctx.moveTo(bx,by);ctx.lineTo(bx,by+(cy+R*.45-by)*g);
+      ctx.stroke();
+    }
+
+    if(!still&&ka>=0&&ka<3.2&&fin>0){
+      // signal wave
+      const ph=ka/1.6;
+      if(ph<1){ctx.strokeStyle=rgba(acc,.55*(1-ph));ctx.lineWidth=S*.006;ctx.beginPath();ctx.arc(cx,cy,R*(.4+ph*1.25),0,6.283);ctx.stroke()}
+      // white flash
+      const f=ka<.06?ka/.06:ka<.5?1-(ka-.06)/.44:0;
+      if(f>0){const fg=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.75);fg.addColorStop(0,'rgba(255,255,255,'+(.8*f)+')');fg.addColorStop(.45,rgba('#F2F5F4',.68*f));fg.addColorStop(1,rgba('#F2F5F4',0));ctx.fillStyle=fg;ctx.fillRect(0,0,W,H)}
+      // radial burst of streaks
+      ctx.lineCap='round';
+      for(const b of BURST){
+        const q=(ka-b.delay)/b.dur; if(q<0||q>1) continue;
+        const e=1-Math.pow(1-q,b.ling?2:4), rr=R*b.r0+S*b.travel*e, len=S*b.len*(1-q)*(b.ling?.35:1)+(b.ling?S*.004:0);
+        const c=Math.cos(b.a), sn=Math.sin(b.a);
+        ctx.strokeStyle=rgba(b.col,Math.min(1,q*10)*(1-Math.pow(q,b.ling?1.5:2)));ctx.lineWidth=S*b.w;
+        ctx.beginPath();ctx.moveTo(cx+c*rr,cy+sn*rr);ctx.lineTo(cx+c*(rr+len),cy+sn*(rr+len));ctx.stroke();
+      }
     }
 
     // Satellite dot (orbits in, lands upper right)
