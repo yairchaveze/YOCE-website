@@ -128,8 +128,13 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
 .rp-sign div{border-top:1px solid #0C1A1D;padding-top:6px;font-size:9.5pt;text-align:center}
 .rp-sign span{display:block;color:#506267;font-size:8.5pt}
 .rp-foot{margin-top:24px;border-top:1px solid #D3DDDB;padding-top:8px;font-size:8pt;color:#6B7C80;display:flex;justify-content:space-between;gap:12px}
+.rp-info{margin-top:14px;border:1px solid #D3DDDB;border-left:3px solid #0A6B57;background:#F2F5F4;padding:9px 12px;font-size:8.5pt;line-height:1.5;color:#0C1A1D}
+.rp-info b{font-family:var(--yct-mono);font-size:7.5pt;letter-spacing:.08em;text-transform:uppercase;color:#0A6B57;display:block;margin-bottom:3px;font-weight:500}
+.rp-info p{margin:0 0 4px}.rp-info p:last-child{margin:0}
 @media print{
-  @page{size:letter;margin:14mm 14mm 16mm}
+  @page{size:letter;margin:14mm 14mm 18mm;
+    @bottom-left{content:"YCT-FOR-PC-01 · Rev. 01 · yocelltherapy.com";font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:#6B7C80}
+    @bottom-right{content:"Página " counter(page) " de " counter(pages);font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:#6B7C80}}
   body.printing>*:not(.page){display:none!important}
   body.printing .page>*:not(#report){display:none!important}
   body.printing,html:has(body.printing){background:#fff!important}
@@ -560,7 +565,7 @@ function buildReport(){
   const folio='YCT-PC-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'-'+pad(now.getHours())+pad(now.getMinutes());
   const L=line(), exec=$('rExec').value.trim(), rev=$('rRev').value.trim();
   let h='<div class="rp"><div class="rp-head"><img src="yct-logo.svg" alt=""><div class="rp-brand">Yo<b>Cell</b>Therapy<small>Consultoría científica en terapia celular</small></div>'+
-    '<div class="rp-meta">Folio '+folio+'<br>'+esc(fecha)+' · '+hora+' h</div></div>'+
+    '<div class="rp-meta">Código YCT-FOR-PC-01 · Rev. 01<br>Folio '+folio+'<br>'+esc(fecha)+' · '+hora+' h</div></div>'+
     '<h1>Reporte de propagación celular</h1>';
   h+='<h2>Identificación</h2><table>'+row('Línea celular',esc($('rLine').value))+row('Lote / vial',esc($('rLot').value)||'—')+row('Pase',esc($('rPass').value)||'—')+
      row('Ejecutó',esc(exec)||'—')+row('Revisó',esc(rev)||'—')+row('Fecha y hora de cálculo',esc(fecha)+', '+hora+' h')+'</table>';
@@ -603,7 +608,10 @@ function buildReport(){
   const obs=$('rObs').value.trim();
   h+='<div class="rp-end"><h2>Observaciones</h2><div class="rp-obs">'+(obs?esc(obs):'&nbsp;')+'</div>';
   h+='<div class="rp-sign"><div>'+(esc(exec)||'&nbsp;')+'<span>Ejecutó · nombre y firma</span></div><div>'+(esc(rev)||'&nbsp;')+'<span>Revisó · nombre y firma</span></div></div>';
-  h+='<div class="rp-foot"><span>Generado con yocelltherapy.com/propagacion-celular.html · Referencias: ATCC CCL-86, DSMZ ACC 319.</span><span>Estimaciones teóricas de apoyo; no sustituyen los PNO del laboratorio.</span></div></div></div>';
+  h+='<div class="rp-info"><b>Aviso · documento de carácter informativo</b>'+
+     '<p>Este reporte se generó con una herramienta de apoyo de YoCellTherapy. Sus cálculos son estimaciones teóricas y no sustituyen documentos oficiales, procedimientos normalizados de operación (PNO) ni registros de calidad de su institución.</p>'+
+     '<p>¿Dudas o sugerencias sobre la herramienta? Escríbanos desde <b style="display:inline;font-family:inherit;font-size:inherit;letter-spacing:0;text-transform:none;color:#0A6B57">yocelltherapy.com/contacto.html</b>. Si requiere otro tipo de asesoría en terapia celular, comuníquese directamente por la misma sección de Contacto.</p></div>';
+  h+='<div class="rp-foot"><span>Generado con yocelltherapy.com/propagacion-celular.html · Referencias: ATCC CCL-86, DSMZ ACC 319.</span><span>Código YCT-FOR-PC-01 · Rev. 01</span></div></div></div>';
   return {h,n};
 }
 $('btnReport').addEventListener('click',()=>{
