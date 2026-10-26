@@ -21,11 +21,19 @@
 .chip{font-family:var(--yct-mono);font-size:12px;letter-spacing:.04em;padding:5px 10px;border:1px solid var(--yct-line);border-radius:3px;color:var(--yct-muted);background:var(--yct-surface)}
 
 /* Índice de módulos */
-.toc{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--yct-line);border-radius:8px;background:var(--yct-surface);margin-bottom:28px;overflow:hidden}
-.toc a{padding:14px 16px;text-decoration:none;color:var(--yct-ink);border-right:1px solid var(--yct-line);font-size:15px;line-height:1.35}
-.toc a:last-child{border-right:0}
-.toc a span{display:block;font-family:var(--yct-mono);font-size:11px;color:var(--yct-accent);letter-spacing:.08em;margin-bottom:4px}
-.toc a:hover{background:var(--yct-accent-soft)}
+.picker{margin-bottom:28px}
+.picker-q{font-family:var(--yct-display);font-size:22px;font-weight:300;margin:0 0 12px;color:var(--yct-ink)}
+.picker-q span{display:block;font-family:var(--yct-body);font-size:14.5px;color:var(--yct-muted);margin-top:4px}
+.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.pick{all:unset;box-sizing:border-box;cursor:pointer;padding:14px 16px;border:1px solid var(--yct-line);border-radius:8px;background:var(--yct-surface);color:var(--yct-ink);font-size:15px;line-height:1.35;position:relative;transition:border-color .15s,background .15s}
+.pick span{display:block;font-family:var(--yct-mono);font-size:11px;color:var(--yct-accent);letter-spacing:.08em;margin-bottom:4px}
+.pick::after{content:"";position:absolute;top:12px;right:12px;width:16px;height:16px;border-radius:4px;border:1.5px solid var(--yct-line);background:#fff}
+.pick:hover{border-color:var(--yct-accent)}
+.pick[aria-pressed="true"]{background:var(--yct-accent-soft);border-color:var(--yct-accent)}
+.pick[aria-pressed="true"]::after{background:var(--yct-accent);border-color:var(--yct-accent);box-shadow:inset 0 0 0 3px var(--yct-accent-soft)}
+.pick:focus-visible{outline:2px solid var(--yct-accent);outline-offset:2px}
+.mod.off{display:none}
+.empty-hint{border:1px dashed var(--yct-line);border-radius:8px;padding:22px;text-align:center;color:var(--yct-muted);font-size:15.5px;margin-bottom:24px}
 
 /* Línea celular */
 .line-bar{display:grid;grid-template-columns:minmax(220px,320px) 1fr;gap:20px;align-items:start;background:var(--yct-surface);border:1px solid var(--yct-line);border-radius:8px;padding:20px;margin-bottom:28px}
@@ -90,14 +98,11 @@ tr.final td{background:var(--yct-accent-soft);font-weight:600}
 
 @media (max-width:760px){
   .toc{grid-template-columns:1fr 1fr}
-  .toc a:nth-child(2n){border-right:0}
-  .toc a:nth-child(-n+4){border-bottom:1px solid var(--yct-line)}
-  .toc a:last-child{grid-column:1/-1}
   .line-bar{grid-template-columns:1fr}
   .recipe{grid-template-columns:1fr}
   .mod{padding:20px 16px}
 }
-@media print{.yct-nav,.yct-foot,.toc,.btn-row{display:none!important}.mod{break-inside:avoid}}
+@media print{.yct-nav,.yct-foot,.picker,.btn-row{display:none!important}.mod{break-inside:avoid}}
 /* Reporte imprimible */
 textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-radius:6px;font-size:16px;color:var(--yct-ink);background:#fff;font-family:var(--yct-body);resize:vertical;min-height:80px}
 .btn-p{all:unset;cursor:pointer;font-size:15px;font-weight:600;padding:11px 22px;border-radius:999px;background:var(--yct-ink);color:var(--yct-bg)}
@@ -163,13 +168,15 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
   <div class="chips"><span class="chip">Raji · ATCC CCL-86</span><span class="chip">Suspensión</span><span class="chip">BSL-2 · EBV</span><span class="chip">37 °C · 5 % CO₂</span></div>
 </header>
 
-<nav class="toc" aria-label="Módulos">
-  <a href="#siembra"><span>01</span>Siembra desde el conteo</a>
-  <a href="#proyeccion"><span>02</span>Proyección a banco</a>
-  <a href="#medio"><span>03</span>Medio de cultivo</a>
-  <a href="#congelacion"><span>04</span>Medio de congelación</a>
-  <a href="#reporte"><span>05</span>Reporte</a>
-</nav>
+<section class="picker" aria-label="¿Qué quiere calcular?">
+  <p class="picker-q">¿Qué quiere calcular? <span>Seleccione uno o varios módulos; solo esos se muestran y salen en el reporte.</span></p>
+  <div class="toc" role="group">
+    <button type="button" class="pick" data-mod="siembra" aria-pressed="false"><span>01</span>Siembra desde el conteo</button>
+    <button type="button" class="pick" data-mod="proyeccion" aria-pressed="false"><span>02</span>Proyección a banco celular</button>
+    <button type="button" class="pick" data-mod="medio" aria-pressed="false"><span>03</span>Medio de cultivo</button>
+    <button type="button" class="pick" data-mod="congelacion" aria-pressed="false"><span>04</span>Medio de congelación</button>
+  </div>
+</section>
 
 <!-- LÍNEA CELULAR -->
 <section class="line-bar" aria-label="Línea celular">
@@ -191,8 +198,10 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
   </div>
 </section>
 
+<div class="empty-hint" id="emptyHint">Seleccione arriba qué quiere calcular para desplegar el módulo.</div>
+
 <!-- 01 SIEMBRA -->
-<section class="mod" id="siembra">
+<section class="mod off" id="siembra">
   <div class="mod-head"><span class="mod-n">01</span><h2>Siembra desde el conteo</h2></div>
   <p class="mod-sub">Capture lo que reporta el contador (LUNA-FL u otro) y el volumen en que resuspendió el botón celular. El valor de células vivas del LUNA ya está corregido por el factor de dilución.</p>
 
@@ -229,7 +238,7 @@ Volumen final = vivas totales ÷ densidad de siembra</div>
 </section>
 
 <!-- 02 PROYECCIÓN -->
-<section class="mod" id="proyeccion">
+<section class="mod off" id="proyeccion">
   <div class="mod-head"><span class="mod-n">02</span><h2>Proyección a banco celular</h2></div>
   <p class="mod-sub">Estima cuántos días y pases necesita para juntar las células de un banco nuevo de pase bajo, con un esquema que divide el cultivo cada vez que alcanza la densidad de corte y lo regresa a la densidad de siembra.</p>
 
@@ -261,7 +270,7 @@ Proyección teórica en fase exponencial: confirme cada pase con un conteo real.
 </section>
 
 <!-- 03 MEDIO DE CULTIVO -->
-<section class="mod" id="medio">
+<section class="mod off" id="medio">
   <div class="mod-head"><span class="mod-n">03</span><h2>Medio de cultivo completo</h2></div>
   <p class="mod-sub" id="medSub">RPMI-1640 + suero fetal bovino inactivado por calor + penicilina-estreptomicina. ATCC recomienda RPMI-1640 con 10 % de SFB; la penicilina-estreptomicina es opcional.</p>
 
@@ -304,7 +313,7 @@ Proyección teórica en fase exponencial: confirme cada pase con un conteo real.
 </section>
 
 <!-- 04 MEDIO DE CONGELACIÓN -->
-<section class="mod" id="congelacion">
+<section class="mod off" id="congelacion">
   <div class="mod-head"><span class="mod-n">04</span><h2>Medio de congelación</h2></div>
   <p class="mod-sub">ATCC indica medio de crecimiento completo suplementado con 10 % (v/v) de DMSO. Prepárelo el mismo día, en frío.</p>
 
@@ -337,12 +346,12 @@ Proyección teórica en fase exponencial: confirme cada pase con un conteo real.
 </section>
 
 <!-- 05 REPORTE -->
-<section class="mod" id="reporte">
+<section class="mod off" id="reporte">
   <div class="mod-head"><span class="mod-n">05</span><h2>Reporte imprimible</h2></div>
   <p class="mod-sub">Genera un reporte con el logo de YoCellTherapy, la identificación del cultivo, quién ejecutó los cálculos y los resultados de los módulos que tengan datos. Desde la ventana de impresión puede guardarlo como PDF.</p>
   <div class="grid">
-    <div class="f"><label for="rExec">Ejecutó (nombre)</label><input id="rExec" type="text" style="font-size:16px" placeholder="QBP Yair Omar Chávez-Estrada"></div>
-    <div class="f"><label for="rRev">Revisó (nombre)</label><input id="rRev" type="text" style="font-size:16px" placeholder="Nombre de quien revisa"></div>
+    <div class="f"><label for="rExec">Ejecutó</label><input id="rExec" type="text" style="font-size:16px" placeholder="Escriba su nombre"></div>
+    <div class="f"><label for="rRev">Revisó</label><input id="rRev" type="text" style="font-size:16px" placeholder="Escriba el nombre"></div>
     <div class="f"><label for="rLine">Línea celular</label><input id="rLine" type="text" style="font-size:16px"></div>
     <div class="f"><label for="rLot">Lote / vial</label><input id="rLot" type="text" style="font-size:16px" placeholder="p. ej. Banco interno, vial 3"></div>
     <div class="f"><label for="rPass">Pase</label><input id="rPass" type="text" style="font-size:16px" placeholder="P1"></div>
@@ -518,6 +527,22 @@ function calcCong(){
 }
 
 
+/* Selector de módulos */
+const sel=new Set();
+function applyPicks(){
+  document.querySelectorAll('.pick').forEach(b=>{const on=sel.has(b.dataset.mod);b.setAttribute('aria-pressed',on);$(b.dataset.mod).classList.toggle('off',!on);});
+  $('reporte').classList.toggle('off',sel.size===0);
+  $('emptyHint').style.display=sel.size?'none':'';
+  try{localStorage.setItem('yct-prop-mods',[...sel].join(','))}catch(e){}
+}
+document.querySelectorAll('.pick').forEach(b=>b.addEventListener('click',()=>{
+  const m=b.dataset.mod, was=sel.has(m);
+  was?sel.delete(m):sel.add(m);applyPicks();
+  if(!was)$(m).scrollIntoView({behavior:'smooth',block:'start'});
+}));
+try{(localStorage.getItem('yct-prop-mods')||'').split(',').filter(m=>m&&$(m)).forEach(m=>sel.add(m))}catch(e){}
+applyPicks();
+
 /* 05 · Reporte imprimible */
 const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const txt=id=>($(id).textContent||'').trim();
@@ -540,7 +565,7 @@ function buildReport(){
   h+='<h2>Identificación</h2><table>'+row('Línea celular',esc($('rLine').value))+row('Lote / vial',esc($('rLot').value)||'—')+row('Pase',esc($('rPass').value)||'—')+
      row('Ejecutó',esc(exec)||'—')+row('Revisó',esc(rev)||'—')+row('Fecha y hora de cálculo',esc(fecha)+', '+hora+' h')+'</table>';
   let n=0;
-  if(txt('oTot')!=='—'){n++;
+  if(sel.has('siembra')&&txt('oTot')!=='—'){n++;
     h+='<h2>01 · Siembra desde el conteo</h2><table>'+
       row('Células vivas / mL',esc($('live').value)+' ×10<sup>'+$('liveExp').value+'</sup>')+
       row('Viabilidad',$('viab').value?esc($('viab').value)+' %':'—')+
@@ -552,7 +577,7 @@ function buildReport(){
       row('Recipiente',esc(txt('oFlask'))+' ('+esc(txt('oFlaskU'))+')')+'</table>';
     [...document.querySelectorAll('#nSiembra .note')].forEach(x=>h+='<div class="rp-note">'+x.innerHTML+'</div>');
   }
-  if(txt('qDays')!=='—'){n++;
+  if(sel.has('proyeccion')&&txt('qDays')!=='—'){n++;
     h+='<h2>02 · Proyección a banco celular</h2><table>'+
       row('Crioviales × células/vial',esc($('pVials').value)+' × '+esc($('pPerVial').value)+' ×10<sup>6</sup>')+
       row('Células extra para CC',esc($('pQC').value)+' ×10<sup>6</sup>')+
@@ -561,13 +586,13 @@ function buildReport(){
       row('Tiempo estimado',esc(txt('qDays'))+' días')+row('Medio total',esc(txt('qMed'))+' mL')+'</table>';
     h+='<table><thead><tr><th>Día</th><th>Evento</th><th>Pase</th><th>Vivas totales</th><th>Densidad</th><th>Volumen</th><th>Medio nuevo</th><th>Recipientes</th></tr></thead><tbody>'+$('qTable').innerHTML.replace('Cosecha y congelación','Cosecha')+'</tbody></table>';
   }
-  if(txt('mT')!=='—'){n++;
+  if(sel.has('medio')&&txt('mT')!=='—'){n++;
     h+='<h2>03 · Medio de cultivo completo</h2><table>'+
       row(L.base,esc(txt('mBase'))+' mL')+row('SFB inactivado ('+$('mFbs').value+' %)',esc(txt('mF'))+' mL')+
       row('Penicilina-estreptomicina 100× ('+$('mPs').value+' %)',esc(txt('mP'))+' mL')+row('Total',esc(txt('mT'))+' mL')+
       row('Filtración / control','Membrana 0.22 µm · esterilidad 24 h a 37 °C, 5 % CO<sub>2</sub> · 2–8 °C, máx. 1 semana')+'</table>';
   }
-  if(txt('kTot')!=='—'){n++;
+  if(sel.has('congelacion')&&txt('kTot')!=='—'){n++;
     const atcc=$('cForm').value==='atcc';
     h+='<h2>04 · Medio de congelación</h2><table>'+
       row('Fórmula',atcc?'ATCC: 90 % medio completo + 10 % DMSO':'DSMZ: 70 % medio + 20 % SFB + 10 % DMSO')+
@@ -585,7 +610,7 @@ $('btnReport').addEventListener('click',()=>{
   if(!$('rExec').value.trim()){$('rMsg').innerHTML='<div class="note warn">Escriba el nombre de quien ejecutó los cálculos.</div>';$('rExec').focus();return;}
   store.set('rExec',$('rExec').value.trim());store.set('rRev',$('rRev').value.trim());
   const r=buildReport();
-  if(!r.n){$('rMsg').innerHTML='<div class="note warn">Llene al menos un módulo (por ejemplo, la siembra desde el conteo) antes de generar el reporte.</div>';return;}
+  if(!r.n){$('rMsg').innerHTML='<div class="note warn">Llene al menos uno de los módulos seleccionados antes de generar el reporte.</div>';return;}
   $('rMsg').innerHTML='';
   $('report').innerHTML=r.h;
   document.body.classList.add('printing');
@@ -600,7 +625,7 @@ document.querySelectorAll('input,select').forEach(el=>{el.addEventListener('inpu
 $('linea').addEventListener('change',()=>{$('seedTarget').dataset.touched='';$('pTd').dataset.touched='';all();});
 $('pVials').addEventListener('input',()=>{$('cVials').value=$('pVials').value;calcCong();});
 $('pPerVial').addEventListener('input',()=>{$('cCells').value=$('pPerVial').value;calcCong();});
-$('useMed').addEventListener('click',()=>{if(lastMedium>0){$('mVol').value=Math.ceil(lastMedium*1.1/5)*5;calcMedio();location.hash='medio';}});
+$('useMed').addEventListener('click',()=>{if(lastMedium>0){sel.add('medio');applyPicks();$('mVol').value=Math.ceil(lastMedium*1.1/5)*5;calcMedio();location.hash='medio';}});
 all();
 })();
 </script>
