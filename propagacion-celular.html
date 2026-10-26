@@ -35,6 +35,18 @@
 .pick[aria-pressed="true"]::after{background:var(--yct-accent);border-color:var(--yct-accent);box-shadow:inset 0 0 0 3px var(--yct-accent-soft)}
 .pick:focus-visible{outline:2px solid var(--yct-accent);outline-offset:2px}
 .mod.off{display:none}
+.step-t{font-family:var(--yct-display);font-size:19px;font-weight:400;margin:22px 0 12px;color:var(--yct-ink)}
+.step-t span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-accent);margin-right:10px;font-weight:600}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.vopt{all:unset;box-sizing:border-box;cursor:pointer;border:1px solid var(--yct-line);border-radius:8px;padding:12px 14px;background:#fff;position:relative;line-height:1.4}
+.vopt:hover{border-color:var(--yct-accent)}
+.vopt[aria-checked="true"]{border:2px solid var(--yct-accent);background:var(--yct-accent-soft);padding:11px 13px}
+.vopt:focus-visible{outline:2px solid var(--yct-accent);outline-offset:2px}
+.vopt b{display:block;font-family:var(--yct-display);font-size:19px;font-weight:600;color:var(--yct-ink)}
+.vopt small{display:block;font-size:13px;color:var(--yct-muted)}
+.vopt .st{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--yct-bg);color:var(--yct-muted)}
+.vopt .st.ok{background:#E0EEEA;color:#0A6B57}.vopt .st.more{background:#E6ECFB;color:#1F3FAE}.vopt .st.low{background:#FBF4E6;color:#8A5A12}
+.vopt .sug{position:absolute;top:10px;right:10px;font-size:11px;font-weight:700;color:#fff;background:var(--yct-accent);padding:2px 8px;border-radius:999px}
 .vessels{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 18px}
 .vessels-lbl{width:100%;font-size:13.5px;color:var(--yct-muted);margin-bottom:2px}
 .vchk{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--yct-line);border-radius:999px;background:#fff;font-size:15px;cursor:pointer;user-select:none}
@@ -218,6 +230,7 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
   <div class="mod-head"><span class="mod-n">01</span><h2>Siembra desde el conteo</h2></div>
   <p class="mod-sub">Capture lo que reporta el contador (LUNA-FL u otro) y el volumen en que resuspendió el botón celular. El valor de células vivas del LUNA ya está corregido por el factor de dilución.</p>
 
+  <p class="step-t"><span>Paso 1</span>Conteo</p>
   <div class="grid">
     <div class="f">
       <label for="live">Células vivas / mL</label>
@@ -225,35 +238,27 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
       <small>Como lo muestra el LUNA: 1.64×10e5 → 1.64 y ×10⁵</small>
     </div>
     <div class="f"><label for="viab">Viabilidad (%)</label><input id="viab" type="number" step="0.1" min="0" max="100" placeholder="92"></div>
-    <div class="f"><label for="vres">Volumen de resuspensión (mL)</label><input id="vres" type="number" step="0.1" min="0" placeholder="3"></div>
+    <div class="f"><label for="vres">Volumen de resuspensión (mL)</label><input id="vres" type="number" step="0.1" min="0" placeholder="2"><small>En el que resuspendió el botón para contar; por lo general 1–3 mL.</small></div>
     <div class="f"><label for="seedTarget">Densidad de siembra (×10⁶/mL)</label><input id="seedTarget" type="number" step="0.05" min="0.01"><small id="seedHint"></small></div>
   </div>
+  <div class="out" style="grid-template-columns:1fr"><div class="o hl"><b>Células vivas totales</b><div class="v" id="oTot">—</div><div class="u" id="oTotU">células vivas/mL × volumen de resuspensión</div></div></div>
 
-  <div class="vessels" id="vessels">
-    <span class="vessels-lbl">Recipientes que tiene en el laboratorio (la recomendación solo usa los marcados):</span>
-    <label class="vchk"><input type="checkbox" value="plates" checked>Placas multipozo</label>
-    <label class="vchk"><input type="checkbox" value="T25" checked>T25</label>
-    <label class="vchk"><input type="checkbox" value="T75" checked>T75</label>
-    <label class="vchk"><input type="checkbox" value="T150">T150</label>
-    <label class="vchk"><input type="checkbox" value="T175" checked>T175</label>
-    <label class="vchk"><input type="checkbox" value="T225">T225</label>
-  </div>
+  <p class="step-t"><span>Paso 2</span>Elija el recipiente</p>
+  <p style="font-size:14.5px;color:var(--yct-muted);line-height:1.6;margin:-4px 0 12px">Cada opción muestra el volumen de medio recomendado por Corning (0.2–0.3 mL/cm²) y cuántas células necesita a su densidad de siembra. <b style="color:var(--yct-accent)">Sugerido</b> = el recipiente más grande que puede llenar con sus células.</p>
+  <div class="vgrid" id="vpick" role="radiogroup" aria-label="Recipiente"></div>
+  <div class="grid" style="max-width:420px"><div class="f"><label for="vN">Número de recipientes</label><input id="vN" type="number" step="1" min="1" value="1"></div></div>
 
+  <p class="step-t"><span>Paso 3</span>Qué hacer</p>
   <div class="out">
-    <div class="o hl"><b>Vivas totales</b><div class="v" id="oTot">—</div><div class="u">células</div></div>
-    <div class="o"><b>Volumen final</b><div class="v" id="oVol">—</div><div class="u">mL de cultivo</div></div>
-    <div class="o"><b>Medio a agregar</b><div class="v" id="oAdd">—</div><div class="u">mL de medio completo</div></div>
-    <div class="o hl"><b>Recipiente</b><div class="v" id="oFlask" style="font-size:21px">—</div><div class="u" id="oFlaskU">&nbsp;</div></div>
+    <div class="o hl"><b>Volumen de cultivo</b><div class="v" id="oVol">—</div><div class="u" id="oVolU">mL por recipiente</div></div>
+    <div class="o"><b>Suspensión celular a transferir</b><div class="v" id="oTake">—</div><div class="u" id="oTakeU">mL del tubo de conteo</div></div>
+    <div class="o"><b>Medio completo a agregar</b><div class="v" id="oAdd">—</div><div class="u" id="oAddU">mL</div></div>
+    <div class="o"><b>Células sobrantes</b><div class="v" id="oLeft">—</div><div class="u" id="oLeftU">&nbsp;</div></div>
   </div>
-  <div class="formula" id="fSiembra">Vivas totales = vivas/mL × volumen de resuspensión
-Volumen final = vivas totales ÷ densidad de siembra</div>
+  <div class="formula" id="fSiembra">Capture el conteo y elija un recipiente.</div>
   <div id="nSiembra"></div>
-
-  <details style="margin-top:6px" open>
-    <summary style="cursor:pointer;font-size:15px;color:var(--yct-accent)">Guía de recipientes: volumen recomendado y células que caben</summary>
-    <p style="font-size:14.5px;color:var(--yct-muted);line-height:1.6;margin:12px 0">Volumen de medio recomendado por Corning: <b>0.2–0.3 mL por cm²</b> de superficie. En células en suspensión, las células que caben se calculan con ese volumen × la densidad de siembra elegida. La fila resaltada es la recomendación actual.</p>
-    <div class="tbl-wrap"><table id="vGuide"><thead><tr><th>Recipiente</th><th>Superficie</th><th>Volumen recomendado</th><th>Células vivas a sembrar</th></tr></thead><tbody></tbody></table></div>
-  </details>
+  <div class="btn-row"><button type="button" class="btn-s" id="useMed1">Preparar este medio en el módulo 03 →</button></div>
+  <span id="oFlask" hidden></span><span id="oFlaskU" hidden></span>
 
   <details style="margin-top:6px">
     <summary style="cursor:pointer;font-size:15px;color:var(--yct-accent)">Conteo en LUNA-FL con naranja de acridina / yoduro de propidio</summary>
@@ -457,7 +462,7 @@ const VESSELS=[
   {id:'T175',grp:'T175',name:'T175',unit:'frasco',area:175,min:35,max:52.5},
   {id:'T225',grp:'T225',name:'T225',unit:'frasco',area:225,min:45,max:67.5}
 ];
-function available(){const on=new Set([...document.querySelectorAll('#vessels input:checked')].map(i=>i.value));const a=VESSELS.filter(v=>on.has(v.grp));return a.length?a:VESSELS;}
+function available(){return VESSELS.filter(v=>!['T150','T225'].includes(v.id)||v.id===pickedV);}
 /* Elige el recipiente: pocos recipientes, sin diluir de más (≥75 % de la densidad), y el más chico */
 function vessel(v){
   if(!(v>0))return {name:'—',note:'',list:'—',total:NaN,ok:false};
@@ -473,9 +478,16 @@ function vessel(v){
   const note=ml(b.fill,b.fill<10?2:1)+' mL'+(many?' c/u':'')+' · rec. '+t.min+'–'+t.max+' mL';
   return {name,note,list:b.n+' '+(t.unit==='pozo'?u+' ('+t.name.replace('Placa ','placa ')+')':t.name),total:b.total,fill:b.fill,n:b.n,keep:b.keep,ok:b.ok,id:t.id};
 }
-function renderGuide(seed,pickId){
-  const tb=document.querySelector('#vGuide tbody'); if(!tb)return;
-  tb.innerHTML=available().map(t=>'<tr'+(t.id===pickId?' class="pick-row"':'')+'><td>'+t.name+'</td><td>'+t.area+' cm²</td><td>'+t.min+'–'+t.max+' mL</td><td>'+sci(t.min*seed,1)+' – '+sci(t.max*seed,1)+'</td></tr>').join('');
+let pickedV=null, pickedByUser=false;
+function renderPicker(tot,seed,n,sug){
+  $('vpick').innerHTML=VESSELS.map(t=>{
+    const lo=t.min*seed*n, hi=t.max*seed*n;
+    let st='',cls='';
+    if(isFinite(tot)){ if(tot<lo){st='Faltan células';cls='low';} else if(tot>hi){st='Sobran células';cls='more';} else {st='Alcanzan';cls='ok';} }
+    return '<button type="button" class="vopt" role="radio" data-v="'+t.id+'" aria-checked="'+(t.id===pickedV)+'">'+(t.id===sug?'<span class="sug">Sugerido</span>':'')+
+      '<b>'+t.name+'</b><small>'+t.min+'–'+t.max+' mL'+(t.unit==='pozo'?' por pozo':'')+'</small><small>Necesita '+sci(t.min*seed,1)+'–'+sci(t.max*seed,1)+' células'+(t.unit==='pozo'?' por pozo':'')+'</small>'+(st?'<span class="st '+cls+'">'+st+'</span>':'')+'</button>';
+  }).join('');
+  $('vpick').querySelectorAll('.vopt').forEach(b=>b.addEventListener('click',()=>{pickedV=b.dataset.v;pickedByUser=true;all();}));
 }
 
 function renderFacts(){
@@ -486,38 +498,50 @@ function renderFacts(){
   $('customGrid').classList.toggle('on',$('linea').value==='custom');
   if(!$('seedTarget').dataset.touched)$('seedTarget').value=(L.seed/1e6).toFixed(2).replace(/0$/,'');
   if(!$('pTd').dataset.touched)$('pTd').value=L.td;
-  $('seedHint').textContent='Recomendada: '+fmtD(L.seed)+' · máx. '+fmtD(L.max);
+  $('seedHint').textContent=$('linea').value==='raji'?'Fuente: ficha ATCC CCL-86 (subcultivo): sembrar a 4 ×10⁵ vivas/mL; máximo 3 ×10⁶ vivas/mL.':'Fuente: parámetros de su línea personalizada. Máx. '+fmtD(L.max)+'.';
   $('mBaseLbl').textContent=L.base;
 }
 
 /* 01 · Siembra */
-let lastTotal=NaN;
+let lastTotal=NaN, lastMed1=NaN;
 function calcSiembra(){
   const L=line();
   const live=num('live')*Math.pow(10,+$('liveExp').value), viab=num('viab'), vres=num('vres');
   const seed=(num('seedTarget')>0?num('seedTarget'):L.seed/1e6)*1e6;
+  const n=Math.max(1,Math.round(num('vN'))||1);
   const notes=[];
-  if(!(live>0)||!(vres>0)){renderGuide(seed,null);['oTot','oVol','oAdd','oFlask'].forEach(i=>$(i).textContent='—');$('oFlaskU').innerHTML='&nbsp;';$('nSiembra').innerHTML='';lastTotal=NaN;return;}
-  const tot=live*vres, vcalc=tot/seed, ves=vessel(vcalc), vfin=isFinite(ves.total)?ves.total:vcalc, add=vfin-vres;
-  renderGuide(seed,ves.id);
+  const has=live>0&&vres>0, tot=has?live*vres:NaN;
+  // sugerido: el recipiente más grande que puede llenar con sus células
+  let sug=null; if(has){for(const t of VESSELS){if(tot>=t.min*seed*n&&!['T150','T225'].includes(t.id))sug=t.id;} if(!sug)sug='P48';}
+  if(!pickedByUser)pickedV=sug;
+  renderPicker(tot,seed,n,sug);
+  const reset=()=>{['oVol','oTake','oAdd','oLeft','oFlask'].forEach(i=>$(i).textContent='—');$('oFlaskU').textContent='';$('nSiembra').innerHTML='';};
+  if(!has){$('oTot').textContent='—';reset();$('fSiembra').textContent='Capture el conteo y elija un recipiente.';lastTotal=NaN;lastMed1=NaN;return;}
   lastTotal=tot;
   $('oTot').textContent=sci(tot);
-  $('oVol').textContent=ml(vfin);
-  $('oAdd').textContent=add>=0?ml(add):'—';
-  $('oFlask').textContent=ves.name;$('oFlaskU').textContent=ves.note;
-  $('fSiembra').textContent='Vivas totales = '+sci(live)+'/mL × '+vres+' mL = '+sci(tot)+'\nVolumen a la densidad de siembra = '+sci(tot)+' ÷ '+fmtD(seed)+' = '+ml(vcalc)+' mL'+(Math.abs(vfin-vcalc)>vcalc*0.001?'\nAjuste al volumen recomendado del recipiente: '+ml(vfin)+' mL → densidad real '+fmtD(tot/vfin):'')+'\nMedio a agregar = '+ml(vfin)+' − '+vres+' = '+(add>=0?ml(add):'(concentrar)')+' mL';
-  if(ves.n>1)notes.push(['','Reparta el cultivo en <b>'+ves.name+'</b> con <b>'+ml(ves.fill,ves.fill<10?2:1)+' mL</b> cada uno.']);
-  if(vfin>vcalc*1.001&&ves.ok)notes.push(['','Para llegar al volumen mínimo recomendado del recipiente se completa a <b>'+ml(vfin)+' mL</b>; la densidad queda en <b>'+fmtD(tot/vfin)+'</b>, dentro de lo aceptable.']);
-  if(vfin<vcalc*0.999&&ves.ok)notes.push(['','Se usa el volumen máximo recomendado del recipiente (<b>'+ml(vfin)+' mL</b>); la densidad queda en <b>'+fmtD(tot/vfin)+'</b>, ligeramente arriba de la de siembra.']);
-  if(!ves.ok)notes.push(['warn','Con los recipientes marcados la densidad bajaría a <b>'+fmtD(tot/vfin)+'</b>. Marque un recipiente más pequeño (p. ej. placas o T25) o siembre en menos volumen.']);
-  if(add<0)notes.push(['warn','Las células están más diluidas que la densidad de siembra. Centrifugue y resuspenda el botón en <b>'+ml(vfin)+' mL</b> de medio completo.']);
+  $('oTotU').textContent=sci(live)+'/mL × '+vres+' mL';
+  const t=VESSELS.find(v=>v.id===pickedV);
+  if(!t){reset();return;}
+  const lo=t.min*n, hi=t.max*n;              // volumen total permitido (mL)
+  let Vtot=Math.min(Math.max(tot/seed,lo),hi), use=Math.min(tot,Vtot*seed), dens=use/Vtot, left=tot-use;
+  const take=use/live, add=Vtot-take, per=Vtot/n, many=n>1;
+  const unit=t.unit==='pozo'?(many?'pozos':'pozo'):(many?'recipientes':'recipiente');
+  $('oFlask').textContent=(t.unit==='pozo'?n+' '+unit+' · '+t.name:n+' × '+t.name);$('oFlaskU').textContent='rec. '+t.min+'–'+t.max+' mL';
+  $('oVol').textContent=ml(per);$('oVolU').textContent='mL por '+(t.unit==='pozo'?'pozo':'recipiente')+(many?' · '+ml(Vtot)+' mL en total':'')+' (rec. '+t.min+'–'+t.max+')';
+  $('oTake').textContent=ml(take);$('oTakeU').textContent='mL del tubo de conteo'+(many?' · '+ml(take/n)+' mL por recipiente':'');
+  $('oAdd').textContent=ml(add);$('oAddU').textContent='mL de medio completo'+(many?' · '+ml(add/n)+' mL por recipiente':'');
+  $('oLeft').textContent=left>tot*0.005?sci(left):'0';$('oLeftU').textContent=left>tot*0.005?'≈ '+ml(left/live)+' mL quedan en el tubo':'se usan todas';
+  lastMed1=add;
+  $('fSiembra').textContent='Células a sembrar = '+sci(use)+' → densidad '+fmtD(dens)+'\nVolumen de cultivo = '+ml(Vtot)+' mL ('+n+' × '+ml(per)+' mL; Corning '+t.min+'–'+t.max+' mL)\nSuspensión a transferir = '+sci(use)+' ÷ '+sci(live)+'/mL = '+ml(take)+' mL\nMedio a agregar = '+ml(Vtot)+' − '+ml(take)+' = '+ml(add)+' mL';
+  if(tot<t.min*seed*n){const need=t.min*seed*n-tot;notes.push(['warn','Para '+(many?n+' × ':'')+t.name+' le faltan <b>'+sci(need)+'</b> células: con el volumen mínimo ('+ml(lo)+' mL) la densidad queda en <b>'+fmtD(dens)+'</b>, por debajo de la de siembra. Elija un recipiente más pequeño'+(sug?' (sugerido: '+VESSELS.find(v=>v.id===sug).name+')':'')+' o espere a tener más células.']);}
+  else if(left>tot*0.005)notes.push(['','El '+t.name+' se llena con <b>'+sci(use)+'</b> células. Le sobran <b>'+sci(left)+'</b> (≈ '+ml(left/live)+' mL del tubo): puede sembrar otro recipiente, congelarlas o usarlas para citometría.']);
+  else notes.push(['','Transfiera <b>todo el tubo</b> ('+ml(take)+' mL) y complete con <b>'+ml(add)+' mL</b> de medio'+(many?', repartido en '+n+' recipientes':'')+'.']);
   if(seed>L.max)notes.push(['bad','La densidad de siembra supera el máximo de la línea ('+fmtD(L.max)+').']);
   if(isFinite(viab)){
-    if(viab<50)notes.push(['bad','Viabilidad de <b>'+viab+' %</b>. Siembre todo en poco volumen (alta densidad, 0.5–1 ×10⁶/mL), use SFB al 20 % los primeros días, no cambie el medio en 3–4 días y considere un vial nuevo para el banco.']);
-    else if(viab<80)notes.push(['warn','Viabilidad de <b>'+viab+' %</b>, por debajo de lo ideal (≥ 80–90 %). Considere un lavado adicional para retirar restos celulares y siembre en la parte alta del rango de densidad.']);
-    else notes.push(['','Viabilidad adecuada. Siembre a '+fmtD(seed)+' y revise en 48–72 h: densidad, color del medio y grumos (Raji crece en agregados).']);
+    if(viab<50)notes.push(['bad','Viabilidad de <b>'+viab+' %</b>. Siembre en poco volumen (alta densidad, 0.5–1 ×10⁶/mL), use SFB al 20 % los primeros días, no cambie el medio en 3–4 días y considere un vial nuevo para el banco.']);
+    else if(viab<80)notes.push(['warn','Viabilidad de <b>'+viab+' %</b>, por debajo de lo ideal (≥ 80–90 %). Considere un lavado adicional para retirar restos celulares.']);
+    else notes.push(['','Viabilidad adecuada. Revise en 48–72 h: densidad, color del medio y grumos (Raji crece en agregados).']);
   }
-  if(tot<1e6&&vfin<3)notes.push(['warn','Pocas células: un pozo de placa mantiene la densidad mejor que un frasco grande.']);
   $('nSiembra').innerHTML=notes.map(n=>'<div class="note '+n[0]+'">'+n[1]+'</div>').join('');
   if(!$('pN0').dataset.touched){const e=Math.floor(Math.log10(tot));const ex=Math.min(7,Math.max(5,e));$('pN0Exp').value=ex;$('pN0').value=+(tot/Math.pow(10,ex)).toFixed(3);}
 }
@@ -629,9 +653,11 @@ function buildReport(){
       row('Volumen de resuspensión',esc($('vres').value)+' mL')+
       row('Densidad de siembra',esc($('seedTarget').value)+' ×10<sup>6</sup> vivas/mL')+
       row('Vivas totales',esc(txt('oTot'))+' células')+
-      row('Volumen final de cultivo',esc(txt('oVol'))+' mL')+
-      row('Medio completo a agregar',esc(txt('oAdd'))+' mL')+
-      row('Recipiente',esc(txt('oFlask'))+' ('+esc(txt('oFlaskU'))+')')+'</table>';
+      row('Recipiente',esc(txt('oFlask'))+' ('+esc(txt('oFlaskU'))+')')+
+      row('Volumen de cultivo',esc(txt('oVol'))+' '+esc(txt('oVolU')))+
+      row('Suspensión celular a transferir',esc(txt('oTake'))+' '+esc(txt('oTakeU')))+
+      row('Medio completo a agregar',esc(txt('oAdd'))+' '+esc(txt('oAddU')))+
+      row('Células sobrantes',esc(txt('oLeft'))+' ('+esc(txt('oLeftU'))+')')+'</table>';
     [...document.querySelectorAll('#nSiembra .note')].forEach(x=>h+='<div class="rp-note">'+x.innerHTML+'</div>');
   }
   if(sel.has('proyeccion')&&txt('qDays')!=='—'){n++;
@@ -685,6 +711,7 @@ document.querySelectorAll('input,select').forEach(el=>{el.addEventListener('inpu
 $('linea').addEventListener('change',()=>{$('seedTarget').dataset.touched='';$('pTd').dataset.touched='';all();});
 $('pVials').addEventListener('input',()=>{$('cVials').value=$('pVials').value;calcCong();});
 $('pPerVial').addEventListener('input',()=>{$('cCells').value=$('pPerVial').value;calcCong();});
+$('useMed1').addEventListener('click',()=>{if(lastMed1>0){sel.add('medio');applyPicks();$('mVol').value=Math.ceil(lastMed1*1.1/5)*5;calcMedio();$('medio').scrollIntoView({behavior:'smooth'});}});
 $('useMed').addEventListener('click',()=>{if(lastMedium>0){sel.add('medio');applyPicks();$('mVol').value=Math.ceil(lastMedium*1.1/5)*5;calcMedio();location.hash='medio';}});
 all();
 })();
