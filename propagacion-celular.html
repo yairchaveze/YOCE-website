@@ -21,7 +21,7 @@
 .chip{font-family:var(--yct-mono);font-size:12px;letter-spacing:.04em;padding:5px 10px;border:1px solid var(--yct-line);border-radius:3px;color:var(--yct-muted);background:var(--yct-surface)}
 
 /* Índice de módulos */
-.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--yct-line);border-radius:8px;background:var(--yct-surface);margin-bottom:28px;overflow:hidden}
+.toc{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--yct-line);border-radius:8px;background:var(--yct-surface);margin-bottom:28px;overflow:hidden}
 .toc a{padding:14px 16px;text-decoration:none;color:var(--yct-ink);border-right:1px solid var(--yct-line);font-size:15px;line-height:1.35}
 .toc a:last-child{border-right:0}
 .toc a span{display:block;font-family:var(--yct-mono);font-size:11px;color:var(--yct-accent);letter-spacing:.08em;margin-bottom:4px}
@@ -90,13 +90,51 @@ tr.final td{background:var(--yct-accent-soft);font-weight:600}
 
 @media (max-width:760px){
   .toc{grid-template-columns:1fr 1fr}
-  .toc a:nth-child(2){border-right:0}
-  .toc a:nth-child(-n+2){border-bottom:1px solid var(--yct-line)}
+  .toc a:nth-child(2n){border-right:0}
+  .toc a:nth-child(-n+4){border-bottom:1px solid var(--yct-line)}
+  .toc a:last-child{grid-column:1/-1}
   .line-bar{grid-template-columns:1fr}
   .recipe{grid-template-columns:1fr}
   .mod{padding:20px 16px}
 }
 @media print{.yct-nav,.yct-foot,.toc,.btn-row{display:none!important}.mod{break-inside:avoid}}
+/* Reporte imprimible */
+textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-radius:6px;font-size:16px;color:var(--yct-ink);background:#fff;font-family:var(--yct-body);resize:vertical;min-height:80px}
+.btn-p{all:unset;cursor:pointer;font-size:15px;font-weight:600;padding:11px 22px;border-radius:999px;background:var(--yct-ink);color:var(--yct-bg)}
+.btn-p:hover{background:var(--yct-accent)}
+.btn-p:focus-visible{outline:2px solid var(--yct-accent);outline-offset:2px}
+#report{display:none}
+.rp{font-family:var(--yct-body);color:#0C1A1D;font-size:10.5pt;line-height:1.4;width:100%;box-sizing:border-box}
+.rp-head{display:flex;align-items:center;gap:14px;border-bottom:2px solid #0A6B57;padding-bottom:12px;margin-bottom:14px}
+.rp-head img{width:54px;height:54px}
+.rp-brand{font-family:var(--yct-display);font-size:20pt;font-weight:300;line-height:1}
+.rp-brand b{font-weight:600;color:#0A6B57}
+.rp-brand small{display:block;font-family:var(--yct-mono);font-size:7.5pt;letter-spacing:.1em;color:#506267;margin-top:4px;text-transform:uppercase}
+.rp-meta{margin-left:auto;text-align:right;font-family:var(--yct-mono);font-size:8.5pt;color:#506267;line-height:1.6}
+.rp h1{font-family:var(--yct-display);font-weight:400;font-size:17pt;margin:0 0 10px}
+.rp h2{font-family:var(--yct-mono);font-weight:500;font-size:8.5pt;letter-spacing:.1em;text-transform:uppercase;color:#0A6B57;margin:12px 0 5px;border-bottom:1px solid #D3DDDB;padding-bottom:4px}
+.rp table{width:100%;max-width:100%;table-layout:fixed;border-collapse:collapse;font-size:9.5pt;margin-bottom:6px}
+.rp td,.rp th{border:1px solid #D3DDDB;padding:3px 7px;overflow-wrap:break-word;text-align:left;white-space:normal;color:#0C1A1D}
+.rp th{background:#F2F5F4;font-family:var(--yct-mono);font-size:7.5pt;letter-spacing:.06em;text-transform:uppercase;color:#506267;font-weight:400}
+.rp td.k{width:38%;color:#506267;background:#FAFBFB}
+.rp .rp-note{font-size:9.5pt;color:#0C1A1D;border-left:3px solid #0A6B57;padding:4px 10px;margin:6px 0;background:#F2F5F4}
+.rp .rp-obs{border:1px solid #D3DDDB;min-height:60px;padding:8px;white-space:pre-wrap;font-size:10pt}
+.rp-end{break-inside:avoid}.rp-sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:34px}
+.rp-sign div{border-top:1px solid #0C1A1D;padding-top:6px;font-size:9.5pt;text-align:center}
+.rp-sign span{display:block;color:#506267;font-size:8.5pt}
+.rp-foot{margin-top:24px;border-top:1px solid #D3DDDB;padding-top:8px;font-size:8pt;color:#6B7C80;display:flex;justify-content:space-between;gap:12px}
+@media print{
+  @page{size:letter;margin:14mm 14mm 16mm}
+  body.printing>*:not(.page){display:none!important}
+  body.printing .page>*:not(#report){display:none!important}
+  body.printing,html:has(body.printing){background:#fff!important}
+  body.printing .page{width:auto}
+  body.printing #report{display:block;width:100%}
+  body.printing .page{max-width:none;padding:0;margin:0}
+  .rp h2{break-after:avoid}.rp table,.rp-sign{break-inside:avoid}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
 </style>
 </head>
 <body>
@@ -130,6 +168,7 @@ tr.final td{background:var(--yct-accent-soft);font-weight:600}
   <a href="#proyeccion"><span>02</span>Proyección a banco</a>
   <a href="#medio"><span>03</span>Medio de cultivo</a>
   <a href="#congelacion"><span>04</span>Medio de congelación</a>
+  <a href="#reporte"><span>05</span>Reporte</a>
 </nav>
 
 <!-- LÍNEA CELULAR -->
@@ -297,6 +336,24 @@ Proyección teórica en fase exponencial: confirme cada pase con un conteo real.
   <div class="note">Antes de liberar el banco: prueba de <b>micoplasma</b>, esterilidad y descongelación de un vial de prueba para confirmar viabilidad e identidad por citometría (CD19⁺ CD20⁺ CD3⁻ en Raji).</div>
 </section>
 
+<!-- 05 REPORTE -->
+<section class="mod" id="reporte">
+  <div class="mod-head"><span class="mod-n">05</span><h2>Reporte imprimible</h2></div>
+  <p class="mod-sub">Genera un reporte con el logo de YoCellTherapy, la identificación del cultivo, quién ejecutó los cálculos y los resultados de los módulos que tengan datos. Desde la ventana de impresión puede guardarlo como PDF.</p>
+  <div class="grid">
+    <div class="f"><label for="rExec">Ejecutó (nombre)</label><input id="rExec" type="text" style="font-size:16px" placeholder="QBP Yair Omar Chávez-Estrada"></div>
+    <div class="f"><label for="rRev">Revisó (nombre)</label><input id="rRev" type="text" style="font-size:16px" placeholder="Nombre de quien revisa"></div>
+    <div class="f"><label for="rLine">Línea celular</label><input id="rLine" type="text" style="font-size:16px"></div>
+    <div class="f"><label for="rLot">Lote / vial</label><input id="rLot" type="text" style="font-size:16px" placeholder="p. ej. Banco interno, vial 3"></div>
+    <div class="f"><label for="rPass">Pase</label><input id="rPass" type="text" style="font-size:16px" placeholder="P1"></div>
+  </div>
+  <div class="f" style="margin-bottom:18px"><label for="rObs">Observaciones</label><textarea id="rObs" placeholder="Morfología, grumos, color del medio, incidencias…"></textarea></div>
+  <div class="btn-row"><button type="button" class="btn-p" id="btnReport">Generar e imprimir reporte</button></div>
+  <div id="rMsg"></div>
+</section>
+
+<div id="report" aria-hidden="true"></div>
+
 <!-- BIOSEGURIDAD Y REFERENCIAS -->
 <section class="mod" style="margin-bottom:0">
   <div class="mod-head"><span class="mod-n">··</span><h2>Bioseguridad y referencias</h2></div>
@@ -460,7 +517,85 @@ function calcCong(){
   $('fCong').textContent='Resuspender '+sci(cells)+' células en '+ml(base)+' mL → '+(c>0?sci(c*1e6/vv):'—')+' células/mL\nPreparar '+ml(tot)+' mL ('+Math.round(ex*100)+' % de excedente): '+ml(med)+' mL medio completo'+(fbs?' + '+ml(fbs)+' mL SFB':'')+' + '+ml(dmso)+' mL DMSO';
 }
 
-function all(){renderFacts();calcSiembra();calcProy();calcMedio();calcCong();}
+
+/* 05 · Reporte imprimible */
+const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const txt=id=>($(id).textContent||'').trim();
+const row=(k,v)=>'<tr><td class="k">'+esc(k)+'</td><td>'+v+'</td></tr>';
+const store={get(k){try{return localStorage.getItem('yct-prop-'+k)||''}catch(e){return ''}},set(k,v){try{localStorage.setItem('yct-prop-'+k,v)}catch(e){}}};
+['rExec','rRev'].forEach(id=>{const v=store.get(id);if(v)$(id).value=v;$(id).addEventListener('change',()=>store.set(id,$(id).value.trim()));});
+function syncReportDefaults(){
+  if(!$('rLine').dataset.touched)$('rLine').value=$('linea').value==='raji'?'Raji · ATCC CCL-86':'Línea personalizada';
+  if(!$('rPass').dataset.touched)$('rPass').value='P'+(num('pPass')||0);
+}
+['rLine','rPass'].forEach(id=>$(id).addEventListener('input',()=>$(id).dataset.touched='1'));
+function buildReport(){
+  const now=new Date(), pad=n=>String(n).padStart(2,'0');
+  const fecha=now.toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'}), hora=pad(now.getHours())+':'+pad(now.getMinutes());
+  const folio='YCT-PC-'+now.getFullYear()+pad(now.getMonth()+1)+pad(now.getDate())+'-'+pad(now.getHours())+pad(now.getMinutes());
+  const L=line(), exec=$('rExec').value.trim(), rev=$('rRev').value.trim();
+  let h='<div class="rp"><div class="rp-head"><img src="yct-logo.svg" alt=""><div class="rp-brand">Yo<b>Cell</b>Therapy<small>Consultoría científica en terapia celular</small></div>'+
+    '<div class="rp-meta">Folio '+folio+'<br>'+esc(fecha)+' · '+hora+' h</div></div>'+
+    '<h1>Reporte de propagación celular</h1>';
+  h+='<h2>Identificación</h2><table>'+row('Línea celular',esc($('rLine').value))+row('Lote / vial',esc($('rLot').value)||'—')+row('Pase',esc($('rPass').value)||'—')+
+     row('Ejecutó',esc(exec)||'—')+row('Revisó',esc(rev)||'—')+row('Fecha y hora de cálculo',esc(fecha)+', '+hora+' h')+'</table>';
+  let n=0;
+  if(txt('oTot')!=='—'){n++;
+    h+='<h2>01 · Siembra desde el conteo</h2><table>'+
+      row('Células vivas / mL',esc($('live').value)+' ×10<sup>'+$('liveExp').value+'</sup>')+
+      row('Viabilidad',$('viab').value?esc($('viab').value)+' %':'—')+
+      row('Volumen de resuspensión',esc($('vres').value)+' mL')+
+      row('Densidad de siembra',esc($('seedTarget').value)+' ×10<sup>6</sup> vivas/mL')+
+      row('Vivas totales',esc(txt('oTot'))+' células')+
+      row('Volumen final de cultivo',esc(txt('oVol'))+' mL')+
+      row('Medio completo a agregar',esc(txt('oAdd'))+' mL')+
+      row('Recipiente',esc(txt('oFlask'))+' ('+esc(txt('oFlaskU'))+')')+'</table>';
+    [...document.querySelectorAll('#nSiembra .note')].forEach(x=>h+='<div class="rp-note">'+x.innerHTML+'</div>');
+  }
+  if(txt('qDays')!=='—'){n++;
+    h+='<h2>02 · Proyección a banco celular</h2><table>'+
+      row('Crioviales × células/vial',esc($('pVials').value)+' × '+esc($('pPerVial').value)+' ×10<sup>6</sup>')+
+      row('Células extra para CC',esc($('pQC').value)+' ×10<sup>6</sup>')+
+      row('Tiempo de duplicación / adaptación',esc($('pTd').value)+' h / '+esc($('pLag').value)+' h')+
+      row('Células necesarias',esc(txt('qNeed')))+row('Duplicaciones',esc(txt('qDbl')))+
+      row('Tiempo estimado',esc(txt('qDays'))+' días')+row('Medio total',esc(txt('qMed'))+' mL')+'</table>';
+    h+='<table><thead><tr><th>Día</th><th>Evento</th><th>Pase</th><th>Vivas totales</th><th>Densidad</th><th>Volumen</th><th>Medio nuevo</th><th>Recipientes</th></tr></thead><tbody>'+$('qTable').innerHTML.replace('Cosecha y congelación','Cosecha')+'</tbody></table>';
+  }
+  if(txt('mT')!=='—'){n++;
+    h+='<h2>03 · Medio de cultivo completo</h2><table>'+
+      row(L.base,esc(txt('mBase'))+' mL')+row('SFB inactivado ('+$('mFbs').value+' %)',esc(txt('mF'))+' mL')+
+      row('Penicilina-estreptomicina 100× ('+$('mPs').value+' %)',esc(txt('mP'))+' mL')+row('Total',esc(txt('mT'))+' mL')+
+      row('Filtración / control','Membrana 0.22 µm · esterilidad 24 h a 37 °C, 5 % CO<sub>2</sub> · 2–8 °C, máx. 1 semana')+'</table>';
+  }
+  if(txt('kTot')!=='—'){n++;
+    const atcc=$('cForm').value==='atcc';
+    h+='<h2>04 · Medio de congelación</h2><table>'+
+      row('Fórmula',atcc?'ATCC: 90 % medio completo + 10 % DMSO':'DSMZ: 70 % medio + 20 % SFB + 10 % DMSO')+
+      row('Crioviales',esc($('cVials').value)+' × '+esc($('cVolV').value)+' mL · '+esc($('cCells').value)+' ×10<sup>6</sup> células/vial')+
+      row('Células a congelar',esc(txt('kCells')))+row('Medio de congelación a preparar',esc(txt('kTot'))+' mL (excedente '+esc($('cExtra').value)+' %)')+
+      row('Medio completo',esc(txt('kMed'))+' mL')+(atcc?'':row('SFB adicional',esc(txt('kFbs'))+' mL'))+row('DMSO',esc(txt('kDmso'))+' mL')+'</table>';
+  }
+  const obs=$('rObs').value.trim();
+  h+='<div class="rp-end"><h2>Observaciones</h2><div class="rp-obs">'+(obs?esc(obs):'&nbsp;')+'</div>';
+  h+='<div class="rp-sign"><div>'+(esc(exec)||'&nbsp;')+'<span>Ejecutó · nombre y firma</span></div><div>'+(esc(rev)||'&nbsp;')+'<span>Revisó · nombre y firma</span></div></div>';
+  h+='<div class="rp-foot"><span>Generado con yocelltherapy.com/propagacion-celular.html · Referencias: ATCC CCL-86, DSMZ ACC 319.</span><span>Estimaciones teóricas de apoyo; no sustituyen los PNO del laboratorio.</span></div></div></div>';
+  return {h,n};
+}
+$('btnReport').addEventListener('click',()=>{
+  if(!$('rExec').value.trim()){$('rMsg').innerHTML='<div class="note warn">Escriba el nombre de quien ejecutó los cálculos.</div>';$('rExec').focus();return;}
+  store.set('rExec',$('rExec').value.trim());store.set('rRev',$('rRev').value.trim());
+  const r=buildReport();
+  if(!r.n){$('rMsg').innerHTML='<div class="note warn">Llene al menos un módulo (por ejemplo, la siembra desde el conteo) antes de generar el reporte.</div>';return;}
+  $('rMsg').innerHTML='';
+  $('report').innerHTML=r.h;
+  document.body.classList.add('printing');
+  const img=$('report').querySelector('img');
+  const go=()=>setTimeout(()=>window.print(),60);
+  if(img&&!img.complete){img.onload=go;img.onerror=go;}else go();
+});
+window.addEventListener('afterprint',()=>document.body.classList.remove('printing'));
+
+function all(){renderFacts();calcSiembra();calcProy();calcMedio();calcCong();syncReportDefaults();}
 document.querySelectorAll('input,select').forEach(el=>{el.addEventListener('input',e=>{if(['seedTarget','pTd','pN0','pN0Exp'].includes(e.target.id))e.target.dataset.touched='1';all();});});
 $('linea').addEventListener('change',()=>{$('seedTarget').dataset.touched='';$('pTd').dataset.touched='';all();});
 $('pVials').addEventListener('input',()=>{$('cVials').value=$('pVials').value;calcCong();});
