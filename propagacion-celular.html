@@ -18,7 +18,9 @@
 .kicker{display:flex;align-items:center;gap:10px;text-transform:uppercase}
 .kicker::before{content:""}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.chip{font-family:var(--yct-mono);font-size:12px;letter-spacing:.04em;padding:5px 10px;border:1px solid var(--yct-line);border-radius:3px;color:var(--yct-muted);background:var(--yct-surface)}
+.chips{align-items:center}
+.chips-lbl{font-family:var(--yct-display);font-size:15px;color:var(--yct-accent);margin-right:4px}
+.chip{font-family:var(--yct-display);font-size:17px;font-weight:400;padding:8px 16px;border:1px solid var(--yct-line);border-radius:999px;color:var(--yct-ink);background:var(--yct-surface)}
 
 /* Índice de módulos */
 .picker{margin-bottom:28px}
@@ -133,8 +135,8 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
 .rp-info p{margin:0 0 4px}.rp-info p:last-child{margin:0}
 @media print{
   @page{size:letter;margin:14mm 14mm 18mm;
-    @bottom-left{content:"YCT-FOR-PC-01 · Rev. 01 · yocelltherapy.com";font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:#6B7C80}
-    @bottom-right{content:"Página " counter(page) " de " counter(pages);font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:#6B7C80}}
+    @bottom-left{content:"YCT-FOR-PC-01 · Rev. 01 · yocelltherapy.com";font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-size:7.5pt;color:#6B7C80}
+    @bottom-right{content:"Página " counter(page) " de " counter(pages);font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-size:7.5pt;color:#6B7C80}}
   body.printing>*:not(.page){display:none!important}
   body.printing .page>*:not(#report){display:none!important}
   body.printing,html:has(body.printing){background:#fff!important}
@@ -170,7 +172,7 @@ textarea{width:100%;padding:10px 12px;border:1px solid var(--yct-line);border-ra
   <div class="kicker">Herramientas · Cultivo celular</div>
   <h1>Propagación celular, <span>del conteo al banco.</span></h1>
   <p>Ingrese el conteo de su contador celular y obtenga el volumen de siembra, el frasco adecuado, la proyección de expansión hasta un banco celular y los volúmenes exactos de medio de cultivo y de congelación.</p>
-  <div class="chips"><span class="chip">Raji · ATCC CCL-86</span><span class="chip">Suspensión</span><span class="chip">BSL-2 · EBV</span><span class="chip">37 °C · 5 % CO₂</span></div>
+  <div class="chips" id="chips"><span class="chips-lbl">Ejemplo:</span><span class="chip">Raji · ATCC CCL-86</span><span class="chip">Suspensión</span><span class="chip">BSL-2 · EBV</span><span class="chip">37 °C · 5 % CO₂</span></div>
 </header>
 
 <section class="picker" aria-label="¿Qué quiere calcular?">
@@ -435,6 +437,8 @@ function vessel(v){
 
 function renderFacts(){
   const L=line();
+  const chips=$('linea').value==='raji'?['Raji · ATCC CCL-86','Suspensión','BSL-2 · EBV','37 °C · 5 % CO₂']:['Línea personalizada','Suspensión','37 °C · 5 % CO₂'];
+  $('chips').innerHTML='<span class="chips-lbl">'+($('linea').value==='raji'?'Ejemplo:':'Línea:')+'</span>'+chips.map(c=>'<span class="chip">'+c+'</span>').join('');
   $('lineFacts').innerHTML=L.facts.map(f=>'<div class="fact"><b>'+f[0]+'</b><span>'+f[1]+'</span></div>').join('');
   $('customGrid').classList.toggle('on',$('linea').value==='custom');
   if(!$('seedTarget').dataset.touched)$('seedTarget').value=(L.seed/1e6).toFixed(2).replace(/0$/,'');

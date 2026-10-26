@@ -11,7 +11,7 @@
   --yct-band:#0C1A1D; --yct-band-ink:#E7EFED; --yct-band-muted:#8FA4A6;
   --yct-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --yct-body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
-  --yct-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --yct-mono:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
 
   /* Tokens heredados de las páginas, re-mapeados a la paleta nueva */
   --g:#0A6B57; --gl:#2FA88A; --g3:rgba(10,107,87,.10);

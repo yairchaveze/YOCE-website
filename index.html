@@ -150,7 +150,7 @@ body{margin:0}
   --accent:#0A6B57; --accent-soft:#E0EEEA; --pop:#2447C9; --band:#0C1A1D; --band-ink:#E7EFED; --band-muted:#8FA4A6;
   --f-display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --f-body:"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-mono:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --max:1160px;
   --reel-bg:#0C1A1D; --reel-ink:#E7EFED; --reel-accent:#43C6A5; --reel-pop:#7F9CFF; --reel-muted:#7E9496;
 }
@@ -852,7 +852,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         ctx.fillStyle=rgba(C.mint,.08);ctx.fillRect(bx,by,4*g,4*g);ctx.strokeStyle=rgba(C.mint,.9);ctx.lineWidth=2;ctx.strokeRect(bx+1,by+1,4*g-2,4*g-2);
         let n=0;for(const c of s.c){const x=c.x+Math.sin(t*.7+c.p)*5+Math.sin(t*1.9+c.q)*2,y=c.y+Math.cos(t*.6+c.q)*5+Math.cos(t*1.7+c.p)*2;const inside=x>bx&&x<bx+4*g&&y>by&&y<by+4*g;if(inside&&!c.dead)n++;
           cell(ctx,x,y,c.r,c.dead?C.pop:C.mint,null);if(inside)glow(ctx,x,y,c.r*2,c.dead?C.pop:C.mint,.35)}
-        ctx.font='500 11px "JetBrains Mono", monospace';ctx.fillStyle=rgba(C.pale,.9);ctx.fillText('n = '+n,bx+8,by+18);
+        ctx.font='500 11px "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';ctx.fillStyle=rgba(C.pale,.9);ctx.fillText('n = '+n,bx+8,by+18);
         const v=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.62);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.85)');ctx.fillStyle=v;ctx.fillRect(0,0,W,H)}},
 
     /* Campo de flujo con estelas */
@@ -880,7 +880,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         for(const p of s.p){const r=(p.r0+(p.eq-p.r0)*e)*Rm,a=p.a+rot*(1-.15*p.eq);ctx.fillStyle=rgba(p.col,.75);ctx.beginPath();ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,p.sz,0,TAU);ctx.fill()}
         glow(ctx,cx,cy,Rm*.28,C.mint,.15);
         const lab=[['Eritrocitos',.86,C.rbc],['Leucocitos · CD34⁺',.64,C.mint],['Plasma',.42,C.plasma]];
-        ctx.font='500 10.5px "JetBrains Mono", monospace';ctx.textBaseline='middle';
+        ctx.font='500 10.5px "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';ctx.textBaseline='middle';
         for(let [txt,rr,col] of lab){const y=cy-rr*Rm,x0=cx+4;ctx.globalAlpha=e;ctx.strokeStyle=rgba(col,.7);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(cx+Rm*1.12,y);ctx.stroke();ctx.fillStyle=rgba(col,.95);if(W<440)txt=txt.replace(' · CD34⁺','');ctx.fillText(document.documentElement.lang==='en'?({'Eritrocitos':'Red cells','Leucocitos · CD34⁺':'WBC · CD34⁺','Leucocitos':'WBC','Plasma':'Plasma'})[txt]:txt,cx+Rm*1.16,y);ctx.globalAlpha=1}}},
 
     /* Tubos de recolección con código de color (laboratorio clínico) */
@@ -909,8 +909,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         for(const p of s.pulses){const k=(t-p.t0)/1.6;ctx.strokeStyle=rgba(p.a.col,.7*(1-k));ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.a.x*W,p.a.y*H,p.a.r+k*S0*.16,0,TAU);ctx.stroke()}
         ctx.textAlign='center';ctx.textBaseline='middle';
         for(const a of s.a){const x=a.x*W,y=a.y*H;ctx.fillStyle=a.col;ctx.beginPath();ctx.arc(x,y,a.r,0,TAU);ctx.fill();
-          ctx.fillStyle='#071518';ctx.font='600 '+Math.round(a.r*.95)+'px "JetBrains Mono", monospace';ctx.fillText(a.n,x,y+1);
-          ctx.fillStyle=rgba(C.pale,.75);ctx.font='500 10px "JetBrains Mono", monospace';ctx.fillText(a.l.toUpperCase(),x,y+a.r+13)}
+          ctx.fillStyle='#071518';ctx.font='600 '+Math.round(a.r*.95)+'px "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';ctx.fillText(a.n,x,y+1);
+          ctx.fillStyle=rgba(C.pale,.75);ctx.font='500 10px "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';ctx.fillText(a.l.toUpperCase(),x,y+a.r+13)}
         ctx.textAlign='left';ctx.textBaseline='alphabetic'}},
 
     /* La Célula Mexicana: célula rosa que habla (núcleo, membrana viva, ondas de voz) */
@@ -1153,7 +1153,7 @@ document.getElementById('copy').addEventListener('click',function(){
       if(still){word=words[0];wa=1}
       else{const k=Math.floor(clamp((t-5.8)/1.52,0,4.999)), lt=(t-5.8)-k*1.52; word=words[k]; wa=t<5.8?0:Math.min(seg(lt,0,.3),1-seg(lt,1.2,1.52))}
       if(t>13)wa*=fin;
-      ctx.font='500 '+(S*.032)+'px "JetBrains Mono", ui-monospace, monospace';
+      ctx.font='500 '+(S*.032)+'px "Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
       ctx.textAlign='center';ctx.fillStyle=rgba(ink,.72*wa);
       if('letterSpacing' in ctx) ctx.letterSpacing=(S*.004)+'px';
       ctx.fillText(word.toUpperCase(),cx,y+S*.075);
