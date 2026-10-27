@@ -279,3 +279,8 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
 .pn.next{text-align:right}.pn:hover{border-color:var(--plum)}
 @media (max-width:900px){.sub-body{grid-template-columns:1fr;gap:32px}.sub-aside{position:static}.sub-aside{order:-1}}
 @media (max-width:560px){.pager{grid-template-columns:1fr}.pn.next{text-align:left}.tbl{font-size:13.5px}.tbl td:first-child{white-space:normal}.sfig{padding:12px}}
+
+/* ---------- Portada oscura (verde-negro de YoCellTherapy) ---------- */
+.hero,.sub-hero{--bg:#0C1A1D;--surface:#122427;--surface2:#183034;--ink:#E7EFED;--muted:#8FA4A6;--line:#24393D;--plum-ink:#B79CF2;--green:#43C6A5;background:var(--bg);color:var(--ink);color-scheme:dark}
+.hero .btn:not(.fill){color:var(--ink)}
+.sub-hero .strip a[aria-current]{background:rgba(183,156,242,.14)}
