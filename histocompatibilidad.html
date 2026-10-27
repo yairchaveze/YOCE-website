@@ -21,8 +21,8 @@
    flujo interactivo de pasos, ejes científicos, publicaciones filtrables y "Acerca de". */
 :root{
   --bg:#0A0B10; --surface:#12141C; --surface2:#191C26; --ink:#EEF0F5; --muted:#9AA0B2; --line:#262A38;
-  --plum:#9B3F7E; --plum-ink:#E07BC0; --plum-soft:rgba(155,63,126,.16);
-  --mint:#43C6A5; --blue:#7F9CFF;
+  --plum:#7B5BC9; --plum-ink:#C3A8F5; --plum-soft:rgba(155,124,230,.16);
+  --mint:#43C6A5; --green:#0A6B57; --blue:#7F9CFF;
   --f-display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
   --f-body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
   color-scheme:dark;
@@ -35,7 +35,7 @@ a{color:inherit}
 h1,h2,h3,h4{margin:0;font-family:var(--f-display);text-wrap:balance;letter-spacing:-.015em}
 p{margin:0}
 .wrap{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.k{font-family:var(--f-display);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--plum-ink)}
+.k{font-family:var(--f-display);font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
 :focus-visible{outline:2px solid var(--plum-ink);outline-offset:3px;border-radius:2px}
 .grid-bg{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 70% 30%,#000 10%,transparent 70%)}
 
@@ -81,6 +81,8 @@ p{margin:0}
 .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-block:84px 72px}
 .hero h1{font-weight:300;font-size:clamp(42px,6.6vw,84px);line-height:1;letter-spacing:-.03em;margin-top:18px}
 .hero h1 span{display:block;color:var(--plum-ink);font-weight:400}
+.dirige{margin-top:22px;font-size:17px;color:var(--muted);padding-left:14px;border-left:3px solid var(--mint)}
+.dirige b{color:var(--ink);font-weight:600}
 .byyct{display:inline-block;margin-top:14px;text-decoration:none;color:var(--muted);font-size:14px}
 .byyct b{font-family:var(--f-display);color:var(--ink);font-weight:600}
 .lede{font-size:19px;color:var(--muted);max-width:50ch;margin-top:24px}
@@ -91,7 +93,13 @@ p{margin:0}
 .btn.fill{background:var(--plum);border-color:var(--plum);color:#fff}
 .btn.fill:hover{background:transparent}
 .alleles{position:relative;aspect-ratio:1;max-width:480px;width:100%;justify-self:center}
+.alleles{margin:0}
 .alleles svg{width:100%;height:100%;display:block}
+.portrait{position:absolute;left:50%;top:46%;width:46%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--plum),0 0 0 9px var(--bg),0 0 0 10px var(--mint),0 24px 60px -20px #000}
+.alleles figcaption{position:absolute;left:0;right:0;bottom:-6px;text-align:center;display:grid;gap:2px}
+.alleles figcaption b{font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:-.01em}
+.alleles figcaption span{font-size:13.5px;color:var(--muted)}
+.alleles figcaption .dir{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--plum-ink)}
 .al{font-family:var(--f-display);font-size:15px;fill:var(--muted);opacity:0;animation:al 9s ease-in-out infinite}
 @keyframes al{0%,100%{opacity:0}15%,60%{opacity:.9}}
 @media (prefers-reduced-motion:reduce){.al{animation:none;opacity:.7}.ring{animation:none!important}}
@@ -112,7 +120,7 @@ section{padding-block:96px}
 .step:last-child{border-right:0}
 .step .n{font-family:var(--f-display);font-size:13px;color:var(--muted)}
 .step h3{font-weight:400;font-size:19px;line-height:1.2;margin-top:20px}
-.step::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--plum);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.step::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--plum),var(--mint));transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .step[aria-selected="true"],.step:hover{background:var(--surface)}
 .step[aria-selected="true"]::after{transform:none}
 .step[aria-selected="true"] .n{color:var(--plum-ink)}
@@ -121,7 +129,7 @@ section{padding-block:96px}
 .detail p{color:var(--muted)}
 .detail ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 .detail li{padding-left:18px;position:relative;color:var(--ink);font-size:15.5px}
-.detail li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--plum)}
+.detail li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--mint)}
 @media (max-width:900px){.flow{grid-template-columns:repeat(3,1fr)}.step:nth-child(3){border-right:0}.step:nth-child(-n+3){border-bottom:1px solid var(--line)}.detail{grid-template-columns:1fr}}
 @media (max-width:520px){.flow{grid-template-columns:repeat(2,1fr)}.step{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)}.step:nth-child(2n){border-right:0!important}.step h3{font-size:17px;margin-top:16px}}
 
@@ -155,7 +163,7 @@ section{padding-block:96px}
 @media (max-width:640px){.pub{grid-template-columns:1fr;gap:6px}.pub time{font-size:17px}.tag{justify-self:start}}
 
 /* Divulgación */
-.lcm{display:grid;grid-template-columns:1.2fr .8fr;border:1px solid var(--line);text-decoration:none;background:linear-gradient(120deg,#14070F,var(--surface))}
+.lcm{display:grid;grid-template-columns:1.2fr .8fr;border:1px solid var(--line);text-decoration:none;background:linear-gradient(120deg,#120D1F,var(--surface))}
 .lcm>div{padding:36px}
 .lcm h3{font-weight:300;font-size:clamp(28px,3.4vw,40px);line-height:1.05}
 .lcm h3 b{color:#E6007E;font-weight:400}
@@ -184,8 +192,12 @@ section{padding-block:96px}
 .person .ln a{font-size:13px;text-decoration:none;padding:4px 10px;border:1px solid var(--line);color:var(--muted)}
 .person .ln a:hover{border-color:var(--plum);color:var(--ink)}
 .person.ceo .role{color:var(--mint)}
-@media (max-width:980px){.team{grid-template-columns:1fr}}
-@media (max-width:520px){.person{grid-template-columns:1fr}.person img,.ph{width:120px;height:150px}}
+.team{grid-template-columns:1.35fr 1fr}
+.person.lead{grid-template-columns:200px 1fr;border-color:color-mix(in srgb,var(--plum) 55%,var(--line));background:linear-gradient(150deg,rgba(123,91,201,.14),var(--surface) 60%)}
+.person.lead img{width:200px;height:250px}
+.person.lead h3{font-size:30px}
+@media (max-width:980px){.team{grid-template-columns:1fr}.person.lead{grid-template-columns:150px 1fr}.person.lead img{width:150px;height:190px}}
+@media (max-width:520px){.person,.person.lead{grid-template-columns:1fr}.person.lead img{width:150px;height:190px}.person>div{min-width:0}.person img,.ph{width:120px;height:150px}}
 
 /* Contacto */
 .contact{border:1px solid var(--line);padding:48px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden}
@@ -262,6 +274,7 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
     <div class="rv">
       <div class="k">Biología Molecular e Histocompatibilidad</div>
       <h1>El HLA de Latinoamérica, <span>leído desde la clínica.</span></h1>
+      <p class="dirige">Dirigida por la <b>Dra. Nidia Karina Moncada-Saucedo</b></p>
       <a class="byyct" href="index.html">by <b>YoCellTherapy</b></a>
       <p class="lede">Ciencia con clínica sobre el sistema HLA y la histocompatibilidad en el <b>trasplante de células progenitoras hematopoyéticas</b>, con foco en la diversidad genética de la <b>población mexicana y latina</b>.</p>
       <div class="btns">
@@ -269,22 +282,14 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
         <a class="btn" href="#publicaciones">Publicaciones</a>
       </div>
     </div>
-    <div class="alleles" aria-hidden="true">
-      <svg viewBox="0 0 480 480">
-        <defs><radialGradient id="glow"><stop offset="0" stop-color="#9B3F7E" stop-opacity=".45"/><stop offset="1" stop-color="#9B3F7E" stop-opacity="0"/></radialGradient></defs>
+    <figure class="alleles">
+      <svg aria-hidden="true" viewBox="0 0 480 480">
+        <defs><radialGradient id="glow"><stop offset="0" stop-color="#7B5BC9" stop-opacity=".45"/><stop offset="1" stop-color="#7B5BC9" stop-opacity="0"/></radialGradient></defs>
         <circle cx="240" cy="240" r="200" fill="url(#glow)"/>
         <g class="ring" fill="none" stroke="#262A38">
           <circle cx="240" cy="240" r="190" stroke-dasharray="2 8"/>
           <circle cx="240" cy="240" r="140"/>
           <circle cx="240" cy="240" r="90" stroke-dasharray="1 6"/>
-        </g>
-        <!-- molécula HLA estilizada: dos hélices alfa sobre una lámina beta, con un péptido en la hendidura -->
-        <g transform="translate(240 240)">
-          <path d="M-70 18 h140" stroke="#43C6A5" stroke-width="2" opacity=".5"/>
-          <path d="M-70 30 h140 M-70 42 h140 M-70 54 h140" stroke="#43C6A5" stroke-width="2" opacity=".25"/>
-          <path d="M-78 -12 c12 -16 24 16 36 0 s24 16 36 0 s24 16 36 0 s24 16 36 0" fill="none" stroke="#E07BC0" stroke-width="5" stroke-linecap="round"/>
-          <path d="M-78 -46 c12 -16 24 16 36 0 s24 16 36 0 s24 16 36 0 s24 16 36 0" fill="none" stroke="#7F9CFF" stroke-width="5" stroke-linecap="round"/>
-          <g fill="#EEF0F5"><circle cx="-48" cy="-29" r="5"/><circle cx="-32" cy="-29" r="5"/><circle cx="-16" cy="-29" r="5"/><circle cx="0" cy="-29" r="5"/><circle cx="16" cy="-29" r="5"/><circle cx="32" cy="-29" r="5"/><circle cx="48" cy="-29" r="5"/></g>
         </g>
         <g>
           <text class="al" x="40" y="70" style="animation-delay:0s">A*02:01</text>
@@ -297,7 +302,9 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
           <text class="al" x="200" y="34" style="animation-delay:3s">DQB1*03:02</text>
         </g>
       </svg>
-    </div>
+      <img class="portrait" src="img/red/nidia.webp" alt="Retrato de la Dra. Nidia Karina Moncada-Saucedo" width="300" height="300">
+      <figcaption><span class="dir">Directora científica</span><b>Dra. Nidia Karina Moncada-Saucedo</b><span>Doctora en Ciencias · Biología Molecular e Ingeniería Genética</span></figcaption>
+    </figure>
   </div>
 </section>
 
@@ -335,7 +342,7 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
       <div class="fig" aria-hidden="true">
         <svg viewBox="0 0 400 275">
           <g font-size="12" fill="#9AA0B2">
-            <circle cx="140" cy="130" r="78" fill="#9B3F7E" fill-opacity=".28" stroke="#E07BC0"/>
+            <circle cx="140" cy="130" r="78" fill="#7B5BC9" fill-opacity=".28" stroke="#C3A8F5"/>
             <circle cx="240" cy="130" r="78" fill="#7F9CFF" fill-opacity=".2" stroke="#7F9CFF"/>
             <circle cx="190" cy="200" r="60" fill="#43C6A5" fill-opacity=".18" stroke="#43C6A5"/>
             <text x="88" y="100" fill="#EEF0F5">Amerindio</text>
@@ -360,7 +367,7 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
             <text x="20" y="40">Donador</text><text x="20" y="150">Receptor</text>
           </g>
           <g id="seqD"></g><g id="seqR"></g>
-          <g font-size="12" fill="#E07BC0"><text x="20" y="250">■ eplet no compartido</text></g>
+          <g font-size="12" fill="#C3A8F5"><text x="20" y="250">■ eplet no compartido</text></g>
         </svg>
       </div>
     </article>
@@ -437,7 +444,7 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
     <div class="head rv" id="mision">
       <div class="k">Acerca de</div>
       <div><h2>Ciencia con clínica, <em>hecha en Latinoamérica</em></h2>
-      <p>Esta sección es una extensión de YoCellTherapy dedicada a la biología molecular y la histocompatibilidad. Nace para traducir la evidencia sobre HLA a un lenguaje útil para clínicos, laboratorios e investigadores de la región.</p></div>
+      <p>Dirigida por la Dra. Nidia Karina Moncada-Saucedo, esta sección es una extensión de YoCellTherapy dedicada a la biología molecular y la histocompatibilidad. Nace para traducir la evidencia sobre HLA a un lenguaje útil para clínicos, laboratorios e investigadores de la región.</p></div>
     </div>
     <div class="mission rv">
       <div><div class="k">Misión</div><h3>Traducir la evidencia</h3><p>Explicar con rigor cómo el HLA influye en el trasplante y en las terapias celulares.</p></div>
@@ -446,24 +453,24 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
     </div>
 
     <div class="team" id="equipo">
-      <article class="person ceo rv">
-        <img src="yoce24.jpg" alt="Retrato de Yair Omar Chávez-Estrada" loading="lazy">
-        <div>
-          <div class="role">Fundador y Director General (CEO)</div>
-          <h3>Yair Omar Chávez-Estrada</h3>
-          <div class="deg">Químico Bacteriólogo Parasitólogo · Maestro en Ciencias Médicas · Candidato a Doctor en Ciencias de la Salud</div>
-          <p>Fundador de YoCellTherapy. Investigador en terapia celular en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario "Dr. José Eleuterio González" de la UANL, donde participa en el control de calidad del primer programa descentralizado de manufactura CAR-T en México.</p>
-          <div class="ln"><a href="index.html#equipo">Perfil completo</a><a href="https://orcid.org/0000-0002-8418-7655">ORCID</a><a href="https://www.linkedin.com/in/yair-chaveze/">LinkedIn</a></div>
-        </div>
-      </article>
-      <article class="person rv">
+      <article class="person lead rv">
         <img src="img/red/nidia.webp" alt="Retrato de la Dra. Nidia Karina Moncada-Saucedo" loading="lazy">
         <div>
-          <div class="role">Líder · Biología Molecular e Histocompatibilidad</div>
+          <div class="role">Directora científica · Biología Molecular e Histocompatibilidad</div>
           <h3>Dra. Nidia Karina Moncada-Saucedo</h3>
           <div class="deg">Doctora en Ciencias con orientación en Biología Molecular e Ingeniería Genética · Laboratorio de Histocompatibilidad, Hospital Universitario "Dr. José Eleuterio González", UANL · Sistema Nacional de Investigadoras e Investigadores, Nivel I</div>
           <p>Investigadora en histocompatibilidad. Su trabajo reciente estudia el impacto de la incompatibilidad HLA a nivel de eplets y de los anticuerpos anti-HLA donador-específicos en el trasplante haploidéntico de células progenitoras hematopoyéticas. Antes desarrolló investigación en ingeniería de tejidos y células madre mesenquimales en el Departamento de Bioquímica y Medicina Molecular de la Facultad de Medicina de la UANL.</p>
           <div class="ln"><a href="#publicaciones">Publicaciones</a><a href="https://pubmed.ncbi.nlm.nih.gov/?term=Moncada-Saucedo+NK%5BAuthor%5D">PubMed</a></div>
+        </div>
+      </article>
+      <article class="person ceo rv">
+        <img src="yoce24.jpg" alt="Retrato de Yair Omar Chávez-Estrada" loading="lazy">
+        <div>
+          <div class="role">Fundador y Director General (CEO) · YoCellTherapy</div>
+          <h3>Yair Omar Chávez-Estrada</h3>
+          <div class="deg">Químico Bacteriólogo Parasitólogo · Maestro en Ciencias Médicas · Candidato a Doctor en Ciencias de la Salud</div>
+          <p>Fundador de YoCellTherapy. Investigador en terapia celular en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario "Dr. José Eleuterio González" de la UANL, donde participa en el control de calidad del primer programa descentralizado de manufactura CAR-T en México.</p>
+          <div class="ln"><a href="index.html#equipo">Perfil completo</a><a href="https://orcid.org/0000-0002-8418-7655">ORCID</a><a href="https://www.linkedin.com/in/yair-chaveze/">LinkedIn</a></div>
         </div>
       </article>
     </div>
@@ -531,7 +538,7 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
   var diff=[3,4,11,17,18];
   [['seqD',55],['seqR',165]].forEach(function(s,j){var g=document.getElementById(s[0]);
     for(var i=0;i<22;i++){var x=20+i*16.5,on=diff.indexOf(i)>-1;
-      el('rect',{x:x,y:s[1],width:13,height:44,rx:2,fill:on?(j?'#7F9CFF':'#E07BC0'):'#262A38','fill-opacity':on?.9:1},g)}});
+      el('rect',{x:x,y:s[1],width:13,height:44,rx:2,fill:on?(j?'#7F9CFF':'#C3A8F5'):'#262A38','fill-opacity':on?.9:1},g)}});
   /* MFI: barras de antígeno único con umbral */
   var m=document.getElementById('mfi'),v=[900,400,7800,1200,600,3100,300,500,11200,800,450,2000],max=12000;
   el('line',{x1:30,x2:385,y1:240,y2:240,stroke:'#262A38'},m);
@@ -539,15 +546,15 @@ footer .legal{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;
   el('line',{x1:30,x2:385,y1:thy,y2:thy,stroke:'#9AA0B2','stroke-dasharray':'4 4'},m);
   var tx=el('text',{x:30,y:thy-8,fill:'#9AA0B2','font-size':12},m);tx.textContent='umbral MFI';
   v.forEach(function(n,i){var h=n/max*200,dsa=[2,8].indexOf(i)>-1;
-    el('rect',{x:40+i*28.5,y:240-h,width:18,height:h,fill:dsa?'#E07BC0':(n>3000?'#7F9CFF':'#3A3F52')},m)});
-  var t2=el('text',{x:30,y:265,fill:'#E07BC0','font-size':12},m);t2.textContent='■ anticuerpo donador-específico';
+    el('rect',{x:40+i*28.5,y:240-h,width:18,height:h,fill:dsa?'#C3A8F5':(n>3000?'#7F9CFF':'#3A3F52')},m)});
+  var t2=el('text',{x:30,y:265,fill:'#C3A8F5','font-size':12},m);t2.textContent='■ anticuerpo donador-específico';
   /* STR: electroferograma con picos de donador y receptor */
   var s=document.getElementById('str');
   el('line',{x1:20,x2:385,y1:220,y2:220,stroke:'#262A38'},s);
   function peak(x,h,c){el('path',{d:'M'+(x-12)+' 220 Q'+x+' '+(220-h*2.1)+' '+(x+12)+' 220',fill:c,'fill-opacity':.35,stroke:c,'stroke-width':1.5},s)}
-  [[70,80,'#43C6A5'],[100,74,'#43C6A5'],[180,18,'#E07BC0'],[230,82,'#43C6A5'],[280,14,'#E07BC0'],[330,78,'#43C6A5']].forEach(function(p){peak(p[0],p[1],p[2])});
+  [[70,80,'#43C6A5'],[100,74,'#43C6A5'],[180,18,'#C3A8F5'],[230,82,'#43C6A5'],[280,14,'#C3A8F5'],[330,78,'#43C6A5']].forEach(function(p){peak(p[0],p[1],p[2])});
   var a=el('text',{x:20,y:252,fill:'#43C6A5','font-size':12},s);a.textContent='■ alelos del donador';
-  var b=el('text',{x:180,y:252,fill:'#E07BC0','font-size':12},s);b.textContent='■ alelos del receptor';
+  var b=el('text',{x:180,y:252,fill:'#C3A8F5','font-size':12},s);b.textContent='■ alelos del receptor';
 })();
 
 /* Publicaciones (PubMed) */
