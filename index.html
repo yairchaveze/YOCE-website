@@ -190,6 +190,8 @@ p{margin:0}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent)}
 .btn.ghost:hover{background:var(--ink);color:var(--bg)}
 .nav .btn{padding:8px 16px;font-size:14px}
+.links>a.nav-hla{line-height:1.15;font-size:13px;text-align:center;padding-block:14px;white-space:nowrap}
+@media (max-width:960px){.links>a.nav-hla{font-size:17px;text-align:left}.nav-hla br{display:none}}
 .links{align-items:center}
 .links>a,.dd>a{display:block;padding-block:22px}
 .dd{position:relative}
@@ -220,10 +222,6 @@ p{margin:0}
 .hero{padding-block:72px 56px}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);column-gap:64px;row-gap:48px;align-items:center}
 .hero-top{grid-column:1/-1}
-.hla-pill{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;padding:5px 14px 5px 5px;border:1px solid rgba(110,79,192,.45);border-radius:999px;background:rgba(110,79,192,.08);color:#4B3399;font-size:14px;font-weight:500;text-decoration:none;transition:background .2s,border-color .2s}
-.hla-pill:hover{background:rgba(110,79,192,.16);border-color:#6E4FC0}
-.hla-new{background:#6E4FC0;color:#fff;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:600;letter-spacing:.04em}
-.hla-arrow{transition:transform .2s}.hla-pill:hover .hla-arrow{transform:translateX(3px)}
 .eyebrow{color:var(--accent);display:flex;gap:10px;align-items:center}
 .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
 .hero h1{font-size:clamp(40px,6.4vw,84px);line-height:1;margin-top:22px}
@@ -492,11 +490,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
           <a href="yocell-lab.html">YoCell Lab</a>
           <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517" data-en="Novel">Novela</a>
         </div></div>
-      <div class="dd"><a href="#equipo" data-en="Leadership">Liderazgo</a>
-        <div class="menu">
-          <a href="#equipo" data-en="Founder &amp; CEO">Fundador y CEO</a>
-          <a href="histocompatibilidad.html" data-en="Molecular Biology &amp; Histocompatibility">Biología Molecular e Histocompatibilidad</a>
-        </div></div>
+      <a class="nav-hla" href="histocompatibilidad.html" data-en="Molecular Biology<br>&amp; Histocompatibility">Biología Molecular<br>e Histocompatibilidad</a>
       <a href="#publicaciones" data-en="Publications">Publicaciones</a>
       <a href="#noticias" data-en="News">Noticias</a>
       <a class="m-only" href="#contacto" data-en="Contact">Contacto</a>
@@ -515,7 +509,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="hero">
     <div class="wrap">
       <div class="hero-top">
-        <a class="hla-pill" href="histocompatibilidad.html"><span class="hla-new" data-en="New">Nuevo</span><span data-en="Molecular Biology &amp; Histocompatibility">Biología Molecular e Histocompatibilidad</span><span class="hla-arrow" aria-hidden="true">→</span></a>
         <div class="eyebrow mono" data-en="Cell &amp; Gene Therapy · Monterrey, Mexico">Terapia Celular y Génica · Monterrey, México</div>
         <h1 data-en="Advanced cell therapies, <em>manufactured in Latin America.</em>">Terapias celulares avanzadas, <em>manufacturadas en Latinoamérica.</em></h1>
       </div>
