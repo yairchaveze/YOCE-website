@@ -7,5 +7,6 @@ Disallow: /registro-etiquetas.html
 
 # Vista previa privada (propuesta Dr. Juan Pablo Espinoza)
 Disallow: /drjpneumo/
+Disallow: /dradora/
 
 Sitemap: https://yocelltherapy.com/sitemap.xml
