@@ -72,12 +72,12 @@ nav.main a:hover{color:var(--plum)}
 .appt .cta{width:100%;justify-content:center}
 .stage{position:relative;align-self:end;justify-self:center;width:100%;max-width:470px;aspect-ratio:470/520}
 .stage::before{content:"";position:absolute;inset:20% 4% 0 4%;border-radius:220px 220px 0 0;background:linear-gradient(170deg,var(--lilac) 0%,var(--violet) 100%)}
-.stage svg{position:absolute;inset:6% -4% auto auto;width:62%;height:auto;opacity:.9}
+.stage svg{position:absolute;inset:6% auto auto -4%;width:62%;height:auto;opacity:.9}
 .stage img{position:absolute;left:0;bottom:0;width:100%;height:auto}
-.stage .tag{position:absolute;left:-12px;bottom:40px;background:var(--paper);border:1px solid var(--line);padding:12px 16px;box-shadow:0 16px 36px rgba(45,26,75,.16)}
+.stage .tag{position:absolute;right:-12px;bottom:40px;background:var(--paper);border:1px solid var(--line);padding:12px 16px;box-shadow:0 16px 36px rgba(45,26,75,.16)}
 .stage .tag b{display:block;font-family:var(--display);font-weight:400;font-size:1.7rem;line-height:1;color:var(--plum)}
 .stage .tag span{font-size:12px;color:var(--muted)}
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:0}.appt{margin-bottom:32px;max-width:none}.stage{max-width:340px}.stage .tag{left:0}}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:0}.appt{margin-bottom:32px;max-width:none}.stage{max-width:340px}.stage .tag{right:0}}
 
 .facts-band{background:var(--plum);color:#fff}
 .facts-band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
@@ -112,10 +112,10 @@ nav.main a:hover{color:var(--plum)}
 
 .doc{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
 @media (max-width:760px){.doc{grid-template-columns:1fr;gap:28px}}
-.doc figure{margin:0;max-width:360px;width:100%;justify-self:center}
-.docstage{position:relative;aspect-ratio:360/600}
-.docstage::before{content:"";position:absolute;inset:16% 0 0 0;border-radius:180px 180px 0 0;background:linear-gradient(170deg,var(--lilac-soft),var(--lilac))}
-.docstage img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
+.doc figure{margin:0;max-width:400px;width:100%;justify-self:center}
+.docstage{position:relative;aspect-ratio:490/595}
+.docstage::before{content:"";position:absolute;inset:22% 0 0 0;border-radius:180px 180px 0 0;background:linear-gradient(170deg,var(--lilac-soft),var(--lilac))}
+.docstage img{position:absolute;left:0;bottom:0;width:100%;height:auto}
 .doc figcaption{font-size:12.5px;color:var(--muted);margin-top:8px}
 .quote{font-family:var(--serif);font-size:1.45rem;line-height:1.35;color:var(--plum)}
 .dl{margin:24px 0 0;display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line)}
@@ -156,9 +156,9 @@ nav.main a:hover{color:var(--plum)}
 .ptable td.pr{white-space:nowrap;font-weight:600;color:var(--plum)}
 .tblwrap{overflow-x:auto}
 .fine{font-size:13px;color:var(--muted);margin-top:14px}
-.stage2{position:relative;width:100%;max-width:300px;aspect-ratio:300/600;justify-self:center}
-.stage2::before{content:"";position:absolute;inset:18% 6% 0 6%;border-radius:160px 160px 0 0;background:var(--lilac-soft)}
-.stage2 img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
+.stage2{position:relative;width:100%;max-width:300px;aspect-ratio:234/378;justify-self:center}
+.stage2::before{content:"";position:absolute;inset:24% 0 0 0;border-radius:160px 160px 0 0;background:var(--lilac-soft)}
+.stage2 img{position:absolute;left:0;bottom:0;width:100%;height:auto}
 
 .loc{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
 @media (max-width:760px){.loc{grid-template-columns:1fr}}
@@ -324,7 +324,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
 <section class="sec" id="doctora"><div class="wrap">
   <div class="rail"><p class="num">02</p><h2>La doctora</h2></div>
   <div class="body doc">
-    <figure><div class="docstage"><img src="dora-bata.png" alt="Dra. Dora Carolina Aldama Gutiérrez con bata" width="472" height="952" loading="lazy"></div><figcaption>Dra. Dora Carolina Aldama Gutiérrez</figcaption></figure>
+    <figure><div class="docstage"><img src="dora-bata.png" alt="Dra. Dora Carolina Aldama Gutiérrez con bata" width="490" height="595" loading="lazy"></div><figcaption>Dra. Dora Carolina Aldama Gutiérrez</figcaption></figure>
     <div>
       <p class="quote">Medicina basada en evidencia. Cuidado que te acompaña.</p>
       <dl class="dl">
@@ -372,7 +372,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
       </table></div>
       <p class="fine">Precios sin aseguradora; pueden variar según el caso. Efectivo, tarjeta, transferencia y pago en línea. Cancelación sin costo hasta 24 h antes.</p>
     </div>
-    <div class="stage2"><img src="dora-negro.png" alt="Dra. Dora Carolina Aldama" width="246" height="585" loading="lazy"></div>
+    <div class="stage2"><img src="dora-negro.png" alt="Dra. Dora Carolina Aldama" width="234" height="378" loading="lazy"></div>
   </div>
 </div></section>
 
