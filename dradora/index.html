@@ -70,10 +70,10 @@ nav.main a:hover{color:var(--plum)}
 .appt .lines span{color:var(--muted)}
 .appt .lines b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .appt .cta{width:100%;justify-content:center}
-.stage{position:relative;align-self:end;justify-self:center;width:100%;max-width:440px;aspect-ratio:440/560}
-.stage::before{content:"";position:absolute;inset:14% 0 0 0;border-radius:220px 220px 0 0;background:linear-gradient(170deg,var(--lilac) 0%,var(--violet) 100%)}
+.stage{position:relative;align-self:end;justify-self:center;width:100%;max-width:470px;aspect-ratio:470/520}
+.stage::before{content:"";position:absolute;inset:20% 4% 0 4%;border-radius:220px 220px 0 0;background:linear-gradient(170deg,var(--lilac) 0%,var(--violet) 100%)}
 .stage svg{position:absolute;inset:6% -4% auto auto;width:62%;height:auto;opacity:.9}
-.stage img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
+.stage img{position:absolute;left:0;bottom:0;width:100%;height:auto}
 .stage .tag{position:absolute;left:-12px;bottom:40px;background:var(--paper);border:1px solid var(--line);padding:12px 16px;box-shadow:0 16px 36px rgba(45,26,75,.16)}
 .stage .tag b{display:block;font-family:var(--display);font-weight:400;font-size:1.7rem;line-height:1;color:var(--plum)}
 .stage .tag span{font-size:12px;color:var(--muted)}
@@ -112,8 +112,10 @@ nav.main a:hover{color:var(--plum)}
 
 .doc{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
 @media (max-width:760px){.doc{grid-template-columns:1fr;gap:28px}}
-.doc figure{margin:0;max-width:420px}
-.doc figure img{width:100%;height:auto;border-bottom:4px solid var(--lilac)}
+.doc figure{margin:0;max-width:360px;width:100%;justify-self:center}
+.docstage{position:relative;aspect-ratio:360/600}
+.docstage::before{content:"";position:absolute;inset:16% 0 0 0;border-radius:180px 180px 0 0;background:linear-gradient(170deg,var(--lilac-soft),var(--lilac))}
+.docstage img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
 .doc figcaption{font-size:12.5px;color:var(--muted);margin-top:8px}
 .quote{font-family:var(--serif);font-size:1.45rem;line-height:1.35;color:var(--plum)}
 .dl{margin:24px 0 0;display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line)}
@@ -154,7 +156,7 @@ nav.main a:hover{color:var(--plum)}
 .ptable td.pr{white-space:nowrap;font-weight:600;color:var(--plum)}
 .tblwrap{overflow-x:auto}
 .fine{font-size:13px;color:var(--muted);margin-top:14px}
-.stage2{position:relative;width:100%;max-width:320px;aspect-ratio:320/440;justify-self:center}
+.stage2{position:relative;width:100%;max-width:300px;aspect-ratio:300/600;justify-self:center}
 .stage2::before{content:"";position:absolute;inset:18% 6% 0 6%;border-radius:160px 160px 0 0;background:var(--lilac-soft)}
 .stage2 img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
 
@@ -225,10 +227,11 @@ footer .cols4{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-
 footer h4{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;margin-bottom:12px}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 footer a{color:#fff;text-decoration:none}
-footer .fbrand{display:flex;gap:12px;align-items:center}
-footer .fbrand span{font-family:var(--serif);font-size:1.15rem;color:#fff;line-height:1.2}
-footer .fbrand .badge{width:46px;height:58px;background:#fff;border-radius:6px;display:grid;place-items:center;flex:none}
-footer .fbrand img{height:42px;width:auto}
+footer .fbrand{display:inline-flex;gap:14px;align-items:center;background:#fff;padding:16px 22px 16px 18px;border-radius:6px}
+footer .fbrand img{height:50px;width:auto;flex:none}
+footer .fbrand .nm{display:block;font-family:var(--serif);font-size:1.12rem;color:var(--plum);line-height:1.2}
+footer .fbrand .sp{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--violet)}
+footer .fbrand .sp::before{content:"";width:18px;border-top:2px dotted var(--lilac)}
 footer .legal{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.14);padding-top:18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:12.5px}
 footer .legal a{text-decoration:underline;font-weight:600}
 </style>
@@ -271,7 +274,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
       <circle cx="140" cy="60" r="38" stroke="#fff" stroke-width="2" opacity=".7"/><circle cx="140" cy="60" r="18" stroke="#fff" stroke-width="1.5" opacity=".5"/>
       <circle cx="70" cy="40" r="20" stroke="#fff" stroke-width="2" opacity=".6"/><circle cx="170" cy="140" r="16" stroke="#fff" stroke-width="2" opacity=".5"/>
     </svg>
-    <img src="dora-bata.png" alt="Dra. Dora Carolina Aldama Gutiérrez, hematóloga" width="469" height="949">
+    <img src="dora-saco.png" alt="Dra. Dora Carolina Aldama Gutiérrez, hematóloga" width="1076" height="1174">
     <div class="tag"><b>CMH 2023–2028</b><span>Certificada en Hematología</span></div>
   </div>
 </div></section>
@@ -321,7 +324,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
 <section class="sec" id="doctora"><div class="wrap">
   <div class="rail"><p class="num">02</p><h2>La doctora</h2></div>
   <div class="body doc">
-    <figure><img src="foto-dora.jpg" alt="Dra. Dora Carolina Aldama Gutiérrez" width="1056" height="1174" loading="lazy"><figcaption>Dra. Dora Carolina Aldama Gutiérrez</figcaption></figure>
+    <figure><div class="docstage"><img src="dora-bata.png" alt="Dra. Dora Carolina Aldama Gutiérrez con bata" width="472" height="952" loading="lazy"></div><figcaption>Dra. Dora Carolina Aldama Gutiérrez</figcaption></figure>
     <div>
       <p class="quote">Medicina basada en evidencia. Cuidado que te acompaña.</p>
       <dl class="dl">
@@ -369,7 +372,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
       </table></div>
       <p class="fine">Precios sin aseguradora; pueden variar según el caso. Efectivo, tarjeta, transferencia y pago en línea. Cancelación sin costo hasta 24 h antes.</p>
     </div>
-    <div class="stage2"><img src="dora-negro.png" alt="Dra. Dora Carolina Aldama" width="300" height="970" loading="lazy"></div>
+    <div class="stage2"><img src="dora-negro.png" alt="Dra. Dora Carolina Aldama" width="246" height="585" loading="lazy"></div>
   </div>
 </div></section>
 
@@ -443,8 +446,8 @@ footer .legal a{text-decoration:underline;font-weight:600}
   <div class="motto"><div class="wrap"><span>Precisión<i>.</i></span><span>Humanismo<i>.</i></span><span>Ciencia<i>.</i></span></div></div>
   <div class="wrap cols4">
     <div>
-      <div class="fbrand"><span class="badge"><img src="logo-gota-lila.png" alt="" width="27" height="42"></span><span>Dra. Dora Carolina<br>Aldama Gutiérrez</span></div>
-      <p style="margin-top:12px">Hematología · Monterrey, N.L.</p>
+      <div class="fbrand"><img src="logo-gota-lila.png" alt="" width="32" height="50"><span><span class="nm">Dra. Dora Carolina<br>Aldama Gutiérrez</span><span class="sp">Hematología</span></span></div>
+      <p style="margin-top:14px">Monterrey, N.L.</p>
     </div>
     <div><h4>Sitio</h4><ul><li><a href="#servicios">Servicios</a></li><li><a href="#doctora">La doctora</a></li><li><a href="#opiniones">Opiniones</a></li><li><a href="#agenda">Agendar cita</a></li></ul></div>
     <div><h4>Contacto</h4><ul><li>WhatsApp 811 761 2971</li><li>Tel. 812 942 8160</li><li><a href="https://www.doctoralia.com.mx/perfil/dora-carolina-aldama-gutierrez" target="_blank" rel="noopener">Perfil en Doctoralia</a></li></ul></div>
