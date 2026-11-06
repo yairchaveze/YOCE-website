@@ -5,4 +5,7 @@ Allow: /
 Disallow: /captura-resultados.html
 Disallow: /registro-etiquetas.html
 
+# Vista previa privada (propuesta Dr. Juan Pablo Espinoza)
+Disallow: /drjpneumo/
+
 Sitemap: https://yocelltherapy.com/sitemap.xml
