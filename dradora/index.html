@@ -9,12 +9,12 @@
 <link rel="icon" type="image/png" href="favicon-dora.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:wght@400;700&family=Libre+Franklin:wght@300;400;500;600;700&display=swap">
 <style>
-/* Layout: institutional, editorial clinic page — wine alert bar, serif headline + appointment panel, full-bleed hospital photo, grouped service lists, index-style sections with a left rail */
+/* Layout: institutional, editorial clinic page in plum + lilac; serif headline with appointment panel, cut-out portrait on a lilac stage, index-style sections with a left rail */
 :root{
-  --paper:#FFFFFF; --stone:#F5F1EF; --blush:#F7ECEE; --rose:#D88A99; --rose-ink:#A3445C;
-  --wine:#7E1532; --wine-deep:#560E22; --ink:#1F1A1C; --muted:#655A5E; --line:#E6DCDE;
+  --paper:#FFFFFF; --mist:#F7F4FB; --lilac-soft:#EEE7F7; --lilac:#C3AEE3; --violet:#7656AE;
+  --plum:#4B2A78; --plum-deep:#2D1A4B; --ink:#1E1A26; --muted:#5E5870; --line:#E5DEEF;
   --display:"Libre Caslon Display", "Libre Caslon Text", Georgia, serif;
   --serif:"Libre Caslon Text", Georgia, serif;
   --sans:"Libre Franklin", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -28,212 +28,205 @@ img{max-width:100%;display:block}
 h1,h2,h3,h4{margin:0;text-wrap:balance}
 p{margin:0}
 a{color:inherit}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
-.kicker{font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--rose-ink)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--lilac);outline-offset:3px}
+.kicker{font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--violet)}
 
-/* alert bar */
-.alert{background:var(--wine-deep);color:#F2D6DD;font-size:13px}
+.alert{background:var(--plum-deep);color:#DCCEF0;font-size:13px}
 .alert .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 20px;padding-block:8px}
 .alert b{color:#fff}
 .alert a{color:#fff;font-weight:600;text-decoration:none;white-space:nowrap}
 
-/* header */
 header.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:14px}
-.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--wine)}
-.brand img{width:auto;height:52px;flex:none}
-.brand .nm{font-family:var(--serif);font-size:1.18rem;line-height:1.15}
-.brand .sp{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:10.5px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--rose-ink)}
-.brand .sp::before{content:"";width:22px;border-top:2px dotted var(--rose)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--plum)}
+.brand img{width:auto;height:46px;flex:none}
+.brand .nm{font-family:var(--serif);font-size:1.08rem;line-height:1.15}
+.brand .sp{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:10px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--violet)}
+.brand .sp::before{content:"";width:20px;border-top:2px dotted var(--lilac)}
 nav.main ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:14.5px;font-weight:500}
 nav.main a{text-decoration:none;color:var(--ink)}
-nav.main a:hover{color:var(--wine)}
-.cta{display:inline-flex;align-items:center;gap:8px;background:var(--wine);color:#fff;text-decoration:none;font-weight:600;font-size:14.5px;padding:12px 20px;border-radius:4px;transition:background .2s}
-.cta:hover{background:var(--wine-deep)}
-.cta.ghost{background:transparent;color:var(--wine);box-shadow:inset 0 0 0 1.5px var(--wine)}
-.cta.ghost:hover{background:var(--blush)}
+nav.main a:hover{color:var(--plum)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--plum);color:#fff;text-decoration:none;font-weight:600;font-size:14.5px;padding:12px 20px;border-radius:4px;transition:background .2s}
+.cta:hover{background:var(--plum-deep)}
+.cta.ghost{background:transparent;color:var(--plum);box-shadow:inset 0 0 0 1.5px var(--plum)}
+.cta.ghost:hover{background:var(--lilac-soft)}
 .cta svg{width:17px;height:17px}
 @media (max-width:1000px){nav.main{display:none}}
-@media (max-width:520px){header.top .cta{display:none}.brand img{height:44px}}
+@media (max-width:560px){header.top .cta{display:none}.brand img{height:40px}.brand .nm{font-size:1rem}}
 
-/* breadcrumb + title band */
-.titleband .wrap.crumb{display:block;font-size:13px;color:var(--muted);padding-top:28px;padding-bottom:0}
-.crumb a{text-decoration:none;color:var(--rose-ink)}
-.titleband .wrap{display:grid;grid-template-columns:1.35fr .65fr;gap:48px;align-items:end;padding-block:18px 40px}
-@media (max-width:900px){.titleband .wrap{grid-template-columns:1fr;gap:28px}}
-.titleband h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,8vw,6.2rem);line-height:.95;color:var(--wine);letter-spacing:-.01em}
-.titleband .sub{font-family:var(--serif);font-size:clamp(1.25rem,2.4vw,1.6rem);line-height:1.35;margin-top:22px;max-width:28em}
-.titleband .sub em{color:var(--wine);font-style:italic}
-.appt{background:var(--blush);border-top:4px solid var(--wine);padding:24px 24px 26px}
-.appt h2{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--wine)}
-.appt p{font-size:14.5px;color:var(--muted);margin-top:6px}
-.appt .lines{display:grid;gap:8px;margin:16px 0 18px}
+/* hero */
+.hero{background:linear-gradient(180deg,var(--paper) 0%,var(--mist) 100%);border-bottom:1px solid var(--line)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:end;padding-top:44px}
+.crumb{font-size:13px;color:var(--muted)}
+.crumb a{text-decoration:none;color:var(--violet)}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(3rem,8vw,6rem);line-height:.95;color:var(--plum);margin-top:14px}
+.hero .sub{font-family:var(--serif);font-size:clamp(1.2rem,2.3vw,1.5rem);line-height:1.4;margin-top:20px;max-width:28em}
+.hero .sub b{color:var(--plum);font-weight:700}
+.appt{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--plum);padding:22px 22px 24px;margin:30px 0 48px;max-width:460px}
+.appt h2{font-family:var(--serif);font-weight:700;font-size:1.2rem;color:var(--plum)}
+.appt p{font-size:14.5px;color:var(--muted);margin-top:4px}
+.appt .lines{display:grid;gap:8px;margin:14px 0 16px}
 .appt .lines a{display:flex;justify-content:space-between;gap:10px;text-decoration:none;font-size:14.5px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 .appt .lines span{color:var(--muted)}
 .appt .lines b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
 .appt .cta{width:100%;justify-content:center}
+.stage{position:relative;align-self:end;justify-self:center;width:100%;max-width:440px;aspect-ratio:440/560}
+.stage::before{content:"";position:absolute;inset:14% 0 0 0;border-radius:220px 220px 0 0;background:linear-gradient(170deg,var(--lilac) 0%,var(--violet) 100%)}
+.stage svg{position:absolute;inset:6% -4% auto auto;width:62%;height:auto;opacity:.9}
+.stage img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
+.stage .tag{position:absolute;left:-12px;bottom:40px;background:var(--paper);border:1px solid var(--line);padding:12px 16px;box-shadow:0 16px 36px rgba(45,26,75,.16)}
+.stage .tag b{display:block;font-family:var(--display);font-weight:400;font-size:1.7rem;line-height:1;color:var(--plum)}
+.stage .tag span{font-size:12px;color:var(--muted)}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:0}.appt{margin-bottom:32px;max-width:none}.stage{max-width:340px}.stage .tag{left:0}}
 
-/* hero photo */
-.heroimg{position:relative}
-.heroimg img{width:100%;height:clamp(300px,52vw,620px);object-fit:cover;object-position:62% 30%}
-.heroimg figcaption{position:absolute;left:0;bottom:0;background:var(--paper);padding:12px 18px 12px max(20px,env(safe-area-inset-left,0px));font-size:12.5px;color:var(--muted)}
-.facts-band{background:var(--wine);color:#fff}
+.facts-band{background:var(--plum);color:#fff}
 .facts-band .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
-.facts-band div{padding:26px 20px 26px 0;border-right:1px solid rgba(255,255,255,.18)}
-.facts-band div+div{padding-left:24px}
-.facts-band div:last-child{border-right:0}
-.facts-band b{display:block;font-family:var(--display);font-weight:400;font-size:2.2rem;line-height:1;font-variant-numeric:tabular-nums}
-.facts-band span{display:block;font-size:13px;color:#F2D6DD;margin-top:8px}
-@media (max-width:760px){.facts-band .wrap{grid-template-columns:1fr 1fr}.facts-band div{border-right:0;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.18)}.facts-band div+div{padding-left:0}.facts-band div:nth-child(even){padding-left:20px;border-left:1px solid rgba(255,255,255,.18)}}
+.facts-band .wrap>div{padding:24px 20px 24px 0;border-right:1px solid rgba(255,255,255,.18)}
+.facts-band .wrap>div+div{padding-left:24px}
+.facts-band .wrap>div:last-child{border-right:0}
+.facts-band b{display:block;font-family:var(--display);font-weight:400;font-size:2.1rem;line-height:1;font-variant-numeric:tabular-nums}
+.facts-band span{display:block;font-size:13px;color:#DCCEF0;margin-top:8px}
+@media (max-width:760px){.facts-band .wrap{grid-template-columns:1fr 1fr}.facts-band .wrap>div{border-right:0;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.18)}.facts-band .wrap>div+div{padding-left:0}.facts-band .wrap>div:nth-child(even){padding-left:18px;border-left:1px solid rgba(255,255,255,.18)}.facts-band .wrap>div:nth-last-child(-n+2){border-bottom:0}}
 
-/* index sections with left rail */
 .sec{padding-block:88px;border-bottom:1px solid var(--line)}
 .sec .wrap{display:grid;grid-template-columns:260px 1fr;gap:56px}
-@media (max-width:900px){.sec .wrap{grid-template-columns:1fr;gap:20px}.sec{padding-block:64px}}
-.rail .num{font-family:var(--display);font-size:1rem;color:var(--rose-ink)}
-.rail h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,3.6vw,2.7rem);line-height:1.05;color:var(--wine);margin-top:6px}
+@media (max-width:900px){.sec .wrap{grid-template-columns:1fr;gap:18px}.sec{padding-block:64px}}
+.rail .num{font-family:var(--display);font-size:1rem;color:var(--violet)}
+.rail h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,3.6vw,2.7rem);line-height:1.05;color:var(--plum);margin-top:4px}
 .body{min-width:0}
-.lede{font-family:var(--serif);font-size:1.22rem;line-height:1.55;max-width:38em}
-.body p.txt{color:var(--muted);max-width:42em;margin-top:16px}
+.lede{font-family:var(--serif);font-size:1.2rem;line-height:1.55;max-width:38em}
 
-/* services lists */
-.groups{display:grid;gap:40px}
-.group h3{font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--ink);display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:2px solid var(--wine)}
-.group h3 svg{width:26px;height:26px;stroke:var(--wine);fill:none;stroke-width:1.6;flex:none}
-.cols{columns:2;column-gap:40px;list-style:none;margin:16px 0 0;padding:0}
+.groups{display:grid;gap:40px;margin-top:34px}
+.group h3{font-family:var(--serif);font-weight:700;font-size:1.22rem;display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:2px solid var(--plum)}
+.group h3 svg{width:26px;height:26px;stroke:var(--plum);fill:none;stroke-width:1.6;flex:none}
+.cols{columns:2;column-gap:40px;list-style:none;margin:14px 0 0;padding:0}
 @media (max-width:620px){.cols{columns:1}}
 .cols li{break-inside:avoid;padding:9px 0 9px 18px;border-bottom:1px solid var(--line);position:relative}
-.cols li::before{content:"";position:absolute;left:0;top:19px;width:7px;height:7px;border-radius:50%;background:var(--rose)}
+.cols li::before{content:"";position:absolute;left:0;top:19px;width:7px;height:7px;border-radius:50%;background:var(--lilac)}
 .cols li small{display:block;color:var(--muted);font-size:13.5px}
-.when{margin-top:36px;padding:22px 24px;background:var(--stone);display:grid;grid-template-columns:auto 1fr;gap:12px 24px;align-items:start}
-.when h4{font-family:var(--serif);font-size:1.1rem;color:var(--wine)}
+.when{margin-top:34px;padding:22px 24px;background:var(--mist);display:grid;grid-template-columns:auto 1fr;gap:12px 24px;align-items:start}
+.when h4{font-family:var(--serif);font-size:1.08rem;color:var(--plum)}
 .when ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .when li{font-size:14px;background:var(--paper);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
 @media (max-width:620px){.when{grid-template-columns:1fr}}
 
-/* doctor */
-.doc{display:grid;grid-template-columns:.75fr 1.25fr;gap:40px;align-items:start}
-@media (max-width:760px){.doc{grid-template-columns:1fr}}
-.doc figure{margin:0}
-.doc figure img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:35% 20%}
+.doc{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:start}
+@media (max-width:760px){.doc{grid-template-columns:1fr;gap:28px}}
+.doc figure{margin:0;max-width:420px}
+.doc figure img{width:100%;height:auto;border-bottom:4px solid var(--lilac)}
 .doc figcaption{font-size:12.5px;color:var(--muted);margin-top:8px}
-.quote{font-family:var(--serif);font-style:italic;font-size:1.5rem;line-height:1.35;color:var(--wine);margin-top:4px}
+.quote{font-family:var(--serif);font-size:1.45rem;line-height:1.35;color:var(--plum)}
 .dl{margin:24px 0 0;display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line)}
 .dl dt,.dl dd{margin:0;padding:13px 0;border-bottom:1px solid var(--line)}
-.dl dt{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-ink);padding-top:16px}
+.dl dt{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);padding-top:16px}
 .dl dd{font-weight:500}
 .dl dd small{display:block;color:var(--muted);font-weight:400;font-size:14px}
 @media (max-width:520px){.dl{grid-template-columns:1fr}.dl dt{border-bottom:0;padding-bottom:0}}
-.values{display:flex;flex-wrap:wrap;gap:0;margin-top:26px;border:1px solid var(--line)}
-.values span{flex:1 1 180px;padding:14px 16px;font-family:var(--serif);font-size:15px;color:var(--wine);border-right:1px solid var(--line)}
+.values{display:flex;flex-wrap:wrap;margin-top:26px;border:1px solid var(--line)}
+.values span{flex:1 1 180px;padding:14px 16px;font-family:var(--serif);font-size:15px;color:var(--plum);border-right:1px solid var(--line)}
 .values span:last-child{border-right:0}
+@media (max-width:620px){.values span{border-right:0;border-bottom:1px solid var(--line)}.values span:last-child{border-bottom:0}}
 
-/* reviews */
 .rv-top{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:end;justify-content:space-between}
 .rv-num{display:flex;align-items:baseline;gap:14px}
-.rv-num b{font-family:var(--display);font-weight:400;font-size:clamp(4rem,9vw,5.6rem);line-height:.85;color:var(--wine)}
+.rv-num b{font-family:var(--display);font-weight:400;font-size:clamp(4rem,9vw,5.6rem);line-height:.85;color:var(--plum)}
 .rv-num span{color:var(--muted);font-size:15px;line-height:1.35}
 .mentions{display:flex;flex-wrap:wrap;gap:8px}
-.mentions span{font-size:13.5px;font-weight:600;color:var(--wine);background:var(--blush);padding:7px 14px;border-radius:999px}
-.rvs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:32px;border-top:2px solid var(--wine)}
+.mentions span{font-size:13.5px;font-weight:600;color:var(--plum);background:var(--lilac-soft);padding:7px 14px;border-radius:999px}
+.rvs{display:grid;grid-template-columns:repeat(3,1fr);margin-top:32px;border-top:2px solid var(--plum)}
 @media (max-width:820px){.rvs{grid-template-columns:1fr}}
 .rv{padding:22px 22px 22px 0;border-bottom:1px solid var(--line)}
 @media (min-width:821px){.rv+.rv{padding-left:22px;border-left:1px solid var(--line)}}
-.rv p{font-family:var(--serif);font-style:italic;font-size:1.08rem;line-height:1.5}
+.rv p{font-family:var(--serif);font-size:1.06rem;line-height:1.55}
+.rv p::before{content:"“";display:block;font-family:var(--display);font-size:2.4rem;line-height:.6;color:var(--lilac);margin-bottom:8px}
 .rv small{display:block;margin-top:10px;font-size:12.5px;color:var(--muted)}
-.rv small b{color:var(--rose-ink)}
+.rv small b{color:var(--violet)}
 .rv-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;align-items:center}
 .rv-links .src{font-size:12.5px;color:var(--muted)}
 
-/* consulta */
-.cons{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+.cons{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:end}
 @media (max-width:820px){.cons{grid-template-columns:1fr}}
-.ptable{width:100%;border-collapse:collapse;margin-top:6px;font-variant-numeric:tabular-nums}
+.ptable{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 .ptable th,.ptable td{text-align:left;padding:14px 10px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
-.ptable th{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--wine)}
+.ptable th{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--plum)}
 .ptable td b{display:block;font-weight:600}
 .ptable td small{color:var(--muted);font-size:13.5px}
-.ptable td.pr{white-space:nowrap;font-weight:600;color:var(--wine)}
+.ptable td.pr{white-space:nowrap;font-weight:600;color:var(--plum)}
 .tblwrap{overflow-x:auto}
-.cons img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:60% 40%}
 .fine{font-size:13px;color:var(--muted);margin-top:14px}
+.stage2{position:relative;width:100%;max-width:320px;aspect-ratio:320/440;justify-self:center}
+.stage2::before{content:"";position:absolute;inset:18% 6% 0 6%;border-radius:160px 160px 0 0;background:var(--lilac-soft)}
+.stage2 img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:100%;width:auto;max-width:none}
 
-/* location */
-.loc{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.loc{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line)}
 @media (max-width:760px){.loc{grid-template-columns:1fr}}
-.map{min-height:260px;background:
+.map{min-height:240px;background:
   linear-gradient(90deg,transparent 47%,#fff 47%,#fff 49%,transparent 49%),
   linear-gradient(0deg,transparent 58%,#fff 58%,#fff 61%,transparent 61%),
   linear-gradient(35deg,transparent 30%,#fff 30%,#fff 32%,transparent 32%),
-  repeating-linear-gradient(0deg,#EFE7E8 0 38px,#EAE0E2 38px 40px),
-  var(--stone);position:relative}
-.map .pin{position:absolute;left:48%;top:58%;transform:translate(-50%,-100%);width:34px;height:34px;border-radius:50% 50% 50% 0;rotate:-45deg;background:var(--wine);box-shadow:0 6px 16px rgba(86,14,34,.35)}
+  repeating-linear-gradient(0deg,#EEE8F6 0 38px,#E7DFF2 38px 40px);position:relative}
+.map .pin{position:absolute;left:48%;top:58%;transform:translate(-50%,-100%) rotate(-45deg);width:34px;height:34px;border-radius:50% 50% 50% 0;background:var(--plum);box-shadow:0 6px 16px rgba(45,26,75,.35)}
 .map .pin::after{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff}
 .locinfo{padding:28px}
-.locinfo h3{font-family:var(--serif);font-size:1.45rem;color:var(--wine)}
+.locinfo h3{font-family:var(--serif);font-size:1.4rem;color:var(--plum)}
 .locinfo address{font-style:normal;margin-top:8px;font-weight:500}
 .locinfo p{color:var(--muted);font-size:14.5px;margin-top:10px}
 .locinfo .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.online{margin-top:18px;padding:18px 22px;background:var(--wine);color:#fff;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
-.online b{font-family:var(--serif);font-size:1.15rem;font-weight:400}
-.online span{color:#F2D6DD;font-size:14px}
+.online{margin-top:18px;padding:18px 22px;background:var(--plum);color:#fff;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.online b{font-family:var(--serif);font-size:1.12rem;font-weight:400}
+.online span{color:#DCCEF0;font-size:14px}
 .online a{color:#fff;font-weight:600;font-size:14.5px}
 .ins{margin-top:16px;font-size:14px;color:var(--muted)}
 .ins b{color:var(--ink)}
 
-/* booking */
-.book{background:var(--stone)}
-.widget{background:var(--paper);border:1px solid var(--line);padding:26px;min-width:0;max-width:640px}
+.book{background:var(--mist)}
+.widget{background:var(--paper);border:1px solid var(--line);padding:26px;min-width:0;max-width:640px;margin-top:22px}
 .widget .wh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
-.widget .wh h3{font-family:var(--serif);font-size:1.3rem;color:var(--wine)}
+.widget .wh h3{font-family:var(--serif);font-size:1.25rem;color:var(--plum)}
 .widget .wh small{font-size:12.5px;color:var(--muted)}
 .seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);margin-top:16px}
 .seg button{font:500 14px var(--sans);background:var(--paper);border:0;padding:11px 8px;cursor:pointer;color:var(--ink)}
 .seg button+button{border-left:1px solid var(--line)}
-.seg button[aria-pressed="true"]{background:var(--wine);color:#fff;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--plum);color:#fff;font-weight:600}
 .days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:16px}
 .day,.slot{font:500 13.5px var(--sans);border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:10px 4px;cursor:pointer;font-variant-numeric:tabular-nums}
 .day small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .day b{font-family:var(--display);font-weight:400;font-size:1.4rem;line-height:1.1}
-.day[aria-pressed="true"],.slot[aria-pressed="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
+.day[aria-pressed="true"],.slot[aria-pressed="true"]{background:var(--plum);border-color:var(--plum);color:#fff}
 .day[aria-pressed="true"] small{color:inherit}
 .slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px;min-height:44px}
 @media (max-width:420px){.slots{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.confirm{margin-top:16px;padding:14px 16px;background:var(--blush);font-size:14.5px;border-left:3px solid var(--wine)}
-.book .lede{margin-bottom:22px}
+.confirm{margin-top:16px;padding:14px 16px;background:var(--lilac-soft);font-size:14.5px;border-left:3px solid var(--plum)}
 
-/* faq */
 details{border-bottom:1px solid var(--line);padding:20px 0}
-details:first-of-type{border-top:2px solid var(--wine)}
-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font-family:var(--serif);font-size:1.15rem}
+details:first-of-type{border-top:2px solid var(--plum)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;font-family:var(--serif);font-size:1.12rem}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-family:var(--sans);font-size:1.4rem;line-height:1;color:var(--rose-ink);transition:transform .2s}
+summary::after{content:"+";font-family:var(--sans);font-size:1.4rem;line-height:1;color:var(--violet);transition:transform .2s}
 details[open] summary::after{transform:rotate(45deg)}
 details p{color:var(--muted);margin-top:10px;max-width:44em}
 
-/* portal */
-.report{border:1px solid var(--line);padding:22px;font-size:14.5px;margin-top:24px;max-width:640px}
+.report{border:1px solid var(--line);padding:22px;font-size:14.5px;margin-top:22px;max-width:640px}
 .report .rh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .report table{width:100%;border-collapse:collapse;margin-top:12px;font-variant-numeric:tabular-nums}
-.report th,.report td{text-align:left;padding:9px 6px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.report th,.report td{text-align:left;padding:9px 8px 9px 0;border-bottom:1px solid var(--line);white-space:nowrap}
 .report th{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.flag{font-size:11.5px;font-weight:700;padding:2px 8px;background:var(--blush);color:var(--wine)}
+.flag{font-size:11.5px;font-weight:700;padding:2px 8px;background:var(--lilac-soft);color:var(--plum)}
 .flag.ok{background:#EEF2EE;color:#3C6B47}
-.interp{margin-top:14px;padding:12px 14px;background:var(--stone);border-left:3px solid var(--wine)}
-.soon{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--rose-ink);border:1.5px solid var(--rose);padding:4px 9px;margin-top:16px}
+.interp{margin-top:14px;padding:12px 14px;background:var(--mist);border-left:3px solid var(--plum)}
+.soon{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--violet);border:1.5px solid var(--lilac);padding:4px 9px;margin-top:16px}
 
-/* footer */
-footer{background:var(--wine-deep);color:#E9C9D1;font-size:14px}
+footer{background:var(--plum-deep);color:#D4C6EA;font-size:14px}
 footer .motto{border-bottom:1px solid rgba(255,255,255,.14)}
 footer .motto .wrap{padding-block:26px;font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);color:#fff;display:flex;flex-wrap:wrap;gap:4px 18px}
-footer .motto i{font-style:normal;color:var(--rose)}
+footer .motto i{font-style:normal;color:var(--lilac)}
 footer .cols4{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;padding-block:40px 24px}
 @media (max-width:760px){footer .cols4{grid-template-columns:1fr}}
 footer h4{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;margin-bottom:12px}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 footer a{color:#fff;text-decoration:none}
 footer .fbrand{display:flex;gap:12px;align-items:center}
-footer .fbrand span{font-family:var(--serif);font-size:1.2rem;color:#fff;line-height:1.2}
+footer .fbrand span{font-family:var(--serif);font-size:1.15rem;color:#fff;line-height:1.2}
 footer .fbrand .badge{width:46px;height:58px;background:#fff;border-radius:6px;display:grid;place-items:center;flex:none}
 footer .fbrand img{height:42px;width:auto}
 footer .legal{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.14);padding-top:18px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:12.5px}
@@ -249,7 +242,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
 
 <header class="top"><div class="wrap">
   <a class="brand" href="#top" aria-label="Inicio">
-    <img src="logo-gota.png" alt="" width="33" height="52">
+    <img src="logo-gota-lila.png" alt="" width="29" height="46">
     <span><span class="nm">Dra. Dora Carolina<br>Aldama Gutiérrez</span><span class="sp">Hematología</span></span>
   </a>
   <nav class="main" aria-label="Principal"><ul>
@@ -258,13 +251,11 @@ footer .legal a{text-decoration:underline;font-weight:600}
   <a class="cta" href="#agenda">Agendar cita</a>
 </div></header>
 
-<section class="titleband" aria-label="Presentación">
-  <div class="wrap crumb"><a href="#top">Inicio</a> › Servicios clínicos › Hematología</div>
-  <div class="wrap">
-    <div>
-      <h1>Hematología</h1>
-      <p class="sub">Tu salud comienza con <em>un diagnóstico preciso.</em> Atención especializada en enfermedades de la sangre, los ganglios y el bazo, con tratamientos basados en evidencia científica.</p>
-    </div>
+<section class="hero" aria-label="Presentación"><div class="wrap">
+  <div>
+    <p class="crumb"><a href="#top">Inicio</a> › Servicios clínicos › Hematología</p>
+    <h1>Hematología</h1>
+    <p class="sub">Tu salud comienza con <b>un diagnóstico preciso.</b> Atención especializada en enfermedades de la sangre, los ganglios y el bazo, con tratamientos basados en evidencia científica.</p>
     <aside class="appt" aria-label="Agendar una cita">
       <h2>Agenda una cita</h2>
       <p>Consulta presencial en CAB Medical Headquarters o videoconsulta.</p>
@@ -275,14 +266,18 @@ footer .legal a{text-decoration:underline;font-weight:600}
       <a class="cta" href="#agenda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agendar en línea</a>
     </aside>
   </div>
-</section>
+  <div class="stage">
+    <svg viewBox="0 0 200 200" fill="none" aria-hidden="true">
+      <circle cx="140" cy="60" r="38" stroke="#fff" stroke-width="2" opacity=".7"/><circle cx="140" cy="60" r="18" stroke="#fff" stroke-width="1.5" opacity=".5"/>
+      <circle cx="70" cy="40" r="20" stroke="#fff" stroke-width="2" opacity=".6"/><circle cx="170" cy="140" r="16" stroke="#fff" stroke-width="2" opacity=".5"/>
+    </svg>
+    <img src="dora-bata.png" alt="Dra. Dora Carolina Aldama Gutiérrez, hematóloga" width="469" height="949">
+    <div class="tag"><b>CMH 2023–2028</b><span>Certificada en Hematología</span></div>
+  </div>
+</div></section>
 
-<figure class="heroimg" style="margin:0">
-  <img src="hero-dora.jpg" alt="La Dra. Dora Aldama frente al Centro Médico Nacional del Noreste del IMSS" width="1206" height="820">
-  <figcaption>Centro Médico Nacional del Noreste, IMSS</figcaption>
-</figure>
 <div class="facts-band"><div class="wrap">
-  <div><b>CMH</b><span>Certificada por el Consejo Mexicano de Hematología, 2023–2028</span></div>
+  <div><b>CMH</b><span>Certificada por el Consejo Mexicano de Hematología</span></div>
   <div><b>UDEM</b><span>Medicina (2018) y especialidad en Hematología (2023)</span></div>
   <div><b>43</b><span>opiniones verificadas en Doctoralia</span></div>
   <div><b>3</b><span>idiomas: español, inglés y francés</span></div>
@@ -292,7 +287,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
   <div class="rail"><p class="num">01</p><h2>Servicios</h2></div>
   <div class="body">
     <p class="lede">Diagnóstico y tratamiento de enfermedades benignas y malignas de la sangre, con revisión detallada de tus estudios y un plan a tu medida.</p>
-    <div class="groups" style="margin-top:36px">
+    <div class="groups">
       <div class="group">
         <h3><svg viewBox="0 0 32 32"><circle cx="11" cy="12" r="5"/><circle cx="22" cy="13" r="4.5"/><circle cx="15" cy="22" r="5"/></svg>Neoplasias hematológicas</h3>
         <ul class="cols">
@@ -332,7 +327,8 @@ footer .legal a{text-decoration:underline;font-weight:600}
       <dl class="dl">
         <dt>Certificación</dt><dd>Consejo Mexicano de Hematología<small>Vigente 2023–2028</small></dd>
         <dt>Formación</dt><dd>Especialidad en Hematología · UDEM, 2023<small>Médico Cirujano y Partero · UDEM, 2018</small></dd>
-        <dt>Experiencia</dt><dd>UMAE No. 25, Centro Médico Nacional del Noreste, IMSS<small>Hospital General de Zona No. 33, IMSS</small></dd>
+        <dt>Consulta</dt><dd>CAB Medical Headquarters, Monterrey<small>Presencial y videoconsulta · adultos</small></dd>
+        <dt>Idiomas</dt><dd>Español, inglés y francés</dd>
         <dt>Cédulas</dt><dd>Profesional 11252275<small>Especialidad 13395632</small></dd>
       </dl>
       <div class="values"><span>Precisión que inspira confianza</span><span>Humanismo que acompaña</span><span>Ciencia que transforma vidas</span></div>
@@ -348,9 +344,9 @@ footer .legal a{text-decoration:underline;font-weight:600}
       <div class="mentions"><span>Dedicación en consulta</span><span>Explicaciones detalladas</span><span>Puntualidad</span></div>
     </div>
     <div class="rvs">
-      <article class="rv"><p>“Excelente persona con muchos conocimientos. Totalmente recomendable.”</p><small><b>E. I.</b> · Cita verificada · sep 2026</small></article>
-      <article class="rv"><p>“Excelente doctora, aclaró todas nuestras dudas, muy buen trato, 100% recomendable.”</p><small><b>E. L.</b> · Cita verificada · sep 2026</small></article>
-      <article class="rv"><p>“Excelente trato y muy comprensible en todo momento.”</p><small><b>M. M.</b> · Cita verificada · ago 2026</small></article>
+      <article class="rv"><p>Excelente persona con muchos conocimientos. Totalmente recomendable.</p><small><b>E. I.</b> · Cita verificada · sep 2026</small></article>
+      <article class="rv"><p>Excelente doctora, aclaró todas nuestras dudas, muy buen trato, 100% recomendable.</p><small><b>E. L.</b> · Cita verificada · sep 2026</small></article>
+      <article class="rv"><p>Excelente trato y muy comprensible en todo momento.</p><small><b>M. M.</b> · Cita verificada · ago 2026</small></article>
     </div>
     <div class="rv-links">
       <a class="cta ghost" href="https://www.doctoralia.com.mx/perfil/dora-carolina-aldama-gutierrez#profile-reviews" target="_blank" rel="noopener">Leer todas en Doctoralia</a>
@@ -373,7 +369,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
       </table></div>
       <p class="fine">Precios sin aseguradora; pueden variar según el caso. Efectivo, tarjeta, transferencia y pago en línea. Cancelación sin costo hasta 24 h antes.</p>
     </div>
-    <img src="consulta-dora.jpg" alt="La Dra. Aldama revisando estudios en el hospital" width="1206" height="1030" loading="lazy">
+    <div class="stage2"><img src="dora-negro.png" alt="Dra. Dora Carolina Aldama" width="300" height="970" loading="lazy"></div>
   </div>
 </div></section>
 
@@ -447,7 +443,7 @@ footer .legal a{text-decoration:underline;font-weight:600}
   <div class="motto"><div class="wrap"><span>Precisión<i>.</i></span><span>Humanismo<i>.</i></span><span>Ciencia<i>.</i></span></div></div>
   <div class="wrap cols4">
     <div>
-      <div class="fbrand"><span class="badge"><img src="logo-gota.png" alt="" width="27" height="42"></span><span>Dra. Dora Carolina<br>Aldama Gutiérrez</span></div>
+      <div class="fbrand"><span class="badge"><img src="logo-gota-lila.png" alt="" width="27" height="42"></span><span>Dra. Dora Carolina<br>Aldama Gutiérrez</span></div>
       <p style="margin-top:12px">Hematología · Monterrey, N.L.</p>
     </div>
     <div><h4>Sitio</h4><ul><li><a href="#servicios">Servicios</a></li><li><a href="#doctora">La doctora</a></li><li><a href="#opiniones">Opiniones</a></li><li><a href="#agenda">Agendar cita</a></li></ul></div>
