@@ -80,6 +80,7 @@ legend small { margin-left: var(--space-xs); font: 400 var(--text-sm)/1 var(--fo
 .check { display: flex; align-items: center; gap: var(--space-xs); min-height: 44px; font-size: var(--text-sm); cursor: pointer; }
 .check input { width: 20px; height: 20px; accent-color: var(--color-accent); }
 .calc .go { display: grid; gap: var(--space-xs); }
+.go-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-sm); }
 .calc .go .btn { width: 100%; }
 .calc .msg { color: var(--color-error); }
 
@@ -103,6 +104,9 @@ legend small { margin-left: var(--space-xs); font: 400 var(--text-sm)/1 var(--fo
 .scen input[type="number"] { width: 88px; min-height: 44px; padding: 0 var(--space-xs); border: 1px solid var(--color-band-muted); border-radius: var(--radius-inner); background: var(--color-band-deep); color: var(--color-band-ink); font: 400 var(--text-md)/1 var(--font-body); text-align: right; font-variant-numeric: tabular-nums; }
 .scen input:focus-visible { outline: 2px solid var(--color-focus-on-band); outline-offset: 2px; }
 .r-meta { font-size: var(--text-xs); color: var(--color-band-muted); }
+.btn--band { width: 100%; background: var(--color-band-ink); color: var(--color-band); border-color: var(--color-band-ink); }
+.btn--band:hover { background: var(--color-mint); border-color: var(--color-mint); color: var(--color-band); }
+.btn--band:focus-visible { outline-color: var(--color-focus-on-band); }
 
 /* specs, note, history */
 .specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gap-columns); margin: var(--space-xl) 0 0; }
@@ -136,5 +140,36 @@ legend small { margin-left: var(--space-xs); font: 400 var(--text-sm)/1 var(--fo
   .fields, .fields.two { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .lock { padding: var(--space-lg); }
   .lock .row { flex-direction: column; }
+}
+/* printed report: hidden on screen, the only thing on paper */
+.report { display: none; }
+@media print {
+  @page { size: letter; margin: 14mm; }
+  body > *:not(.report) { display: none !important; }
+  body { background: #fff; }
+  .report { display: block; color: #000; font: 400 10.5pt/1.4 var(--font-body); }
+  .report h2 { margin: 6mm 0 2mm; font: 600 11pt/1.2 var(--font-body); letter-spacing: 0; color: #000; }
+  .rp-head { display: flex; justify-content: space-between; gap: 6mm; padding-bottom: 3mm; border-bottom: 1.5pt solid #000; }
+  .rp-brand { font: 400 16pt/1 var(--font-display); }
+  .rp-brand b { font-weight: 600; }
+  .rp-meta { text-align: right; font-size: 9.5pt; }
+  .rp-ids { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 4mm 0 0; }
+  .rp-ids dt, .rp-result dt { font-size: 8.5pt; color: #444; }
+  .rp-ids dd { margin: 1mm 0 0; min-height: 5mm; border-bottom: 0.5pt solid #888; }
+  .rp-result { display: grid; grid-template-columns: 45mm 1fr; gap: 6mm; align-items: center; margin-top: 5mm; padding: 4mm; border: 1pt solid #000; }
+  .rp-num { font: 300 34pt/1 var(--font-display); }
+  .rp-result dl { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 6mm; margin: 0; }
+  .rp-result dd { margin: 0.5mm 0 0; font-weight: 600; }
+  .rp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; margin: 0; font-size: 10pt; }
+  .rp-grid.four { grid-template-columns: repeat(4, 1fr); }
+  .rp-grid > div { display: flex; justify-content: space-between; gap: 3mm; padding: 1.2mm 0; border-bottom: 0.5pt solid #bbb; }
+  .rp-grid.four > div { display: block; }
+  .rp-grid dt { color: #333; }
+  .rp-grid dd { margin: 0; font-weight: 600; text-align: right; }
+  .rp-grid.four dd { text-align: left; margin-top: 0.5mm; }
+  .rp-note { margin-top: 5mm; font-size: 8.5pt; color: #333; }
+  .rp-sign { display: grid; grid-template-columns: 1fr 1fr; gap: 15mm; margin-top: 14mm; font-size: 9pt; text-align: center; }
+  .rp-sign span { display: block; margin-bottom: 1.5mm; border-top: 0.5pt solid #000; }
+  .rp-foot { margin-top: 6mm; font-size: 8pt; color: #555; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) { .btn, .f input, .seg label { transition: none; } }

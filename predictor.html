@@ -66,59 +66,69 @@
       <legend>Acceso y donador</legend>
       <div class="segs">
         <div><p class="note">Acceso vascular</p>
-          <div class="seg"><input type="radio" name="acceso" id="a1" value="cateter" checked><label for="a1">Catéter</label><input type="radio" name="acceso" id="a2" value="puncion"><label for="a2">Punción venosa</label></div></div>
+          <div class="seg"><input type="radio" name="acceso" id="a1" value="cateter" required><label for="a1">Catéter</label><input type="radio" name="acceso" id="a2" value="puncion"><label for="a2">Punción venosa</label></div></div>
         <div><p class="note">Tipo de donador</p>
-          <div class="seg"><input type="radio" name="tipo" id="d1" value="alogenico" checked><label for="d1">Alogénico</label><input type="radio" name="tipo" id="d2" value="haploidentico"><label for="d2">Haploidéntico</label></div></div>
+          <div class="seg"><input type="radio" name="tipo" id="d1" value="alogenico" required><label for="d1">Alogénico</label><input type="radio" name="tipo" id="d2" value="haploidentico"><label for="d2">Haploidéntico</label></div></div>
       </div>
-      <p class="note" id="velNote">Velocidad final estimada: <b>85 mL/min</b>, mediana institucional para catéter.</p>
+      <p class="note" id="velNote">Elige el acceso para ver la velocidad final estimada.</p>
     </fieldset>
 
     <fieldset>
       <legend>CD34+ en sangre periférica, día 5 <small>variable clave</small></legend>
-      <div class="f key"><label for="cd34">CD34+ /µL <span>10 a 150</span></label><input id="cd34" type="number" inputmode="decimal" min="10" max="150" step="0.5" value="50" required></div>
+      <div class="f key"><label for="cd34">CD34+ /µL <span>10 a 150</span></label><input id="cd34" type="number" inputmode="decimal" min="10" max="150" step="0.5" placeholder="10 a 150" required></div>
     </fieldset>
 
     <fieldset>
       <legend>Donador</legend>
       <div class="fields">
-        <div class="f"><label for="edad_don">Edad <span>años</span></label><input id="edad_don" type="number" inputmode="numeric" min="18" max="70" step="1" value="35" required></div>
-        <div class="f"><label for="peso_don">Peso <span>kg</span></label><input id="peso_don" type="number" inputmode="decimal" min="40" max="140" step="0.5" value="70" required></div>
-        <div class="f"><label for="volemia">Volumen sanguíneo <span>mL</span></label><input id="volemia" type="number" inputmode="numeric" min="2000" max="8000" step="50" value="4500" required></div>
+        <div class="f"><label for="edad_don">Edad <span>años</span></label><input id="edad_don" type="number" inputmode="numeric" min="18" max="70" step="1" placeholder="18 a 70" required></div>
+        <div class="f"><label for="peso_don">Peso <span>kg</span></label><input id="peso_don" type="number" inputmode="decimal" min="40" max="140" step="0.5" placeholder="40 a 140" required></div>
+        <div class="f"><label for="volemia">Volumen sanguíneo <span>mL</span></label><input id="volemia" type="number" inputmode="numeric" min="2000" max="8000" step="50" placeholder="2000 a 8000" required></div>
       </div>
-      <p class="note" id="cosNote">Volumen de cosecha estimado: <b>234 mL</b> (5.2% de la volemia; rango institucional 133 a 404 mL).</p>
+      <p class="note" id="cosNote">El volumen de cosecha se estima con el 5.2% de la volemia (rango institucional 133 a 404 mL).</p>
     </fieldset>
 
     <fieldset>
       <legend>Receptor y procedimiento</legend>
       <div class="fields two">
-        <div class="f"><label for="peso_rec">Peso del receptor <span>kg, 40 a 123</span></label><input id="peso_rec" type="number" inputmode="decimal" min="40" max="123" step="0.5" value="70" required></div>
-        <div class="f"><label for="vel_ini">Velocidad inicial <span>mL/min</span></label><input id="vel_ini" type="number" inputmode="numeric" min="30" max="120" step="1" value="65" required></div>
+        <div class="f"><label for="peso_rec">Peso del receptor <span>kg, 40 a 123</span></label><input id="peso_rec" type="number" inputmode="decimal" min="40" max="123" step="0.5" placeholder="40 a 123" required></div>
+        <div class="f"><label for="vel_ini">Velocidad inicial <span>mL/min</span></label><input id="vel_ini" type="number" inputmode="numeric" min="30" max="120" step="1" placeholder="30 a 120" required></div>
       </div>
     </fieldset>
 
     <fieldset>
       <legend>Biometría del donador antes de la aféresis</legend>
       <div class="fields">
-        <div class="f"><label for="wbc">WBC <span>k/µL</span></label><input id="wbc" type="number" inputmode="decimal" min="1" max="100" step="0.1" value="30" required></div>
-        <div class="f"><label for="hto">Hematocrito <span>%</span></label><input id="hto" type="number" inputmode="decimal" min="20" max="55" step="0.5" value="42" required></div>
-        <div class="f"><label for="plt">Plaquetas <span>k/µL</span></label><input id="plt" type="number" inputmode="decimal" min="50" max="600" step="5" value="220" required></div>
-        <div class="f"><label for="mnc_abs">MNC absoluto <span>k/µL</span></label><input id="mnc_abs" type="number" inputmode="decimal" min="0" max="25" step="0.1" value="3" required></div>
-        <div class="f"><label for="mnc_pct">MNC <span>%</span></label><input id="mnc_pct" type="number" inputmode="decimal" min="0" max="60" step="0.5" value="10" required></div>
+        <div class="f"><label for="wbc">WBC <span>k/µL</span></label><input id="wbc" type="number" inputmode="decimal" min="1" max="100" step="0.1" placeholder="1 a 100" required></div>
+        <div class="f"><label for="hto">Hematocrito <span>%</span></label><input id="hto" type="number" inputmode="decimal" min="20" max="55" step="0.5" placeholder="20 a 55" required></div>
+        <div class="f"><label for="plt">Plaquetas <span>k/µL</span></label><input id="plt" type="number" inputmode="decimal" min="50" max="600" step="5" placeholder="50 a 600" required></div>
+        <div class="f"><label for="mnc_abs">MNC absoluto <span>k/µL</span></label><input id="mnc_abs" type="number" inputmode="decimal" min="0" max="25" step="0.1" placeholder="0 a 25" required></div>
+        <div class="f"><label for="mnc_pct">MNC <span>%</span></label><input id="mnc_pct" type="number" inputmode="decimal" min="0" max="60" step="0.5" placeholder="0 a 60" required></div>
       </div>
     </fieldset>
 
     <fieldset>
       <legend>Movilización</legend>
       <div class="fields">
-        <div class="f"><label for="dias_gcsf">Días de G-CSF</label><input id="dias_gcsf" type="number" inputmode="numeric" min="1" max="8" step="1" value="4" required></div>
-        <div class="f"><label for="dosis_gcsf">Dosis de G-CSF <span>µg/día</span></label><input id="dosis_gcsf" type="number" inputmode="numeric" min="300" max="1200" step="50" value="600" required></div>
+        <div class="f"><label for="dias_gcsf">Días de G-CSF</label><input id="dias_gcsf" type="number" inputmode="numeric" min="1" max="8" step="1" placeholder="1 a 8" required></div>
+        <div class="f"><label for="dosis_gcsf">Dosis de G-CSF <span>µg/día</span></label><input id="dosis_gcsf" type="number" inputmode="numeric" min="300" max="1200" step="50" placeholder="300 a 1200" required></div>
       </div>
       <label class="check"><input type="checkbox" id="plerixafor"> Se administró plerixafor</label>
       <div class="f" id="plxWrap" hidden><label for="plerix_dosis">Dosis de plerixafor <span>mg/kg, rango institucional 0.12 a 0.27</span></label><input id="plerix_dosis" type="number" inputmode="decimal" min="0.10" max="0.30" step="0.01" value="0.24"><p class="hint" id="plxTotal"></p></div>
     </fieldset>
 
+    <fieldset>
+      <legend>Datos para el reporte <small>opcional</small></legend>
+      <div class="fields">
+        <div class="f"><label for="rep_don">Folio o iniciales del donador</label><input id="rep_don" type="text" autocomplete="off" maxlength="40"></div>
+        <div class="f"><label for="rep_rec">Folio o iniciales del receptor</label><input id="rep_rec" type="text" autocomplete="off" maxlength="40"></div>
+        <div class="f"><label for="rep_by">Calculó</label><input id="rep_by" type="text" autocomplete="name" maxlength="60"></div>
+      </div>
+      <p class="note">Solo aparecen en el reporte impreso. No se envían al servidor ni se guardan.</p>
+    </fieldset>
+
     <div class="go">
-      <button class="btn" type="submit" id="goBtn">Calcular volemias</button>
+      <div class="go-row"><button class="btn" type="submit" id="goBtn">Calcular volemias</button><button class="btn btn--quiet" type="button" id="clearBtn">Limpiar datos</button></div>
       <p class="msg" id="calcMsg" role="alert"></p>
     </div>
   </form>
@@ -147,6 +157,7 @@
         <p class="badge" id="sBadge"></p>
       </div>
       <p class="r-meta" id="rMeta"></p>
+      <button class="btn btn--band" type="button" id="printBtn">Imprimir reporte</button>
     </div>
   </aside>
 </section>
@@ -200,14 +211,35 @@
 <script src="yct-site.js" defer></script>
 <!-- /yct:footer -->
 </div>
+<section class="report" id="report" aria-hidden="true">
+  <header class="rp-head">
+    <div><p class="rp-brand">Yo<b>Cell</b>Therapy</p><p>Predictor de volemias para aféresis de CPH</p></div>
+    <div class="rp-meta" id="rpMeta"></div>
+  </header>
+  <dl class="rp-ids" id="rpIds"></dl>
+  <div class="rp-result">
+    <div><p class="rp-num" id="rpNum"></p><p>volemias recomendadas</p></div>
+    <dl id="rpRes"></dl>
+  </div>
+  <h2>Datos capturados</h2>
+  <dl class="rp-grid" id="rpData"></dl>
+  <h2>Escenario revisado</h2>
+  <dl class="rp-grid four" id="rpScen"></dl>
+  <p class="rp-note">Herramienta de apoyo para planear la aféresis; no sustituye el juicio clínico ni los protocolos de la unidad. Modelo GradientBoosting (n=140, MAE 0.266 volemias, R² 0.852) entrenado con donadores adultos de un solo centro (HU-UANL) con Spectra Optia y kit IDL. El CD34+ estimado supone una eficiencia de colecta de 48%. Confirmar siempre la cuenta de CD34+ del producto en el laboratorio.</p>
+  <div class="rp-sign"><div><span></span>Calculó</div><div><span></span>Revisó</div></div>
+  <p class="rp-foot">yocelltherapy.com/predictor.html</p>
+</section>
+
 <script>
 (function(){
-  // URL del servidor privado (Cloudflare Worker). Se llena al desplegarlo.
+  // URL del servidor privado (Cloudflare Worker)
   var API = document.body.dataset.api || '';
   var tool = document.getElementById('predictor');
   var code = '';
   var $ = function(id){ return document.getElementById(id); };
   var fmt = function(n, d){ return n.toLocaleString('es-MX', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+  var esc = function(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+  var radio = function(n){ var r = document.querySelector('input[name=' + n + ']:checked'); return r ? r.value : ''; };
   function post(path, body){
     return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(function(r){ return r.json().then(function(j){ return { status: r.status, body: j }; }); });
@@ -221,48 +253,66 @@
     if (!API) { msg.textContent = 'El servidor del predictor aún se está configurando.'; return; }
     msg.textContent = 'Verificando...';
     post('/check', { code: v }).then(function(r){
-      if (r.status === 200) { code = v; msg.textContent = ''; tool.classList.remove('locked'); $('cd34').focus(); }
+      if (r.status === 200) { code = v; msg.textContent = ''; tool.classList.remove('locked'); document.querySelector('input[name=acceso]').focus(); }
       else { msg.textContent = 'Código incorrecto. Inténtalo de nuevo.'; $('code').value = ''; $('code').focus(); }
     }).catch(function(){ msg.textContent = 'No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.'; });
   });
 
   // notas que dependen de los datos
   function notes(){
-    var cat = document.querySelector('input[name=acceso]:checked').value === 'cateter';
-    $('velNote').innerHTML = 'Velocidad final estimada: <b>' + (cat ? '85' : '71.5') + ' mL/min</b>, mediana institucional para ' + (cat ? 'catéter' : 'punción venosa') + '.';
+    var a = radio('acceso');
+    $('velNote').innerHTML = a ? 'Velocidad final estimada: <b>' + (a === 'cateter' ? '85' : '71.5') + ' mL/min</b>, mediana institucional para ' + (a === 'cateter' ? 'catéter' : 'punción venosa') + '.' : 'Elige el acceso para ver la velocidad final estimada.';
     var vol = parseFloat($('volemia').value);
-    if (isFinite(vol)) $('cosNote').innerHTML = 'Volumen de cosecha estimado: <b>' + Math.round(vol * 0.052) + ' mL</b> (5.2% de la volemia; rango institucional 133 a 404 mL).';
+    $('cosNote').innerHTML = isFinite(vol) ? 'Volumen de cosecha estimado: <b>' + Math.round(vol * 0.052) + ' mL</b> (5.2% de la volemia; rango institucional 133 a 404 mL).' : 'El volumen de cosecha se estima con el 5.2% de la volemia (rango institucional 133 a 404 mL).';
     var on = $('plerixafor').checked; $('plxWrap').hidden = !on;
     var pd = parseFloat($('peso_don').value), dz = parseFloat($('plerix_dosis').value);
     $('plxTotal').textContent = on && isFinite(pd) && isFinite(dz) ? fmt(pd * dz, 1) + ' mg totales (' + pd + ' kg × ' + dz + ' mg/kg)' : '';
   }
   $('calc').addEventListener('input', notes); $('calc').addEventListener('change', notes); notes();
 
-  // cálculo
-  var NUM = ['cd34','edad_don','peso_don','volemia','peso_rec','vel_ini','wbc','hto','plt','mnc_abs','mnc_pct','dias_gcsf','dosis_gcsf','plerix_dosis'];
+  // campos numéricos con su etiqueta y unidad para el reporte
+  var NUM = [
+    ['cd34','CD34+ periférico día 5','/µL'], ['edad_don','Edad del donador','años'], ['peso_don','Peso del donador','kg'],
+    ['volemia','Volumen sanguíneo','mL'], ['peso_rec','Peso del receptor','kg'], ['vel_ini','Velocidad inicial','mL/min'],
+    ['wbc','WBC','k/µL'], ['hto','Hematocrito','%'], ['plt','Plaquetas','k/µL'], ['mnc_abs','MNC absoluto','k/µL'],
+    ['mnc_pct','MNC','%'], ['dias_gcsf','Días de G-CSF',''], ['dosis_gcsf','Dosis de G-CSF','µg/día'], ['plerix_dosis','Dosis de plerixafor','mg/kg']
+  ];
   var last = null;
+
+  // limpiar
+  function clearAll(){
+    $('calc').reset();
+    [].forEach.call($('calc').querySelectorAll('[aria-invalid]'), function(el){ el.removeAttribute('aria-invalid'); });
+    $('calcMsg').textContent = ''; last = null;
+    $('resOut').hidden = true; $('resEmpty').hidden = false;
+    notes(); document.querySelector('input[name=acceso]').focus();
+  }
+  $('clearBtn').addEventListener('click', clearAll);
+
+  // cálculo
   $('calc').addEventListener('submit', function(e){
     e.preventDefault();
     var msg = $('calcMsg'), bad = [], body = { code: code };
-    body.acceso = document.querySelector('input[name=acceso]:checked').value;
-    body.tipo = document.querySelector('input[name=tipo]:checked').value;
-    body.plerixafor = $('plerixafor').checked;
-    NUM.forEach(function(k){
-      var el = $(k); if (k === 'plerix_dosis' && !body.plerixafor) return;
-      var v = parseFloat(el.value), ok = isFinite(v) && v >= +el.min && v <= +el.max;
+    body.acceso = radio('acceso'); body.tipo = radio('tipo'); body.plerixafor = $('plerixafor').checked;
+    if (!body.acceso || !body.tipo) { msg.textContent = 'Elige el tipo de acceso y el tipo de donador.'; document.querySelector('input[name=' + (body.acceso ? 'tipo' : 'acceso') + ']').focus(); return; }
+    NUM.forEach(function(f){
+      var k = f[0], el = $(k); if (k === 'plerix_dosis' && !body.plerixafor) return;
+      var v = parseFloat(el.value), ok = el.value.trim() !== '' && isFinite(v) && v >= +el.min && v <= +el.max;
       el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok) bad.push(el); body[k] = v;
     });
-    if (bad.length) { msg.textContent = 'Revisa los campos marcados: están fuera del rango validado.'; bad[0].focus(); return; }
+    if (bad.length) { msg.textContent = 'Completa los campos marcados con un valor dentro del rango validado.'; bad[0].focus(); return; }
     msg.textContent = ''; $('goBtn').setAttribute('aria-busy', 'true'); $('goBtn').textContent = 'Calculando...';
     post('/predict', body).then(function(r){
       if (r.status === 401) { tool.classList.add('locked'); $('lockMsg').textContent = 'Tu código ya no es válido. Escríbelo de nuevo.'; return; }
       if (r.status !== 200) { msg.textContent = 'Algún dato está fuera del rango validado.'; return; }
-      last = Object.assign({}, body, r.body); show();
+      last = Object.assign({}, body, r.body, { when: new Date() }); show();
     }).catch(function(){ msg.textContent = 'No se pudo conectar con el servidor. Inténtalo de nuevo.'; })
       .finally(function(){ $('goBtn').removeAttribute('aria-busy'); $('goBtn').textContent = 'Calcular volemias'; });
   });
 
-  function badge(el, v){ var ok = v >= 5 && v <= 10; el.className = 'badge ' + (ok ? 'ok' : 'warn'); el.textContent = ok ? 'En rango objetivo, 5 a 10 ×10⁶/kg' : 'Fuera del rango objetivo de 5 a 10 ×10⁶/kg'; }
+  function badgeTxt(v){ return v >= 5 && v <= 10 ? 'En rango objetivo, 5 a 10 ×10⁶/kg' : 'Fuera del rango objetivo de 5 a 10 ×10⁶/kg'; }
+  function badge(el, v){ el.className = 'badge ' + (v >= 5 && v <= 10 ? 'ok' : 'warn'); el.textContent = badgeTxt(v); }
+  function desc(){ return (last.tipo === 'haploidentico' ? 'Haploidéntico' : 'Alogénico') + ', ' + (last.acceso === 'cateter' ? 'catéter' : 'punción venosa') + (last.plerixafor ? ', plerixafor ' + last.plerix_dosis + ' mg/kg' : ''); }
   function show(){
     $('resEmpty').hidden = true; $('resOut').hidden = false;
     $('rNum').textContent = fmt(last.vol_pred, 2);
@@ -271,23 +321,45 @@
     $('rCos').textContent = last.vol_cos + ' mL';
     badge($('rBadge'), last.cd34_est);
     var v = Math.round(last.vol_pred * 10) / 10; $('vsim').value = v; $('vsimR').value = v; scen();
-    var d = new Date();
-    $('rMeta').textContent = 'YOCE ' + last.version + ', ' + (last.tipo === 'haploidentico' ? 'haploidéntico' : 'alogénico') + ', ' + (last.acceso === 'cateter' ? 'catéter' : 'punción venosa') + (last.plerixafor ? ', plerixafor ' + last.plerix_dosis + ' mg/kg' : '') + '. ' + d.toLocaleDateString('es-MX');
+    $('rMeta').textContent = 'YOCE ' + last.version + '. ' + desc() + '. ' + last.when.toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
   }
   // escenarios: misma fórmula que la app (no usa el modelo)
+  function scenCalc(v){
+    var cd = (last.cd34 * last.volemia * v * last.ce) / (last.peso_rec * 1000), blood = last.volemia * v;
+    return { v: v, cd: cd, blood: blood, t: Math.round(blood / ((last.vel_ini + last.vel_fin) / 2)) };
+  }
   function scen(){
     if (!last) return;
     var v = parseFloat($('vsim').value); if (!isFinite(v)) return; v = Math.min(9, Math.max(1, v));
-    var cd = (last.cd34 * last.volemia * v * last.ce) / (last.peso_rec * 1000);
-    var blood = last.volemia * v, t = Math.round(blood / ((last.vel_ini + last.vel_fin) / 2));
-    $('sCd34').textContent = fmt(cd, 1) + ' ×10⁶/kg';
-    $('sBlood').textContent = fmt(blood, 0) + ' mL';
-    $('sTime').textContent = t + ' min (' + fmt(t / 60, 1) + ' h)';
-    badge($('sBadge'), cd);
+    var s = scenCalc(v); last.scen = s;
+    $('sCd34').textContent = fmt(s.cd, 1) + ' ×10⁶/kg';
+    $('sBlood').textContent = fmt(s.blood, 0) + ' mL';
+    $('sTime').textContent = s.t + ' min (' + fmt(s.t / 60, 1) + ' h)';
+    badge($('sBadge'), s.cd);
   }
   $('vsim').addEventListener('input', function(){ $('vsimR').value = this.value; scen(); });
   $('vsimR').addEventListener('input', function(){ $('vsim').value = this.value; scen(); });
+
+  // reporte imprimible
+  function row(a, b){ return '<div><dt>' + esc(a) + '</dt><dd>' + esc(b) + '</dd></div>'; }
+  function dd(a, b){ return '<div><dt>' + esc(a) + '</dt><dd>' + esc(b) + '</dd></div>'; }
+  $('printBtn').addEventListener('click', function(){
+    if (!last) return;
+    $('rpMeta').innerHTML = esc(last.when.toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' })) + '<br>Modelo YOCE ' + esc(last.version);
+    var ids = [['Donador', $('rep_don').value.trim()], ['Receptor', $('rep_rec').value.trim()], ['Calculó', $('rep_by').value.trim()]];
+    $('rpIds').innerHTML = ids.map(function(x){ return dd(x[0], x[1] || ' '); }).join('');
+    $('rpNum').textContent = fmt(last.vol_pred, 2);
+    $('rpRes').innerHTML = dd('Rango (±MAE)', fmt(last.vol_low, 2) + ' a ' + fmt(last.vol_high, 2) + ' volemias') + dd('CD34+ estimado en el receptor', fmt(last.cd34_est, 1) + ' ×10⁶/kg') + dd('Valoración', badgeTxt(last.cd34_est)) + dd('Volumen de cosecha usado', last.vol_cos + ' mL (5.2% de la volemia)') + dd('Velocidad final estimada', last.vel_fin + ' mL/min');
+    var data = row('Tipo de donador', last.tipo === 'haploidentico' ? 'Haploidéntico' : 'Alogénico') + row('Acceso vascular', last.acceso === 'cateter' ? 'Catéter' : 'Punción venosa');
+    NUM.forEach(function(f){ if (f[0] === 'plerix_dosis') return; data += row(f[1], last[f[0]] + (f[2] ? ' ' + f[2] : '')); });
+    data += row('Plerixafor', last.plerixafor ? 'Sí, ' + last.plerix_dosis + ' mg/kg (' + fmt(last.peso_don * last.plerix_dosis, 1) + ' mg)' : 'No');
+    $('rpData').innerHTML = data;
+    var s = last.scen || scenCalc(last.vol_pred);
+    $('rpScen').innerHTML = row('Volemias a procesar', fmt(s.v, 1)) + row('CD34+ estimado en el receptor', fmt(s.cd, 1) + ' ×10⁶/kg') + row('Sangre total procesada', fmt(s.blood, 0) + ' mL') + row('Tiempo estimado', s.t + ' min (' + fmt(s.t / 60, 1) + ' h)');
+    window.print();
+  });
 })();
 </script>
+
 </body>
 </html>
