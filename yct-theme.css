@@ -98,7 +98,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--yct-accent);outl
 /* ---------- Pie de página del sitio ---------- */
 .page>footer,body>footer{display:none!important}
 .yct-foot{background:var(--yct-band);color:var(--yct-band-muted);margin-top:72px;font-family:var(--yct-body);line-height:1.5}
-.page .yct-foot{width:100%;margin-left:calc(50% - 50vw)}
+.page .yct-foot{width:100vw;margin-left:calc(50% - 50vw)}
 .yct-foot-in{max-width:1160px;margin:0 auto;padding:40px max(20px,env(safe-area-inset-right,0px)) 28px max(20px,env(safe-area-inset-left,0px));display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px}
 .yct-foot .yct-brand{color:var(--yct-band-ink)}
 .yct-foot p{margin:12px 0 0;font-size:14px;max-width:36ch}
