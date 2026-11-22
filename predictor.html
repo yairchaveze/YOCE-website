@@ -1,93 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Predictor de Volemia · Aféresis CPH · YoCellTherapy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --g:#006b52;--gl:#00c49a;--g3:rgba(0,196,154,0.12);
-  --b:#0355a0;--bl:#2196f3;--b2:rgba(33,150,243,0.1);
-  --p:#6d28d9;--pl:#a78bfa;--p2:rgba(109,40,217,0.1);
-  --bg:#f0f4f8;
-  --bord2:rgba(15,23,42,0.09);--bord3:rgba(0,196,154,0.4);
-  --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
-}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1}
-#c{position:fixed;inset:0;pointer-events:none;z-index:0}
-.page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
-.logo-wrap{display:flex;align-items:center;gap:10px}
-.logo-mark{width:34px;height:34px;border-radius:8px;background:var(--g3);border:1px solid var(--bord3);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 14px;font-weight:500;color:var(--g);text-decoration:none}
-.logo-text{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 14px;color:var(--t2);letter-spacing:.08em;line-height:1.4}
-.logo-text span{display:block;font-size: 10px;color:var(--m2);letter-spacing:.15em;margin-top:2px}
-.back-btn{display:flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 14px;color:var(--m);text-decoration:none;letter-spacing:.08em;transition:color .2s}
-.back-btn:hover{color:var(--g)}
-.hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--p);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
-.kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
-.hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
-.hero-sub{font-size: 19px;color:var(--p);font-weight:500;margin-bottom:1.2rem}
-.meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
-.pill{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--bord2);border-radius:8px;padding:5px 10px;font-size: 15px;color:var(--m);font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif}
-.pill.p{background:var(--p2);border-color:rgba(109,40,217,.25);color:var(--p)}
-.pill.g{background:var(--g3);border-color:var(--bord3);color:var(--g)}
-.pill.b{background:var(--b2);border-color:rgba(33,150,243,.25);color:var(--b)}
-.sec{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);letter-spacing:0;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
-.sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
-.stat{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;text-align:center}
-.stat .v{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 29px;font-weight:700;color:var(--p);margin-bottom:4px}
-.stat .l{font-size: 14px;color:var(--m2);line-height:1.4}
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
-.info-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:border-color .2s}
-.info-item:hover{border-color:rgba(109,40,217,.25)}
-.info-label{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--m2);letter-spacing:0;margin-bottom:5px}
-.info-value{font-size: 19px;font-weight:600;color:var(--t);line-height:1.4}
-.app-wrap{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;box-shadow:0 4px 18px rgba(109,40,217,.08)}
-.app-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(109,40,217,.12);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.app-title{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 14px;color:var(--p);font-weight:500;letter-spacing:.1em;display:flex;align-items:center;gap:7px}
-.app-badge{background:var(--p2);border:1px solid rgba(109,40,217,.2);border-radius:4px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--p);padding:2px 8px}
-.app-iframe{width:100%;height:700px;border:none;display:block}
-.tag{border-radius:5px;font-size: 14px;padding:4px 11px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;display:inline-block;margin:3px}
-.tag.p{background:var(--p2);border:1px solid rgba(109,40,217,.2);color:var(--p)}
-.tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
-.tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
-.cta-box{background:linear-gradient(135deg,rgba(109,40,217,.07),rgba(0,196,154,.04));border:1.5px solid rgba(109,40,217,.2);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
-.cta-btn{background:var(--p);border:none;border-radius:8px;font-size: 17px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
-.cta-btn:hover{background:var(--pl);transform:translateY(-1px)}
-footer{border-top:1px solid var(--bord2);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;flex-wrap:wrap;gap:.5rem}
-footer p{font-size: 14px;color:var(--m2)}
-.f-mark{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 14px;color:var(--g);letter-spacing:.12em;font-weight:500}
-@media(max-width:680px){
-  .stat-grid{grid-template-columns:1fr 1fr}
-  .info-grid{grid-template-columns:1fr}
-  .cta-box{flex-direction:column;text-align:center}
-  .app-iframe{height:500px}
-  .page{padding:0 .9rem 3rem}
-}
-</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Predictor de volemias para aféresis de CPH | YoCellTherapy</title>
+<meta name="description" content="Modelo de machine learning (GradientBoosting, n=140) que estima cuántas volemias procesar en aféresis de células progenitoras hematopoyéticas para alcanzar 5 a 10 ×10⁶ CD34+/kg.">
+<link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="preload" href="fonts/bricolage-grotesque-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="yct-theme.css">
+<link rel="stylesheet" href="css/predictor.css">
 <script>document.documentElement.classList.add('js');</script>
-<style>
-/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
-html,body{overflow-x:clip}
-:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-</style>
 </head>
-<body>
+<body data-api="https://predictor-volemias.yairchaveze.workers.dev">
 <!-- yct:header -->
 <div class="yct-nav"><div class="yct-wrap">
 <a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a>
@@ -103,130 +29,169 @@ html,body{overflow-x:clip}
 <button type="button" class="yct-burger" id="yctBurger" aria-expanded="false" aria-controls="yctLinks" aria-label="Menú"><span></span><span></span></button>
 </div></div>
 <!-- /yct:header -->
+<main class="pv">
+<div class="pv-wrap">
 
-
-
-
-<canvas id="c"></canvas>
-
-<div class="page">
-<nav>
-  <div class="logo-wrap">
-    <a href="/" class="logo-mark">
-      <img src="YOCE_logo.svg" width="22" height="22" alt="YOCE" style="display:block" onerror="this.parentElement.innerHTML='YOCE'"/>
-    </a>
-    <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
-  </div>
-  <a href="/" class="back-btn">Volver al inicio</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="kicker">Modelo ML · IA en Salud</div>
-  <h1>Predictor de Volemia<br>para Aféresis CPH</h1>
-  <p class="hero-sub">GradientBoosting · v5.1 · Desarrollado en UANL · Monterrey, México</p>
-  <div class="meta">
-    <span class="pill p">Células Progenitoras CD34+</span>
-    <span class="pill g">✅ Modelo v5.1 activo</span>
-    <span class="pill b">n=140 pacientes</span>
-    <span class="pill">Optia · Kit IDL</span>
-  </div>
-  <div style="font-size: 18px;color:var(--m);line-height:1.82">
-    Modelo de machine learning que estima el <strong style="color:var(--p)">número de volemias necesarias</strong> para alcanzar una cosecha eficiente de <strong>5-10 millones de células CD34+</strong> en el receptor del trasplante alogénico. Desarrollado bajo un proceso sistemático y controlado con altos estándares de calidad, diseñado específicamente para el separador celular <strong>Optia · Kit IDL</strong> en trasplantes alogénicos de adultos.
-  </div>
+<section class="pv-head">
+  <h1>Predictor de volemias para <em>aféresis de CPH.</em></h1>
+  <p class="lead">Modelo de machine learning que estima cuántas volemias procesar para obtener 5 a 10 ×10⁶ células CD34+/kg de peso del receptor en trasplante alogénico de adultos, con Spectra Optia y kit IDL.</p>
+  <dl class="figs">
+    <div><dt>0.852</dt><dd>R², coeficiente de determinación</dd></div>
+    <div><dt>±0.27</dt><dd>MAE en volemias, error absoluto medio</dd></div>
+    <div><dt>140</dt><dd>aféresis de donadores en el entrenamiento</dd></div>
+    <div><dt>3.er</dt><dd>lugar, Premio AMMTAC 2026</dd></div>
+  </dl>
 </section>
 
-<!-- MÉTRICAS -->
-<section>
-  <p class="sec">Métricas del Modelo</p>
-  <div class="stat-grid">
-    <div class="stat"><div class="v">0.852</div><div class="l">R² · Coeficiente de determinación</div></div>
-    <div class="stat"><div class="v">0.266</div><div class="l">MAE · Error absoluto medio</div></div>
-    <div class="stat"><div class="v">140</div><div class="l">Pacientes en dataset de entrenamiento</div></div>
-    <div class="stat"><div class="v">v5.1</div><div class="l">Versión actual · GradientBoosting</div></div>
+<section class="tool locked" id="predictor" aria-labelledby="t-tool">
+  <div class="tool-intro">
+    <h2 id="t-tool">Calcular</h2>
+    <p>Captura los datos del día de la aféresis. El cálculo se hace en un servidor privado de YoCellTherapy; no se guarda ningún dato.</p>
   </div>
-</section>
 
-<!-- INFO TÉCNICA -->
-<section>
-  <p class="sec">Especificaciones Técnicas</p>
-  <div class="info-grid">
-    <div class="info-item"><div class="info-label">Algoritmo</div><div class="info-value">GradientBoosting Regressor</div></div>
-    <div class="info-item"><div class="info-label">Variable objetivo</div><div class="info-value">Número de volemias procesadas</div></div>
-    <div class="info-item"><div class="info-label">Separador celular</div><div class="info-value">Optia Spectra · Kit IDL</div></div>
-    <div class="info-item"><div class="info-label">Población</div><div class="info-value">Adultos ≥18 años · Alogénico</div></div>
-    <div class="info-item"><div class="info-label">CD34+ objetivo</div><div class="info-value">10-150 /µL · Meta 5-10×10⁶/kg</div></div>
-    <div class="info-item"><div class="info-label">Peso receptor</div><div class="info-value">40-123 kg · Rango validado</div></div>
-    <div class="info-item"><div class="info-label">Última actualización</div><div class="info-value">Abril 2026</div></div>
-    <div class="info-item"><div class="info-label">Plataforma</div><div class="info-value">Streamlit · Python · Scikit-learn</div></div>
-  </div>
-</section>
-
-<!-- APP STREAMLIT -->
-<section>
-  <p class="sec">Aplicación, Predictor Interactivo</p>
-
-  <!-- LOCK WALL -->
-  <div id="lock-wall" style="background:rgba(255,255,255,0.88);border:1.5px solid rgba(109,40,217,.28);border-radius:14px;padding:2.5rem;margin-bottom:1.5rem;box-shadow:0 3px 14px rgba(109,40,217,.07);text-align:center">
-    <div style="font-size:34px;margin-bottom:1rem"></div>
-    <div style="font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:19px;color:var(--p);font-weight:600;margin-bottom:.5rem;letter-spacing:.05em">Acceso restringido</div>
-    <div style="font-size:19px;color:var(--m);margin-bottom:1.5rem;line-height:1.7">Esta herramienta requiere un código de acceso.<br>Contacta a <strong style="color:var(--t)">Yair Omar Chávez-Estrada</strong> para obtenerlo.</div>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
-      <input id="lock-input" type="password" placeholder="Código de acceso"
-        style="padding:11px 16px;border:1.5px solid rgba(109,40,217,.35);border-radius:8px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:17px;outline:none;background:#faf8ff;color:var(--t);width:220px"
-        onkeydown="if(event.key==='Enter')checkLock()" />
-      <button onclick="checkLock()"
-        style="padding:11px 22px;background:var(--p);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:600;cursor:pointer;transition:all .2s"
-        onmouseover="this.style.background='var(--pl)'" onmouseout="this.style.background='var(--p)'">
-        Acceder
-      </button>
+  <div class="lock">
+    <div>
+      <h3>Acceso con código</h3>
+      <p>Para obtener un código, escribe a Yair Omar Chávez-Estrada.</p>
     </div>
-    <div id="lock-error" style="font-size:15px;color:#e53e3e;margin-top:.75rem;min-height:20px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif"></div>
+    <form id="lockForm" novalidate>
+      <label for="code">Código de acceso</label>
+      <div class="row"><input id="code" type="password" autocomplete="off" required><button class="btn" type="submit">Entrar</button></div>
+      <p class="msg" id="lockMsg" role="status" aria-live="polite"></p>
+    </form>
   </div>
 
-  <!-- LOCKED CONTENT -->
-  <div id="locked-content" style="display:none">
-  <div class="app-wrap">
-    <div class="app-header">
-      <div class="app-title">Predictor de Volemias · Aféresis CPH <span class="app-badge">v5.1 · LIVE</span></div>
-      <a href="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/" target="_blank" rel="noopener" style="font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 13px;color:var(--p);text-decoration:none;opacity:.7">Abrir en nueva pestaña ↗</a>
+  <form class="calc" id="calc" novalidate>
+    <fieldset>
+      <legend>Acceso y donador</legend>
+      <div class="segs">
+        <div><p class="note">Acceso vascular</p>
+          <div class="seg"><input type="radio" name="acceso" id="a1" value="cateter" checked><label for="a1">Catéter</label><input type="radio" name="acceso" id="a2" value="puncion"><label for="a2">Punción venosa</label></div></div>
+        <div><p class="note">Tipo de donador</p>
+          <div class="seg"><input type="radio" name="tipo" id="d1" value="alogenico" checked><label for="d1">Alogénico</label><input type="radio" name="tipo" id="d2" value="haploidentico"><label for="d2">Haploidéntico</label></div></div>
+      </div>
+      <p class="note" id="velNote">Velocidad final estimada: <b>85 mL/min</b>, mediana institucional para catéter.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>CD34+ en sangre periférica, día 5 <small>variable clave</small></legend>
+      <div class="f key"><label for="cd34">CD34+ /µL <span>10 a 150</span></label><input id="cd34" type="number" inputmode="decimal" min="10" max="150" step="0.5" value="50" required></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Donador</legend>
+      <div class="fields">
+        <div class="f"><label for="edad_don">Edad <span>años</span></label><input id="edad_don" type="number" inputmode="numeric" min="18" max="70" step="1" value="35" required></div>
+        <div class="f"><label for="peso_don">Peso <span>kg</span></label><input id="peso_don" type="number" inputmode="decimal" min="40" max="140" step="0.5" value="70" required></div>
+        <div class="f"><label for="volemia">Volumen sanguíneo <span>mL</span></label><input id="volemia" type="number" inputmode="numeric" min="2000" max="8000" step="50" value="4500" required></div>
+      </div>
+      <p class="note" id="cosNote">Volumen de cosecha estimado: <b>234 mL</b> (5.2% de la volemia; rango institucional 133 a 404 mL).</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>Receptor y procedimiento</legend>
+      <div class="fields two">
+        <div class="f"><label for="peso_rec">Peso del receptor <span>kg, 40 a 123</span></label><input id="peso_rec" type="number" inputmode="decimal" min="40" max="123" step="0.5" value="70" required></div>
+        <div class="f"><label for="vel_ini">Velocidad inicial <span>mL/min</span></label><input id="vel_ini" type="number" inputmode="numeric" min="30" max="120" step="1" value="65" required></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Biometría del donador antes de la aféresis</legend>
+      <div class="fields">
+        <div class="f"><label for="wbc">WBC <span>k/µL</span></label><input id="wbc" type="number" inputmode="decimal" min="1" max="100" step="0.1" value="30" required></div>
+        <div class="f"><label for="hto">Hematocrito <span>%</span></label><input id="hto" type="number" inputmode="decimal" min="20" max="55" step="0.5" value="42" required></div>
+        <div class="f"><label for="plt">Plaquetas <span>k/µL</span></label><input id="plt" type="number" inputmode="decimal" min="50" max="600" step="5" value="220" required></div>
+        <div class="f"><label for="mnc_abs">MNC absoluto <span>k/µL</span></label><input id="mnc_abs" type="number" inputmode="decimal" min="0" max="25" step="0.1" value="3" required></div>
+        <div class="f"><label for="mnc_pct">MNC <span>%</span></label><input id="mnc_pct" type="number" inputmode="decimal" min="0" max="60" step="0.5" value="10" required></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Movilización</legend>
+      <div class="fields">
+        <div class="f"><label for="dias_gcsf">Días de G-CSF</label><input id="dias_gcsf" type="number" inputmode="numeric" min="1" max="8" step="1" value="4" required></div>
+        <div class="f"><label for="dosis_gcsf">Dosis de G-CSF <span>µg/día</span></label><input id="dosis_gcsf" type="number" inputmode="numeric" min="300" max="1200" step="50" value="600" required></div>
+      </div>
+      <label class="check"><input type="checkbox" id="plerixafor"> Se administró plerixafor</label>
+      <div class="f" id="plxWrap" hidden><label for="plerix_dosis">Dosis de plerixafor <span>mg/kg, rango institucional 0.12 a 0.27</span></label><input id="plerix_dosis" type="number" inputmode="decimal" min="0.10" max="0.30" step="0.01" value="0.24"><p class="hint" id="plxTotal"></p></div>
+    </fieldset>
+
+    <div class="go">
+      <button class="btn" type="submit" id="goBtn">Calcular volemias</button>
+      <p class="msg" id="calcMsg" role="alert"></p>
     </div>
-    <iframe
-      class="app-iframe"
-      src="https://predictor-volemias-aferesis-cnjzpb33jr9uxqvmnpwjsd.streamlit.app/?embedded=true"
-      title="Predictor de Volemia para Aféresis CPH">
-    </iframe>
-  </div>
-  </div><!-- /locked-content -->
+  </form>
+
+  <aside class="result" aria-live="polite" aria-labelledby="t-res">
+    <h2 id="t-res" class="visually-hidden">Resultado</h2>
+    <p class="empty" id="resEmpty">El resultado aparece aquí al calcular.</p>
+    <div id="resOut" hidden>
+      <div class="r-num" id="rNum">0.00</div>
+      <p class="r-unit">volemias recomendadas</p>
+      <dl class="r-rows">
+        <div><dt>Rango (±MAE)</dt><dd id="rRange"></dd></div>
+        <div><dt>CD34+ estimado en el receptor</dt><dd id="rCd34"></dd></div>
+        <div><dt>Volumen de cosecha usado</dt><dd id="rCos"></dd></div>
+      </dl>
+      <p class="badge" id="rBadge"></p>
+      <div class="scen">
+        <h3>Escenarios</h3>
+        <label for="vsim">¿Y si proceso otra cantidad de volemias?</label>
+        <div class="row"><input type="range" id="vsimR" min="1" max="9" step="0.1" aria-label="Volemias a procesar"><input type="number" id="vsim" min="1" max="9" step="0.1"></div>
+        <dl class="r-rows">
+          <div><dt>CD34+ estimado en el receptor</dt><dd id="sCd34"></dd></div>
+          <div><dt>Sangre total procesada</dt><dd id="sBlood"></dd></div>
+          <div><dt>Tiempo estimado</dt><dd id="sTime"></dd></div>
+        </dl>
+        <p class="badge" id="sBadge"></p>
+      </div>
+      <p class="r-meta" id="rMeta"></p>
+    </div>
+  </aside>
 </section>
 
-<!-- TAGS -->
-<section>
-  <p class="sec">Áreas Temáticas</p>
-  <div style="margin-bottom:1.5rem">
-    <span class="tag p">Machine Learning</span>
-    <span class="tag p">GradientBoosting</span>
-    <span class="tag g">Aféresis CPH</span>
-    <span class="tag g">Células CD34+</span>
-    <span class="tag g">Trasplante Alogénico</span>
-    <span class="tag b">Python · Scikit-learn</span>
-    <span class="tag b">Streamlit</span>
-    <span class="tag p">Predicción Clínica</span>
-    <span class="tag g">cGMP · Control de Calidad</span>
+<section class="warnbox" aria-labelledby="t-warn">
+  <h2 id="t-warn">Antes de usarlo</h2>
+  <ul>
+    <li>Es una herramienta de apoyo para planear la aféresis. No sustituye el juicio clínico ni los protocolos de tu unidad.</li>
+    <li>El modelo se entrenó con donadores adultos de un solo centro (HU-UANL), con Spectra Optia y kit IDL. Fuera de los rangos capturados no está validado.</li>
+    <li>El CD34+ estimado en el receptor supone una eficiencia de colecta (CE2) de 48%, mediana institucional.</li>
+    <li>Confirma siempre la cuenta de CD34+ del producto en el laboratorio.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="t-specs">
+  <h2 id="t-specs">Ficha técnica</h2>
+  <dl class="specs">
+    <div><dt>Algoritmo</dt><dd>GradientBoosting Regressor, 300 árboles, 18 variables</dd></div>
+    <div><dt>Variable objetivo</dt><dd>Número de volemias procesadas</dd></div>
+    <div><dt>Separador celular</dt><dd>Spectra Optia, kit IDL</dd></div>
+    <div><dt>Población</dt><dd>Donadores adultos, receptor ≥18 años; alogénico y haploidéntico</dd></div>
+    <div><dt>CD34+ periférico pre-aféresis</dt><dd>10 a 150 /µL</dd></div>
+    <div><dt>Meta en el receptor</dt><dd>5 a 10 ×10⁶ CD34+/kg</dd></div>
+    <div><dt>Peso del receptor</dt><dd>40 a 123 kg</dd></div>
+    <div><dt>Versión</dt><dd>v5.1, abril 2026</dd></div>
+  </dl>
+  <div class="hist">
+    <details><summary>v5.1 <span>abril 2026, n=140, MAE 0.266, R² 0.852</span></summary><p>Se quita el volumen de cosecha del calculador de escenarios (no afectaba el CD34+ estimado). Calculador de escenarios persistente.</p></details>
+    <details><summary>v5.0 <span>abril 2026, n=140, MAE 0.266, R² 0.852</span></summary><p>Rango de CD34+ ampliado a 10 a 150 /µL (+42 casos). Volumen de cosecha estimado automáticamente (5.2% de la volemia). Escenarios de 0.1 en 0.1.</p></details>
+    <details><summary>v4.5 <span>abril 2026, n=98, MAE 0.327, R² 0.737</span></summary><p>App web. Plerixafor con dosis ajustable y mg totales automáticos.</p></details>
+    <details><summary>v4.0 <span>abril 2026, n=98, MAE 0.327, R² 0.737</span></summary><p>Velocidad final imputada con la mediana institucional según el acceso.</p></details>
+    <details><summary>v3.0 <span>abril 2026, n=98, MAE 0.362, R² 0.690</span></summary><p>Se quita la velocidad final del panel de entrada.</p></details>
+    <details><summary>v2.0 <span>abril 2026, n=98, MAE 0.327, R² 0.737</span></summary><p>Velocidades, volumen de cosecha y filtro de peso del receptor ≥40 kg.</p></details>
+    <details><summary>v1.0 <span>abril 2026, n=279, MAE 0.536, R² 0.642</span></summary><p>Modelo inicial alogénico y haploidéntico sin filtros de población.</p></details>
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-box">
+<section class="cta">
   <p>¿Quieres colaborar o conocer más sobre el modelo?</p>
-  <a href="mailto:yair_chaveze@hotmail.com" class="cta-btn">✉️ Contactar</a>
-</div>
+  <a class="btn btn--quiet" href="contacto.html">Contactar</a>
+</section>
 
-<footer>
-  <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>
-  <span class="f-mark">yocelltherapy.com</span>
-</footer>
-<!-- yct:footer -->
+</div>
+</main>
+<div class="page"><!-- yct:footer -->
 <div class="yct-foot"><div class="yct-foot-in">
 <div><a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a><p>Consultoría científica en terapia celular, manufactura cGMP e inteligencia artificial aplicada a la salud. Monterrey, México.</p></div>
 <div><h4>Sitio</h4><ul><li><a href="/#plataforma">Plataforma</a></li><li><a href="cart-vector.html">CAR-T</a></li><li><a href="ia-salud.html">Herramientas</a></li><li><a href="/#publicaciones">Publicaciones</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
@@ -234,39 +199,95 @@ html,body{overflow-x:clip}
 </div><div class="yct-foot-bot"><span>© 2026 YoCellTherapy · Yair Omar Chávez-Estrada</span><span>Cell Therapy · AI · R&amp;D</span></div></div>
 <script src="yct-site.js" defer></script>
 <!-- /yct:footer -->
-
-
-
-
 </div>
-
-
 <script>
-function checkLock(){
-  const val = document.getElementById('lock-input').value.trim();
-  const err = document.getElementById('lock-error');
-  const CODE = 'YCT2026';
-  if(val === CODE){
-    document.getElementById('lock-wall').style.display='none';
-    document.getElementById('locked-content').style.display='block';
-    err.textContent='';
-  } else {
-    err.textContent='Código incorrecto. Inténtalo de nuevo.';
-    document.getElementById('lock-input').value='';
-    document.getElementById('lock-input').focus();
+(function(){
+  // URL del servidor privado (Cloudflare Worker). Se llena al desplegarlo.
+  var API = document.body.dataset.api || '';
+  var tool = document.getElementById('predictor');
+  var code = '';
+  var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n, d){ return n.toLocaleString('es-MX', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+  function post(path, body){
+    return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function(r){ return r.json().then(function(j){ return { status: r.status, body: j }; }); });
   }
-}
-</script>
 
-<script>
-const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
-let W,H,t=0;
-function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-resize();window.addEventListener('resize',resize);
-const CC='0,107,82',TC='3,85,160';
-function drawDNA(ox,c1,c2){const amp=16,freq=.042;for(let y=-40;y<H+40;y+=3){const ph=y*freq+t,x1=ox+Math.sin(ph)*amp,x2=ox+Math.sin(ph+Math.PI)*amp,a=.07+.04*Math.abs(Math.sin(ph));ctx.beginPath();ctx.arc(x1,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c1},${a})`;ctx.fill();ctx.beginPath();ctx.arc(x2,y,1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${c2},${a})`;ctx.fill();}}
-function frame(){ctx.clearRect(0,0,W,H);t+=.016;drawDNA(42,CC,TC);drawDNA(W-42,'109,40,217',CC);requestAnimationFrame(frame);}
-frame();
+  // acceso
+  $('lockForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = $('code').value.trim(), msg = $('lockMsg');
+    if (!v) { msg.textContent = 'Escribe tu código.'; return; }
+    if (!API) { msg.textContent = 'El servidor del predictor aún se está configurando.'; return; }
+    msg.textContent = 'Verificando...';
+    post('/check', { code: v }).then(function(r){
+      if (r.status === 200) { code = v; msg.textContent = ''; tool.classList.remove('locked'); $('cd34').focus(); }
+      else { msg.textContent = 'Código incorrecto. Inténtalo de nuevo.'; $('code').value = ''; $('code').focus(); }
+    }).catch(function(){ msg.textContent = 'No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.'; });
+  });
+
+  // notas que dependen de los datos
+  function notes(){
+    var cat = document.querySelector('input[name=acceso]:checked').value === 'cateter';
+    $('velNote').innerHTML = 'Velocidad final estimada: <b>' + (cat ? '85' : '71.5') + ' mL/min</b>, mediana institucional para ' + (cat ? 'catéter' : 'punción venosa') + '.';
+    var vol = parseFloat($('volemia').value);
+    if (isFinite(vol)) $('cosNote').innerHTML = 'Volumen de cosecha estimado: <b>' + Math.round(vol * 0.052) + ' mL</b> (5.2% de la volemia; rango institucional 133 a 404 mL).';
+    var on = $('plerixafor').checked; $('plxWrap').hidden = !on;
+    var pd = parseFloat($('peso_don').value), dz = parseFloat($('plerix_dosis').value);
+    $('plxTotal').textContent = on && isFinite(pd) && isFinite(dz) ? fmt(pd * dz, 1) + ' mg totales (' + pd + ' kg × ' + dz + ' mg/kg)' : '';
+  }
+  $('calc').addEventListener('input', notes); $('calc').addEventListener('change', notes); notes();
+
+  // cálculo
+  var NUM = ['cd34','edad_don','peso_don','volemia','peso_rec','vel_ini','wbc','hto','plt','mnc_abs','mnc_pct','dias_gcsf','dosis_gcsf','plerix_dosis'];
+  var last = null;
+  $('calc').addEventListener('submit', function(e){
+    e.preventDefault();
+    var msg = $('calcMsg'), bad = [], body = { code: code };
+    body.acceso = document.querySelector('input[name=acceso]:checked').value;
+    body.tipo = document.querySelector('input[name=tipo]:checked').value;
+    body.plerixafor = $('plerixafor').checked;
+    NUM.forEach(function(k){
+      var el = $(k); if (k === 'plerix_dosis' && !body.plerixafor) return;
+      var v = parseFloat(el.value), ok = isFinite(v) && v >= +el.min && v <= +el.max;
+      el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok) bad.push(el); body[k] = v;
+    });
+    if (bad.length) { msg.textContent = 'Revisa los campos marcados: están fuera del rango validado.'; bad[0].focus(); return; }
+    msg.textContent = ''; $('goBtn').setAttribute('aria-busy', 'true'); $('goBtn').textContent = 'Calculando...';
+    post('/predict', body).then(function(r){
+      if (r.status === 401) { tool.classList.add('locked'); $('lockMsg').textContent = 'Tu código ya no es válido. Escríbelo de nuevo.'; return; }
+      if (r.status !== 200) { msg.textContent = 'Algún dato está fuera del rango validado.'; return; }
+      last = Object.assign({}, body, r.body); show();
+    }).catch(function(){ msg.textContent = 'No se pudo conectar con el servidor. Inténtalo de nuevo.'; })
+      .finally(function(){ $('goBtn').removeAttribute('aria-busy'); $('goBtn').textContent = 'Calcular volemias'; });
+  });
+
+  function badge(el, v){ var ok = v >= 5 && v <= 10; el.className = 'badge ' + (ok ? 'ok' : 'warn'); el.textContent = ok ? 'En rango objetivo, 5 a 10 ×10⁶/kg' : 'Fuera del rango objetivo de 5 a 10 ×10⁶/kg'; }
+  function show(){
+    $('resEmpty').hidden = true; $('resOut').hidden = false;
+    $('rNum').textContent = fmt(last.vol_pred, 2);
+    $('rRange').textContent = fmt(last.vol_low, 2) + ' a ' + fmt(last.vol_high, 2) + ' volemias';
+    $('rCd34').textContent = fmt(last.cd34_est, 1) + ' ×10⁶/kg';
+    $('rCos').textContent = last.vol_cos + ' mL';
+    badge($('rBadge'), last.cd34_est);
+    var v = Math.round(last.vol_pred * 10) / 10; $('vsim').value = v; $('vsimR').value = v; scen();
+    var d = new Date();
+    $('rMeta').textContent = 'YOCE ' + last.version + ', ' + (last.tipo === 'haploidentico' ? 'haploidéntico' : 'alogénico') + ', ' + (last.acceso === 'cateter' ? 'catéter' : 'punción venosa') + (last.plerixafor ? ', plerixafor ' + last.plerix_dosis + ' mg/kg' : '') + '. ' + d.toLocaleDateString('es-MX');
+  }
+  // escenarios: misma fórmula que la app (no usa el modelo)
+  function scen(){
+    if (!last) return;
+    var v = parseFloat($('vsim').value); if (!isFinite(v)) return; v = Math.min(9, Math.max(1, v));
+    var cd = (last.cd34 * last.volemia * v * last.ce) / (last.peso_rec * 1000);
+    var blood = last.volemia * v, t = Math.round(blood / ((last.vel_ini + last.vel_fin) / 2));
+    $('sCd34').textContent = fmt(cd, 1) + ' ×10⁶/kg';
+    $('sBlood').textContent = fmt(blood, 0) + ' mL';
+    $('sTime').textContent = t + ' min (' + fmt(t / 60, 1) + ' h)';
+    badge($('sBadge'), cd);
+  }
+  $('vsim').addEventListener('input', function(){ $('vsimR').value = this.value; scen(); });
+  $('vsimR').addEventListener('input', function(){ $('vsim').value = this.value; scen(); });
+})();
 </script>
 </body>
 </html>
