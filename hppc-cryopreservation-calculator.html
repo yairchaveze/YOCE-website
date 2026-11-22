@@ -24,7 +24,7 @@
   --warn:#ffc107;--warnDark:#ff9800;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
 .logo-wrap{display:flex;align-items:center;gap:10px}
@@ -35,7 +35,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .back-btn:hover{color:var(--g)}
 .hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:2rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
 .hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.8rem}
 .hero p{font-size:16px;color:var(--m);line-height:1.6}
@@ -69,12 +69,12 @@ input:focus,select:focus{
 
 .results{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .result-box{background:var(--g3);border:1.5px solid var(--bord3);border-radius:8px;padding:1rem}
-.result-label{font-size:11px;color:var(--g);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.result-label{font-size:11px;color:var(--g);font-weight:600;letter-spacing:0;margin-bottom:.4rem}
 .result-value{font-size:32px;font-weight:700;color:var(--g);font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;line-height:1}
 .result-unit{font-size:16px;color:var(--m);font-weight:600;margin-left:.3rem;vertical-align:super}
 
 .recommendation-box{background:#fff3cd;border-left:4px solid var(--warn);border-radius:8px;padding:1.25rem;margin-top:1rem;grid-column:1/-1}
-.recommendation-label{font-size:11px;color:#856404;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.8rem}
+.recommendation-label{font-size:11px;color:#856404;font-weight:600;letter-spacing:0;margin-bottom:.8rem}
 .recommendation-text{font-size:14px;color:var(--t);line-height:1.6}
 
 .info-box{background:var(--b2);border-left:4px solid var(--b);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:13px;color:var(--t)}
@@ -87,7 +87,7 @@ button{
   border:none;
   border-radius:8px;
   cursor:pointer;
-  transition:all .2s;
+  transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;
   font-family:inherit;
 }
 .btn-primary{
@@ -121,16 +121,16 @@ footer p{font-size:14px;color:var(--m2)}
 
 .fraction-detail{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;padding:1rem;background:#f9f9f9;border-radius:8px;border:1px solid var(--bord2)}
 .fraction-item{font-size:13px}
-.fraction-item-label{color:var(--m2);text-transform:uppercase;font-size:11px;font-weight:600;margin-bottom:.3rem}
+.fraction-item-label{color:var(--m2);font-size:11px;font-weight:600;margin-bottom:.3rem}
 .fraction-item-value{font-size:16px;font-weight:700;color:var(--g);font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif}
 
 .scenario-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1rem;margin-top:1rem}
-.scenario-card{background:#fff;border:1.5px solid var(--bord2);border-radius:8px;padding:1rem;transition:all .2s}
+.scenario-card{background:#fff;border:1.5px solid var(--bord2);border-radius:8px;padding:1rem;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s}
 .scenario-card.valid{border-color:var(--g);background:rgba(0,196,154,0.05)}
 .scenario-card.invalid{border-color:#d63031;background:#ffe8e8}
 .scenario-title{font-size:14px;font-weight:700;color:var(--t);margin-bottom:.8rem}
 .scenario-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:.6rem}
-.scenario-label{color:var(--m2);text-transform:uppercase;font-size:10px;font-weight:600}
+.scenario-label{color:var(--m2);font-size:10px;font-weight:600}
 .scenario-value{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-weight:700;color:var(--g)}
 .scenario-card.invalid .scenario-value{color:#d63031}
 .scenario-status{font-size:11px;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--bord2);text-align:center}
@@ -147,6 +147,13 @@ footer p{font-size:14px;color:var(--m2)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -177,11 +184,11 @@ footer p{font-size:14px;color:var(--m2)}
     </a>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </div>
-  <a href="ia-salud.html" class="back-btn">← Volver a herramientas</a>
+  <a href="ia-salud.html" class="back-btn">Volver a herramientas</a>
 </nav>
 
 <section class="hero">
-  <div class="kicker">🧊 Criopreservación CPH</div>
+  <div class="kicker">Criopreservación CPH</div>
   <h1>Calculadora de Criopreservación</h1>
   <p>Cálculo instantáneo de WBC totales, CD34+ y recomendaciones de fraccionamiento para células progenitoras hematopoyéticas.</p>
 </section>
@@ -266,7 +273,7 @@ footer p{font-size:14px;color:var(--m2)}
     </div>
 
     <div id="alarmBanner" class="alarm-banner" style="display:none">
-      <div class="alarm-banner-icon">🔴</div>
+      <div class="alarm-banner-icon"></div>
       <div class="alarm-banner-text">Se sugiere reducir volumen para optimizar fracciones</div>
     </div>
 
@@ -379,7 +386,7 @@ footer p{font-size:14px;color:var(--m2)}
   <div class="button-row">
     <button class="btn-secondary" onclick="limpiar()">Limpiar</button>
     <button class="btn-primary" id="btnReduccion" style="display:none" onclick="toggleReduccion()">↓ Reducir Volumen</button>
-    <button class="btn-primary" onclick="exportarDatos()">📋 Copiar Datos</button>
+    <button class="btn-primary" onclick="exportarDatos()">Copiar Datos</button>
   </div>
 </div>
 

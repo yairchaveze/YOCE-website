@@ -23,7 +23,7 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 23px}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size: 23px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 #cc{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
@@ -37,7 +37,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .hero-event{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero-event::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--d),var(--bl),var(--gl));border-radius:16px 16px 0 0}
 .hero-grid{display:grid;grid-template-columns:1fr 240px;gap:1.5rem;align-items:start}
-.event-kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--d);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.event-kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--d);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .event-kicker::before{content:'';width:16px;height:1.5px;background:var(--dl);border-radius:2px}
 .event-title{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
 .event-org{font-size: 19px;color:var(--b);font-weight:500;margin-bottom:1.2rem}
@@ -51,21 +51,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .poster-wrap:hover{transform:scale(1.02)}
 .poster-wrap img{width:100%;display:block}
 .poster-caption{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--m2);text-align:center;margin-top:5px;letter-spacing:.08em}
-.sec{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);letter-spacing:0;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
 .sec.blue{color:var(--d)}
 .modulo-card{background:linear-gradient(135deg,rgba(109,40,217,.06),rgba(33,150,243,.03));border:1.5px solid rgba(109,40,217,.2);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
 .modulo-badge{display:inline-flex;align-items:center;gap:6px;background:var(--d);border-radius:6px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 13px;color:#fff;padding:4px 12px;font-weight:500;margin-bottom:.8rem}
 .modulo-title{font-size: 21px;font-weight:600;color:var(--d);margin-bottom:.4rem}
 .modulo-desc{font-size: 18px;color:var(--m);line-height:1.7}
-.ponencia-card{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:14px;padding:1.5rem;margin-bottom:1rem;position:relative;overflow:hidden;transition:all .25s}
+.ponencia-card{background:#fff;border:1.5px solid rgba(109,40,217,.2);border-radius:14px;padding:1.5rem;margin-bottom:1rem;position:relative;overflow:hidden;transition:color .25s,background-color .25s,border-color .25s,opacity .25s,transform .25s,box-shadow .25s}
 .ponencia-card:hover{box-shadow:0 5px 18px rgba(109,40,217,.1);transform:translateY(-2px);border-color:rgba(109,40,217,.4)}
 .ponencia-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--d),var(--dl))}
 .pon-num{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--d);letter-spacing:.15em;margin-bottom:8px;font-weight:500}
 .pon-title{font-size: 20px;font-weight:600;color:var(--t);margin-bottom:10px;line-height:1.4}
 .pon-time{display:inline-flex;align-items:center;gap:5px;background:var(--d2);border:1px solid rgba(109,40,217,.2);border-radius:6px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 13px;color:var(--d);padding:3px 10px;font-weight:500}
 .modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
-.mod-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:all .2s;position:relative}
+.mod-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;position:relative}
 .mod-item:hover{border-color:rgba(109,40,217,.3)}
 .mod-item.active{border-color:var(--d);background:var(--d2)}
 .mod-item.active::after{content:'Yo';position:absolute;top:8px;right:10px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);background:var(--g3);border:1px solid var(--bord3);border-radius:4px;padding:2px 7px}
@@ -73,7 +73,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .mod-date{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--m2);margin-top:4px;opacity:.7}
 .mod-name{font-size: 17px;font-weight:600;color:var(--t);line-height:1.35;margin-bottom:2px}
 .mod-item.active .mod-num,.mod-item.active .mod-name{color:var(--d)}
-.ponente-card{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.65rem;transition:all .2s}
+.ponente-card{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:.65rem;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s}
 .ponente-card:hover{border-color:rgba(109,40,217,.3);transform:translateX(3px)}
 .ponente-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--d),var(--bl));display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 19px;font-weight:700;color:#fff;flex-shrink:0}
 .ponente-avatar.me{background:linear-gradient(135deg,var(--g),var(--b));border:2.5px solid var(--gl)}
@@ -84,14 +84,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
 .info-item{background:#fff;border:1px solid var(--bord2);border-radius:10px;padding:1rem;transition:border-color .2s}
 .info-item:hover{border-color:rgba(109,40,217,.25)}
-.info-label{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--m2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+.info-label{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--m2);letter-spacing:0;margin-bottom:5px}
 .info-value{font-size: 19px;font-weight:600;color:var(--t);line-height:1.4}
 .tag{border-radius:5px;font-size: 14px;padding:4px 11px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;display:inline-block;margin:3px}
 .tag.b{background:var(--b2);border:1px solid rgba(33,150,243,.25);color:var(--b)}
 .tag.g{background:var(--g3);border:1px solid rgba(0,196,154,.3);color:var(--g)}
 .tag.d{background:var(--d2);border:1px solid rgba(109,40,217,.2);color:var(--d)}
 .cta-box{background:linear-gradient(135deg,rgba(109,40,217,.07),rgba(33,150,243,.04));border:1.5px solid rgba(109,40,217,.2);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
-.cta-btn{background:var(--d);border:none;border-radius:8px;font-size: 17px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn{background:var(--d);border:none;border-radius:8px;font-size: 17px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .cta-btn:hover{background:var(--dl);transform:translateY(-1px)}
 .cta-btn.green{background:var(--g)}.cta-btn.green:hover{background:var(--gl)}
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;align-items:center;justify-content:center;cursor:zoom-out}
@@ -113,6 +113,13 @@ footer p{font-size: 14px;color:var(--m2)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -150,20 +157,20 @@ footer p{font-size: 14px;color:var(--m2)}
     </a>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </div>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <section class="hero-event">
   <div class="hero-grid">
     <div>
-      <div class="event-kicker">🎓 Docencia · UAZ 2026</div>
+      <div class="event-kicker">Docencia · UAZ 2026</div>
       <h1 class="event-title">Diplomado Virtual<br>en Hematología 2026</h1>
       <p class="event-org">Universidad Autónoma de Zacatecas · Unidad Académica de Ciencias Químicas</p>
       <div class="event-meta">
-        <span class="meta-pill dark">📅 23 mayo – 15 agosto 2026</span>
-        <span class="meta-pill blue">🎓 Módulo 5 — Profesor</span>
-        <span class="meta-pill">💻 Virtual · Zoom · Sábados</span>
-        <span class="meta-pill green">🏛️ UAZ · Zacatecas</span>
+        <span class="meta-pill dark">23 mayo a 15 agosto 2026</span>
+        <span class="meta-pill blue">Módulo 5, Profesor</span>
+        <span class="meta-pill">Virtual · Zoom · Sábados</span>
+        <span class="meta-pill green">UAZ · Zacatecas</span>
       </div>
       <div style="font-size: 18px;color:var(--m);line-height:1.82">
         Participaré como profesor en el <strong style="color:var(--d)">Módulo 5: Técnicas Diagnósticas Modernas</strong> del I Diplomado Internacional de Hematología organizado por la Universidad Autónoma de Zacatecas. Impartiré clases sobre <strong>citometría de flujo, diagnóstico molecular y nuevas tendencias diagnósticas</strong> el 18 de julio 2026.
@@ -173,29 +180,29 @@ footer p{font-size: 14px;color:var(--m2)}
       <div class="poster-wrap" onclick="openLB()" title="Clic para ampliar">
         <img src="uaz2026.jpg" alt="Poster Diplomado UAZ 2026"/>
       </div>
-      <p class="poster-caption">🔍 Clic para ampliar el poster</p>
+      <p class="poster-caption">Clic para ampliar el poster</p>
     </div>
   </div>
 </section>
 
 <section>
-  <p class="sec blue">🎓 Mi Participación</p>
+  <p class="sec blue">Mi Participación</p>
   <div class="modulo-card">
-    <div class="modulo-badge">📌 Módulo 5 · 18 de Julio 2026</div>
+    <div class="modulo-badge">Módulo 5 · 18 de Julio 2026</div>
     <div class="modulo-title">Técnicas Diagnósticas Modernas</div>
-    <div class="modulo-desc">Clase magistral sobre las herramientas diagnósticas más avanzadas en hematología — citometría de flujo multidimensional, diagnóstico molecular y nuevas tendencias que están transformando el laboratorio clínico.</div>
+    <div class="modulo-desc">Clase magistral sobre las herramientas diagnósticas más avanzadas en hematología, citometría de flujo multidimensional, diagnóstico molecular y nuevas tendencias que están transformando el laboratorio clínico.</div>
   </div>
   <div class="ponencia-card">
-    <div class="pon-num">MÓDULO 5 · 18 DE JULIO 2026 · SÁBADO 8:00 – 12:00 HRS</div>
+    <div class="pon-num">MÓDULO 5 · 18 DE JULIO 2026 · SÁBADO 8:00-12:00 HRS</div>
     <div class="pon-title">Citometría de flujo, diagnósticos moleculares y nuevas tendencias diagnósticas</div>
-    <span class="pon-time">🎓 Sesión síncrona · Zoom · UAZ</span>
+    <span class="pon-time">Sesión síncrona · Zoom · UAZ</span>
   </div>
 </section>
 
 <section style="margin-top:1.5rem">
   <p class="sec">Información del Diplomado</p>
   <div class="info-grid">
-    <div class="info-item"><div class="info-label">Fechas</div><div class="info-value">23 mayo – 15 agosto 2026</div></div>
+    <div class="info-item"><div class="info-label">Fechas</div><div class="info-value">23 mayo a 15 agosto 2026</div></div>
     <div class="info-item"><div class="info-label">Modalidad</div><div class="info-value">Sincrónico · Zoom · Sábados 8-12 hrs</div></div>
     <div class="info-item"><div class="info-label">Institución</div><div class="info-value">Universidad Autónoma de Zacatecas</div></div>
     <div class="info-item"><div class="info-label">Costo</div><div class="info-value">Profesionistas: $2,000 MXN<br>Estudiantes UAZ: $400 MXN</div></div>
@@ -205,7 +212,7 @@ footer p{font-size: 14px;color:var(--m2)}
 </section>
 
 <section>
-  <p class="sec">Contenido — 7 Módulos</p>
+  <p class="sec">Contenido, 7 Módulos</p>
   <div class="modules-grid">
     <div class="mod-item">
       <div class="mod-num">MÓDULO 1 · 23 MAYO</div>
@@ -267,11 +274,11 @@ footer p{font-size: 14px;color:var(--m2)}
 
 <div class="cta-box">
   <p>¿Interesado en inscribirte? <strong style="color:var(--d)">Profesionistas $2,000 MXN · Estudiantes UAZ $400 MXN</strong></p>
-  <a href="https://forms.gle/kYdfixSAq1QJvv679" target="_blank" rel="noopener" class="cta-btn">📝 Registrarse aquí →</a>
+  <a href="https://forms.gle/kYdfixSAq1QJvv679" target="_blank" rel="noopener" class="cta-btn">Registrarse aquí</a>
 </div>
 <div class="cta-box" style="background:rgba(109,40,217,.04);border-color:rgba(109,40,217,.15)">
   <p>¿Más información sobre el diplomado?</p>
-  <a href="https://www.uaz.edu.mx" target="_blank" rel="noopener" class="cta-btn" style="background:var(--g)">Ver sitio UAZ →</a>
+  <a href="https://www.uaz.edu.mx" target="_blank" rel="noopener" class="cta-btn" style="background:var(--g)">Ver sitio UAZ</a>
 </div>
 <footer>
   <p>© 2026 Yair Omar Chávez-Estrada · YOCE</p>

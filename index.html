@@ -138,320 +138,16 @@
  ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-<style>
-body{margin:0}
-
-/* Layout: company-first biotech page — wide editorial bands, a live flow-cytometry plot as the hero, pipeline table as the signature biotech convention */
-:root{
-  --bg:#F2F5F4; --surface:#FFFFFF; --ink:#0C1A1D; --muted:#506267; --line:#D3DDDB;
-  --accent:#0A6B57; --accent-soft:#E0EEEA; --pop:#2447C9; --band:#0C1A1D; --band-ink:#E7EFED; --band-muted:#8FA4A6;
-  --f-display:"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
-  --f-body:"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --f-mono:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
-  --max:1160px;
-  --reel-bg:#0C1A1D; --reel-ink:#E7EFED; --reel-accent:#43C6A5; --reel-pop:#7F9CFF; --reel-muted:#7E9496;
-}
-
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
-a{color:inherit}
-.wrap{max-width:var(--max);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-h1,h2,h3{font-family:var(--f-display);font-weight:300;letter-spacing:-.02em;text-wrap:balance;margin:0}
-h2{font-size:clamp(32px,4.4vw,52px);line-height:1.05}
-h3{font-size:22px;font-weight:400;line-height:1.25}
-p{margin:0}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
-
-/* Texto que se genera al entrar en pantalla */
-.gen .w{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(.2em);transition:opacity .5s ease,filter .6s ease,transform .6s ease;transition-delay:calc(var(--i) * var(--step,45ms))}
-.gen.in .w{opacity:1;filter:blur(0);transform:none}
-
-/* NAV */
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav .wrap{display:flex;align-items:center;gap:24px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-display);font-size:20px;font-weight:400;letter-spacing:-.01em}
-.brand b{font-weight:600}
-.brand svg{width:34px;height:34px;flex:none}
-.links{display:flex;gap:22px;margin-left:auto}
-.links a{text-decoration:none;font-size:14.5px;color:var(--muted)}
-.links a:hover{color:var(--ink)}
-.lang{flex:none;display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.lang button{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:11.5px;padding:5px 10px;color:var(--muted)}
-.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;text-decoration:none;padding:12px 20px;border-radius:999px;border:1px solid var(--ink);transition:background .2s,color .2s}
-.btn.solid{background:var(--ink);color:var(--bg)}
-.btn.solid:hover{background:var(--accent);border-color:var(--accent)}
-.btn.ghost:hover{background:var(--ink);color:var(--bg)}
-.nav .btn{padding:8px 16px;font-size:14px}
-.links>a.nav-hla{line-height:1.15;font-size:13px;text-align:center;padding-block:14px;white-space:nowrap}
-@media (max-width:1180px){.links>a.nav-hla{font-size:17px;text-align:left}.nav-hla br{display:none}}
-.links{align-items:center}
-.links>a,.dd>a{display:block;padding-block:22px;white-space:nowrap}
-.dd{position:relative}
-.dd>a::after{display:none}
-.menu{position:absolute;top:100%;left:-16px;min-width:250px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility .15s;box-shadow:0 18px 40px -20px rgba(12,26,29,.35)}
-.dd:hover .menu,.dd:focus-within .menu{opacity:1;visibility:visible;transform:none}
-.menu a{padding:8px 10px;border-radius:4px;font-size:14px;color:var(--ink)}
-.menu a:hover{background:var(--accent-soft);color:var(--accent)}
-.links>a.m-only{display:none}
-.burger{all:unset;display:none;cursor:pointer;width:36px;height:36px;position:relative}
-.burger span{position:absolute;left:8px;right:8px;height:1.5px;background:var(--ink);transition:transform .2s}
-.burger span:first-child{top:14px}.burger span:last-child{top:21px}
-.burger[aria-expanded="true"] span:first-child{transform:translateY(3.5px) rotate(45deg)}
-.burger[aria-expanded="true"] span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
-@media (max-width:1180px){
-  .burger{display:block}
-  .nav .btn{display:none}.lang{margin-left:auto}
-  .links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;background:var(--bg);border-bottom:1px solid var(--line);padding:8px max(20px,env(safe-area-inset-right,0px)) 20px max(20px,env(safe-area-inset-left,0px));max-height:calc(100vh - 64px);overflow-y:auto}
-  .links.open{display:flex}
-  .links>a,.dd>a{display:block;padding-block:14px;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink)}
-  .dd>a::after{display:none}
-  .menu{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;background:transparent;padding:4px 0 10px 12px;min-width:0}
-  .menu a{color:var(--muted);padding:6px 0;font-size:15px}
-  .links>a.m-only{display:block}
-}
-
-/* HERO */
-.hero{padding-block:72px 56px}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,430px);column-gap:64px;row-gap:48px;align-items:center}
-.hero-top{grid-column:1/-1}
-.eyebrow{color:var(--accent);display:flex;gap:10px;align-items:center}
-.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
-.hero h1{font-size:clamp(40px,6.4vw,84px);line-height:1;margin-top:22px}
-.hero h1 em{font-style:normal;color:var(--accent);font-weight:400}
-.pitch{min-width:0;padding-top:28px;border-top:1px solid var(--line)}
-.pitch-k{color:var(--muted)}
-.hook{font-family:var(--f-display);font-weight:300;font-size:clamp(24px,2.6vw,34px);line-height:1.18;letter-spacing:-.015em;margin-top:14px;max-width:24ch;text-wrap:balance}
-.answer{font-family:var(--f-display);font-weight:400;font-size:clamp(20px,2vw,24px);color:var(--accent);margin-top:12px}
-.hero .lede{font-size:18px;color:var(--muted);max-width:56ch;margin-top:18px}
-.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.reel{position:relative;justify-self:end;width:100%;max-width:430px;aspect-ratio:1/1.08;margin:0;border-radius:10px;overflow:hidden;background:var(--reel-bg)}
-.reel canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.reel-ui{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;gap:10px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--reel-muted);font-variant-numeric:tabular-nums;pointer-events:none}
-.reel-btn{all:unset;position:absolute;right:14px;bottom:14px;width:30px;height:30px;border-radius:50%;border:1px solid color-mix(in srgb,var(--reel-ink) 30%,transparent);display:grid;place-items:center;cursor:pointer;color:var(--reel-ink)}
-.reel-btn:hover{border-color:var(--reel-accent);color:var(--reel-accent)}
-.reel-btn:focus-visible{outline:2px solid var(--reel-accent);outline-offset:2px}
-.reel-btn svg{width:12px;height:12px;fill:currentColor}
-@media (max-width:700px){.hero .wrap{grid-template-columns:1fr;row-gap:36px}.reel{justify-self:center;max-width:400px}}
-@media (max-width:880px){.hero .wrap{column-gap:32px}.hero{padding-block:44px 40px}}
-
-/* FACT STRIP */
-.facts{border-block:1px solid var(--line)}
-.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
-.fact{padding:22px 20px 22px 0;display:grid;gap:4px}
-.fact+.fact{padding-left:20px;border-left:1px solid var(--line)}
-.fact strong{font-family:var(--f-display);font-weight:400;font-size:26px;letter-spacing:-.01em}
-.fact span{color:var(--muted);font-size:14px;line-height:1.4}
-@media (max-width:760px){.facts .wrap{grid-template-columns:1fr 1fr}.fact:nth-child(3){padding-left:0;border-left:0}.fact:nth-child(n+3){border-top:1px solid var(--line)}}
-
-/* SECTIONS */
-section{padding-block:96px}
-@media (max-width:700px){section{padding-block:64px}}
-.sec-head{display:grid;grid-template-columns:220px 1fr;gap:32px;margin-bottom:48px}
-.sec-head .mono{color:var(--muted);padding-top:10px}
-.sec-head p.intro{color:var(--muted);max-width:60ch;margin-top:18px;font-size:18px}
-@media (max-width:760px){.sec-head{grid-template-columns:1fr;gap:12px}}
-
-/* MISSION band */
-.mission{background:var(--band);color:var(--band-ink)}
-.mission .sec-head .mono{color:var(--band-muted)}
-.mission blockquote{margin:0;font-family:var(--f-display);font-weight:300;font-size:clamp(28px,3.6vw,46px);line-height:1.15;letter-spacing:-.015em;text-wrap:balance}
-.mission blockquote em{font-style:normal;color:var(--accent)}
-.mission .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px;padding-top:32px;border-top:1px solid color-mix(in srgb,var(--band-ink) 18%,transparent)}
-.mission .cols p{color:var(--band-muted);font-size:16px}
-.mission .cols h3{font-size:19px;margin-bottom:10px;color:var(--band-ink)}
-@media (max-width:760px){.mission .cols{grid-template-columns:1fr}}
-
-/* PLATFORM */
-.grid6{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.svc{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 26px 30px;display:flex;flex-direction:column;gap:12px;text-decoration:none;background:transparent;transition:background .2s;min-width:0}
-a.svc:hover{background:var(--surface)}
-.svc-img{aspect-ratio:16/10;overflow:hidden;border-radius:4px;margin-bottom:8px;background:var(--band);max-width:100%}
-.svc-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease}
-a.svc:hover .svc-img img{transform:scale(1.04)}
-@media (prefers-reduced-motion:reduce){.svc-img img{transition:none}}
-.svc-img,.banner,.tool .viz,.eco-img{position:relative}
-canvas[data-scene]{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .8s ease}
-canvas[data-scene].on{opacity:1}
-.svc .tag{align-self:flex-start;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:2px 7px}
-.svc p{color:var(--muted);font-size:15.5px}
-.svc .more{margin-top:auto;font-size:14px;font-weight:600;color:var(--accent)}
-@media (max-width:900px){.grid6{grid-template-columns:1fr 1fr}}
-@media (max-width:600px){.grid6{grid-template-columns:1fr}}
-
-/* PIPELINE */
-.pipe-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
-table.pipe{width:100%;min-width:760px;border-collapse:collapse;font-size:15px}
-.pipe th{font-family:var(--f-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:400;text-align:left;padding:14px 18px;border-bottom:1px solid var(--line)}
-.pipe td{padding:20px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
-.pipe tr:last-child td{border-bottom:0}
-.pipe .prog{font-weight:600}
-.pipe .prog small{display:block;font-weight:400;color:var(--muted);font-size:13.5px;margin-top:2px}
-.pipe .code{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
-.stages{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;min-width:300px}
-.stages.head span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.05em;color:var(--muted);text-transform:uppercase}
-.bar{grid-column:1/-1;height:10px;border-radius:2px;background:var(--accent-soft);position:relative;overflow:hidden}
-.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:2px}
-.bar i::after{content:"";position:absolute;right:0;top:0;bottom:0;width:10px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--surface) 60%,transparent))}
-.status{font-size:13.5px;color:var(--muted);margin-top:6px}
-.banner{height:clamp(140px,18vw,210px);border-radius:6px;overflow:hidden;background:#071518;margin-bottom:20px}
-.banner-cap,.viz-cap{position:absolute;left:16px;bottom:12px;font-size:10.5px;color:#9FB7B4;letter-spacing:.08em}
-.support{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-top:28px;padding:26px 28px;border:1px solid var(--line);border-radius:6px}
-.support p{color:var(--muted);max-width:68ch;font-size:15.5px}
-.support strong{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
-@media (max-width:700px){.support{grid-template-columns:1fr}}
-
-/* TOOLS */
-.tool{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
-.tool .txt{padding:36px;display:flex;flex-direction:column;gap:16px}
-.tool .txt p{color:var(--muted)}
-.tool .viz{background:#071518;min-height:280px;overflow:hidden}
-.eq{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed color-mix(in srgb,var(--accent) 40%,transparent);padding-bottom:10px}
-.eq span:first-child{color:var(--muted)}
-.eq b{font-weight:500;color:var(--accent)}
-@media (max-width:760px){.tool{grid-template-columns:1fr}.tool .txt{padding:26px}}
-.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:24px;border-top:1px solid var(--line)}
-.tools a{display:flex;flex-direction:column;gap:8px;padding:24px 22px 26px 0;border-bottom:1px solid var(--line);text-decoration:none;min-width:0}
-.tools a:not(:nth-child(3n+1)){padding-left:22px;border-left:1px solid var(--line)}
-.tools .mono{color:var(--accent);font-size:11px}
-.tools h3{font-size:19px}
-.tools p{color:var(--muted);font-size:14.5px}
-.tools a:hover h3{color:var(--accent)}
-@media (max-width:860px){.tools{grid-template-columns:1fr}.tools a:not(:nth-child(3n+1)){padding-left:0;border-left:0}}
-
-/* LEADERSHIP */
-.lead{display:grid;grid-template-columns:340px 1fr;gap:56px;align-items:start}
-.lead figure{margin:0}
-.lead img{width:100%;aspect-ratio:4/4.6;object-fit:cover;object-position:center 20%;border-radius:4px;filter:saturate(.92);display:block;background:var(--line)}
-.lead figcaption{margin-top:14px;display:grid;gap:2px}
-.lead figcaption b{font-family:var(--f-display);font-weight:400;font-size:22px}
-.lead figcaption span{color:var(--muted);font-size:14.5px}
-.lead .bio p{font-size:18px;max-width:62ch}
-.lead .bio p+p{margin-top:16px;color:var(--muted);font-size:16.5px}
-.creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
-.creds span{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--muted);background:var(--surface)}
-.cv{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px}
-.cv h4{margin:0 0 14px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:400}
-.cv ol{list-style:none;margin:0;padding:0;display:grid}
-.cv li{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.45}
-.cv li time{font-family:var(--f-mono);font-size:12px;color:var(--accent);padding-top:2px;font-variant-numeric:tabular-nums}
-.cv li span{display:block;color:var(--muted);font-size:13.5px}
-@media (max-width:900px){.lead{grid-template-columns:1fr;gap:32px}.lead figure{max-width:340px}.cv{grid-template-columns:1fr;gap:28px}}
-
-/* PUBLICATIONS */
-.pubs{display:grid;grid-template-columns:300px 1fr;gap:48px}
-.metrics{border-radius:8px;padding:22px;background:#0C1A1D;color:#E7EFED;display:grid;gap:18px;align-self:start;position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}
-.sch-head{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:19px;font-weight:400}
-.sch-head svg{width:24px;height:24px;color:#43C6A5}
-.sch-viz{position:relative;aspect-ratio:1/0.82;border-radius:6px;overflow:hidden;background:#071518;max-width:100%}
-.sch-cap{position:absolute;left:12px;bottom:10px;font-size:10px;color:#7E9496;letter-spacing:.08em}
-.metrics .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.metrics .num{font-family:var(--f-display);font-size:40px;font-weight:300;line-height:1;font-variant-numeric:tabular-nums;color:#E7EFED}
-.metrics .lbl{font-size:12.5px;color:#93A7AA;margin-top:4px}
-.sch-leg{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13.5px}
-.sch-leg li{display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;color:#C9D6D4}
-.sch-leg i{width:10px;height:10px;border-radius:50%}
-.sch-leg b{font-family:var(--f-mono);font-weight:500;color:#E7EFED;font-variant-numeric:tabular-nums}
-.sch-btn{justify-self:start;font-size:14px;font-weight:600;color:#0C1A1D;background:#43C6A5;border-radius:999px;padding:9px 16px;text-decoration:none}
-.sch-btn:hover{background:#E7EFED}
-@media (max-width:860px){.metrics{position:static}}
-.paper{display:grid;grid-template-columns:90px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
-.paper:last-of-type{border-bottom:1px solid var(--line)}
-.paper .yr{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:4px}
-.paper h3{font-size:19px;line-height:1.3}
-.paper h3 a{text-decoration:none}
-.paper h3 a:hover{color:var(--accent)}
-.paper .auth{color:var(--muted);font-size:14px;margin-top:6px}
-.paper .jr{font-size:14px;margin-top:4px}
-.paper .jr i{font-style:italic}
-.paper .jr .c{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);margin-left:8px}
-.more-pubs{margin-top:18px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
-.more-pubs summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:12px}
-.more-pubs summary::-webkit-details-marker{display:none}
-.more-pubs summary::after{content:"+";font-family:var(--f-mono);color:var(--accent)}
-.more-pubs[open] summary::after{content:"−"}
-.more-pubs ol{list-style:none;margin:0;padding:0 18px 8px}
-.more-pubs li{display:grid;grid-template-columns:70px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px;line-height:1.4}
-.more-pubs .y{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
-.more-pubs b{font-weight:600}
-.more-pubs small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
-.more-pubs small b{font-weight:600;color:var(--ink)}
-@media (max-width:600px){.more-pubs li{grid-template-columns:1fr;gap:2px}}
-.video{display:flex;gap:16px;align-items:center;margin-top:26px;text-decoration:none;padding:16px 18px;border:1px solid var(--line);border-radius:6px}
-.video:hover{border-color:var(--accent)}
-.video .play{width:40px;height:40px;border-radius:50%;background:var(--ink);display:grid;place-items:center;flex:none}
-.video .play::after{content:"";border-left:11px solid var(--bg);border-block:7px solid transparent;margin-left:3px}
-.video small{display:block;color:var(--muted);font-size:13px}
-@media (max-width:860px){.pubs{grid-template-columns:1fr}.paper{grid-template-columns:1fr;gap:6px}}
-
-/* NEWS */
-.news{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.item{display:flex;flex-direction:column;gap:10px;text-decoration:none;padding-top:18px;border-top:2px solid var(--ink)}
-.item .meta{display:flex;justify-content:space-between;color:var(--muted)}
-.item h3{font-size:20px}
-.item-img{aspect-ratio:4/3;overflow:hidden;border-radius:4px;background:var(--surface);border:1px solid var(--line);max-width:100%}
-.item-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
-.item:hover .item-img img{transform:scale(1.03)}
-@media (prefers-reduced-motion:reduce){.item-img img{transition:none}}
-.item .ev{color:var(--accent);font-size:11.5px;margin-top:auto}
-.news{row-gap:44px}
-.item p{color:var(--muted);font-size:15px}
-.item:hover h3{color:var(--accent)}
-@media (max-width:860px){.news{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.news{grid-template-columns:1fr}}
-
-/* ECOSYSTEM */
-.eco{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.eco a,.eco .eco-item{display:flex;flex-direction:column;gap:12px;padding:28px;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-decoration:none;transition:border-color .2s}
-.eco a:hover{border-color:var(--accent)}
-.eco-img{aspect-ratio:16/10;border-radius:4px;overflow:hidden;background:#071518;max-width:100%}
-.eco-img img{width:100%;height:100%;object-fit:cover;display:block}
-.eco-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
-.soon{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--muted);border:1px dashed var(--muted);border-radius:999px;padding:3px 9px}
-.soon::before{content:"";width:6px;height:6px;border-radius:50%;background:#E8C35A}
-.lcm-title{font-weight:300}
-.lcm-title b{font-weight:400;color:#E6007E}
-.eco p{color:var(--muted);font-size:15px}
-.eco .k{color:var(--accent)}
-@media (max-width:860px){.eco{grid-template-columns:1fr}}
-
-/* CONTACT */
-.contact{background:var(--band);color:var(--band-ink)}
-.contact .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:56px}
-.contact h2{font-size:clamp(34px,5vw,60px)}
-.contact h2 em{font-style:normal;color:var(--accent)}
-.contact p.l{color:var(--band-muted);margin-top:18px;max-width:50ch;font-size:18px}
-.contact .btn{border-color:var(--band-ink)}
-.contact .btn.solid{background:var(--band-ink);color:var(--band)}
-.contact .btn.solid:hover{background:var(--accent);border-color:var(--accent);color:var(--band)}
-.mail{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:30px}
-.mail code{font-family:var(--f-mono);font-size:15px;user-select:all;color:var(--band-ink)}
-.mail button{all:unset;cursor:pointer;font-family:var(--f-mono);font-size:12px;border:1px solid color-mix(in srgb,var(--band-ink) 35%,transparent);border-radius:999px;padding:6px 12px;color:var(--band-ink)}
-.mail button:hover{border-color:var(--accent);color:var(--accent)}
-.soc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr}
-.soc a{display:flex;justify-content:space-between;gap:10px;padding:16px 0;border-bottom:1px solid color-mix(in srgb,var(--band-ink) 16%,transparent);text-decoration:none;font-size:15px}
-.soc li:nth-child(odd) a{margin-right:20px}
-.soc a span{color:var(--band-muted);font-family:var(--f-mono);font-size:12px}
-.soc a:hover{color:var(--accent)}
-@media (max-width:860px){.contact .wrap{grid-template-columns:1fr;gap:40px}}
-@media (max-width:480px){.soc{grid-template-columns:1fr}.soc li:nth-child(odd) a{margin-right:0}}
-
-footer{background:var(--band);color:var(--band-muted);border-top:1px solid color-mix(in srgb,var(--band-ink) 12%,transparent)}
-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:24px;font-size:13px}
-</style>
-
+<link rel="preload" href="fonts/bricolage-grotesque-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/hanken-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/home.css">
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
+<a class="skip" href="#mision" data-en="Skip to content">Saltar al contenido</a>
 <header class="nav">
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="YoCellTherapy — inicio">
+  <div class="container">
+    <a class="brand" href="#top" aria-label="YoCellTherapy, inicio">
       <svg viewBox="0 0 512 512" aria-hidden="true"><defs><radialGradient id="yctg"><stop offset="0" stop-color="#7F9CFF" stop-opacity=".55"/><stop offset="1" stop-color="#7F9CFF" stop-opacity="0"/></radialGradient></defs><rect width="512" height="512" rx="112" fill="#0C1A1D"/><g transform="translate(256 256) scale(1.32) translate(-256 -256)"><circle cx="256" cy="256" r="96.0" fill="#43C6A5" fill-opacity="0.17"/><circle cx="256" cy="256" r="150" fill="none" stroke="#43C6A5" stroke-width="24"/><path d="M202.0 199.0L256 260.5L310.0 199.0M256 260.5V323.5" fill="none" stroke="#E7EFED" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/><circle cx="371.8" cy="183.8" r="52" fill="url(#yctg)"/><circle cx="371.8" cy="183.8" r="28" fill="#7F9CFF"/></g></svg>
       <span>Yo<b>Cell</b>Therapy</span>
     </a>
@@ -477,8 +173,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         <div class="menu">
           <a href="recambio-plasmatico.html" data-en="Plasma exchange">Recambio plasmático</a>
           <a href="hppc-cryopreservation-calculator.html" data-en="HPC cryopreservation">Criopreservación CPH</a>
-          <a href="fraccionamiento-cd34-calculator.html" data-en="CD34⁺ fractionation">Fraccionamiento CD34⁺</a>
-          <a href="ce2-calculator-yoce.html" data-en="CE2% CD34⁺">CE2% CD34⁺</a>
+          <a href="fraccionamiento-cd34-calculator.html" data-en="CD34+ fractionation">Fraccionamiento CD34+</a>
+          <a href="ce2-calculator-yoce.html" data-en="CE2% CD34+">CE2% CD34+</a>
           <a href="colecta-linfocitos.html" data-en="T-cell collection">Colecta de linfocitos T</a>
           <a href="calculadora-vec-pediatrico.html" data-en="Pediatric ECV">VEC pediátrico</a>
           <a href="predictor.html" data-en="Blood volume predictor">Predictor de volemia</a>
@@ -486,11 +182,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
         </div></div>
       <div class="dd"><a href="#ecosistema" data-en="Ecosystem">Ecosistema</a>
         <div class="menu">
-          <a href="la-celula-mexicana.html">La Célula Mexicana · <span data-en="Podcast">Podcast</span></a>
+          <a href="la-celula-mexicana.html" data-en="La Célula Mexicana, podcast">La Célula Mexicana, podcast</a>
           <a href="yocell-lab.html">YoCell Lab</a>
           <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517" data-en="Novel">Novela</a>
         </div></div>
-      <a class="nav-hla" href="histocompatibilidad.html" data-en="Molecular Biology<br>&amp; Histocompatibility">Biología Molecular<br>e Histocompatibilidad</a>
+      <a class="nav-hla" href="histocompatibilidad.html" data-en="Molecular Biology &amp; HLA">Biología Molecular y HLA</a>
       <a href="#publicaciones" data-en="Publications">Publicaciones</a>
       <a href="#noticias" data-en="News">Noticias</a>
       <a class="m-only" href="#contacto" data-en="Contact">Contacto</a>
@@ -499,278 +195,262 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       <button type="button" id="lang-es" aria-pressed="true">ES</button>
       <button type="button" id="lang-en" aria-pressed="false">EN</button>
     </div>
-    <a class="btn solid" href="#contacto" data-en="Contact">Contacto</a>
+    <a class="btn nav-cta" href="#contacto" data-en="Contact">Contacto</a>
     <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="links" aria-label="Menú"><span></span><span></span></button>
   </div>
 </header>
 
 <main id="top">
-  <!-- HERO -->
   <div class="hero">
-    <div class="wrap">
-      <div class="hero-top">
-        <div class="eyebrow mono" data-en="Cell &amp; Gene Therapy · Monterrey, Mexico">Terapia Celular y Génica · Monterrey, México</div>
+    <div class="container">
+      <div class="hero-text">
         <h1 data-en="Advanced cell therapies, <em>manufactured in Latin America.</em>">Terapias celulares avanzadas, <em>manufacturadas en Latinoamérica.</em></h1>
-      </div>
-      <div class="pitch">
-        <span class="mono pitch-k" data-en="What is YoCellTherapy?">¿Qué es YoCellTherapy?</span>
-        <p class="hook" data-en="What does it take to bring a cell therapy from the research lab to cGMP manufacturing?">¿Qué se necesita para llevar una terapia celular del laboratorio de investigación a una manufactura cGMP?</p>
-        <p class="answer" data-en="Rigorous science, quality control and data. That is where we come in.">Ciencia rigurosa, control de calidad y datos. Ahí es donde entramos.</p>
-        <p class="lede" data-en="YoCellTherapy brings scientific and technical expertise in genetically modified T lymphocytes (CAR-T), cGMP manufacturing of ATMPs and clinical artificial intelligence to hospitals, research groups and investors across the region.">YoCellTherapy aporta experiencia científica y técnica en linfocitos T genéticamente modificados (CAR-T), manufactura cGMP de medicamentos de terapia avanzada (ATMPs) e inteligencia artificial clínica a hospitales, grupos de investigación e inversionistas de la región.</p>
+        <p class="answer lead" data-en="Rigorous science, quality control and data. That is where we come in.">Ciencia rigurosa, control de calidad y datos. Ahí es donde entramos.</p>
         <div class="ctas">
-          <a class="btn solid" href="#contacto" data-en="Book a consultation →">Agendar consultoría →</a>
-          <a class="btn ghost" href="#pipeline" data-en="View pipeline">Ver pipeline</a>
+          <a class="btn" href="#contacto" data-en="Book a consultation">Agendar consultoría</a>
+          <a class="btn btn--quiet" href="#pipeline" data-en="View pipeline">Ver pipeline</a>
         </div>
       </div>
       <figure class="reel" aria-label="Animación de marca de YoCellTherapy">
         <canvas id="reel" role="img" aria-label="Partículas que forman una célula; dentro se dibuja la Y del logotipo YoCellTherapy, aparecen receptores CAR que reconocen células blanco y se muestran las capacidades de la empresa."></canvas>
-        <div class="reel-ui"><span>YoCellTherapy · Reel</span><span id="tc">00:00 / 00:16</span></div>
-        <button type="button" class="reel-btn" id="reelBtn" aria-label="Pausar animación"><svg viewBox="0 0 12 12" id="reelIco"><rect x="2" y="1.5" width="2.6" height="9"/><rect x="7.4" y="1.5" width="2.6" height="9"/></svg></button>
+        <div class="reel-ui"><span data-en="YoCellTherapy reel">Reel de YoCellTherapy</span><span id="tc">00:00 / 00:16</span></div>
+        <button type="button" class="reel-btn" id="reelBtn" aria-label="Pausar animación"><svg viewBox="0 0 12 12" id="reelIco" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9"/><rect x="7.4" y="1.5" width="2.6" height="9"/></svg></button>
       </figure>
     </div>
   </div>
 
   <div class="facts">
-    <div class="wrap">
-      <div class="fact"><strong>1.º</strong><span data-en="decentralized CAR-T manufacturing program in Mexico">programa descentralizado de manufactura CAR-T en México</span></div>
-      <div class="fact"><strong>JCO GO</strong><span data-en="Global Oncology, 2025 publication">Global Oncology, publicación 2025</span></div>
-      <div class="fact"><strong>ISCT</strong><span data-en="ESP Committee · South &amp; Central America">Comité ESP · Sudamérica y Centroamérica</span></div>
-      <div class="fact"><strong>cGMP</strong><span data-en="Manufacturing standard for ATMPs">Estándar de manufactura de medicamentos de terapia avanzada (ATMPs)</span></div>
-    </div>
+    <dl class="container">
+      <div><dt>1.º</dt><dd data-en="decentralized CAR-T manufacturing program in Mexico">programa descentralizado de manufactura CAR-T en México</dd></div>
+      <div><dt>JCO GO</dt><dd data-en="Global Oncology, 2025 publication">Global Oncology, publicación 2025</dd></div>
+      <div><dt>ISCT</dt><dd data-en="ESP Committee, South and Central America">Comité ESP, Sudamérica y Centroamérica</dd></div>
+      <div><dt>cGMP</dt><dd data-en="Manufacturing standard for ATMPs">Estándar de manufactura de medicamentos de terapia avanzada (ATMPs)</dd></div>
+    </dl>
   </div>
 
-  <!-- MISSION -->
   <section class="mission" id="mision">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Mission">Misión</div>
-        <blockquote data-en="Our mission is to strengthen advanced cell therapy research in Latin America with <em>rigor, quality and data</em>, supporting the teams that develop it in the region.">Nuestra misión es impulsar la investigación en terapias celulares avanzadas en Latinoamérica con <em>rigor, calidad y datos</em>, acompañando a los equipos que la desarrollan en la región.</blockquote>
+    <div class="container grid12">
+      <div class="sec-head m-head">
+        <h2 class="hook" data-en="What does it take to bring a cell therapy from the research lab to cGMP manufacturing?">¿Qué se necesita para llevar una terapia celular del laboratorio de investigación a una manufactura cGMP?</h2>
       </div>
-      <div class="cols">
-        <div><h3 data-en="From the cleanroom">Desde la sala limpia</h3><p data-en="Hands-on experience in apheresis, cryopreservation, flow cytometry and quality control within an active hematopoietic transplant and CAR-T unit.">Experiencia directa en aféresis, criopreservación, citometría de flujo y control de calidad dentro de una unidad activa de trasplante hematopoyético y CAR-T.</p></div>
-        <div><h3 data-en="To the data">Hacia los datos</h3><p data-en="Biostatistics and machine learning models built on real clinical data to anticipate yields, optimize processes and support decisions.">Bioestadística y modelos de machine learning construidos con datos clínicos reales para anticipar rendimientos, optimizar procesos y sustentar decisiones.</p></div>
-        <div><h3 data-en="With the region">Con la región</h3><p data-en="Bridges between hospitals, academia and industry to build cell therapy capacity across LATAM.">Puentes entre hospitales, academia e industria para construir capacidad en terapia celular en toda LATAM.</p></div>
-      </div>
+      <p class="m-lede" data-en="YoCellTherapy brings scientific and technical expertise in genetically modified T lymphocytes (CAR-T), cGMP manufacturing of ATMPs and clinical artificial intelligence to hospitals, research groups and investors across the region.">YoCellTherapy aporta experiencia científica y técnica en linfocitos T genéticamente modificados (CAR-T), manufactura cGMP de medicamentos de terapia avanzada (ATMPs) e inteligencia artificial clínica a hospitales, grupos de investigación e inversionistas de la región.</p>
+      <blockquote data-en="Our mission is to strengthen advanced cell therapy research in Latin America with <em>rigor, quality and data</em>, supporting the teams that develop it in the region.">Nuestra misión es impulsar la investigación en terapias celulares avanzadas en Latinoamérica con <em>rigor, calidad y datos</em>, acompañando a los equipos que la desarrollan en la región.</blockquote>
+      <ol class="cols">
+        <li><h3 data-en="From the cleanroom">Desde la sala limpia</h3><p data-en="Hands-on experience in apheresis, cryopreservation, flow cytometry and quality control within an active hematopoietic transplant and CAR-T unit.">Experiencia directa en aféresis, criopreservación, citometría de flujo y control de calidad dentro de una unidad activa de trasplante hematopoyético y CAR-T.</p></li>
+        <li><h3 data-en="To the data">Hacia los datos</h3><p data-en="Biostatistics and machine learning models built on real clinical data to anticipate yields, optimize processes and support decisions.">Bioestadística y modelos de machine learning construidos con datos clínicos reales para anticipar rendimientos, optimizar procesos y sustentar decisiones.</p></li>
+        <li><h3 data-en="With the region">Con la región</h3><p data-en="Bridges between hospitals, academia and industry to build cell therapy capacity across LATAM.">Puentes entre hospitales, academia e industria para construir capacidad en terapia celular en toda LATAM.</p></li>
+      </ol>
     </div>
   </section>
 
-  <!-- PLATFORM -->
   <section id="plataforma">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Platform">Plataforma</div>
-        <div><h2 data-en="Six capabilities, one integrated platform">Seis capacidades, una plataforma integrada</h2>
-        <p class="intro" data-en="Scientific consulting that covers the full lifecycle of an advanced therapy, from protocol design to batch release and investment evaluation.">Consultoría científica que cubre el ciclo completo de una terapia avanzada, desde el diseño del protocolo hasta la liberación del lote y la evaluación de inversión.</p></div>
+    <div class="container grid12">
+      <div class="sec-head split-head">
+        <h2 data-en="Six capabilities, one integrated platform">Seis capacidades, una plataforma integrada</h2>
+        <p class="intro" data-en="Scientific consulting that covers the full lifecycle of an advanced therapy, from protocol design to batch release and investment evaluation.">Consultoría científica que cubre el ciclo completo de una terapia avanzada, desde el diseño del protocolo hasta la liberación del lote y la evaluación de inversión.</p>
       </div>
-      <div class="grid6">
-        <div class="svc"><div class="svc-img"><img src="img/plataforma-terapia-celular.webp" alt="Linfocitos T translúcidos con núcleo" loading="lazy" width="800" height="500"><canvas data-scene="cells" aria-hidden="true"></canvas></div><span class="tag">ATMP</span><h3 data-en="Cell Therapy Advisory">Asesoría en Terapia Celular</h3><p data-en="Design, manufacturing and validation of ATMPs. cGMP strategy for CAR-T, stem cells and advanced biologics.">Diseño, manufactura y validación de medicamentos de terapia avanzada (ATMPs). Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados.</p></div>
-        <a class="svc" href="protocolos.html"><div class="svc-img"><img src="img/plataforma-bioestadistica.webp" alt="Diagrama de densidad con curvas de nivel" loading="lazy" width="800" height="500"><canvas data-scene="density" aria-hidden="true"></canvas></div><span class="tag">STAT</span><h3 data-en="Biostatistics &amp; Protocols">Bioestadística y Protocolos</h3><p data-en="Statistical design of clinical and preclinical studies, biomedical data analysis.">Diseño estadístico de estudios clínicos y preclínicos, análisis de datos biomédicos.</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
-        <a class="svc" href="ia-salud.html"><div class="svc-img"><img src="img/plataforma-ia.webp" alt="Red neuronal luminosa" loading="lazy" width="800" height="500"><canvas data-scene="network" aria-hidden="true"></canvas></div><span class="tag">ML</span><h3 data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p data-en="ML and clinical prediction models applied to flow cytometry, apheresis and ATMP manufacturing.">Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de medicamentos de terapia avanzada (ATMPs).</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
-        <a class="svc" href="id-estrategico.html"><div class="svc-img"><img src="img/plataforma-id.webp" alt="Partículas lentivirales con glicoproteínas de envoltura" loading="lazy" width="800" height="500"><canvas data-scene="virions" aria-hidden="true"></canvas></div><span class="tag">R&amp;D</span><h3 data-en="Strategic R&amp;D">I+D Estratégico</h3><p data-en="Evaluation of research proposals, funding advice and pipeline development.">Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines.</p><span class="more" data-en="Learn more →">Conocer más →</span></a>
-        <div class="svc"><div class="svc-img"><img src="img/plataforma-calidad.webp" alt="Cámara de Neubauer con células bajo el microscopio" loading="lazy" width="800" height="500"><canvas data-scene="neubauer" aria-hidden="true"></canvas></div><span class="tag">QC</span><h3 data-en="Quality Control">Control de Calidad</h3><p data-en="Microbiological control of cryopreserved products, method validation, transfusion medicine.">Control microbiológico de criopreservados, validación de métodos, medicina transfusional.</p></div>
-        <div class="svc"><div class="svc-img"><img src="img/plataforma-inversion.webp" alt="Campo de trayectorias de flujo" loading="lazy" width="800" height="500"><canvas data-scene="flow" aria-hidden="true"></canvas></div><span class="tag">DD</span><h3 data-en="Investor Advisory">Asesoría a Inversionistas</h3><p data-en="Scientific and technical due diligence, biotech startup evaluation and cell therapy feasibility in LATAM.">Due diligence científico-técnico, evaluación de startups biotech y viabilidad de terapia celular en LATAM.</p></div>
+      <div class="bento">
+        <div class="svc svc--lead"><div class="svc-img"><img src="img/plataforma-terapia-celular.webp" alt="Linfocitos T translúcidos con núcleo" loading="lazy" width="800" height="500"><canvas data-scene="cells" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">ATMP</span><h3 data-en="Cell Therapy Advisory">Asesoría en Terapia Celular</h3><p data-en="Design, manufacturing and validation of ATMPs. cGMP strategy for CAR-T, stem cells and advanced biologics.">Diseño, manufactura y validación de medicamentos de terapia avanzada (ATMPs). Estrategia cGMP para CAR-T, células madre y productos biológicos avanzados.</p></div></div>
+        <a class="svc" href="protocolos.html"><div class="svc-img"><img src="img/plataforma-bioestadistica.webp" alt="Diagrama de densidad con curvas de nivel" loading="lazy" width="800" height="500"><canvas data-scene="density" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">STAT</span><h3 data-en="Biostatistics &amp; Protocols">Bioestadística y Protocolos</h3><p data-en="Statistical design of clinical and preclinical studies, biomedical data analysis.">Diseño estadístico de estudios clínicos y preclínicos, análisis de datos biomédicos.</p><span class="more" data-en="Learn more">Conocer más</span></div></a>
+        <a class="svc" href="ia-salud.html"><div class="svc-img"><img src="img/plataforma-ia.webp" alt="Red neuronal luminosa" loading="lazy" width="800" height="500"><canvas data-scene="network" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">ML</span><h3 data-en="AI in Health Sciences">IA en Ciencias de la Salud</h3><p data-en="ML and clinical prediction models applied to flow cytometry, apheresis and ATMP manufacturing.">Modelos de ML y predicción clínica aplicados a citometría de flujo, aféresis y manufactura de medicamentos de terapia avanzada (ATMPs).</p><span class="more" data-en="Learn more">Conocer más</span></div></a>
+        <a class="svc" href="id-estrategico.html"><div class="svc-img"><img src="img/plataforma-id.webp" alt="Partículas lentivirales con glicoproteínas de envoltura" loading="lazy" width="800" height="500"><canvas data-scene="virions" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">R&amp;D</span><h3 data-en="Strategic R&amp;D">I+D Estratégico</h3><p data-en="Evaluation of research proposals, funding advice and pipeline development.">Evaluación de propuestas de investigación, asesoría en financiamiento y desarrollo de pipelines.</p><span class="more" data-en="Learn more">Conocer más</span></div></a>
+        <div class="svc"><div class="svc-img"><img src="img/plataforma-calidad.webp" alt="Cámara de Neubauer con células bajo el microscopio" loading="lazy" width="800" height="500"><canvas data-scene="neubauer" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">QC</span><h3 data-en="Quality Control">Control de Calidad</h3><p data-en="Microbiological control of cryopreserved products, method validation, transfusion medicine.">Control microbiológico de criopreservados, validación de métodos, medicina transfusional.</p></div></div>
+        <div class="svc"><div class="svc-img"><img src="img/plataforma-inversion.webp" alt="Campo de trayectorias de flujo" loading="lazy" width="800" height="500"><canvas data-scene="flow" aria-hidden="true"></canvas></div><div class="svc-txt"><span class="tag">DD</span><h3 data-en="Investor Advisory">Asesoría a Inversionistas</h3><p data-en="Scientific and technical due diligence, biotech startup evaluation and cell therapy feasibility in LATAM.">Due diligence científico-técnico, evaluación de startups biotech y viabilidad de terapia celular en LATAM.</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- PIPELINE -->
-  <section id="pipeline" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono">Pipeline</div>
-        <div><h2 data-en="Active research programs">Programas de investigación activos</h2>
-        <p class="intro" data-en="Projects we are developing in Mexico to reduce dependence on external suppliers and strengthen the quality of cell products.">Proyectos que desarrollamos en México para reducir la dependencia de proveedores externos y fortalecer la calidad de los productos celulares.</p></div>
+  <section id="pipeline" class="pipeline">
+    <div class="container grid12">
+      <div class="sec-head split-head">
+        <h2 data-en="Active research programs">Programas de investigación activos</h2>
+        <p class="intro" data-en="Projects we are developing in Mexico to reduce dependence on external suppliers and strengthen the quality of cell products.">Proyectos que desarrollamos en México para reducir la dependencia de proveedores externos y fortalecer la calidad de los productos celulares.</p>
       </div>
-      <div class="banner"><canvas data-scene="helix" aria-hidden="true"></canvas><span class="banner-cap mono" data-en="Transgene · anti-CD19 CAR · lentiviral vector">Transgén · CAR anti-CD19 · vector lentiviral</span></div>
+      <figure class="banner"><canvas data-scene="helix" aria-hidden="true"></canvas><figcaption class="banner-cap" data-en="Anti-CD19 CAR transgene in a lentiviral vector">Transgén CAR anti-CD19 en vector lentiviral</figcaption></figure>
       <div class="pipe-scroll">
         <table class="pipe">
           <thead><tr>
-            <th data-en="Program">Programa</th><th data-en="Area">Área</th>
-            <th><div class="stages head"><span data-en="Concept">Concepto</span><span data-en="Development">Desarrollo</span><span data-en="Validation">Validación</span><span data-en="Clinical use">Uso clínico</span></div></th>
+            <th scope="col" data-en="Program">Programa</th><th scope="col" data-en="Area">Área</th>
+            <th scope="col"><div class="stages head"><span data-en="Concept">Concepto</span><span data-en="Development">Desarrollo</span><span data-en="Validation">Validación</span><span data-en="Clinical use">Uso clínico</span></div></th>
           </tr></thead>
           <tbody>
             <tr>
-              <td><span class="code">YCT-CD19</span><div class="prog"><a href="cart-vector.html" data-en="In-house CD19 lentiviral vector">Vector lentiviral CD19 in-house</a><small data-en="Refractory B-ALL · preclinical · RUO">LLA-B refractaria · preclínico · RUO</small></div></td>
-              <td data-en="Gene therapy · CAR-T">Terapia génica · CAR-T</td>
-              <td><div class="stages"><div class="bar"><i style="width:42%"></i></div></div><div class="status" data-en="Construct, vector production and MOI optimization">Constructo, producción de vector y optimización de MOI</div></td>
+              <td><span class="code">YCT-CD19</span><div class="prog"><a href="cart-vector.html" data-en="In-house CD19 lentiviral vector">Vector lentiviral CD19 in-house</a><small data-en="Refractory B-ALL, preclinical, RUO">LLA-B refractaria, preclínico, RUO</small></div></td>
+              <td data-en="Gene therapy, CAR-T">Terapia génica, CAR-T</td>
+              <td><div class="stages"><div class="bar"><i style="transform:scaleX(.42)"></i></div></div><div class="status" data-en="Construct, vector production and MOI optimization">Constructo, producción de vector y optimización de MOI</div></td>
             </tr>
             <tr>
               <td><span class="code">YCT-QC</span><div class="prog"><span data-en="Sterility of cryopreserved CAR-T">Esterilidad en CAR-T criopreservados</span><small data-en="BD BACTEC™ FOS in DMSO/HSA matrices">BD BACTEC™ FOS en matrices DMSO/HSA</small></div></td>
               <td data-en="Quality control">Control de calidad</td>
-              <td><div class="stages"><div class="bar"><i style="width:68%"></i></div></div><div class="status" data-en="Manuscript in preparation for Cytotherapy">Manuscrito en preparación para Cytotherapy</div></td>
+              <td><div class="stages"><div class="bar"><i style="transform:scaleX(.68)"></i></div></div><div class="status" data-en="Manuscript in preparation for Cytotherapy">Manuscrito en preparación para Cytotherapy</div></td>
             </tr>
             <tr>
-              <td><span class="code">YOCE-ML</span><div class="prog"><span data-en="Apheresis prediction model">Modelo predictivo de aféresis</span><small>Gradient Boosting · CD34⁺</small></div></td>
+              <td><span class="code">YOCE-ML</span><div class="prog"><span data-en="Apheresis prediction model">Modelo predictivo de aféresis</span><small data-en="Gradient Boosting, CD34+">Gradient Boosting, CD34+</small></div></td>
               <td data-en="Clinical AI">IA clínica</td>
-              <td><div class="stages"><div class="bar"><i style="width:64%"></i></div></div><div class="status" data-en="Prospective validation · 3rd place, AMMTAC Award 2026">Validación prospectiva · 3.er lugar Premio AMMTAC 2026</div></td>
+              <td><div class="stages"><div class="bar"><i style="transform:scaleX(.64)"></i></div></div><div class="status" data-en="Prospective validation. 3rd place, AMMTAC Award 2026">Validación prospectiva. 3.er lugar Premio AMMTAC 2026</div></td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="support">
         <p><strong data-en="Support research in Mexico">Apoya la investigación en México</strong><span data-en="Contributions cover certified facilities, specialized reagents and studies such as the in-house CD19 vector. Each contribution includes a tax invoice and a progress report.">Las aportaciones cubren instalaciones certificadas, reactivos especializados y estudios como el vector CD19 in-house. Cada aportación incluye factura fiscal y reporte de avances.</span></p>
-        <a class="btn ghost" href="https://paypal.me/yairchaveze" data-en="Support via PayPal →">Apoyar vía PayPal →</a>
+        <a class="btn btn--quiet" href="https://paypal.me/yairchaveze" data-en="Support via PayPal">Apoyar vía PayPal</a>
       </div>
     </div>
   </section>
 
-  <!-- TOOLS -->
-  <section id="herramientas" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Tools">Herramientas</div>
-        <div><h2 data-en="Open clinical tools">Herramientas clínicas abiertas</h2></div>
+  <section id="herramientas" class="tools-sec">
+    <div class="container grid12">
+      <div class="sec-head split-head">
+        <h2 data-en="Open clinical tools">Herramientas clínicas abiertas</h2>
       </div>
       <div class="tool">
         <div class="txt">
-          <span class="mono" style="color:var(--accent)">ASFA 2023</span>
+          <p class="src-tag">ASFA 2023</p>
           <h3 data-en="Therapeutic Plasma Exchange Calculator">Calculadora de Recambio Plasmático Terapéutico</h3>
           <p data-en="Calculates total blood volume, plasma volume and replacement solution with 5% human albumin, based on the ASFA 2023 guidelines.">Calcula el volumen sanguíneo total, el volumen plasmático y la solución de reemplazo con albúmina humana al 5%, con base en las guías ASFA 2023.</p>
-          <div><a class="btn solid" href="recambio-plasmatico.html" data-en="Open calculator →">Abrir calculadora →</a></div>
+          <div><a class="btn" href="recambio-plasmatico.html" data-en="Open calculator">Abrir calculadora</a></div>
         </div>
-        <div class="viz" aria-hidden="true"><canvas data-scene="centrifuge"></canvas><span class="viz-cap mono" data-en="Density separation · apheresis">Separación por densidad · aféresis</span></div>
+        <figure class="viz"><canvas data-scene="centrifuge" aria-hidden="true"></canvas><figcaption class="viz-cap" data-en="Density separation in apheresis">Separación por densidad en aféresis</figcaption></figure>
       </div>
-      <div class="tools">
-        <a href="hppc-cryopreservation-calculator.html"><span class="mono" data-en="Cryopreservation">Criopreservación</span><h3 data-en="HPC Cryopreservation">Criopreservación CPH</h3><p data-en="WBC and CD34⁺ calculation with fractionation recommendations for hematopoietic progenitor cells.">Cálculo de WBC y CD34⁺ con recomendaciones de fraccionamiento para células progenitoras hematopoyéticas.</p></a>
-        <a href="fraccionamiento-cd34-calculator.html"><span class="mono" data-en="Processing">Procesamiento</span><h3 data-en="CD34⁺ Fractionation">Fraccionamiento CD34⁺</h3><p data-en="Splitting of CD34⁺ units with albumin distribution.">Fraccionamiento de unidades de CD34⁺ con distribución de albúmina.</p></a>
-        <a href="ce2-calculator-yoce.html"><span class="mono" data-en="Apheresis">Aféresis</span><h3>CE2% CD34⁺</h3><p data-en="Collection efficiency for CD34⁺ apheresis in allogeneic transplant, based on pre-count and processed volume.">Eficiencia de colecta en aféresis de CD34⁺ para trasplante alogénico, a partir de la pre-cuenta y el volumen procesado.</p></a>
-        <a href="colecta-linfocitos.html"><span class="mono">CAR-T</span><h3 data-en="T-cell Collection">Colecta de Linfocitos T</h3><p data-en="CD3⁺ leukapheresis for CAR-T manufacturing: collection efficiency and volume to process.">Leucoaféresis de linfocitos T CD3⁺ para manufactura CAR-T: eficiencia de colecta y volumen a procesar.</p></a>
-        <a href="calculadora-vec-pediatrico.html"><span class="mono" data-en="Pediatrics">Pediatría</span><h3 data-en="Pediatric ECV">VEC Pediátrico</h3><p data-en="Extracorporeal volume for pediatric and low-weight apheresis, with hypovolemia risk using Nadler's formula.">Volumen extracorpóreo en aféresis pediátrica y de bajo peso, con riesgo de hipovolemia por fórmula de Nadler.</p></a>
-        <a href="predictor.html"><span class="mono" data-en="Machine learning · access code">Machine learning · con código</span><h3 data-en="Blood Volume Predictor">Predictor de Volemia</h3><p data-en="Predictive model of blood volume to process in HPC apheresis.">Modelo predictivo del volumen sanguíneo a procesar en aféresis de CPH.</p></a>
-        <a href="propagacion-celular.html"><span class="mono" data-en="Cell culture">Cultivo celular</span><h3 data-en="Cell Propagation">Propagación Celular</h3><p data-en="From cell count to cell bank: seeding volume, expansion projection, culture and freezing media for Raji (ATCC CCL-86).">Del conteo al banco celular: volumen de siembra, proyección de expansión, medio de cultivo y de congelación para Raji (ATCC CCL-86).</p></a>
-      </div>
+      <ul class="tools">
+        <li><a href="hppc-cryopreservation-calculator.html"><span class="k" data-en="Cryopreservation">Criopreservación</span><h3 data-en="HPC Cryopreservation">Criopreservación CPH</h3><p data-en="WBC and CD34+ calculation with fractionation recommendations for hematopoietic progenitor cells.">Cálculo de WBC y CD34+ con recomendaciones de fraccionamiento para células progenitoras hematopoyéticas.</p></a></li>
+        <li><a href="fraccionamiento-cd34-calculator.html"><span class="k" data-en="Processing">Procesamiento</span><h3 data-en="CD34+ Fractionation">Fraccionamiento CD34+</h3><p data-en="Splitting of CD34+ units with albumin distribution.">Fraccionamiento de unidades de CD34+ con distribución de albúmina.</p></a></li>
+        <li><a href="ce2-calculator-yoce.html"><span class="k" data-en="Apheresis">Aféresis</span><h3>CE2% CD34+</h3><p data-en="Collection efficiency for CD34+ apheresis in allogeneic transplant, based on pre-count and processed volume.">Eficiencia de colecta en aféresis de CD34+ para trasplante alogénico, a partir de la pre-cuenta y el volumen procesado.</p></a></li>
+        <li><a href="colecta-linfocitos.html"><span class="k">CAR-T</span><h3 data-en="T-cell Collection">Colecta de Linfocitos T</h3><p data-en="CD3+ leukapheresis for CAR-T manufacturing: collection efficiency and volume to process.">Leucoaféresis de linfocitos T CD3+ para manufactura CAR-T: eficiencia de colecta y volumen a procesar.</p></a></li>
+        <li><a href="calculadora-vec-pediatrico.html"><span class="k" data-en="Pediatrics">Pediatría</span><h3 data-en="Pediatric ECV">VEC Pediátrico</h3><p data-en="Extracorporeal volume for pediatric and low-weight apheresis, with hypovolemia risk using Nadler's formula.">Volumen extracorpóreo en aféresis pediátrica y de bajo peso, con riesgo de hipovolemia por fórmula de Nadler.</p></a></li>
+        <li><a href="predictor.html"><span class="k" data-en="Machine learning, access code">Machine learning, con código</span><h3 data-en="Blood Volume Predictor">Predictor de Volemia</h3><p data-en="Predictive model of blood volume to process in HPC apheresis.">Modelo predictivo del volumen sanguíneo a procesar en aféresis de CPH.</p></a></li>
+        <li><a href="propagacion-celular.html"><span class="k" data-en="Cell culture">Cultivo celular</span><h3 data-en="Cell Propagation">Propagación Celular</h3><p data-en="From cell count to cell bank: seeding volume, expansion projection, culture and freezing media for Raji (ATCC CCL-86).">Del conteo al banco celular: volumen de siembra, proyección de expansión, medio de cultivo y de congelación para Raji (ATCC CCL-86).</p></a></li>
+      </ul>
     </div>
   </section>
 
-  <!-- LEADERSHIP -->
-  <section id="equipo" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Leadership">Liderazgo</div><div><h2 data-en="Science led from the clinic">Ciencia dirigida desde la clínica</h2></div></div>
-      <div class="lead">
-        <figure>
-          <img src="yoce24.jpg" alt="Retrato de Yair Omar Chávez-Estrada" loading="lazy">
-          <figcaption><b>Yair Omar Chávez-Estrada</b><span data-en="Founder &amp; Scientific Advisor">Fundador y Asesor Científico</span><span>QBP · MCM · <span data-en="PhD candidate">Candidato a Doctor</span></span></figcaption>
-        </figure>
-        <div class="bio">
-          <p data-en="Scientist and researcher specializing in cell and gene therapy, ATMP manufacturing and hematopoietic cell transplantation. He takes part in quality control for the first decentralized CAR-T manufacturing program in Mexico, at the Hematology Transplant and Cell Therapy Unit of Hospital Universitario UANL.">Científico e investigador especializado en terapia celular y génica, manufactura de medicamentos de terapia avanzada (ATMPs) y trasplante de células hematopoyéticas. Participa en el control de calidad del primer programa descentralizado de manufactura CAR-T en México, en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario UANL.</p>
-          <p data-en="Member of the ISCT ESP Committee for South and Central America. Experienced in science-to-clinic translation and in fostering collaborations between hospitals, academia and industry.">Miembro del comité ESP de la ISCT para Sudamérica y Centroamérica. Con experiencia en translación ciencia–clínica y en fomentar colaboraciones entre hospitales, academia e industria.</p>
-          <div class="creds"><span>CAR-T</span><span data-en="cGMP · ATMPs">cGMP · Terapias avanzadas (ATMPs)</span><span data-en="Apheresis">Aféresis</span><span data-en="Cryopreservation">Criopreservación</span><span data-en="Flow cytometry">Citometría de flujo</span><span data-en="Biostatistics">Bioestadística</span><span>Machine Learning</span><span>R · Python</span></div>
-          <div class="cv">
-            <div><h4 data-en="Experience">Trayectoria</h4><ol>
-              <li><time>2025–</time><div data-en="ISCT · ESP Committee Member<span>South &amp; Central America</span>">ISCT · ESP Committee Member<span>Sudamérica y Centroamérica</span></div></li>
-              <li><time>2019–</time><div data-en="Chemist, Analyst &amp; Researcher<span>Hematology · Cytometry · CAR-T · Cryopreservation</span>">Químico, Analista e Investigador<span>Hematología · Citometría · CAR-T · Criopreservación</span></div></li>
-              <li><time>2020</time><div data-en="Laboratory Sciences Professor<span>Universidad Metropolitana de Monterrey</span>">Profesor de Ciencias de Laboratorio<span>Universidad Metropolitana de Monterrey</span></div></li>
-              <li><time>2015–16</time><div data-en="Clinical Laboratory Technician<span>ALFA Medical Center · Monterrey</span>">Técnico Laboratorista Clínico<span>ALFA Medical Center · Monterrey</span></div></li>
-              <li><time>2012–13</time><div data-en="Blood Transfusion Assistant<span>Secretaría de Salud · Monclova, Coahuila</span>">Auxiliar de Transfusión Sanguínea<span>Secretaría de Salud · Monclova, Coahuila</span></div></li>
-            </ol></div>
-            <div><h4 data-en="Education">Formación</h4><ol>
-              <li><time>2025–28</time><div data-en="PhD in Health Sciences<span>Universidad Anáhuac México Norte · protocol HE25-00023</span>">Doctorado en Ciencias de la Salud<span>Universidad Anáhuac México Norte · protocolo HE25-00023</span></div></li>
-              <li><time>2020–22</time><div data-en="MSc in Medical Sciences<span>Universidad del Noreste</span>">Maestría en Ciencias Médicas<span>Universidad del Noreste</span></div></li>
-              <li><time>2017–18</time><div data-en="International academic stay · Bioengineering, Microbiology &amp; Immunology<span>Universidad de Concepción · Chile</span>">Estancia académica internacional · Bioingeniería, Microbiología e Inmunología<span>Universidad de Concepción · Chile</span></div></li>
-              <li><time>2014–19</time><div data-en="Chemist Bacteriologist Parasitologist (QBP)<span>Universidad Autónoma de Nuevo León</span>">Químico Bacteriólogo Parasitólogo<span>Universidad Autónoma de Nuevo León</span></div></li>
-            </ol></div>
-          </div>
+  <section id="equipo" class="team">
+    <div class="container grid12">
+      <div class="sec-head split-head"><h2 data-en="Science led from the clinic">Ciencia dirigida desde la clínica</h2></div>
+      <figure class="portrait">
+        <img src="yoce24.jpg" alt="Retrato de Yair Omar Chávez-Estrada" loading="lazy" width="800" height="920">
+        <figcaption><b>Yair Omar Chávez-Estrada</b><span data-en="Founder &amp; Scientific Advisor">Fundador y Asesor Científico</span><span data-en="QBP, MCM, PhD candidate">QBP, MCM, Candidato a Doctor</span></figcaption>
+      </figure>
+      <div class="bio">
+        <p data-en="Scientist and researcher specializing in cell and gene therapy, ATMP manufacturing and hematopoietic cell transplantation. He takes part in quality control for the first decentralized CAR-T manufacturing program in Mexico, at the Hematology Transplant and Cell Therapy Unit of Hospital Universitario UANL.">Científico e investigador especializado en terapia celular y génica, manufactura de medicamentos de terapia avanzada (ATMPs) y trasplante de células hematopoyéticas. Participa en el control de calidad del primer programa descentralizado de manufactura CAR-T en México, en la Unidad de Trasplante de Hematología y Terapia Celular del Hospital Universitario UANL.</p>
+        <p data-en="Member of the ISCT ESP Committee for South and Central America. Experienced in science-to-clinic translation and in fostering collaborations between hospitals, academia and industry.">Miembro del comité ESP de la ISCT para Sudamérica y Centroamérica. Con experiencia en translación de la ciencia a la clínica y en fomentar colaboraciones entre hospitales, academia e industria.</p>
+        <ul class="creds"><li>CAR-T</li><li data-en="cGMP and ATMPs">cGMP y terapias avanzadas (ATMPs)</li><li data-en="Apheresis">Aféresis</li><li data-en="Cryopreservation">Criopreservación</li><li data-en="Flow cytometry">Citometría de flujo</li><li data-en="Biostatistics">Bioestadística</li><li>Machine Learning</li><li>R y Python</li></ul>
+        <div class="cv">
+          <div><h3 data-en="Experience">Trayectoria</h3><ol>
+            <li><time>2025-</time><div data-en="ISCT ESP Committee Member<span>South and Central America</span>">ISCT ESP Committee Member<span>Sudamérica y Centroamérica</span></div></li>
+            <li><time>2019-</time><div data-en="Chemist, Analyst &amp; Researcher<span>Hematology, cytometry, CAR-T and cryopreservation</span>">Químico, Analista e Investigador<span>Hematología, citometría, CAR-T y criopreservación</span></div></li>
+            <li><time>2020</time><div data-en="Laboratory Sciences Professor<span>Universidad Metropolitana de Monterrey</span>">Profesor de Ciencias de Laboratorio<span>Universidad Metropolitana de Monterrey</span></div></li>
+            <li><time>2015-16</time><div data-en="Clinical Laboratory Technician<span>ALFA Medical Center, Monterrey</span>">Técnico Laboratorista Clínico<span>ALFA Medical Center, Monterrey</span></div></li>
+            <li><time>2012-13</time><div data-en="Blood Transfusion Assistant<span>Secretaría de Salud, Monclova, Coahuila</span>">Auxiliar de Transfusión Sanguínea<span>Secretaría de Salud, Monclova, Coahuila</span></div></li>
+          </ol></div>
+          <div><h3 data-en="Education">Formación</h3><ol>
+            <li><time>2025-28</time><div data-en="PhD in Health Sciences<span>Universidad Anáhuac México Norte, protocol HE25-00023</span>">Doctorado en Ciencias de la Salud<span>Universidad Anáhuac México Norte, protocolo HE25-00023</span></div></li>
+            <li><time>2020-22</time><div data-en="MSc in Medical Sciences<span>Universidad del Noreste</span>">Maestría en Ciencias Médicas<span>Universidad del Noreste</span></div></li>
+            <li><time>2017-18</time><div data-en="International academic stay in Bioengineering, Microbiology &amp; Immunology<span>Universidad de Concepción, Chile</span>">Estancia académica internacional en Bioingeniería, Microbiología e Inmunología<span>Universidad de Concepción, Chile</span></div></li>
+            <li><time>2014-19</time><div data-en="Chemist Bacteriologist Parasitologist (QBP)<span>Universidad Autónoma de Nuevo León</span>">Químico Bacteriólogo Parasitólogo<span>Universidad Autónoma de Nuevo León</span></div></li>
+          </ol></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PUBLICATIONS -->
-  <section id="publicaciones" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Publications">Publicaciones</div><div><h2 data-en="Peer-reviewed evidence">Evidencia revisada por pares</h2></div></div>
-      <div class="pubs">
-        <aside class="metrics">
-          <div class="sch-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1.5 9 12 15l8.5-4.86V17h2V9L12 3Z" fill="currentColor"/><path d="M5.5 12.6V16c0 1.9 2.9 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.4L12 16.3l-6.5-3.7Z" fill="currentColor" opacity=".6"/></svg><span data-en="Google Scholar">Google Académico</span></div>
-          <div class="sch-viz"><canvas data-scene="citations" aria-hidden="true"></canvas><span class="sch-cap mono" data-en="each dot is a citation">cada punto es una cita</span></div>
-          <div class="row">
-            <div><div class="num" data-count="23">23</div><div class="lbl" data-en="Citations">Citas</div></div>
-            <div><div class="num" data-count="2">2</div><div class="lbl" data-en="h-index">Índice h</div></div>
-            <div><div class="num" data-count="1">1</div><div class="lbl" data-en="i10-index">Índice i10</div></div>
-          </div>
-          <ul class="sch-leg">
-            <li><i style="background:#43C6A5"></i><span>JCO Global Oncology</span><b>18</b></li>
-            <li><i style="background:#7F9CFF"></i><span>Hematology</span><b>3</b></li>
-            <li><i style="background:#E8C35A"></i><span>Medicina Universitaria</span><b>2</b></li>
-          </ul>
-          <a class="sch-btn" href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es" data-en="View full profile →">Ver perfil completo →</a>
-        </aside>
-        <div>
-          <article class="paper"><div class="yr">2025</div><div>
-            <h3><a href="https://ascopubs.org/doi/full/10.1200/GO-24-00581">Decentralized point-of-care manufacturing of CD19 chimeric antigen receptor T cells in Mexico</a></h3>
-            <div class="auth">R Salazar-Riojas, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al.</div>
-            <div class="jr"><i>JCO Global Oncology</i> 11, e2400581<span class="c" data-en="18 citations">18 citas</span></div></div></article>
-          <article class="paper"><div class="yr">2024</div><div>
-            <h3><a href="https://www.sciencedirect.com/science/article/pii/S0006497124067880">Reassessing blood product irradiation in haploidentical transplantation: a single-center perspective</a></h3>
-            <div class="auth">JP Martínez-Hernández, YA López-Mora, R Salazar-Riojas, <b>YO Chávez-Estrada</b> et al.</div>
-            <div class="jr"><i>Hematology</i> 29 (1), 2420144<span class="c" data-en="3 citations">3 citas</span></div></div></article>
-          <article class="paper"><div class="yr">2025</div><div>
-            <h3><a href="https://www.medicinauniversitaria.org/frame_eng.php?id=272">Reference ranges for extended parameters in complete blood count on the Abbott Alinity hq: assessment of quality and dynamics</a></h3>
-            <div class="auth">YK López-García, <b>YO Chávez-Estrada</b>, JE Montelongo-Cepeda et al.</div>
-            <div class="jr"><i>Medicina Universitaria</i> 27 (2), 43–50<span class="c" data-en="2 citations">2 citas</span></div></div></article>
-<details class="more-pubs">
-            <summary data-en="More publications and conference abstracts">Más publicaciones y resúmenes de congreso</summary>
-            <ol>
-              <li><span class="y">2024</span><div><b>Immunophenotypic characterization of the first CD19⁺ CAR-T cells in Mexico</b><small><b>Y Chávez-Estrada</b>, R Salazar-Riojas, DM Alvarado-Navarro et al. · <i>Cytotherapy</i> 26 (6), S159 · <span data-en="Abstract">Resumen</span></small></div></li>
-              <li><span class="y">2024</span><div><b>Efficacy of autologous lymphapheresis for production and validation of the first CD19 CAR-T cell therapies in Mexico</b><small>MB Aké-Uc, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al. · <i>Vox Sanguinis</i> 119, P890 · <span data-en="Abstract">Resumen</span></small></div></li>
-              <li><span class="y">2023</span><div><b>Usefulness of an instrument to measure the pain perception of the hematopoietic cell donor during their collection</b><small><b>YO Chávez-Estrada</b>, AK Hernández-Navarro et al. · <i>Journal of Clinical Apheresis</i> 38 (3) · <span data-en="Abstract">Resumen</span></small></div></li>
-              <li><span class="y">2023</span><div><b>Utilidad de células nucleadas totales para colecta de hematoprogenitores en trasplante autólogo con enfermedades autoinmunes</b><small>DM Alvarado-Navarro, <b>YO Chávez-Estrada</b>, NK Moncada-Saucedo et al. · <i>Rev. Mex. Patol. Clín. Med. Lab.</i> 69 (2), 61–64</small></div></li>
-              <li><span class="y">2022</span><div><b>Prevalence of blood culture contamination in the collection of hematopoietic progenitor cells and blood components</b><small><b>YO Chávez-Estrada</b>, DM Alvarado-Navarro, AK Hernández-Navarro et al. · <i>Revista de Hematología</i> 23 (1), 28–35</small></div></li>
-              <li><span class="y">2021–24</span><div><b data-en="Free paper abstracts, AMMTAC Congresses (XVIII–XXI)">Resúmenes de trabajos libres, Congresos AMMTAC (XVIII–XXI)</b><small data-en="Mexican Association of Transfusion Medicine">Asociación Mexicana de Medicina Transfusional, AC</small></div></li>
-            </ol>
-          </details>
-          <a class="video" href="https://www.youtube.com/watch?v=vFzSUHfblvo"><span class="play"></span><span><span data-en="Local Technology: The CAR-T Revolution in Mexico">Tecnología local: la revolución CAR-T en México</span><small data-en="Video summary · Salazar-Riojas et al., JCO Global Oncology 2025">Video resumen · Salazar-Riojas et al., JCO Global Oncology 2025</small></span></a>
-        </div>
+  <section id="publicaciones" class="pubs-sec">
+    <div class="container grid12">
+      <div class="sec-head split-head"><h2 data-en="Peer-reviewed evidence">Evidencia revisada por pares</h2></div>
+      <aside class="metrics">
+        <div class="sch-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1.5 9 12 15l8.5-4.86V17h2V9L12 3Z" fill="currentColor"/><path d="M5.5 12.6V16c0 1.9 2.9 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.4L12 16.3l-6.5-3.7Z" fill="currentColor" opacity=".6"/></svg><span data-en="Google Scholar">Google Académico</span></div>
+        <figure class="sch-viz"><canvas data-scene="citations" aria-hidden="true"></canvas><figcaption class="sch-cap" data-en="each dot is a citation">cada punto es una cita</figcaption></figure>
+        <dl class="row">
+          <div><dt class="num" data-count="23">23</dt><dd class="lbl" data-en="Citations">Citas</dd></div>
+          <div><dt class="num" data-count="2">2</dt><dd class="lbl" data-en="h-index">Índice h</dd></div>
+          <div><dt class="num" data-count="1">1</dt><dd class="lbl" data-en="i10-index">Índice i10</dd></div>
+        </dl>
+        <ul class="sch-leg">
+          <li><i class="c-mint"></i><span>JCO Global Oncology</span><b>18</b></li>
+          <li><i class="c-pop"></i><span>Hematology</span><b>3</b></li>
+          <li><i class="c-gold"></i><span>Medicina Universitaria</span><b>2</b></li>
+        </ul>
+        <a class="sch-btn" href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es" data-en="View full profile">Ver perfil completo</a>
+      </aside>
+      <div class="papers">
+        <article class="paper"><div class="yr">2025</div><div>
+          <h3><a href="https://ascopubs.org/doi/full/10.1200/GO-24-00581">Decentralized point-of-care manufacturing of CD19 chimeric antigen receptor T cells in Mexico</a></h3>
+          <p class="auth">R Salazar-Riojas, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al.</p>
+          <p class="jr"><i>JCO Global Oncology</i> 11, e2400581<span class="c" data-en="18 citations">18 citas</span></p></div></article>
+        <article class="paper"><div class="yr">2024</div><div>
+          <h3><a href="https://www.sciencedirect.com/science/article/pii/S0006497124067880">Reassessing blood product irradiation in haploidentical transplantation: a single-center perspective</a></h3>
+          <p class="auth">JP Martínez-Hernández, YA López-Mora, R Salazar-Riojas, <b>YO Chávez-Estrada</b> et al.</p>
+          <p class="jr"><i>Hematology</i> 29 (1), 2420144<span class="c" data-en="3 citations">3 citas</span></p></div></article>
+        <article class="paper"><div class="yr">2025</div><div>
+          <h3><a href="https://www.medicinauniversitaria.org/frame_eng.php?id=272">Reference ranges for extended parameters in complete blood count on the Abbott Alinity hq: assessment of quality and dynamics</a></h3>
+          <p class="auth">YK López-García, <b>YO Chávez-Estrada</b>, JE Montelongo-Cepeda et al.</p>
+          <p class="jr"><i>Medicina Universitaria</i> 27 (2), 43-50<span class="c" data-en="2 citations">2 citas</span></p></div></article>
+        <details class="more-pubs">
+          <summary data-en="More publications and conference abstracts">Más publicaciones y resúmenes de congreso</summary>
+          <ol>
+            <li><span class="y">2024</span><div><b>Immunophenotypic characterization of the first CD19+ CAR-T cells in Mexico</b><small><b>Y Chávez-Estrada</b>, R Salazar-Riojas, DM Alvarado-Navarro et al. <i>Cytotherapy</i> 26 (6), S159. <span data-en="Abstract">Resumen</span></small></div></li>
+            <li><span class="y">2024</span><div><b>Efficacy of autologous lymphapheresis for production and validation of the first CD19 CAR-T cell therapies in Mexico</b><small>MB Aké-Uc, DM Alvarado-Navarro, <b>YO Chávez-Estrada</b> et al. <i>Vox Sanguinis</i> 119, P890. <span data-en="Abstract">Resumen</span></small></div></li>
+            <li><span class="y">2023</span><div><b>Usefulness of an instrument to measure the pain perception of the hematopoietic cell donor during their collection</b><small><b>YO Chávez-Estrada</b>, AK Hernández-Navarro et al. <i>Journal of Clinical Apheresis</i> 38 (3). <span data-en="Abstract">Resumen</span></small></div></li>
+            <li><span class="y">2023</span><div><b>Utilidad de células nucleadas totales para colecta de hematoprogenitores en trasplante autólogo con enfermedades autoinmunes</b><small>DM Alvarado-Navarro, <b>YO Chávez-Estrada</b>, NK Moncada-Saucedo et al. <i>Rev. Mex. Patol. Clín. Med. Lab.</i> 69 (2), 61-64</small></div></li>
+            <li><span class="y">2022</span><div><b>Prevalence of blood culture contamination in the collection of hematopoietic progenitor cells and blood components</b><small><b>YO Chávez-Estrada</b>, DM Alvarado-Navarro, AK Hernández-Navarro et al. <i>Revista de Hematología</i> 23 (1), 28-35</small></div></li>
+            <li><span class="y">2021-24</span><div><b data-en="Free paper abstracts, AMMTAC Congresses (XVIII to XXI)">Resúmenes de trabajos libres, Congresos AMMTAC (XVIII a XXI)</b><small data-en="Mexican Association of Transfusion Medicine">Asociación Mexicana de Medicina Transfusional, AC</small></div></li>
+          </ol>
+        </details>
+        <a class="video" href="https://www.youtube.com/watch?v=vFzSUHfblvo"><span class="play" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z"/></svg></span><span><span data-en="Local Technology: The CAR-T Revolution in Mexico">Tecnología local: la revolución CAR-T en México</span><small data-en="Video summary of Salazar-Riojas et al., JCO Global Oncology 2025">Video resumen de Salazar-Riojas et al., JCO Global Oncology 2025</small></span></a>
       </div>
     </div>
   </section>
 
-  <!-- NEWS -->
-  <section id="noticias" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="News">Noticias</div><div><h2 data-en="Recent activity">Actividad reciente</h2></div></div>
-      <div class="news">
-        <a class="item" href="img/evid-premio-ammtac-2026.webp" target="_blank" rel="noopener"><div class="item-img"><img src="img/evid-premio-ammtac-2026.webp" alt="Constancia del tercer lugar Premio AMMTAC 2026" loading="lazy" style="object-position:center 22%"></div><div class="meta mono"><span data-en="Award">Premio</span><span>Oct 2026</span></div><h3 data-en="3rd place, AMMTAC Award 2026">3.er lugar Premio AMMTAC 2026</h3><p data-en="Lead author of the work on artificial intelligence to predict the number of blood volumes in mobilized peripheral blood apheresis of allogeneic donors (Spectra Optia IDL). XXIII AMMTAC Congress, León, Guanajuato.">Autor principal del trabajo sobre inteligencia artificial para predecir el número de volemias en la aféresis de sangre periférica movilizada en donantes alogénicos (Spectra Optia IDL). XXIII Congreso AMMTAC, León, Guanajuato.</p><span class="ev mono" data-en="View evidence →">Ver evidencia →</span></a>
-        <a class="item" href="img/evid-uanl-foro-empleadores.webp" target="_blank" rel="noopener"><div class="item-img"><img src="img/evid-uanl-foro-empleadores.webp" alt="Reconocimiento de la UANL como panelista" loading="lazy" style="object-position:center 18%"></div><div class="meta mono"><span data-en="Recognition">Reconocimiento</span><span>Oct 2026</span></div><h3 data-en="Panelist at the Third Virtual Employers Forum — UANL">Panelista en el Tercer Foro Virtual de Empleadores — UANL</h3><p data-en="Recognition from Universidad Autónoma de Nuevo León for taking part as a panelist in the Natural and Agricultural Sciences forum of the Institutional Alumni Follow-up Program.">Reconocimiento de la Universidad Autónoma de Nuevo León por su participación como panelista en el foro del Área de Ciencias Naturales y Agropecuarias, del Programa Institucional de Seguimiento de Egresados.</p><span class="ev mono" data-en="View evidence →">Ver evidencia →</span></a>
-        <a class="item" href="ammtac.html"><div class="item-img"><img src="img/news-ammtac-2026.webp" alt="Cartel del curso de AMMTAC 2026" loading="lazy" style="object-position:center 15%"></div><div class="meta mono"><span data-en="Talk">Ponencia</span><span>Jun 2026</span></div><h3 data-en="AMMTAC — Cell Therapy in Transfusion Medicine 2026">AMMTAC — Terapia Celular en Medicina Transfusional 2026</h3><p data-en="Module III: flow cytometry and quality control in CAR-T cells and hematopoietic progenitors.">Módulo III: citometría de flujo y control de calidad en células CAR-T y progenitores hematopoyéticos.</p><span class="ev mono" data-en="Read more →">Ver más →</span></a>
-        <a class="item" href="uaz.html"><div class="item-img"><img src="img/news-uaz-2026.webp" alt="Cartel del Diplomado Virtual en Hematología UAZ 2026" loading="lazy" style="object-position:center"></div><div class="meta mono"><span data-en="Teaching">Docencia</span><span>May–Ago 2026</span></div><h3 data-en="Virtual Diploma in Hematology 2026 — UAZ">Diplomado Virtual en Hematología 2026 — UAZ</h3><p data-en="Module 5 professor: modern diagnostic techniques, flow cytometry and molecular diagnostics.">Profesor del Módulo 5: técnicas diagnósticas modernas, citometría de flujo y diagnóstico molecular.</p><span class="ev mono" data-en="Read more →">Ver más →</span></a>
-        <a class="item" href="https://superchannel12.com/635915/talento-joven-coahuilense-en-busca-de-la-cura-al-cancer" target="_blank" rel="noopener"><div class="item-img"><img src="img/news-superchannel.webp" alt="Nota de SuperChannel 12" loading="lazy" style="object-position:center"></div><div class="meta mono"><span data-en="Press">Prensa</span><span>2024</span></div><h3 data-en="Young Coahuila talent in search of a cure for cancer">Talento joven coahuilense en busca de la cura al cáncer</h3><p data-en="SuperChannel 12 feature on CAR-T therapy research developed in Mexico.">Nota de SuperChannel 12 sobre la investigación en terapia CAR-T desarrollada en México.</p><span class="ev mono" data-en="Read more →">Ver más →</span></a>
-      </div>
+  <section id="noticias" class="news-sec">
+    <div class="container">
+      <div class="sec-head split-head"><h2 data-en="Recent activity">Actividad reciente</h2></div>
+    </div>
+    <ul class="rail" tabindex="0" aria-label="Noticias">
+      <li><a class="item" href="img/evid-premio-ammtac-2026.webp" target="_blank" rel="noopener"><div class="item-img"><img src="img/evid-premio-ammtac-2026.webp" alt="Constancia del tercer lugar Premio AMMTAC 2026" loading="lazy" width="800" height="600" style="object-position:center 22%"></div><p class="meta"><span data-en="Award">Premio</span><time>Oct 2026</time></p><h3 data-en="3rd place, AMMTAC Award 2026">3.er lugar Premio AMMTAC 2026</h3><p data-en="Lead author of the work on artificial intelligence to predict the number of blood volumes in mobilized peripheral blood apheresis of allogeneic donors (Spectra Optia IDL). XXIII AMMTAC Congress, León, Guanajuato.">Autor principal del trabajo sobre inteligencia artificial para predecir el número de volemias en la aféresis de sangre periférica movilizada en donantes alogénicos (Spectra Optia IDL). XXIII Congreso AMMTAC, León, Guanajuato.</p><span class="ev" data-en="View evidence">Ver evidencia</span></a></li>
+      <li><a class="item" href="img/evid-uanl-foro-empleadores.webp" target="_blank" rel="noopener"><div class="item-img"><img src="img/evid-uanl-foro-empleadores.webp" alt="Reconocimiento de la UANL como panelista" loading="lazy" width="800" height="600" style="object-position:center 18%"></div><p class="meta"><span data-en="Recognition">Reconocimiento</span><time>Oct 2026</time></p><h3 data-en="Panelist at the Third Virtual Employers Forum, UANL">Panelista en el Tercer Foro Virtual de Empleadores, UANL</h3><p data-en="Recognition from Universidad Autónoma de Nuevo León for taking part as a panelist in the Natural and Agricultural Sciences forum of the Institutional Alumni Follow-up Program.">Reconocimiento de la Universidad Autónoma de Nuevo León por su participación como panelista en el foro del Área de Ciencias Naturales y Agropecuarias, del Programa Institucional de Seguimiento de Egresados.</p><span class="ev" data-en="View evidence">Ver evidencia</span></a></li>
+      <li><a class="item" href="ammtac.html"><div class="item-img"><img src="img/news-ammtac-2026.webp" alt="Cartel del curso de AMMTAC 2026" loading="lazy" width="800" height="600" style="object-position:center 15%"></div><p class="meta"><span data-en="Talk">Ponencia</span><time>Jun 2026</time></p><h3 data-en="AMMTAC, Cell Therapy in Transfusion Medicine 2026">AMMTAC, Terapia Celular en Medicina Transfusional 2026</h3><p data-en="Module III: flow cytometry and quality control in CAR-T cells and hematopoietic progenitors.">Módulo III: citometría de flujo y control de calidad en células CAR-T y progenitores hematopoyéticos.</p><span class="ev" data-en="Read more">Ver más</span></a></li>
+      <li><a class="item" href="uaz.html"><div class="item-img"><img src="img/news-uaz-2026.webp" alt="Cartel del Diplomado Virtual en Hematología UAZ 2026" loading="lazy" width="800" height="600"></div><p class="meta"><span data-en="Teaching">Docencia</span><time data-en="May to Aug 2026">May a Ago 2026</time></p><h3 data-en="Virtual Diploma in Hematology 2026, UAZ">Diplomado Virtual en Hematología 2026, UAZ</h3><p data-en="Module 5 professor: modern diagnostic techniques, flow cytometry and molecular diagnostics.">Profesor del Módulo 5: técnicas diagnósticas modernas, citometría de flujo y diagnóstico molecular.</p><span class="ev" data-en="Read more">Ver más</span></a></li>
+      <li><a class="item" href="https://superchannel12.com/635915/talento-joven-coahuilense-en-busca-de-la-cura-al-cancer" target="_blank" rel="noopener"><div class="item-img"><img src="img/news-superchannel.webp" alt="Nota de SuperChannel 12" loading="lazy" width="800" height="600"></div><p class="meta"><span data-en="Press">Prensa</span><time>2024</time></p><h3 data-en="“Young Coahuila talent in search of a cure for cancer”">“Talento joven coahuilense en busca de la cura al cáncer”</h3><p data-en="SuperChannel 12 feature on CAR-T therapy research developed in Mexico.">Nota de SuperChannel 12 sobre la investigación en terapia CAR-T desarrollada en México.</p><span class="ev" data-en="Read more">Ver más</span></a></li>
+    </ul>
+  </section>
+
+  <section id="ecosistema" class="eco-sec">
+    <div class="container grid12">
+      <div class="sec-head split-head"><h2 data-en="Beyond the laboratory">Más allá del laboratorio</h2></div>
+      <ul class="eco">
+        <li><a href="yocell-lab.html"><div class="eco-img"><canvas data-scene="tubes" aria-hidden="true"></canvas></div><h3>YoCell Lab</h3><p data-en="Clinical analysis laboratory under construction in San Buenaventura, Coahuila.">Laboratorio de análisis clínicos en construcción en San Buenaventura, Coahuila.</p><p class="eco-meta"><span class="k" data-en="Clinical laboratory">Laboratorio clínico</span><span class="soon" data-en="Under construction">En construcción</span></p></a></li>
+        <li><a class="eco-lcm" href="la-celula-mexicana.html"><div class="eco-img"><canvas data-scene="lcmcell" aria-hidden="true"></canvas></div><h3 class="lcm-title">La Célula <b>Mexicana</b></h3><p data-en="Science communication podcast about cell therapy, DNA and the cells behind modern medicine.">Podcast de divulgación científica sobre terapia celular, ADN y las células detrás de la medicina moderna.</p><p class="eco-meta"><span class="k" data-en="Science podcast">Podcast de ciencia</span><span class="soon" data-en="Season 1, coming soon">Temporada 1, próximamente</span></p></a></li>
+        <li><a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517"><div class="eco-img"><img src="img/novela-portada.webp" alt="Portada de la novela No Soy Médico, Pero Estoy Aquí" loading="lazy" width="800" height="500"></div><h3>No Soy Médico, Pero Estoy Aquí</h3><p data-en="A realistic hospital drama about home care, fragility and hope. Available as eBook and paperback.">Drama hospitalario realista sobre el cuidado del enfermo en casa, la fragilidad y la esperanza. En eBook y pasta blanda.</p><p class="eco-meta"><span class="k" data-en="Novel, Editorial Musa 2025">Novela, Editorial Musa 2025</span></p></a></li>
+      </ul>
     </div>
   </section>
 
-  <!-- ECOSYSTEM -->
-  <section id="ecosistema" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><div class="mono" data-en="Ecosystem">Ecosistema</div><div><h2 data-en="Beyond the laboratory">Más allá del laboratorio</h2></div></div>
-      <div class="eco">
-        <a href="yocell-lab.html"><div class="eco-img"><canvas data-scene="tubes" aria-hidden="true"></canvas></div><div class="eco-meta"><span class="mono k" data-en="Clinical laboratory">Laboratorio clínico</span><span class="soon mono" data-en="Under construction">En construcción</span></div><h3>YoCell Lab</h3><p data-en="Clinical analysis laboratory under construction in San Buenaventura, Coahuila.">Laboratorio de análisis clínicos en construcción en San Buenaventura, Coahuila.</p></a>
-        <a class="eco-lcm" href="la-celula-mexicana.html"><div class="eco-img"><canvas data-scene="lcmcell" aria-hidden="true"></canvas></div><div class="eco-meta"><span class="mono k" data-en="Science podcast">Podcast de ciencia</span><span class="soon mono" data-en="Season 1 · Coming soon">Temporada 1 · Próximamente</span></div><h3 class="lcm-title">La Célula <b>Mexicana</b></h3><p data-en="Science communication podcast about cell therapy, DNA and the cells behind modern medicine.">Podcast de divulgación científica sobre terapia celular, ADN y las células detrás de la medicina moderna.</p></a>
-        <a href="https://www.amazon.com.mx/Soy-M%C3%A9dico-Pero-Estoy-Aqu%C3%AD/dp/6072602517"><div class="eco-img"><img src="img/novela-portada.webp" alt="Portada de la novela No Soy Médico, Pero Estoy Aquí" loading="lazy" width="800" height="500"></div><span class="mono k" data-en="Novel · Editorial Musa 2025">Novela · Editorial Musa 2025</span><h3>No Soy Médico, Pero Estoy Aquí</h3><p data-en="A realistic hospital drama about home care, fragility and hope. Available as eBook and paperback.">Drama hospitalario realista sobre el cuidado del enfermo en casa, la fragilidad y la esperanza. En eBook y pasta blanda.</p></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
   <section class="contact" id="contacto">
-    <div class="wrap">
-      <div>
-        <div class="mono" style="color:var(--band-muted)" data-en="Contact">Contacto</div>
-        <h2 style="margin-top:18px" data-en="Let's build the next <em>cell therapy</em> together.">Construyamos juntos la próxima <em>terapia celular</em>.</h2>
+    <div class="container grid12">
+      <div class="c-main">
+        <h2 data-en="Let's build the next <em>cell therapy</em> together.">Construyamos juntos la próxima <em>terapia celular</em>.</h2>
         <p class="l" data-en="Available for scientific consulting, R&amp;D advisory and strategic investment across LATAM.">Disponible para consultoría científica, asesoría en I+D e inversión estratégica en LATAM.</p>
-        <div class="ctas"><a class="btn solid" href="contacto.html" data-en="Send a message →">Escribir mensaje →</a></div>
+        <div class="ctas"><a class="btn btn--band" href="contacto.html" data-en="Send a message">Escribir mensaje</a></div>
         <div class="mail"><code id="email">yair_chaveze@hotmail.com</code><button type="button" id="copy" data-en="Copy">Copiar</button></div>
       </div>
       <ul class="soc">
         <li><a href="https://www.linkedin.com/in/yair-chaveze/">LinkedIn <span>yair-chaveze</span></a></li>
-        <li><a href="https://orcid.org/0000-0002-8418-7655">ORCID <span>0000-0002-8418-7655</span></a></li>
+        <li><a href="https://orcid.org/0000-0002-8418-7655"><abbr title="Open Researcher and Contributor ID">ORCID</abbr> <span>0000-0002-8418-7655</span></a></li>
         <li><a href="https://www.researchgate.net/profile/Yair-Omar-Chavez-Estrada">ResearchGate <span>Chavez-Estrada</span></a></li>
         <li><a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es">Scholar <span>YO Chávez-Estrada</span></a></li>
         <li><a href="https://www.instagram.com/yairchaveze/">Instagram <span>@yairchaveze</span></a></li>
         <li><a href="https://www.tiktok.com/@yairchaveze">TikTok <span>@yairchaveze</span></a></li>
         <li><a href="https://www.facebook.com/yair.chaveze">Facebook <span>yair.chaveze</span></a></li>
-        <li><a href="#top">Monterrey <span>N.L. · México</span></a></li>
+        <li><a href="#top">Monterrey <span data-en="Nuevo León, Mexico">Nuevo León, México</span></a></li>
       </ul>
     </div>
   </section>
 </main>
-<footer><div class="wrap"><span>© 2026 YoCellTherapy · Yair Omar Chávez-Estrada</span><span class="mono">Cell Therapy · AI · R&amp;D</span></div></footer>
+<footer><div class="container">
+  <p class="f-mark" aria-hidden="true">Yo<b>Cell</b>Therapy</p>
+  <ul class="f-meta"><li>© 2026 YoCellTherapy</li><li>Yair Omar Chávez-Estrada</li><li>Cell Therapy, AI, R&amp;D</li></ul>
+</div></footer>
 
 <script>
 /* ---------- Language toggle ---------- */

@@ -41,7 +41,7 @@ h1{font-size:1.3rem;color:var(--t);margin-bottom:.4rem}
 .estado-listo{background:#e3f5ee;color:#1f6f6f;}
 
 .studies{display:flex;flex-direction:column;gap:10px}
-.study-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-radius:11px;border:1.5px solid var(--bord2);background:#fff;cursor:pointer;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;transition:all .15s}
+.study-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border-radius:11px;border:1.5px solid var(--bord2);background:#fff;cursor:pointer;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;transition:color .15s,background-color .15s,border-color .15s,opacity .15s,transform .15s,box-shadow .15s}
 .study-btn:hover{border-color:var(--r);background:var(--r2)}
 .study-btn .name{font-weight:600;color:var(--t);font-size:.95rem}
 .study-btn .status{font-size:.78rem;color:var(--m2)}
@@ -67,6 +67,13 @@ footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="ycl-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -88,7 +95,7 @@ footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace
 <!-- CANDADO (temporal, mientras esto está en pruebas) -->
 <div id="gateOverlay">
   <div class="gate-box" id="gateBox">
-    <div class="lock">🔒</div>
+    <div class="lock"></div>
     <h3>Acceso restringido</h3>
     <p>Ingresa la contraseña para ver esta sección.</p>
     <input type="password" id="gateInput" placeholder="Contraseña" autocomplete="off">
@@ -100,7 +107,7 @@ footer{text-align:center;padding:1.5rem 0;font-family:'JetBrains Mono',monospace
 <div id="siteContent">
 <div class="page">
 <nav>
-  <a href="yocell-lab.html" class="back-link">← YoCell Lab</a>
+  <a href="yocell-lab.html" class="back-link">YoCell Lab</a>
   <div class="lab-logo"><span class="dot"></span> YoCell Lab</div>
 </nav>
 

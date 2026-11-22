@@ -21,7 +21,7 @@
   --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
 }
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size:16px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
@@ -35,7 +35,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 /* HERO */
 .hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--g);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 .hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
 .hero p{font-size:18px;color:var(--m);line-height:1.82}
@@ -55,7 +55,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 /* FORMULA SELECTOR */
 .formula-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
-.fs-btn{padding:5px 13px;border-radius:8px;border:1px solid var(--bord2);font-size:14px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.fs-btn{padding:5px 13px;border-radius:8px;border:1px solid var(--bord2);font-size:14px;cursor:pointer;background:transparent;color:var(--m);transition:color .15s,background-color .15s,border-color .15s,opacity .15s,transform .15s,box-shadow .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .fs-btn.a{background:var(--g3);border-color:var(--bord3);color:var(--g);font-weight:500}
 
 /* INPUTS */
@@ -82,7 +82,7 @@ input[type=number].missing{border-color:#e53e3e;background:rgba(239,68,68,0.06)}
 
 /* VOL TABS */
 .vt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
-.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:15px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:15px;cursor:pointer;background:transparent;color:var(--m);transition:color .15s,background-color .15s,border-color .15s,opacity .15s,transform .15s,box-shadow .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .vb.a{background:var(--g3);border-color:var(--bord3);color:var(--g);font-weight:500}
 .vb.custom{border-style:dashed}
 
@@ -108,6 +108,13 @@ footer p{font-size:13px;color:var(--m2)}
 <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -139,15 +146,15 @@ footer p{font-size:13px;color:var(--m2)}
     </div>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </a>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="kicker">🔬 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <div class="kicker">IA en Ciencias de la Salud · Herramientas Clínicas</div>
   <h1>Calculadora de Recambio Plasmático Terapéutico</h1>
   <p>Herramienta didáctica para el cálculo del Volumen Sanguíneo Total (VST), Volumen Plasmático (VP) y solución de reemplazo con albúmina en procedimientos de Recambio Plasmático Terapéutico (RPT), también conocido como Therapeutic Plasma Exchange (TPE).</p>
-  <div class="asfa-badge">📋 Basado en guías ASFA 2023 · 9th Special Issue · J Clin Apheresis 2023;38:77–278</div>
+  <div class="asfa-badge">Basado en guías ASFA 2023 · 9th Special Issue · J Clin Apheresis 2023;38:77-278</div>
 </div>
 
 <!-- DISCLAIMER -->
@@ -162,12 +169,12 @@ footer p{font-size:13px;color:var(--m2)}
     El <strong>Volumen Sanguíneo Total (VST)</strong> se calcula con la fórmula de <strong>Nadler</strong>, estándar bibliográfico internacional validado (Nadler SB et al., <em>Surgery</em> 1962). A partir del VST y el Hematocrito (HTo), se obtiene la fracción plasmática y el Volumen Plasmático (VP) que equivale a 1 volemia.
   </p>
   <div style="display:inline-flex;align-items:center;gap:6px;background:var(--g3);border:1px solid var(--bord3);border-radius:8px;padding:5px 13px;font-size:12px;color:var(--g);font-weight:500;margin-bottom:.85rem">
-    ✓ Fórmula de Nadler — Nadler SB et al. <em>Surgery.</em> 1962;51(2):224–232
+    ✓ Fórmula de Nadler, Nadler SB et al. <em>Surgery.</em> 1962;51(2):224-232
   </div>
   <div class="ir">
     <div class="ig"><label>Peso (kg)<span class="req-mark" id="rm-peso">*</span></label><input type="number" id="peso" placeholder="107.8" step="0.1" oninput="calc()"></div>
     <div class="ig"><label>Talla (cm)<span class="req-mark" id="rm-talla">*</span></label><input type="number" id="talla" placeholder="179" step="1" oninput="calc()"></div>
-    <div class="ig"><label>Hematocrito — HTo (%)<span class="req-mark" id="rm-hto">*</span></label><input type="number" id="hto" placeholder="25.3" step="0.1" min="1" max="99" oninput="calc()"></div>
+    <div class="ig"><label>Hematocrito, HTo (%)<span class="req-mark" id="rm-hto">*</span></label><input type="number" id="hto" placeholder="25.3" step="0.1" min="1" max="99" oninput="calc()"></div>
 
   </div>
   <div class="fb" id="f-vst">—</div>
@@ -183,9 +190,9 @@ footer p{font-size:13px;color:var(--m2)}
   <div class="sh"><div class="sn">2</div><div class="st">Volumen de recambio <span class="ref-tag">ASFA 2023</span></div></div>
   <p class="sd">
     Según las guías <strong>ASFA 2023</strong>, el volumen de recambio varía según el diagnóstico:
-    <br>• <strong>1–1.5 VP</strong>: mayoría de indicaciones (Guillain-Barré, ADEM, TTP, miastenia gravis, etc.)
-    <br>• <strong>1–2 VP</strong>: intoxicaciones/venenos, vasculitis, esclerodermia
-    <br>• <strong>&gt;2 VP</strong>: High-Volume TPE — solo en indicaciones especiales (revisar ficha ASFA)
+    <br>• <strong>1-1.5 VP</strong>: mayoría de indicaciones (Guillain-Barré, ADEM, TTP, miastenia gravis, etc.)
+    <br>• <strong>1-2 VP</strong>: intoxicaciones/venenos, vasculitis, esclerodermia
+    <br>• <strong>&gt;2 VP</strong>: High-Volume TPE, solo en indicaciones especiales (revisar ficha ASFA)
   </p>
   <div class="vt">
     <button class="vb a" onclick="setVol(1,this)">1 VP</button>
@@ -205,7 +212,7 @@ footer p{font-size:13px;color:var(--m2)}
 
 <!-- PASO 3 -->
 <div class="sc">
-  <div class="sh"><div class="sn">3</div><div class="st">Solución de reemplazo — Albúmina humana al 5% <span class="ref-tag">ASFA 2023</span></div></div>
+  <div class="sh"><div class="sn">3</div><div class="st">Solución de reemplazo, Albúmina humana al 5% <span class="ref-tag">ASFA 2023</span></div></div>
   <p class="sd">
     La <strong>albúmina humana al 5%</strong> es el fluido de reemplazo estándar según guías ASFA 2023. El plasma fresco congelado (PFC) se reserva para pacientes con coagulopatía significativa.
     <br>Se utiliza la fórmula <strong>C₁V₁ = C₂V₂</strong> para diluir la albúmina concentrada disponible hasta una concentración final del 5% en el volumen de recambio total.
@@ -239,8 +246,8 @@ footer p{font-size:13px;color:var(--m2)}
   <div class="sum-box" id="r-sum">—</div>
   <div class="refs">
     <strong>Referencias bibliográficas:</strong><br>
-    1. Connelly-Smith L et al. Guidelines on the Use of Therapeutic Apheresis in Clinical Practice — Evidence-Based Approach from the Writing Committee of the American Society for Apheresis: The Ninth Special Issue. <em>Journal of Clinical Apheresis.</em> 2023;38:77–278. DOI: 10.1002/jca.22043<br>
-    2. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224–232.<br>
+    1. Connelly-Smith L et al. Guidelines on the Use of Therapeutic Apheresis in Clinical Practice, Evidence-Based Approach from the Writing Committee of the American Society for Apheresis: The Ninth Special Issue. <em>Journal of Clinical Apheresis.</em> 2023;38:77-278. DOI: 10.1002/jca.22043<br>
+    2. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224-232.<br>
   </div>
 </div>
 

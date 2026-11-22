@@ -1,3 +1,4 @@
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
 /* ============================================================
    YoCellTherapy · identidad visual compartida de las subpáginas
    Mismo lenguaje que el inicio: encabezado con menú, títulos en
@@ -97,11 +98,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--yct-accent);outl
 /* ---------- Pie de página del sitio ---------- */
 .page>footer,body>footer{display:none!important}
 .yct-foot{background:var(--yct-band);color:var(--yct-band-muted);margin-top:72px;font-family:var(--yct-body);line-height:1.5}
-.page .yct-foot{width:100vw;margin-left:calc(50% - 50vw)}
+.page .yct-foot{width:100%;margin-left:calc(50% - 50vw)}
 .yct-foot-in{max-width:1160px;margin:0 auto;padding:40px max(20px,env(safe-area-inset-right,0px)) 28px max(20px,env(safe-area-inset-left,0px));display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px}
 .yct-foot .yct-brand{color:var(--yct-band-ink)}
 .yct-foot p{margin:12px 0 0;font-size:14px;max-width:36ch}
-.yct-foot h4{font-family:var(--yct-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--yct-band-muted);font-weight:400;margin:6px 0 12px}
+.yct-foot h4{font-family:var(--yct-mono);font-size:11px;letter-spacing:0;color:var(--yct-band-muted);font-weight:400;margin:6px 0 12px}
 .yct-foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .yct-foot a{color:var(--yct-band-ink);text-decoration:none;font-size:14.5px}
 .yct-foot a:hover{color:#43C6A5}

@@ -27,6 +27,13 @@
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="ycl-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body style="margin:0;">
 <!-- yct:header -->
@@ -46,7 +53,7 @@
 
 <div id="gateOverlay">
   <div class="gate-box" id="gateBox">
-    <div class="lock">🔒</div>
+    <div class="lock"></div>
     <h3>Acceso restringido</h3>
     <p>Ingresa la contraseña para entrar al registro.</p>
     <input type="password" id="gateInput" placeholder="Contraseña" autocomplete="off">
@@ -124,8 +131,8 @@
 </style>
 
 <div class="wrap" id="app">
-  <h1>Registro de pacientes y etiquetas de tubo — FCAL-04</h1>
-  <div class="sub">YoCell Lab · San Buenaventura, Coahuila &nbsp;|&nbsp; Impresora: iDPRT SP310 (térmica, 1–3.15 in)</div>
+  <h1>Registro de pacientes y etiquetas de tubo, FCAL-04</h1>
+  <div class="sub">YoCell Lab · San Buenaventura, Coahuila &nbsp;|&nbsp; Impresora: iDPRT SP310 (térmica, 1-3.15 in)</div>
 
   <!-- LOGO -->
   <div class="card">
@@ -170,7 +177,7 @@
       <div>
         <label>ID Paciente (expediente)</label>
         <input id="f_idpaciente" type="text" readonly style="background:#f4f2ef;color:#555;">
-        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">🔍 Buscar paciente existente</button>
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;width:100%;" onclick="buscarPacienteExistente()">Buscar paciente existente</button>
       </div>
       <div>
         <label>Edad (automática)</label>
@@ -265,9 +272,9 @@
     <div style="margin-top:14px;">
       <label>Estudios solicitados</label>
       <div class="checks">
-        <label><input type="checkbox" class="f_estudio" value="BH" data-tubo="Lila (EDTA)" data-muestra="ST en EDTA" onchange="renderLabels()"> Biometría Hemática (BH) → tubo lila (EDTA) — etiqueta: "ST en EDTA"</label>
-        <label><input type="checkbox" class="f_estudio" value="QS" data-tubo="Rojo/gel (seco)" data-muestra="Suero en Seco/gel" onchange="renderLabels()"> Química Sanguínea (QS) → tubo rojo/gel (seco) — etiqueta: "Suero en Seco/gel"</label>
-        <label><input type="checkbox" class="f_estudio" value="EGO" data-tubo="Frasco de orina" data-muestra="Orina" onchange="renderLabels()"> Examen Gral. de Orina (EGO) → frasco de orina — etiqueta: "Orina"</label>
+        <label><input type="checkbox" class="f_estudio" value="BH" data-tubo="Lila (EDTA)" data-muestra="ST en EDTA" onchange="renderLabels()"> Biometría Hemática (BH) tubo lila (EDTA), etiqueta: "ST en EDTA"</label>
+        <label><input type="checkbox" class="f_estudio" value="QS" data-tubo="Rojo/gel (seco)" data-muestra="Suero en Seco/gel" onchange="renderLabels()"> Química Sanguínea (QS) tubo rojo/gel (seco), etiqueta: "Suero en Seco/gel"</label>
+        <label><input type="checkbox" class="f_estudio" value="EGO" data-tubo="Frasco de orina" data-muestra="Orina" onchange="renderLabels()"> Examen Gral. de Orina (EGO) frasco de orina, etiqueta: "Orina"</label>
       </div>
       <div class="grid3" style="margin-top:10px;">
         <input id="f_otro_estudio" type="text" placeholder="Otro estudio (nombre)" oninput="renderLabels()">
@@ -299,7 +306,7 @@
     <div style="margin-top:14px;">
       <label>Ayuno</label>
       <div class="checks" style="flex-direction:row;flex-wrap:wrap;gap:16px;">
-        <label><input type="radio" name="f_ayuno" value="Adecuado (8-12 h)" checked onchange="renderAyunoAviso()"> Adecuado (8–12 h)</label>
+        <label><input type="radio" name="f_ayuno" value="Adecuado (8-12 h)" checked onchange="renderAyunoAviso()"> Adecuado (8-12 h)</label>
         <label><input type="radio" name="f_ayuno" value="Prolongado (>12 h)" onchange="renderAyunoAviso()"> Prolongado (&gt;12 h)</label>
         <label><input type="radio" name="f_ayuno" value="Inadecuado (<8 h)" onchange="renderAyunoAviso()"> Inadecuado (&lt;8 h)</label>
       </div>
@@ -344,17 +351,17 @@
   <!-- ORDEN DE ESTUDIOS -->
   <div class="card">
     <h2>Orden de estudios (FCAL-04-01)</h2>
-    <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado — se imprime dos veces por hoja (arriba y abajo, con línea para cortar) para que salgan 2 copias de una sola hoja.</div>
+    <div class="hint">Genera el documento completo tamaño carta con los datos del paciente, los estudios marcados, el registro de toma de muestra y el texto de consentimiento informado, se imprime dos veces por hoja (arriba y abajo, con línea para cortar) para que salgan 2 copias de una sola hoja.</div>
     <div class="actions">
-      <button class="btn btn-teal" onclick="imprimirOrden()">🖨️ Imprimir Orden de Estudios</button>
+      <button class="btn btn-teal" onclick="imprimirOrden()">Imprimir Orden de Estudios</button>
       <button class="btn btn-primary" onclick="generarOrdenPDF()">Descargar PDF de Orden de Estudios</button>
     </div>
   </div>
 
   <!-- GUARDAR PACIENTE — aparte y llamativo para que no se le pase a la secretaria -->
   <div class="card" id="cardGuardarPaciente" style="background:#fdeaea;border:2px solid #c0273c;text-align:center;">
-    <button class="btn" id="btnGuardarPaciente" style="background:#c0273c;color:#fff;font-size:16px;font-weight:700;padding:14px 28px;width:100%;box-shadow:0 3px 10px rgba(192,39,60,.35);" onclick="guardarRegistro()">💾 GUARDAR PACIENTE EN LA BASE</button>
-    <div class="hint" style="text-align:center;margin-top:8px;font-size:12px;">⚠️ No olvides este paso — sin guardar, el paciente no queda registrado en el sistema.</div>
+    <button class="btn" id="btnGuardarPaciente" style="background:#c0273c;color:#fff;font-size:16px;font-weight:700;padding:14px 28px;width:100%;box-shadow:0 3px 10px rgba(192,39,60,.35);" onclick="guardarRegistro()">GUARDAR PACIENTE EN LA BASE</button>
+    <div class="hint" style="text-align:center;margin-top:8px;font-size:12px;">⚠️ No olvides este paso, sin guardar, el paciente no queda registrado en el sistema.</div>
   </div>
 
   <!-- LISTA DE TRABAJO / BASE DE DATOS -->
@@ -363,15 +370,15 @@
     <div class="hint">Cada vez que guardas un paciente, se agrega a esta lista y queda guardado en tu base (Google Sheets) para siempre, no solo en esta pestaña. Al final del turno puedes generar el PDF con todos los pacientes del día.</div>
     <div style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <span class="countpill" id="listaCountPill">0 paciente(s) registrados hoy</span>
-      <button class="btn btn-outline btn-sm" onclick="cargarListaTrabajo(false)">🔄 Actualizar lista</button>
+      <button class="btn btn-outline btn-sm" onclick="cargarListaTrabajo(false)">Actualizar lista</button>
     </div>
     <div id="listaTrabajoWrap" style="margin-top:12px;overflow-x:auto;">
       <div class="hint">Aún no hay pacientes registrados hoy.</div>
     </div>
     <div class="actions">
-      <button class="btn btn-teal" onclick="imprimirListaTrabajo()">🖨️ Imprimir lista de trabajo</button>
-      <button class="btn btn-primary" onclick="generarListaTrabajoPDF()">📋 Descargar PDF de lista de trabajo</button>
-      <button class="btn btn-outline" onclick="cerrarTurno()">🔒 Cerrar turno (borra la lista de hoy)</button>
+      <button class="btn btn-teal" onclick="imprimirListaTrabajo()">Imprimir lista de trabajo</button>
+      <button class="btn btn-primary" onclick="generarListaTrabajoPDF()">Descargar PDF de lista de trabajo</button>
+      <button class="btn btn-outline" onclick="cerrarTurno()">Cerrar turno (borra la lista de hoy)</button>
     </div>
   </div>
 </div>

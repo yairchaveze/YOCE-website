@@ -21,7 +21,7 @@
   --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
 }
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size:16px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
@@ -35,7 +35,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 /* HERO */
 .hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
 .hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
 .hero p{font-size:18px;color:var(--m);line-height:1.82}
@@ -55,7 +55,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 /* MODE / FORMULA SELECTOR */
 .formula-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
-.fs-btn{padding:6px 15px;border-radius:8px;border:1px solid var(--bord2);font-size:14px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.fs-btn{padding:6px 15px;border-radius:8px;border:1px solid var(--bord2);font-size:14px;cursor:pointer;background:transparent;color:var(--m);transition:color .15s,background-color .15s,border-color .15s,opacity .15s,transform .15s,box-shadow .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .fs-btn.a{background:var(--p2);border-color:rgba(109,40,217,.35);color:var(--p);font-weight:500}
 
 /* INPUTS */
@@ -70,7 +70,7 @@ input[type=number].missing{border-color:#e53e3e;background:rgba(239,68,68,0.06)}
 
 /* SEX TABS */
 .vt{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
-.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:15px;cursor:pointer;background:transparent;color:var(--m);transition:all .15s;font-family:'Plus Jakarta Sans',sans-serif}
+.vb{padding:6px 16px;border-radius:8px;border:1px solid var(--bord2);font-size:15px;cursor:pointer;background:transparent;color:var(--m);transition:color .15s,background-color .15s,border-color .15s,opacity .15s,transform .15s,box-shadow .15s;font-family:'Plus Jakarta Sans',sans-serif}
 .vb.a{background:var(--p2);border-color:rgba(109,40,217,.35);color:var(--p);font-weight:500}
 
 /* FORMULA BOX */
@@ -108,6 +108,13 @@ footer p{font-size:13px;color:var(--m2)}
 <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -140,15 +147,15 @@ footer p{font-size:13px;color:var(--m2)}
     </div>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </a>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="kicker">🧫 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <div class="kicker">IA en Ciencias de la Salud · Herramientas Clínicas</div>
   <h1>Calculadora de Colecta de Linfocitos T para CAR-T</h1>
   <p>Herramienta didáctica para planear la leucoaféresis de linfocitos T CD3+ previa a la manufactura de CAR-T: cálculo del Volumen Sanguíneo Total (VST), la Eficiencia de Recolección (CE%) y el volumen total de sangre a procesar (V<sub>T</sub>).</p>
-  <div class="asfa-badge">📋 Basado en el modelo de eficiencia de recolección de aféresis (Huang et al. 2022) · Curso Universidad de los Andes / TERUMO BCT / GCIAMT</div>
+  <div class="asfa-badge">Basado en el modelo de eficiencia de recolección de aféresis (Huang et al. 2022) · Curso Universidad de los Andes / TERUMO BCT / GCIAMT</div>
 </div>
 
 <!-- DISCLAIMER -->
@@ -194,30 +201,30 @@ footer p{font-size:13px;color:var(--m2)}
       </div>
     </div>
     <div class="ig">
-      <label>Meta de recolección (T) — total en la cosecha (× 10⁶ células)<span class="req-mark" id="rm-tobj">*</span></label>
+      <label>Meta de recolección (T), total en la cosecha (× 10⁶ células)<span class="req-mark" id="rm-tobj">*</span></label>
       <input type="number" id="tobj" placeholder="4,000.0 millones" step="10" oninput="calc()">
     </div>
   </div>
   <div style="font-size:13px;color:var(--m2);line-height:1.6">
-    ℹ️ <strong>T</strong> es el número <strong>total absoluto</strong> de células CD3+ recolectadas en toda la bolsa de cosecha (producto final), independientemente del volumen que ocupe esa bolsa — no es una concentración.
+    ℹ <strong>T</strong> es el número <strong>total absoluto</strong> de células CD3+ recolectadas en toda la bolsa de cosecha (producto final), independientemente del volumen que ocupe esa bolsa, no es una concentración.
   </div>
 </div>
 
 <!-- PASO 3 -->
 <div class="sc">
-  <div class="sh"><div class="sn">3</div><div class="st">Eficiencia de recolección — CE% <span class="ref-tag">Huang 2022</span></div></div>
+  <div class="sh"><div class="sn">3</div><div class="st">Eficiencia de recolección, CE% <span class="ref-tag">Huang 2022</span></div></div>
   <p class="sd">
     <strong>CE(%) = T / (C<sub>pro</sub> · V<sub>T</sub>)</strong>, donde T es el número de células recolectadas, C<sub>pro</sub> la concentración de células de interés en sangre y V<sub>T</sub> el volumen total de sangre procesado.
     <br>Elige el modo según lo que quieras calcular:
   </p>
   <div class="formula-sel">
-    <button class="fs-btn a" onclick="setMode('plan',this)">📐 Planear procedimiento (dado CE% típico)</button>
-    <button class="fs-btn" onclick="setMode('real',this)">📊 Calcular CE% real (de una colecta ya hecha)</button>
+    <button class="fs-btn a" onclick="setMode('plan',this)">Planear procedimiento (dado CE% típico)</button>
+    <button class="fs-btn" onclick="setMode('real',this)">Calcular CE% real (de una colecta ya hecha)</button>
   </div>
 
   <div id="mode-plan">
     <div class="ir">
-      <div class="ig"><label>Eficiencia de recolección esperada — CE (%)<span class="req-mark" id="rm-ceplan">*</span></label><input type="number" id="ce-plan" placeholder="43" step="1" min="1" max="100" oninput="calc()"></div>
+      <div class="ig"><label>Eficiencia de recolección esperada, CE (%)<span class="req-mark" id="rm-ceplan">*</span></label><input type="number" id="ce-plan" placeholder="43" step="1" min="1" max="100" oninput="calc()"></div>
     </div>
     <div class="fb" id="f-vt-plan">—</div>
     <div class="rg">
@@ -237,13 +244,13 @@ footer p{font-size:13px;color:var(--m2)}
 
   <!-- CONTROL DE INTERFASE -->
   <div style="background:var(--p2);border:1px solid rgba(109,40,217,.25);border-radius:10px;padding:1.1rem 1.25rem;margin-top:1rem">
-    <div style="font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:600">👷 Personal capacitado — control de interfase</div>
+    <div style="font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.6rem;font-weight:600">Personal capacitado, control de interfase</div>
     <p style="font-size:14px;color:var(--m);line-height:1.75;margin-bottom:.9rem">
       El CE% obtenido en la práctica no depende solo de los parámetros del equipo: depende en gran medida del <strong>control de la interfase</strong> por un aferesista capacitado. En el separador celular <strong>Optia Spectra (Kit IDL)</strong>, la capa de células mononucleares (MNC) —donde se encuentran los linfocitos T circulantes— se ubica entre la capa densa de eritrocitos/granulocitos y la capa menos densa de plaquetas. Ajustar correctamente esa interfase durante todo el procedimiento es lo que determina si la recolección se acerca al CE% esperado o cae muy por debajo de él.
     </p>
     <img src="colorgram-interfase.png" alt="Densidad del colorgrama y gradiente de interfase — Optia Spectra Kit IDL" style="width:100%;max-width:640px;display:block;margin:0 auto .6rem;border-radius:8px;border:1px solid var(--bord2)" onerror="this.style.display='none'">
     <div style="font-size:12px;color:var(--m2);line-height:1.7">
-      Inspirado en el gradiente de densidad del WBC Colorgram™ (Spectra Optia) y en la figura de interfase de: Fesnak A, Lin C, Siegel DL, Maus MV. CAR-T Cell Therapies From the Transfusion Medicine Perspective. <em>Transfus Med Rev.</em> 2016;30(3):139–145. doi: 10.1016/j.tmrv.2016.03.001. PMID: 27067907; PMCID: PMC4914456.
+      Inspirado en el gradiente de densidad del WBC Colorgram™ (Spectra Optia) y en la figura de interfase de: Fesnak A, Lin C, Siegel DL, Maus MV. CAR-T Cell Therapies From the Transfusion Medicine Perspective. <em>Transfus Med Rev.</em> 2016;30(3):139-145. doi: 10.1016/j.tmrv.2016.03.001. PMID: 27067907; PMCID: PMC4914456.
     </div>
   </div>
 </div>
@@ -275,9 +282,9 @@ footer p{font-size:13px;color:var(--m2)}
   <div class="sum-box" id="r-sum">—</div>
   <div class="refs">
     <strong>Referencias bibliográficas:</strong><br>
-    1. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224–232.<br>
+    1. Nadler SB, Hidalgo JU, Bloch T. Prediction of blood volume in normal human adults. <em>Surgery.</em> 1962;51(2):224-232.<br>
     2. Huang H, et al. Modelo logarítmico de eficiencia de recolección en leucoaféresis de linfocitos T CD3+ (adaptado). 2022.<br>
-    3. Curso "Cálculos de aféresis" — Universidad de los Andes / TERUMO Blood and Cell Technologies / GCIAMT, 2026.
+    3. Curso "Cálculos de aféresis", Universidad de los Andes / TERUMO Blood and Cell Technologies / GCIAMT, 2026.
   </div>
 </div>
 

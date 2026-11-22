@@ -82,8 +82,8 @@
             font-weight: 500;
             color: #555;
             margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            
+            letter-spacing:0;
         }
 
         input[type="number"],
@@ -93,7 +93,7 @@
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition:color 0.3s ease,background-color 0.3s ease,border-color 0.3s ease,opacity 0.3s ease,transform 0.3s ease,box-shadow 0.3s ease;
         }
 
         input[type="number"]:focus,
@@ -130,9 +130,9 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            transition:color 0.3s ease,background-color 0.3s ease,border-color 0.3s ease,opacity 0.3s ease,transform 0.3s ease,box-shadow 0.3s ease;
+            
+            letter-spacing:0;
         }
 
         .btn-calculate {
@@ -219,8 +219,8 @@
             text-align: left;
             font-size: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            
+            letter-spacing:0;
         }
 
         .table-results td {
@@ -328,6 +328,13 @@
 <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -352,7 +359,7 @@
 
     <div class="container">
         <header>
-            <h1>🧬 Calculadora Fraccionamiento CD34+</h1>
+            <h1>Calculadora Fraccionamiento CD34+</h1>
             <p>Distribución de unidades y cálculo de albúmina en fracciones</p>
         </header>
 

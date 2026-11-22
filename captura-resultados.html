@@ -30,6 +30,13 @@
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="ycl-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body style="margin:0;">
 <!-- yct:header -->
@@ -50,7 +57,7 @@
 
 <div id="gateOverlay">
   <div class="gate-box" id="gateBox">
-    <div class="lock">🔒</div>
+    <div class="lock"></div>
     <h3>Acceso restringido</h3>
     <p>Ingresa la contraseña para entrar.</p>
     <input type="password" id="gateInput" placeholder="Contraseña" autocomplete="off">
@@ -99,7 +106,7 @@
   .pacBox b{color:var(--burgundy);}
   .warnBox{border:1.5px solid #c0273c;background:#fdeaea;border-radius:8px;padding:10px 14px;font-size:13px;color:#8a1f1f;margin-top:10px;}
   #resTable{width:100%;border-collapse:collapse;font-size:12.5px;}
-  #resTable th{background:var(--teal-light);color:var(--teal);text-align:left;padding:7px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  #resTable th{background:var(--teal-light);color:var(--teal);text-align:left;padding:7px 6px;font-size:11px;letter-spacing:0;}
   #resTable td{padding:5px 6px;border-bottom:1px solid #eee;vertical-align:middle;}
   #resTable input,#resTable select,#resTable textarea{padding:5px 6px;font-size:12.5px;font-family:inherit;resize:vertical;}
   #resTable tr.fuera-rango{background:#fdeaea;}
@@ -113,7 +120,7 @@
 
 <div class="wrap" id="app">
   <h1>Captura de Resultados de Laboratorio Externo</h1>
-  <div class="sub">YoCell Lab · San Buenaventura, Coahuila — sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
+  <div class="sub">YoCell Lab · San Buenaventura, Coahuila, sube el PDF que te regresa el laboratorio de referencia y extrae los analitos automáticamente</div>
   <img id="logoFull" src="logo-ycl-full.png" alt="YoCell Lab" style="display:none;">
   <img id="firmaImg" src="firma-ycl.png?v=4" alt="Firma" style="display:none;">
 
@@ -126,12 +133,12 @@
         <select id="selPacienteHoy" onchange="seleccionarPacienteDeLista()">
           <option value="">— Selecciona —</option>
         </select>
-        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="cargarListaHoyParaSelect()">🔄 Actualizar lista de hoy</button>
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="cargarListaHoyParaSelect()">Actualizar lista de hoy</button>
       </div>
       <div>
         <label>...o busca por folio (si ya no está en "hoy")</label>
         <input id="f_buscarFolio" type="text" placeholder="Ej. 260726-001">
-        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="buscarPorFolio()">🔍 Buscar folio</button>
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="buscarPorFolio()">Buscar folio</button>
       </div>
     </div>
     <div id="pacSeleccionado" style="display:none;"></div>
@@ -145,8 +152,8 @@
       <div>
         <label>Tipo de captura</label>
         <select id="f_modoCaptura" onchange="cambiarModoCaptura()">
-          <option value="pdf">📄 Subir PDF de laboratorio externo (QS6 / BH)</option>
-          <option value="ego">🔬 Llenar EGO manual (lectura propia)</option>
+          <option value="pdf">Subir PDF de laboratorio externo (QS6 / BH)</option>
+          <option value="ego">Llenar EGO manual (lectura propia)</option>
         </select>
       </div>
       <div>
@@ -160,24 +167,24 @@
       <label>Laboratorio externo</label>
       <input id="f_labExterno" type="text" value="Grupo Micro-Tec" style="margin-bottom:14px;">
       <div id="dropZone" onclick="document.getElementById('f_pdf').click()">
-        <div class="icon">📄</div>
+        <div class="icon"></div>
         <div><b>Haz clic aquí o arrastra el PDF</b></div>
         <div class="hint">Solo funciona con PDFs que tengan texto real (no fotos/escaneos)</div>
         <div id="fileNombre"></div>
       </div>
       <input id="f_pdf" type="file" accept="application/pdf" style="display:none;" onchange="onArchivoSeleccionado(this.files[0])">
       <div class="actions">
-        <button class="btn btn-teal" id="btnLeerPdf" onclick="leerPdf()" disabled>🔍 Leer PDF y extraer resultados</button>
+        <button class="btn btn-teal" id="btnLeerPdf" onclick="leerPdf()" disabled>Leer PDF y extraer resultados</button>
       </div>
       <div id="pdfStatus" class="hint"></div>
     </div>
 
     <!-- Modo EGO manual -->
     <div id="bloqueEgo" style="display:none;">
-      <div class="hint" style="margin-bottom:12px;">Llena lo que observaste — ya vienen precargados los valores normales típicos, solo cambia lo que salga distinto.</div>
+      <div class="hint" style="margin-bottom:12px;">Llena lo que observaste, ya vienen precargados los valores normales típicos, solo cambia lo que salga distinto.</div>
       <div class="grid3" id="egoGrid" style="row-gap:10px;"></div>
       <div class="actions">
-        <button class="btn btn-teal" onclick="generarPlantillaEgo()">🧫 Generar plantilla EGO</button>
+        <button class="btn btn-teal" onclick="generarPlantillaEgo()">Generar plantilla EGO</button>
       </div>
     </div>
   </div>
@@ -185,7 +192,7 @@
   <!-- PASO 3: REVISIÓN -->
   <div class="card" id="cardRevision" style="display:none;">
     <h2>3. Revisa y corrige antes de guardar</h2>
-    <div class="hint" style="margin-bottom:10px;">La lectura automática puede fallar en algún renglón — revisa cada fila contra el PDF original antes de guardar. Puedes editar cualquier casilla, agregar filas o borrarlas.</div>
+    <div class="hint" style="margin-bottom:10px;">La lectura automática puede fallar en algún renglón, revisa cada fila contra el PDF original antes de guardar. Puedes editar cualquier casilla, agregar filas o borrarlas.</div>
     <div style="overflow-x:auto;">
       <table id="resTable">
         <thead>
@@ -206,11 +213,11 @@
       <button class="btn btn-outline btn-sm" onclick="agregarFilaVacia()">➕ Agregar fila</button>
     </div>
     <div class="actions" style="margin-top:18px;">
-      <button class="btn btn-primary" id="btnGuardarResultados" onclick="guardarResultados()">💾 Guardar resultados en la base</button>
-      <button class="btn btn-teal" onclick="imprimirResultados()">🖨️ Imprimir Resultado</button>
-      <button class="btn btn-outline" onclick="descargarResultadosPDF()">⬇️ Descargar PDF</button>
+      <button class="btn btn-primary" id="btnGuardarResultados" onclick="guardarResultados()">Guardar resultados en la base</button>
+      <button class="btn btn-teal" onclick="imprimirResultados()">Imprimir Resultado</button>
+      <button class="btn btn-outline" onclick="descargarResultadosPDF()">⬇ Descargar PDF</button>
       <button class="btn btn-outline" onclick="enviarPorCorreo()">✉️ Enviar por correo</button>
-      <button class="btn btn-outline" style="color:#25D366;border-color:#25D366;" onclick="enviarPorWhatsApp()">📱 Enviar por WhatsApp</button>
+      <button class="btn btn-outline" style="color:#25D366;border-color:#25D366;" onclick="enviarPorWhatsApp()">Enviar por WhatsApp</button>
     </div>
   </div>
 

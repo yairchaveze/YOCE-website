@@ -22,7 +22,7 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 33px}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size: 33px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.6}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
@@ -35,7 +35,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 .hero{background:rgba(255,255,255,0.85);border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--b));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 16px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 16px;color:var(--g);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 .hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
 .hero-sub{font-size: 27px;color:var(--g);font-weight:500;margin-bottom:1.2rem}
@@ -54,7 +54,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 /* Step cards */
 .step-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
-.step-card{background:rgba(255,255,255,0.85);border:1px solid var(--bord2);border-radius:12px;padding:1.25rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.step-card{background:rgba(255,255,255,0.85);border:1px solid var(--bord2);border-radius:12px;padding:1.25rem;cursor:pointer;transition:color .25s,background-color .25s,border-color .25s,opacity .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden}
 .step-card:hover{border-color:var(--bord3);transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,107,82,.09)}
 .step-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
 .step-card.s1::before{background:linear-gradient(90deg,var(--g),var(--gl))}
@@ -82,7 +82,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 /* Versions */
 .versions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
-.version-card{background:rgba(255,255,255,0.85);border:1.5px solid var(--bord2);border-radius:12px;padding:1.25rem;transition:all .2s}
+.version-card{background:rgba(255,255,255,0.85);border:1.5px solid var(--bord2);border-radius:12px;padding:1.25rem;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s}
 .version-card.preclinico{border-color:rgba(0,196,154,.3)}
 .version-card.clinico{border-color:rgba(3,85,160,.3)}
 .v-badge{display:inline-block;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 16px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:.6rem}
@@ -100,7 +100,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .safety-list li::before{content:'✓';color:var(--gl);font-weight:700;position:absolute;left:0;top:0}
 
 .cta-box{background:linear-gradient(135deg,rgba(0,196,154,.08),rgba(3,85,160,.04));border:1.5px solid rgba(0,196,154,.22);border-radius:12px;padding:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem;margin-bottom:1rem}
-.cta-btn{background:var(--g);border:none;border-radius:8px;font-size: 24px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.cta-btn{background:var(--g);border:none;border-radius:8px;font-size: 24px;font-weight:600;color:#fff;padding:10px 22px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
 .cta-btn:hover{background:var(--gl);transform:translateY(-1px)}
 .cta-btn.paypal{background:#0070ba}
 .cta-btn.paypal:hover{background:#005ea6}
@@ -119,6 +119,13 @@ footer p{font-size: 20px;color:var(--m2)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -151,20 +158,20 @@ footer p{font-size: 20px;color:var(--m2)}
     </a>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </div>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="kicker">🧬 Proyecto Flagship · CAR-T Cell Therapy · México</div>
+  <div class="kicker">Proyecto Flagship · CAR-T Cell Therapy · México</div>
   <h1>¿Y si fabricáramos nuestro propio<br>Vector Lentiviral CD19 CAR-T?</h1>
-  <p class="hero-sub">Propuesta de manufactura descentralizada in-house en México · Fase RUO (Uso en Investigación) → Validación clínica</p>
+  <p class="hero-sub">Propuesta de manufactura descentralizada in-house en México · Fase RUO (Uso en Investigación) Validación clínica</p>
   <div class="badges">
     <span class="badge g">✅ Fase: RUO (Uso en Investigación) · Preclínico</span>
-    <span class="badge b">🏥 Monterrey, México</span>
-    <span class="badge gray">🎯 Indicación: LLA-B r/r</span>
+    <span class="badge b">Monterrey, México</span>
+    <span class="badge gray">Indicación: LLA-B r/r</span>
     <span class="badge gray">⚙️ cGMP · ISO 7</span>
-    <span class="badge p">🔬 2ª Generación · 4-1BB/CD3ζ</span>
+    <span class="badge p">2ª Generación · 4-1BB/CD3ζ</span>
   </div>
   <p style="font-size: 27px;color:var(--m);line-height:1.82">
     Programa estratégico de manufactura interna de células CAR-T anti-CD19, orientado al estudio preclínico de la leucemia linfoblástica aguda de precursores B refractaria o en recaída. La iniciativa busca establecer <strong style="color:var(--g)">soberanía tecnológica</strong> en terapias de células CAR-T en México, con una ruta definida hacia la validación clínica bajo estándares regulatorios nacionales e internacionales.
@@ -186,7 +193,7 @@ footer p{font-size: 20px;color:var(--m2)}
     Arquitectura del Constructo CAR Anti-CD19
   </div>
   <!-- DIAGRAMA LINEAL -->
-  <svg viewBox="0 0 900 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;margin-bottom:1.5rem" font-family="'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif">
+  <svg aria-hidden="true" viewBox="0 0 900 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;overflow:visible;margin-bottom:1.5rem" font-family="'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif">
     <defs>
       <linearGradient id="gSig" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00c49a" stop-opacity="0.9"/><stop offset="100%" stop-color="#006b52" stop-opacity="0.95"/></linearGradient>
       <linearGradient id="gScfv" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00d4a8" stop-opacity="0.9"/><stop offset="100%" stop-color="#009970" stop-opacity="0.95"/></linearGradient>
@@ -278,7 +285,7 @@ footer p{font-size: 20px;color:var(--m2)}
 
 <!-- ── LOCK WALL ── -->
 <div id="lock-wall" style="background:rgba(255,255,255,0.88);border:1.5px solid rgba(0,196,154,.28);border-radius:14px;padding:2.5rem;margin-bottom:1.5rem;box-shadow:0 3px 14px rgba(0,107,82,.07);text-align:center">
-  <div style="font-size: 49px;margin-bottom:1rem">🔒</div>
+  <div style="font-size: 49px;margin-bottom:1rem"></div>
   <div style="font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 24px;color:var(--g);font-weight:600;margin-bottom:.5rem;letter-spacing:.05em">Contenido restringido</div>
   <div style="font-size: 24px;color:var(--m);margin-bottom:1.5rem;line-height:1.7">El resto de esta página requiere un código de acceso.<br>Contacta a <strong style="color:var(--t)">Yair Omar Chávez-Estrada</strong> para obtenerlo.</div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center">
@@ -288,7 +295,7 @@ footer p{font-size: 20px;color:var(--m2)}
     <button onclick="checkLock()" 
       style="padding:11px 22px;background:var(--g);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size: 24px;font-weight:600;cursor:pointer;transition:all .2s"
       onmouseover="this.style.background='var(--gl)'" onmouseout="this.style.background='var(--g)'">
-      Acceder →
+      Acceder
     </button>
   </div>
   <div id="lock-error" style="font-size: 21px;color:#e53e3e;margin-top:.75rem;min-height:20px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif"></div>
@@ -303,7 +310,7 @@ footer p{font-size: 20px;color:var(--m2)}
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:.8rem">
       <span class="v-badge" style="margin-bottom:0">Versión Preclínica</span>
       <!-- CAR-T brillante con EGFP verde -->
-      <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="gCart1" cx="40%" cy="35%" r="60%">
             <stop offset="0%" stop-color="#80ffcc"/>
@@ -347,7 +354,7 @@ footer p{font-size: 20px;color:var(--m2)}
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:.8rem">
       <span class="v-badge" style="margin-bottom:0">Candidato Clínico</span>
       <!-- CAR-T sin brillo - azul apagado -->
-      <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="gCart2" cx="40%" cy="35%" r="60%">
             <stop offset="0%" stop-color="#90c8f0"/>
@@ -386,7 +393,7 @@ footer p{font-size: 20px;color:var(--m2)}
 </div>
 
 <!-- PASOS EXPANDIBLES -->
-<p class="sec">Arquitectura del Constructo — 4 Módulos</p>
+<p class="sec">Arquitectura del Constructo, 4 Módulos</p>
 <div class="step-grid">
 
   <div class="step-card s1" id="diseno" onclick="toggleStep(this)">
@@ -397,23 +404,23 @@ footer p{font-size: 20px;color:var(--m2)}
       <div class="domain-list">
         <div class="domain-item">
           <span class="di-label">Promotor</span>
-          <span class="di-text"><strong>EF1A</strong> — Actividad transcripcional constitutiva y robusta en linfocitos T. Mayor resistencia al silenciamiento epigenético comparado con CMV, favoreciendo expresión estable a largo plazo.</span>
+          <span class="di-text"><strong>EF1A</strong>, Actividad transcripcional constitutiva y robusta en linfocitos T. Mayor resistencia al silenciamiento epigenético comparado con CMV, favoreciendo expresión estable a largo plazo.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">scFv</span>
-          <span class="di-text"><strong>Anti-CD19 · clon FMC63</strong> — Dominio de reconocimiento antigénico. Mismo clon utilizado en Kymriah® (tisagenlecleucel) y Yescarta® (axicabtagene ciloleucel). Orientación VL-VH con linker flexible de 16 aminoácidos.</span>
+          <span class="di-text"><strong>Anti-CD19 · clon FMC63</strong>, Dominio de reconocimiento antigénico. Mismo clon utilizado en Kymriah® (tisagenlecleucel) y Yescarta® (axicabtagene ciloleucel). Orientación VL-VH con linker flexible de 16 aminoácidos.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Bisagra · TM</span>
-          <span class="di-text"><strong>CD8α</strong> — Región bisagra y dominio transmembrana de CD8α. Provee flexibilidad conformacional y reduce el riesgo de dimerización espontánea y activación tónica no antígeno-dependiente.</span>
+          <span class="di-text"><strong>CD8α</strong>, Región bisagra y dominio transmembrana de CD8α. Provee flexibilidad conformacional y reduce el riesgo de dimerización espontánea y activación tónica no antígeno-dependiente.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Coestimulador</span>
-          <span class="di-text"><strong>4-1BB (CD137)</strong> — Activa vías NF-κB y PI3K/Akt. Promueve diferenciación hacia fenotipos de memoria central (Tcm) y menor agotamiento celular respecto a CD28. Base de tisagenlecleucel.</span>
+          <span class="di-text"><strong>4-1BB (CD137)</strong>, Activa vías NF-κB y PI3K/Akt. Promueve diferenciación hacia fenotipos de memoria central (Tcm) y menor agotamiento celular respecto a CD28. Base de tisagenlecleucel.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Activación</span>
-          <span class="di-text"><strong>CD3ζ</strong> — Dominio de activación primaria con 3 ITAMs. Responsable de la transducción de la señal citotóxica tras el reconocimiento antigénico.</span>
+          <span class="di-text"><strong>CD3ζ</strong>, Dominio de activación primaria con 3 ITAMs. Responsable de la transducción de la señal citotóxica tras el reconocimiento antigénico.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">oPRE</span>
@@ -432,11 +439,11 @@ footer p{font-size: 20px;color:var(--m2)}
       <div class="domain-list">
         <div class="domain-item">
           <span class="di-label">Pseudotipo</span>
-          <span class="di-text"><strong>VSV-G</strong> — Glicoproteína del virus de la estomatitis vesicular. Confiere amplio tropismo celular y alta eficiencia de transducción en linfocitos T primarios pre-activados. Estándar en manufactura CAR-T aprobada por FDA.</span>
+          <span class="di-text"><strong>VSV-G</strong>, Glicoproteína del virus de la estomatitis vesicular. Confiere amplio tropismo celular y alta eficiencia de transducción en linfocitos T primarios pre-activados. Estándar en manufactura CAR-T aprobada por FDA.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Configuración</span>
-          <span class="di-text"><strong>SIN (Self-Inactivating)</strong> — Deleción de la región U3 en ambos LTRs (ΔU3). Elimina actividad promotora viral tras integración, reduciendo significativamente el riesgo de mutagénesis insercional.</span>
+          <span class="di-text"><strong>SIN (Self-Inactivating)</strong>, Deleción de la región U3 en ambos LTRs (ΔU3). Elimina actividad promotora viral tras integración, reduciendo significativamente el riesgo de mutagénesis insercional.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Elementos</span>
@@ -463,15 +470,15 @@ footer p{font-size: 20px;color:var(--m2)}
         </div>
         <div class="domain-item">
           <span class="di-label">Activación</span>
-          <span class="di-text"><strong>T Cell TransAct (Miltenyi)</strong> — Reactivo estándar para activación de linfocitos T primarios. 1×10⁶ células/mL en TexMACS GMP + IL-7 (12.5 ng/mL) + IL-15 (12.5 ng/mL) + HSA 3%.</span>
+          <span class="di-text"><strong>T Cell TransAct (Miltenyi)</strong>, Reactivo estándar para activación de linfocitos T primarios. 1×10⁶ células/mL en TexMACS GMP + IL-7 (12.5 ng/mL) + IL-15 (12.5 ng/mL) + HSA 3%.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Transducción</span>
-          <span class="di-text">14–18 horas post-activación (Día 1). Placa 24 pozos, 1 mL/pozo, 1×10⁶ células/pozo. Polybrene 6 µg/mL como agente policatiónico potenciador.</span>
+          <span class="di-text">14-18 horas post-activación (Día 1). Placa 24 pozos, 1 mL/pozo, 1×10⁶ células/pozo. Polybrene 6 µg/mL como agente policatiónico potenciador.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Expansión</span>
-          <span class="di-text">Días 6–12: transferencia a frasco T-25, densidad 1×10⁶ células/mL, IL-2 (100 UI/mL) cada 72 horas. Cuarto limpio ISO 7 con monitoreo continuo.</span>
+          <span class="di-text">Días 6-12: transferencia a frasco T-25, densidad 1×10⁶ células/mL, IL-2 (100 UI/mL) cada 72 horas. Cuarto limpio ISO 7 con monitoreo continuo.</span>
         </div>
       </div>
     </div>
@@ -494,7 +501,7 @@ footer p{font-size: 20px;color:var(--m2)}
         </div>
         <div class="domain-item">
           <span class="di-label">Microbiología</span>
-          <span class="di-text"><strong>BACTEC™ FOS</strong> — Control microbiológico con detección de contaminantes en matrices DMSO/HSA. Criterio: resultado negativo obligatorio.</span>
+          <span class="di-text"><strong>BACTEC™ FOS</strong>, Control microbiológico con detección de contaminantes en matrices DMSO/HSA. Criterio: resultado negativo obligatorio.</span>
         </div>
         <div class="domain-item">
           <span class="di-label">Funcional</span>
@@ -510,14 +517,14 @@ footer p{font-size: 20px;color:var(--m2)}
 <!-- SEGURIDAD -->
 <p class="sec">Características de Seguridad del Vector</p>
 <div class="safety-box">
-  <h3>🛡️ Elementos de seguridad incorporados</h3>
+  <h3>Elementos de seguridad incorporados</h3>
  <ul class="safety-list">
-    <li><strong>Configuración SIN</strong> (Self-Inactivating) — deleción ΔU3 en ambos LTRs elimina actividad promotora viral post-integración, reduciendo mutagénesis insercional.</li>
-    <li>Dominios <strong>CD8α</strong> para bisagra y transmembrana — menor riesgo de dimerización espontánea y activación tónica no antígeno-dependiente vs IgG4.</li>
-    <li><strong>oPRE optimizado</strong> — deleción del ORF-X del WPRE original elimina el potencial oncogénico reportado, manteniendo el beneficio de estabilidad del ARNm.</li>
-    <li>Dominio coestimulador <strong>4-1BB</strong> — menor riesgo de agotamiento celular y perfil de toxicidad más favorable que CD28 en uso clínico.</li>
-    <li>Clasificación <strong>NBS-2</strong> — manejo en cuarto limpio ISO 7 con protocolos de bioseguridad conforme a NOM-087-ECOL-SSA1-2002.</li>
-    <li>Candidato clínico <strong>sin EGFP</strong> — elimina riesgo de respuesta inmune contra proteína fluorescente de origen no humano en pacientes.</li>
+    <li><strong>Configuración SIN</strong> (Self-Inactivating), deleción ΔU3 en ambos LTRs elimina actividad promotora viral post-integración, reduciendo mutagénesis insercional.</li>
+    <li>Dominios <strong>CD8α</strong> para bisagra y transmembrana, menor riesgo de dimerización espontánea y activación tónica no antígeno-dependiente vs IgG4.</li>
+    <li><strong>oPRE optimizado</strong>, deleción del ORF-X del WPRE original elimina el potencial oncogénico reportado, manteniendo el beneficio de estabilidad del ARNm.</li>
+    <li>Dominio coestimulador <strong>4-1BB</strong>, menor riesgo de agotamiento celular y perfil de toxicidad más favorable que CD28 en uso clínico.</li>
+    <li>Clasificación <strong>NBS-2</strong>, manejo en cuarto limpio ISO 7 con protocolos de bioseguridad conforme a NOM-087-ECOL-SSA1-2002.</li>
+    <li>Candidato clínico <strong>sin EGFP</strong>, elimina riesgo de respuesta inmune contra proteína fluorescente de origen no humano en pacientes.</li>
 </ul>
 </div>
 
@@ -525,7 +532,7 @@ footer p{font-size: 20px;color:var(--m2)}
 <p class="sec">Contexto y Justificación</p>
 <div style="background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem">
   <p style="font-size: 27px;color:var(--m);line-height:1.9;margin-bottom:1rem">
-    Los productos CAR-T aprobados (<em>Kymriah®, Yescarta®, Breyanzi®</em>) han demostrado tasas de remisión completa superiores al <strong style="color:var(--g)">70–90%</strong> en LLA-B pediátrica y adulta refractaria. Sin embargo, en México el acceso enfrenta barreras críticas: tiempos logísticos de 3–6 semanas desde leucoféresis hasta infusión, complejidades regulatorias de importación de ATMPs, y costos que superan el umbral de cualquier sistema de salud pública en la región.
+    Los productos CAR-T aprobados (<em>Kymriah®, Yescarta®, Breyanzi®</em>) han demostrado tasas de remisión completa superiores al <strong style="color:var(--g)">70-90%</strong> en LLA-B pediátrica y adulta refractaria. Sin embargo, en México el acceso enfrenta barreras críticas: tiempos logísticos de 3-6 semanas desde leucoféresis hasta infusión, complejidades regulatorias de importación de ATMPs, y costos que superan el umbral de cualquier sistema de salud pública en la región.
   </p>
   <p style="font-size: 27px;color:var(--m);line-height:1.9">
     La iniciativa cuenta con infraestructura especializada: cuarto limpio ISO 7, citometría multiparamétrica validada y equipo con formación en hematología oncológica, biología molecular y control de calidad. Esta base hace técnicamente viable un programa <em>in-house</em> de vector lentiviral anti-CD19 bajo estándares RUO, con ruta definida hacia validación clínica, en coherencia con recomendaciones internacionales sobre desarrollo descentralizado de terapias CAR-T para entornos de recursos limitados.
@@ -557,8 +564,8 @@ footer p{font-size: 20px;color:var(--m2)}
 <div class="cta-box">
   <p style="font-size: 27px;color:var(--t2);font-weight:300">¿Quieres colaborar o apoyar este proyecto de investigación?</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap">
-    <a href="contacto.html" class="cta-btn">✉️ Contactar →</a>
-    <a href="https://paypal.me/yairchaveze" target="_blank" rel="noopener" class="cta-btn paypal">💙 Apoyar vía PayPal</a>
+    <a href="contacto.html" class="cta-btn">✉️ Contactar</a>
+    <a href="https://paypal.me/yairchaveze" target="_blank" rel="noopener" class="cta-btn paypal">Apoyar vía PayPal</a>
   </div>
 </div>
 

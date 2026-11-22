@@ -23,7 +23,7 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2.5rem;border-bottom:1px solid var(--bord2);margin-bottom:2.5rem}
@@ -35,14 +35,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .back-btn:hover{color:var(--g)}
 .hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:2rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--g),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--p);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--pl);border-radius:2px}
 .hero h1{font-size:clamp(1.3rem,3.5vw,1.9rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.8rem}
 .hero p{font-size:18px;color:var(--m);line-height:1.82}
-.sec{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
+.sec{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--g);letter-spacing:0;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px;font-weight:500}
 .sec::after{content:'';flex:1;height:1px;background:var(--bord2)}
 .tool-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:16px;margin-bottom:1rem}
-.tool-card{background:#fff;border:1.5px solid var(--bord2);border-radius:14px;padding:1.5rem;text-decoration:none;display:flex;flex-direction:column;transition:all .2s;position:relative;overflow:hidden}
+.tool-card{background:#fff;border:1.5px solid var(--bord2);border-radius:14px;padding:1.5rem;text-decoration:none;display:flex;flex-direction:column;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
 .tool-card:hover{border-color:var(--bord3);box-shadow:0 8px 28px rgba(0,107,82,.12);transform:translateY(-2px)}
 .tool-icon{font-size:30px;margin-bottom:.9rem}
 .tool-badge{position:absolute;top:1.1rem;right:1.1rem;background:var(--g3);border:1px solid var(--bord3);border-radius:20px;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:10px;color:var(--g);padding:3px 10px;letter-spacing:.08em;font-weight:500}
@@ -62,6 +62,13 @@ footer p{font-size:14px;color:var(--m2)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -94,12 +101,12 @@ footer p{font-size:14px;color:var(--m2)}
     </a>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </div>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="kicker">🤖 IA en Ciencias de la Salud</div>
+  <div class="kicker">IA en Ciencias de la Salud</div>
   <h1>Herramientas de Inteligencia Artificial<br>&amp; Modelos Predictivos</h1>
   <p>Modelos de machine learning y calculadoras clínicas desarrollados para apoyar la toma de decisiones en citometría de flujo, aféresis, terapia celular y medicina transfusional. Elige la herramienta que necesitas:</p>
 </section>
@@ -111,66 +118,66 @@ footer p{font-size:14px;color:var(--m2)}
 
     <a href="predictor.html" class="tool-card">
       <span class="tool-badge">v5.1 · LIVE</span>
-      <div class="tool-icon">🤖</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Predictor de Volemia · Aféresis CPH</div>
       <div class="tool-desc">Modelo GradientBoosting que estima el número de volemias necesarias para una cosecha eficiente de células CD34+ en trasplante alogénico. n=140 · R²=0.852.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="recambio-plasmatico.html" class="tool-card">
       <span class="tool-badge">ASFA 2023</span>
-      <div class="tool-icon">🔬</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Calculadora de Recambio Plasmático</div>
       <div class="tool-desc">Cálculo del Volumen Sanguíneo Total (VST), Volumen Plasmático (VP) y solución de reemplazo con albúmina humana al 5%, basada en guías ASFA 2023.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="colecta-linfocitos.html" class="tool-card">
       <span class="tool-badge">CAR-T · Leucoaféresis</span>
-      <div class="tool-icon">🧫</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Colecta de Linfocitos T para CAR-T</div>
       <div class="tool-desc">Cálculo de la Eficiencia de Recolección (CE%) y el volumen total de sangre a procesar para alcanzar la meta de linfocitos T CD3+ en manufactura de CAR-T.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="propagacion-celular.html" class="tool-card">
       <span class="tool-badge">ATCC CCL-86 · Raji</span>
-      <div class="tool-icon">🧫</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Propagación Celular</div>
       <div class="tool-desc">Del conteo al banco celular: volumen de siembra y frasco, proyección de expansión con esquema de pases, medio de cultivo completo y medio de congelación con 10 % de DMSO.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="ce2-calculator-yoce.html" class="tool-card">
       <span class="tool-badge">CE2% · LIVE</span>
-      <div class="tool-icon">📊</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Calculadora CE2% CD34+</div>
       <div class="tool-desc">Collection Efficiency para aféresis de CD34+ en trasplante alogénico e haploidentical. Fórmula: CE2% = (CD34+ Volumen Total) / (Pre-Cuenta × Volumen Sangre Procesada) × 100</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="fraccionamiento-cd34-calculator.html" class="tool-card">
       <span class="tool-badge">Fraccionamiento · LIVE</span>
-      <div class="tool-icon">🧬</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Calculadora Fraccionamiento CD34+</div>
       <div class="tool-desc">Distribución de unidades de CD34+ en dos fracciones con cálculo automático de albúmina proporcional. Ideal para optimizar cosechas entre trasplante y reserva.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="calculadora-vec-pediatrico.html" class="tool-card">
       <span class="tool-badge">Pediátrico · Seguridad</span>
-      <div class="tool-icon">👶</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Calculadora VEC Pediátrico</div>
       <div class="tool-desc">Volumen Extracorpóreo en aféresis pediátrica. Calcula VST según edad, evalúa seguridad (10-15%) y monitorea riesgo de hipovolemia en infantes.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
     <a href="hppc-cryopreservation-calculator.html" class="tool-card">
       <span class="tool-badge">Criopreservación · LIVE</span>
-      <div class="tool-icon">🧊</div>
+      <div class="tool-icon"></div>
       <div class="tool-title">Calculadora de Criopreservación CPH</div>
       <div class="tool-desc">Planificación óptima de fraccionamiento para células progenitoras hematopoyéticas. Calcula fracciones, concentración CD34+/bolsa y recomienda reducción de volumen si aplica.</div>
-      <div class="tool-cta">Abrir herramienta →</div>
+      <div class="tool-cta">Abrir herramienta</div>
     </a>
 
   </div>

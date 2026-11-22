@@ -22,7 +22,7 @@
   --t:#0f172a;--t2:#1e293b;--m:#3d5166;--m2:#536880;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size: 23px}
+body{background:var(--bg);color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size: 23px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 
@@ -36,7 +36,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 .hero{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),var(--gl),var(--bl));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 11px;color:var(--g);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--gl);border-radius:2px}
 .hero h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:700;line-height:1.15;letter-spacing:-.03em;color:var(--t);margin-bottom:.5rem}
 .hero p{font-size: 19px;color:var(--m);line-height:1.82;margin-bottom:1.2rem}
@@ -50,7 +50,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .form-card{background:#fff;border:1px solid var(--bord2);border-radius:16px;padding:2rem;box-shadow:0 4px 18px rgba(0,0,0,.05);margin-bottom:1.5rem}
 
 .field{margin-bottom:1.25rem}
-.field label{display:block;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 13px;color:var(--m);letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px;font-weight:500}
+.field label{display:block;font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size: 13px;color:var(--m);letter-spacing:0;margin-bottom:7px;font-weight:500}
 .field input,.field textarea,.field select{
   width:100%;background:var(--bg);border:1px solid var(--bord2);border-radius:10px;
   padding:12px 14px;font-size: 19px;font-family:'Plus Jakarta Sans',sans-serif;
@@ -67,7 +67,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 
-.submit-btn{width:100%;background:var(--g);border:none;border-radius:10px;font-size: 19px;font-weight:600;color:#fff;padding:14px 24px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.5rem}
+.submit-btn{width:100%;background:var(--g);border:none;border-radius:10px;font-size: 19px;font-weight:600;color:#fff;padding:14px 24px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.5rem}
 .submit-btn:hover{background:var(--gl);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,107,82,.25)}
 .submit-btn:active{transform:translateY(0)}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
@@ -82,7 +82,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 .error-msg.show{display:block}
 
 .info-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.5rem}
-.info-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1rem;text-align:center;transition:all .2s}
+.info-card{background:#fff;border:1px solid var(--bord2);border-radius:12px;padding:1rem;text-align:center;transition:color .2s,background-color .2s,border-color .2s,opacity .2s,transform .2s,box-shadow .2s}
 .info-card:hover{border-color:var(--bord3)}
 .info-card .ico{font-size: 29px;margin-bottom:6px}
 .info-card h4{font-size: 16px;font-weight:600;color:var(--t);margin-bottom:3px}
@@ -103,6 +103,13 @@ footer p{font-size: 14px;color:var(--m2)}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -137,37 +144,37 @@ footer p{font-size: 14px;color:var(--m2)}
       <span>Asesoría Científica · Cell Therapy</span>
     </div>
   </div>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="kicker">✉️ Contacto directo</div>
   <h1>Escríbeme</h1>
-  <p>¿Tienes un proyecto de terapia celular, una colaboración científica o quieres explorar una inversión estratégica en LATAM? Cuéntame — leo todos los mensajes personalmente.</p>
+  <p>¿Tienes un proyecto de terapia celular, una colaboración científica o quieres explorar una inversión estratégica en LATAM? Cuéntame, leo todos los mensajes personalmente.</p>
   <div class="avail"><span class="dot"></span> Disponible para nuevos proyectos</div>
 </section>
 
 <!-- INFO CARDS -->
 <div class="info-cards">
   <div class="info-card">
-    <div class="ico">🧬</div>
+    <div class="ico"></div>
     <h4>Consultoría CAR-T</h4>
     <p>Manufactura · ATMPs · cGMP</p>
   </div>
   <div class="info-card">
-    <div class="ico">🤖</div>
+    <div class="ico"></div>
     <h4>IA en Salud</h4>
     <p>ML · Predicción clínica</p>
   </div>
   <div class="info-card">
-    <div class="ico">🌎</div>
+    <div class="ico"></div>
     <h4>Inversión Estratégica</h4>
     <p>Biotech · LATAM · Due diligence</p>
   </div>
 </div>
 
-<div class="response-note">⏱ Tiempo de respuesta habitual: 24–48 horas hábiles</div>
+<div class="response-note">⏱ Tiempo de respuesta habitual: 24-48 horas hábiles</div>
 
 <!-- FORMULARIO -->
 <p class="sec">Formulario de Contacto</p>
@@ -213,7 +220,7 @@ footer p{font-size: 14px;color:var(--m2)}
     <input type="text" name="_gotcha" style="display:none"/>
 
     <button type="submit" class="submit-btn" id="submitBtn">
-      <span id="btnText">Enviar mensaje →</span>
+      <span id="btnText">Enviar mensaje</span>
     </button>
 
     <div class="error-msg" id="errorMsg">
@@ -225,7 +232,7 @@ footer p{font-size: 14px;color:var(--m2)}
   <div class="success-msg" id="successMsg">
     <div class="check">✅</div>
     <h3>¡Mensaje enviado!</h3>
-    <p>Gracias por escribirme. Te responderé en 24–48 horas hábiles.</p>
+    <p>Gracias por escribirme. Te responderé en 24-48 horas hábiles.</p>
   </div>
 </div>
 

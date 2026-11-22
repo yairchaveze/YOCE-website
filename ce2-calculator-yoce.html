@@ -19,7 +19,7 @@
   --success-bg:rgba(0,196,154,0.08);--success-bord:rgba(0,196,154,0.3);
 }
 html{scroll-behavior:smooth;background:var(--bg)}
-body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;line-height:1;font-size:16px}
+body{background:transparent;color:var(--t);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:clip;line-height:1;font-size:16px}
 #c{position:fixed;inset:0;pointer-events:none;z-index:0}
 .page{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 1.25rem 4rem}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0 2rem;border-bottom:1px solid var(--bord2);margin-bottom:2rem}
@@ -33,7 +33,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem
 /* HERO */
 .hero{background:rgba(255,255,255,0.9);border:1px solid var(--bord2);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 4px 24px rgba(0,0,0,.06);position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--b),var(--g),var(--p));border-radius:16px 16px 0 0}
-.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--b);letter-spacing:.22em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.kicker{font-family:'Bricolage Grotesque',"Helvetica Neue",Arial,sans-serif;font-size:11px;color:var(--b);letter-spacing:0;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
 .kicker::before{content:'';width:16px;height:1.5px;background:var(--bl);border-radius:2px}
 .hero h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.03em;color:var(--t);margin-bottom:.4rem;line-height:1.2}
 .hero p{font-size:18px;color:var(--m);line-height:1.82}
@@ -83,6 +83,13 @@ footer p{font-size:13px;color:var(--m2)}
 <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="yct-theme.css">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -115,15 +122,15 @@ footer p{font-size:13px;color:var(--m2)}
     </div>
     <div class="logo-text">Yo<b>Cell</b>Therapy<span>Asesoría Científica · Cell Therapy</span></div>
   </a>
-  <a href="/" class="back-btn">← Volver al inicio</a>
+  <a href="/" class="back-btn">Volver al inicio</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="kicker">📊 IA en Ciencias de la Salud · Herramientas Clínicas</div>
+  <div class="kicker">IA en Ciencias de la Salud · Herramientas Clínicas</div>
   <h1>Calculadora CE2% CD34+</h1>
   <p>Collection Efficiency para aféresis de CD34+ en trasplante alogénico e haploidentical. Calcula eficiencia de recolección basada en pre-cuenta, volumen sanguíneo procesado y CD34+ total en cosecha.</p>
-  <div class="badge">🧬 Fórmula YoCell Therapy · Calculadora Clínica</div>
+  <div class="badge">Fórmula YoCell Therapy · Calculadora Clínica</div>
 </div>
 
 <!-- PASO 1 -->

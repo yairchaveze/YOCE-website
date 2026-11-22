@@ -21,7 +21,7 @@
 *{box-sizing:border-box}
 body{font-size:17px;line-height:1.6}
 .lab{max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.mono{font-family:var(--yct-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.mono{font-family:var(--yct-mono);font-size:11.5px;letter-spacing:0;}
 h1,h2,h3{margin:0;font-family:var(--yct-display);letter-spacing:-.02em;text-wrap:balance}
 p{margin:0}
 a{color:inherit}
@@ -44,7 +44,7 @@ a{color:inherit}
 .l-btn.ghost:hover{background:var(--yct-ink);color:var(--yct-bg)}
 .drop{position:relative;justify-self:end;width:100%;max-width:440px;aspect-ratio:1/1.06;margin:0;border-radius:12px;overflow:hidden;background:radial-gradient(120% 90% at 50% 70%,#FFFFFF 0%,#FBF4F3 55%,#F3E6E5 100%);border:1px solid var(--yct-line)}
 .drop canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.drop figcaption{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted)}
+.drop figcaption{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--yct-mono);font-size:10.5px;letter-spacing:0;color:var(--yct-muted)}
 @media (max-width:880px){.l-hero{grid-template-columns:1fr;gap:36px;padding-block:40px}.drop{justify-self:center;max-width:400px}}
 
 /* Trust strip */
@@ -82,7 +82,7 @@ a{color:inherit}
 .study h3{font-size:22px;font-weight:400}
 .study>p{color:var(--yct-muted);font-size:15.5px}
 .study dl{margin:auto 0 0;padding-top:14px;border-top:1px solid var(--yct-line);display:grid;gap:10px;font-size:14px}
-.study dt{font-family:var(--yct-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--yct-muted)}
+.study dt{font-family:var(--yct-mono);font-size:10.5px;letter-spacing:0;color:var(--yct-muted)}
 .study dd{margin:2px 0 0;color:var(--yct-ink);display:flex;align-items:center;gap:8px}
 .tube{width:10px;height:22px;border-radius:2px 2px 6px 6px;border:1px solid rgba(30,18,20,.25);position:relative;flex:none;background:linear-gradient(#fff 0 35%,var(--fill,#C0392B) 35%)}
 .tube::before{content:"";position:absolute;left:-2px;right:-2px;top:-5px;height:6px;border-radius:2px;background:var(--cap)}
@@ -144,6 +144,13 @@ a{color:inherit}
 @keyframes sh{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){.shake{animation:none}}
 </style>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* Hallmark · checked · built: the project · redesign: polish · v2.0.0 */
+html,body{overflow-x:clip}
+:where(a,button,summary,input,select,textarea,[tabindex]):focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
 <!-- yct:header -->
@@ -164,7 +171,7 @@ a{color:inherit}
 <!-- Acceso para personal (registro y resultados) -->
 <div class="access-overlay" id="accessOverlay">
   <div class="access-box" id="accessBox" role="dialog" aria-modal="true" aria-labelledby="accTitle">
-    <div class="lock" aria-hidden="true">🔒</div>
+    <div class="lock" aria-hidden="true"></div>
     <h3 id="accTitle">Acceso restringido</h3>
     <p>Ingresa la contraseña para continuar.</p>
     <input type="password" id="accessInput" placeholder="Contraseña" autocomplete="off" aria-label="Contraseña">
@@ -250,7 +257,7 @@ a{color:inherit}
     <div class="l-head"><div class="mono">Ubicación y horarios</div><div><h2>Te esperamos</h2></div></div>
     <div class="visit">
       <div class="v-card"><span class="mono" style="color:var(--yct-accent)">Ubicación</span><h3>San Buenaventura, Coahuila</h3><p>C.P. 25500</p><p>Dirección exacta próximamente, en trámite de autorización sanitaria.</p></div>
-      <div class="v-card"><span class="mono" style="color:var(--yct-accent)">Toma de muestras</span><h3>Fines de semana</h3><div class="sched"><div><span>Sábado</span><span>7:00 – 17:00</span></div><div><span>Domingo</span><span>9:00 – 12:00</span></div></div></div>
+      <div class="v-card"><span class="mono" style="color:var(--yct-accent)">Toma de muestras</span><h3>Fines de semana</h3><div class="sched"><div><span>Sábado</span><span>7:00-17:00</span></div><div><span>Domingo</span><span>9:00-12:00</span></div></div></div>
       <div class="v-card dark"><span class="mono" style="color:#F28C80">Contacto</span><h3>¿Quieres agendar o tienes una duda?</h3><p>Escríbenos y te respondemos personalmente.</p><div class="mailrow"><code id="labMail">laboratorio@yocelltherapy.com</code><button type="button" id="copyMail">Copiar</button></div></div>
     </div>
   </section>
