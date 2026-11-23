@@ -73,7 +73,7 @@
   .row .w{font-size:12px;color:var(--muted)}
   .tog{width:auto;margin:0;padding:10px 12px;font-size:14px;border-radius:10px;background:#EFE6D8;color:var(--ink);white-space:nowrap}
   .row.ok .tog{background:var(--green);color:#fff}
-  .who{display:flex;gap:8px;justify-content:center;margin:10px 0}
+  .who{display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap}
   .who button{width:auto;margin:0;padding:8px 18px;font-size:15px;background:#EFE6D8;color:var(--ink)}
   .who button.on{background:var(--green);color:#fff}
   .fg{margin-bottom:10px}.fg span{display:block;font-size:13px;font-weight:700;color:var(--green);margin-bottom:4px}
@@ -154,7 +154,7 @@
       <p class="err" id="admerr"></p>
     </form>
     <div id="admlist" class="hidden">
-      <div class="who" id="who"><span class="meta" style="align-self:center">Soy:</span><button type="button" data-w="Yair">Yair</button><button type="button" data-w="Luisa">Luisa</button></div>
+      <div class="who" id="who"></div>
       <p class="count" id="count"></p>
       <p class="sync" id="sync"></p>
       <div class="sbox"><span>🔎</span><input id="q" class="search" type="search" placeholder="Buscar por nombre del niño, padrino o duende…" autocomplete="off"></div>
@@ -284,7 +284,6 @@ document.addEventListener("pointerdown", e => {
     }catch(err){ $("admerr").textContent = "No hay conexión. Intenta de nuevo."; }
     $("admgo").disabled = false;
   });
-  document.querySelectorAll("#who button").forEach(b => b.onclick = () => { yo = b.dataset.w; put(LW, yo); render(); });
   document.querySelectorAll("#filt button").forEach(b => b.onclick = () => { filtro = b.dataset.f; document.querySelectorAll("#filt button").forEach(x => x.classList.toggle("on", x === b)); render(); });
   $("q").oninput = () => render();
   const hora = () => $("sync").textContent = "✓ Compartido con los demás duendes · " + new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"});
@@ -369,8 +368,22 @@ document.addEventListener("pointerdown", e => {
     $("e_go").disabled = false; $("e_go").textContent = "Guardar";
   });
 
+  const partes = d => String(d||"").split(/\s*\/\s*|\s+e\s+|\s*,\s*|\s+y\s+/).map(x => x.trim()).filter(Boolean);
+  const esMio = o => !yo || partes(o.duende).some(x => sinAc(x) === sinAc(yo));
+  function duendesLista(){
+    const m = {}; m[sinAc("Yair")] = "Yair";
+    lista.forEach(o => partes(o.duende).forEach(x => { const k = sinAc(x); if (!m[k]) m[k] = x.charAt(0).toUpperCase() + x.slice(1); }));
+    return Object.values(m).sort((a,b) => a.localeCompare(b));
+  }
+  function renderWho(){
+    const W = $("who"); W.innerHTML = "";
+    const lab = document.createElement("span"); lab.className = "meta"; lab.style.alignSelf = "center"; lab.textContent = "Soy:"; W.appendChild(lab);
+    const mk = (txt, val) => { const b = document.createElement("button"); b.type = "button"; b.textContent = txt; b.classList.toggle("on", sinAc(yo) === sinAc(val)); b.onclick = () => { yo = val; put(LW, yo); render(); }; W.appendChild(b); };
+    duendesLista().forEach(d => mk(d + " (" + lista.filter(o => partes(o.duende).some(x => sinAc(x) === sinAc(d))).length + ")", d));
+    mk("Todos", "");
+  }
   function render(){
-    document.querySelectorAll("#who button").forEach(b => b.classList.toggle("on", b.dataset.w === yo));
+    renderWho();
     const q = sinAc($("q").value.trim());
     const tieneCarta = o => !!(o.carta_file || o.carta_url);
     let L = lista.slice();
@@ -378,6 +391,7 @@ document.addEventListener("pointerdown", e => {
       const qs = q.split(/\s+/);
       L = L.filter(o => { const h = sinAc(o.nino + " " + o.padrino + " " + o.duende + " " + o.telefono); return qs.every(t => h.includes(t)); });
     } else {
+      L = L.filter(esMio);
       if (filtro === "enviar") L = L.filter(o => !o.carta_enviada);
       if (filtro === "regalo") L = L.filter(o => !o.lo_tengo);
     }
@@ -409,8 +423,9 @@ document.addEventListener("pointerdown", e => {
       const acts = document.createElement("div"); acts.className = "acts"; acts.append(wa, b);
       row.append(info, acts); R.appendChild(row);
     });
-    const env = lista.filter(o => o.carta_enviada).length, reg = lista.filter(o => o.lo_tengo).length;
-    $("count").textContent = env + " de " + lista.length + " mensajes enviados · " + reg + " regalos recibidos · " + (q ? L.length + " resultado(s) para \"" + $("q").value.trim() + "\"" : "mostrando " + L.length);
+    const mios = lista.filter(esMio);
+    const env = mios.filter(o => o.carta_enviada).length, reg = mios.filter(o => o.lo_tengo).length;
+    $("count").textContent = (yo ? "Niños de " + yo + ": " : "") + env + " de " + mios.length + " mensajes enviados · " + reg + " regalos recibidos · " + (q ? L.length + " resultado(s) para \"" + $("q").value.trim() + "\"" : "mostrando " + L.length);
   }
   setInterval(() => { if (pass && !$("adm").classList.contains("hidden") && $("ed").classList.contains("hidden") && !$("q").value) pull(); }, 45000);
 })();
