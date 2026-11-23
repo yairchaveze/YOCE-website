@@ -87,7 +87,13 @@
   .filt{display:flex;gap:6px;margin:0 0 10px;flex-wrap:wrap}
   .filt button{width:auto;margin:0;padding:8px 12px;font-size:14px;background:#EFE6D8;color:var(--ink)}
   .filt button.on{background:var(--red);color:#fff}
-  .search{font-size:16px!important;letter-spacing:0!important;text-align:left!important;margin:0 0 10px;padding:10px!important}
+  .sbox{position:sticky;top:0;z-index:3;background:var(--cream);padding:6px 0 8px;display:flex;align-items:center;gap:8px}
+  .sbox span{font-size:20px}
+  .search{flex:1;font-size:17px!important;letter-spacing:0!important;text-align:left!important;margin:0;padding:12px!important;border:2px solid var(--green)!important;background:#fff!important}
+  .estado{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+  .chip{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:#EFE6D8;color:var(--muted)}
+  .chip.si{background:#DDF3E5;color:#1D6B3B}
+  .chip.no{background:#FBE3E0;color:#9B2219}
   .hidden{display:none}
   .link{background:none;color:var(--green);text-decoration:underline;font-weight:700;width:auto;margin:6px auto 0;padding:6px}
 </style>
@@ -151,12 +157,12 @@
       <div class="who" id="who"><span class="meta" style="align-self:center">Soy:</span><button type="button" data-w="Yair">Yair</button><button type="button" data-w="Luisa">Luisa</button></div>
       <p class="count" id="count"></p>
       <p class="sync" id="sync"></p>
+      <div class="sbox"><span>🔎</span><input id="q" class="search" type="search" placeholder="Buscar por nombre del niño, padrino o duende…" autocomplete="off"></div>
       <div class="filt" id="filt">
         <button type="button" data-f="enviar" class="on">📲 Por enviar</button>
         <button type="button" data-f="regalo">🎁 Sin regalo</button>
         <button type="button" data-f="todos">Todos</button>
       </div>
-      <input id="q" class="search" placeholder="Buscar niño, padrino o duende…">
       <button type="button" id="addbtn" style="margin:0 0 14px">➕ Agregar padrino / niño</button>
       <form class="card hidden" id="ed">
         <h2 id="edt" style="margin-bottom:12px">Agregar padrino</h2>
@@ -368,9 +374,14 @@ document.addEventListener("pointerdown", e => {
     const q = sinAc($("q").value.trim());
     const tieneCarta = o => !!(o.carta_file || o.carta_url);
     let L = lista.slice();
-    if (filtro === "enviar") L = L.filter(o => !o.carta_enviada);
-    if (filtro === "regalo") L = L.filter(o => !o.lo_tengo);
-    if (q) L = L.filter(o => sinAc(o.nino + " " + o.padrino + " " + o.duende + " " + o.telefono).includes(q));
+    if (q){
+      const qs = q.split(/\s+/);
+      L = L.filter(o => { const h = sinAc(o.nino + " " + o.padrino + " " + o.duende + " " + o.telefono); return qs.every(t => h.includes(t)); });
+    } else {
+      if (filtro === "enviar") L = L.filter(o => !o.carta_enviada);
+      if (filtro === "regalo") L = L.filter(o => !o.lo_tengo);
+    }
+    document.getElementById("filt").style.opacity = q ? ".45" : "1";
     L.sort((a,b) => (filtro === "enviar" ? (+!(a.telefono && tieneCarta(a)) - +!(b.telefono && tieneCarta(b))) : 0) || a.nino.localeCompare(b.nino));
     const R = $("rows"); R.innerHTML = "";
     L.forEach(x => {
@@ -381,13 +392,13 @@ document.addEventListener("pointerdown", e => {
       const t = document.createElement("div"); t.className = "t";
       if (x.telefono){ const a = document.createElement("a"); a.href = "https://wa.me/" + (x.wa || "52" + x.telefono); a.target = "_blank"; a.rel = "noopener"; a.textContent = fmt(x.telefono); t.appendChild(a); }
       else { t.textContent = "Sin teléfono"; t.style.color = "#B8291F"; }
-      const w = document.createElement("div"); w.className = "w";
-      const bits = ["Duende: " + (x.duende || "—")];
-      if (!tieneCarta(x)) bits.push("⚠️ falta carta");
-      if (x.carta_enviada) bits.push("Mensaje enviado" + (x.enviado_por ? " por " + x.enviado_por : ""));
-      if (x.lo_tengo) bits.push("Regalo recibido" + (x.marcado_por ? " por " + x.marcado_por : ""));
-      w.textContent = bits.join(" · ");
-      info.append(n, p, t, w);
+      const w = document.createElement("div"); w.className = "w"; w.textContent = "Duende: " + (x.duende || "—");
+      const est = document.createElement("div"); est.className = "estado";
+      const chip = (txt, ok) => { const c = document.createElement("span"); c.className = "chip " + (ok ? "si" : "no"); c.textContent = (ok ? "✓ " : "✗ ") + txt; est.appendChild(c); };
+      chip("Carta", tieneCarta(x));
+      chip(x.carta_enviada ? "Enviada al padrino" + (x.enviado_por && !/hoja/.test(x.enviado_por) ? " (" + x.enviado_por + ")" : "") : "Sin enviar al padrino", x.carta_enviada);
+      chip(x.lo_tengo ? "Regalo recibido" + (x.marcado_por ? " (" + x.marcado_por + ")" : "") : "Regalo pendiente", x.lo_tengo);
+      info.append(n, p, t, w, est);
       const wa = document.createElement("button"); wa.type = "button";
       wa.className = "wa" + (x.carta_enviada ? " sent" : "");
       wa.textContent = x.carta_enviada ? "✓ Enviado" : "📲 Enviar";
@@ -399,7 +410,7 @@ document.addEventListener("pointerdown", e => {
       row.append(info, acts); R.appendChild(row);
     });
     const env = lista.filter(o => o.carta_enviada).length, reg = lista.filter(o => o.lo_tengo).length;
-    $("count").textContent = env + " de " + lista.length + " mensajes enviados · " + reg + " regalos recibidos · mostrando " + L.length;
+    $("count").textContent = env + " de " + lista.length + " mensajes enviados · " + reg + " regalos recibidos · " + (q ? L.length + " resultado(s) para \"" + $("q").value.trim() + "\"" : "mostrando " + L.length);
   }
   setInterval(() => { if (pass && !$("adm").classList.contains("hidden") && $("ed").classList.contains("hidden") && !$("q").value) pull(); }, 45000);
 })();
