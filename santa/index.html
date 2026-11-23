@@ -12,6 +12,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Mira la carta de tu niño(a) y las instrucciones para entregar tu regalo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect x=%278%27 y=%2726%27 width=%2748%27 height=%2732%27 rx=%274%27 fill=%27%23B8291F%27/%3E%3Crect x=%274%27 y=%2718%27 width=%2756%27 height=%2712%27 rx=%273%27 fill=%27%23D63A2E%27/%3E%3Crect x=%2728%27 y=%2718%27 width=%278%27 height=%2740%27 fill=%27%232F8A5B%27/%3E%3Cpath d=%27M32 18c-6-10-18-10-16-2 2 5 10 3 16 2zm0 0c6-10 18-10 16-2-2 5-10 3-16 2z%27 fill=%27%232F8A5B%27/%3E%3C/svg%3E">
 <meta name="robots" content="noindex, nofollow">
 <title>Cartas a Santa · Hematología Pediátrica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,8 +72,8 @@
   .row .n{color:var(--red);font-weight:700}
   .row .n.none{color:var(--muted);font-weight:600;font-style:italic}
   .row .w{font-size:12px;color:var(--muted)}
-  .tog{width:auto;margin:0;padding:10px 12px;font-size:14px;border-radius:10px;background:#EFE6D8;color:var(--ink);white-space:nowrap}
-  .row.ok .tog{background:var(--green);color:#fff}
+  .tog{width:auto;margin:0;padding:9px 10px;font-size:13px;border-radius:10px;background:#fff;color:var(--red);border:1.5px solid var(--red);white-space:normal;max-width:130px;line-height:1.2}
+  .row.ok .tog{background:var(--green);color:#fff;border-color:var(--green)}
   .who{display:flex;gap:6px;justify-content:center;margin:10px 0;flex-wrap:wrap}
   .who button{width:auto;margin:0;padding:8px 18px;font-size:15px;background:#EFE6D8;color:var(--ink)}
   .who button.on{background:var(--green);color:#fff}
@@ -94,6 +95,24 @@
   .chip{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;background:#EFE6D8;color:var(--muted)}
   .chip.si{background:#DDF3E5;color:#1D6B3B}
   .chip.no{background:#FBE3E0;color:#9B2219}
+  /* duendes corriendo en el panel */
+  #elfrun{position:fixed;left:0;right:0;bottom:0;height:110px;pointer-events:none;z-index:13;overflow:hidden;background:linear-gradient(rgba(251,246,238,0),rgba(251,246,238,.92) 35%)}
+  #elfrun .suelo{position:absolute;left:0;right:0;bottom:0;height:22px;background:linear-gradient(#fff,#EEF3F6);border-top:2px dashed #DCE6EC}
+  #elfsky{position:fixed;inset:0;pointer-events:none;z-index:10;overflow:hidden;opacity:.22}
+  .elf-run{position:absolute;bottom:14px;left:-90px;animation:cruza linear infinite}
+  .elf-run.rev{animation-name:cruzaRev}
+  .elf-run svg{display:block;animation:brinco .36s ease-in-out infinite alternate}
+  .elf-run.salta svg{animation:salto .7s ease-in-out infinite}
+  .elf-run .pierna1{transform-origin:30px 58px;animation:paso .36s ease-in-out infinite alternate}
+  .elf-run .pierna2{transform-origin:30px 58px;animation:paso .36s ease-in-out infinite alternate-reverse}
+  .elf-run .brazo{transform-origin:30px 40px;animation:paso .36s ease-in-out infinite alternate-reverse}
+  @keyframes cruza{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 180px))}}
+  @keyframes cruzaRev{from{transform:translateX(calc(100vw + 180px)) scaleX(-1)}to{transform:translateX(0) scaleX(-1)}}
+  @keyframes brinco{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+  @keyframes salto{0%,100%{transform:translateY(0)}50%{transform:translateY(-34px) rotate(-8deg)}}
+  @keyframes paso{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
+  #adm .in{padding-bottom:120px;position:relative;z-index:12}
+  @media (prefers-reduced-motion: reduce){#elfrun,#elfsky{display:none}}
   .hidden{display:none}
   .link{background:none;color:var(--green);text-decoration:underline;font-weight:700;width:auto;margin:6px auto 0;padding:6px}
 </style>
@@ -145,6 +164,8 @@
 </div>
 
 <div id="adm" class="hidden">
+  <div id="elfsky" aria-hidden="true"></div>
+  <div id="elfrun" aria-hidden="true"><div class="suelo"></div></div>
   <div class="in">
     <div class="top"><h2>🧝 Panel de duendes</h2><button class="x" id="admclose" type="button">Cerrar</button></div>
     <form class="card" id="admf">
@@ -419,7 +440,7 @@ document.addEventListener("pointerdown", e => {
       if (!x.telefono || !tieneCarta(x)){ wa.disabled = true; wa.title = !x.telefono ? "Falta el teléfono del padrino" : "Falta la carta"; }
       wa.onclick = () => enviar(x);
       const b = document.createElement("button"); b.type = "button"; b.className = "tog";
-      b.textContent = x.lo_tengo ? "✓ Lo tengo" : "No lo tengo"; b.onclick = () => mark(x);
+      b.textContent = x.lo_tengo ? "✓ Regalo recibido" : "🎁 Ya tengo su regalo"; b.title = x.lo_tengo ? "Toca para desmarcar si fue un error" : "Márcalo cuando el regalo ya esté en tus manos o en Hematología"; b.onclick = () => mark(x);
       const acts = document.createElement("div"); acts.className = "acts"; acts.append(wa, b);
       row.append(info, acts); R.appendChild(row);
     });
@@ -428,6 +449,67 @@ document.addEventListener("pointerdown", e => {
     $("count").textContent = (yo ? "Niños de " + yo + ": " : "") + env + " de " + mios.length + " mensajes enviados · " + reg + " regalos recibidos · " + (q ? L.length + " resultado(s) para \"" + $("q").value.trim() + "\"" : "mostrando " + L.length);
   }
   setInterval(() => { if (pass && !$("adm").classList.contains("hidden") && $("ed").classList.contains("hidden") && !$("q").value) pull(); }, 45000);
+})();
+// ===== duendes y duendas corriendo con regalos (decorativo) =====
+(function(){
+  const piel = ["#F6D2B0","#E8B48C","#C68A62","#F1C29A"];
+  function elfo(o){
+    const s = piel[o.p % piel.length], ropa = o.nina ? "#C8352B" : "#2F8A5B", gorro = o.nina ? "#2F8A5B" : "#C8352B";
+    const pelo = ["#5B3A21","#2B1B10","#B5651D","#8B5A2B"][o.p % 4];
+    const pierna = (cls, x) => `<g class="${cls}"><rect x="${x}" y="56" width="6" height="16" rx="2" fill="#fff"/><rect x="${x}" y="59" width="6" height="3" fill="#C8352B"/><rect x="${x}" y="65" width="6" height="3" fill="#C8352B"/><path d="M${x-2} 72h10q4 0 4 4h-14z" fill="#3B2A1A"/></g>`;
+    let carga = "";
+    if (o.lleva === "regalo") carga = `<g><rect x="34" y="34" width="20" height="17" rx="2" fill="${o.caja||'#D63A2E'}"/><rect x="42" y="34" width="4" height="17" fill="#F2C14E"/><rect x="34" y="40" width="20" height="4" fill="#F2C14E"/><path d="M44 34c-4-6-10-5-8-1 1 2 5 1 8 1zm0 0c4-6 10-5 8-1-1 2-5 1-8 1z" fill="#F2C14E"/></g>`;
+    if (o.lleva === "baston") carga = `<g transform="rotate(25 44 36)"><path d="M44 58V26a6 6 0 0 1 12 0" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M44 58V26a6 6 0 0 1 12 0" stroke="#C8352B" stroke-width="5" fill="none" stroke-dasharray="4 4" stroke-linecap="round"/></g>`;
+    if (o.lleva === "costal") carga = `<g><path d="M8 30c-10 2-12 18-6 26 6 6 18 4 20-4 2-10-4-24-14-22z" fill="#A9743B"/><path d="M12 30q4-5 8 0" stroke="#7A5126" stroke-width="2" fill="none"/><rect x="5" y="22" width="6" height="7" fill="#2F8A5B"/><rect x="13" y="20" width="7" height="8" fill="#D63A2E"/></g>`;
+    if (o.lleva === "bola") carga = `<circle cx="52" cy="30" r="5" fill="#fff" stroke="#DCE6EC"/>`;
+    const trenzas = o.nina ? `<circle cx="18" cy="26" r="4" fill="${pelo}"/><circle cx="42" cy="26" r="4" fill="${pelo}"/><circle cx="16" cy="31" r="3" fill="${pelo}"/><circle cx="44" cy="31" r="3" fill="${pelo}"/>` : "";
+    const falda = o.nina ? `<path d="M18 46h24l4 12H14z" fill="${ropa}"/><path d="M14 58h32" stroke="#fff" stroke-width="2" stroke-dasharray="3 2"/>` : `<path d="M16 58h28" stroke="#F2C14E" stroke-width="2"/>`;
+    return `<svg width="${o.t}" height="${Math.round(o.t*80/60)}" viewBox="0 0 60 80">
+      ${o.lleva === "costal" ? carga : ""}
+      ${pierna("pierna1", 23)}${pierna("pierna2", 31)}
+      <rect x="18" y="36" width="24" height="22" rx="7" fill="${ropa}"/>
+      <rect x="18" y="46" width="24" height="3" fill="#3B2A1A"/><rect x="27" y="45.5" width="5" height="4" fill="#F2C14E"/>
+      ${falda}
+      <g class="brazo"><rect x="13" y="38" width="6" height="14" rx="3" fill="${ropa}"/><circle cx="16" cy="53" r="3" fill="${s}"/></g>
+      ${trenzas}
+      <path d="M17 24l-6-5 7 1z M43 24l6-5-7 1z" fill="${s}"/>
+      <circle cx="30" cy="25" r="12" fill="${s}"/>
+      <path d="M19 21q11-6 22 0" fill="${pelo}"/>
+      <circle cx="26" cy="25" r="1.6" fill="#2A2522"/><circle cx="34" cy="25" r="1.6" fill="#2A2522"/>
+      <circle cx="23" cy="29" r="2" fill="#F08A7E" opacity=".6"/><circle cx="37" cy="29" r="2" fill="#F08A7E" opacity=".6"/>
+      <path d="M26 30q4 ${o.travieso ? 5 : 3} 8 0" stroke="#7A3B2E" stroke-width="1.5" fill="${o.travieso ? '#fff' : 'none'}" stroke-linecap="round"/>
+      <path d="M17 19q13-12 26 0l6-14q-10-6-18-1z" fill="${gorro}"/>
+      <path d="M49 5q6 2 4 9" stroke="${gorro}" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <circle cx="53" cy="15" r="3.5" fill="#fff"/>
+      <rect x="16" y="17" width="28" height="5" rx="2.5" fill="#fff"/>
+      ${o.lleva !== "costal" ? carga : ""}
+      ${o.lleva !== "costal" && o.lleva !== "bola" ? `<circle cx="38" cy="44" r="3" fill="${s}"/>` : ""}
+    </svg>`;
+  }
+  const lista = [
+    {nina:false, lleva:"regalo", t:54, d:13, delay:0, p:0},
+    {nina:true,  lleva:"regalo", t:50, d:15, delay:-5, p:1, caja:"#2F8A5B"},
+    {nina:false, lleva:"costal", t:58, d:18, delay:-9, p:2},
+    {nina:true,  lleva:"baston", t:48, d:11, delay:-3, p:3, travieso:true, salta:true},
+    {nina:false, lleva:"bola",   t:46, d:12, delay:-7, p:1, travieso:true, rev:true},
+    {nina:true,  lleva:"regalo", t:44, d:16, delay:-12, p:0, caja:"#3A6FB0"}
+  ];
+  const run = document.getElementById("elfrun"), sky = document.getElementById("elfsky");
+  if (!run) return;
+  lista.forEach((o, i) => {
+    const d = document.createElement("div");
+    d.className = "elf-run" + (o.rev ? " rev" : "") + (o.salta ? " salta" : "");
+    d.style.animationDuration = o.d + "s"; d.style.animationDelay = o.delay + "s"; d.style.bottom = (12 + (i % 3) * 4) + "px";
+    d.innerHTML = elfo(o); run.appendChild(d);
+  });
+  // algunos más, grandes y tenues, cruzando el fondo
+  [[18, "40%", false, "regalo", 0.9], [24, "68%", true, "costal", 1.3], [21, "20%", true, "regalo", 1.1]].forEach(([dur, top, nina, lleva, sc], i) => {
+    const d = document.createElement("div");
+    d.className = "elf-run" + (i === 1 ? " rev" : "");
+    d.style.cssText = "top:" + top + ";bottom:auto;animation-duration:" + dur + "s;animation-delay:" + (-i * 6) + "s";
+    d.innerHTML = elfo({nina, lleva, t: Math.round(70 * sc), p: i + 1, caja: ["#D63A2E","#2F8A5B","#3A6FB0"][i]});
+    sky.appendChild(d);
+  });
 })();
 </script>
 </body>
