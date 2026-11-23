@@ -306,6 +306,9 @@ table.pipe { width: 100%; min-width: 760px; border-collapse: collapse; }
 footer { background: var(--color-band); color: var(--color-band-muted); padding-block: var(--space-xl); border-top: 1px solid var(--color-band-rule); }
 .f-mark { margin: 0; font: 300 clamp(3rem, 11vw, 10rem)/0.9 var(--font-display); letter-spacing: -0.04em; color: var(--color-band-ink); white-space: nowrap; }
 .f-mark b { font-weight: 600; color: var(--color-mint); }
+.f-meta a { color: var(--color-band-ink); }
+.f-meta a:hover { color: var(--color-mint); }
+.f-meta a:focus-visible { outline: 2px solid var(--color-focus-on-band); outline-offset: 2px; }
 .f-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-xs) var(--space-lg); margin: var(--space-xl) 0 0; padding: var(--space-md) 0 0; list-style: none; border-top: 1px solid var(--color-band-rule); font-size: var(--text-sm); }
 
 /* ---------- responsive ---------- */
