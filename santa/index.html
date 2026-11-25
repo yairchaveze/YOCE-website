@@ -113,6 +113,12 @@
   @keyframes paso{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}
   #adm .in{padding-bottom:120px;position:relative;z-index:12}
   @media (prefers-reduced-motion: reduce){#elfrun,#elfsky{display:none}}
+  .del{background:#fff;color:#9B2219;border:1.5px solid #9B2219;font-size:15px;margin-top:0}
+  .del.si{background:#9B2219;color:#fff}
+  .del.no{background:#EFE6D8;color:var(--ink);border-color:#EFE6D8}
+  .conf{background:#FBE3E0;border-radius:12px;padding:12px;margin-top:10px}
+  .conf p{margin:0 0 10px;font-weight:700;color:#9B2219;text-align:center}
+  .conf .g2 button{margin-top:0}
   .hidden{display:none}
   .link{background:none;color:var(--green);text-decoration:underline;font-weight:700;width:auto;margin:6px auto 0;padding:6px}
 </style>
@@ -196,6 +202,13 @@
         <div class="fg"><span>Foto de la carta</span><input id="e_img" type="file" accept="image/*"></div>
         <button type="submit" id="e_go">Guardar</button>
         <button type="button" class="link" id="e_cancel">Cancelar</button>
+        <div id="delbox" class="hidden" style="border-top:1.5px dashed #E6DCCB;margin-top:12px;padding-top:12px">
+          <button type="button" id="e_del" class="del">🗑 Eliminar este registro</button>
+          <div id="e_conf" class="hidden conf">
+            <p id="e_conf_txt"></p>
+            <div class="g2"><button type="button" id="e_si" class="del si">Sí, eliminar</button><button type="button" id="e_no" class="del no">No, cancelar</button></div>
+          </div>
+        </div>
         <p class="err" id="e_err"></p>
       </form>
       <div id="rows"></div>
@@ -361,10 +374,24 @@ document.addEventListener("pointerdown", e => {
     F("edad").value = x ? (x.edad||"") : ""; F("pide").value = x ? (x.pide||"") : ""; F("ropa").value = x ? (x.ropa||"") : ""; F("zap").value = x ? (x.zapatos||"") : "";
     F("duende").value = x ? (x.duende||"") : (yo||""); F("img").value = ""; F("err").textContent = "";
     $("duendes").innerHTML = ""; [...new Set(lista.map(o => o.duende).filter(Boolean))].sort().forEach(d => { const o = document.createElement("option"); o.value = d; $("duendes").appendChild(o); });
+    $("delbox").classList.toggle("hidden", !x); $("e_conf").classList.add("hidden"); $("e_del").classList.remove("hidden");
     $("ed").classList.remove("hidden"); $("addbtn").classList.add("hidden"); $("ed").scrollIntoView({behavior:"smooth"});
   }
   function cerrar(){ $("ed").classList.add("hidden"); $("addbtn").classList.remove("hidden"); }
   $("addbtn").onclick = () => abrir(null);
+  $("e_del").onclick = () => {
+    if (!editando) return;
+    $("e_conf_txt").textContent = "¿Eliminar a " + editando.nino + " (padrino: " + (editando.padrino || "sin padrino") + ")? Se borra de la base para todos los duendes y no se puede deshacer.";
+    $("e_del").classList.add("hidden"); $("e_conf").classList.remove("hidden"); $("e_conf").scrollIntoView({behavior:"smooth", block:"center"});
+  };
+  $("e_no").onclick = () => { $("e_conf").classList.add("hidden"); $("e_del").classList.remove("hidden"); };
+  $("e_si").onclick = async () => {
+    if (!editando) return; const nom = editando.nino;
+    $("e_si").disabled = true; $("e_si").textContent = "Eliminando…";
+    try{ await post({action:"delete", id: editando.id}); lista = lista.filter(o => o.id !== editando.id); cerrar(); render(); $("sync").textContent = "🗑 " + nom + " eliminado"; await pull(); }
+    catch(e){ F("err").textContent = "No se pudo eliminar. Revisa tu internet e intenta de nuevo."; }
+    $("e_si").disabled = false; $("e_si").textContent = "Sí, eliminar";
+  };
   $("e_cancel").onclick = cerrar;
   function foto(file){
     return new Promise((ok, bad) => {
