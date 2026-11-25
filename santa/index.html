@@ -188,6 +188,9 @@
       <div class="filt" id="filt">
         <button type="button" data-f="enviar" class="on">📲 Por enviar</button>
         <button type="button" data-f="regalo">🎁 Sin regalo</button>
+        <button type="button" data-f="sintel">📵 Sin teléfono</button>
+        <button type="button" data-f="sincarta">✉️ Sin carta</button>
+        <button type="button" data-f="sinpadrino">👤 Sin padrino</button>
         <button type="button" data-f="todos">Todos</button>
       </div>
       <button type="button" id="addbtn" style="margin:0 0 14px">➕ Agregar padrino / niño</button>
@@ -430,8 +433,15 @@ document.addEventListener("pointerdown", e => {
     duendesLista().forEach(d => mk(d + " (" + lista.filter(o => partes(o.duende).some(x => sinAc(x) === sinAc(d))).length + ")", d));
     mk("Todos", "");
   }
+  function contarFiltros(){
+    const tc = o => !!(o.carta_file || o.carta_url);
+    const M = lista.filter(esMio);
+    const n = {enviar: M.filter(o => !o.carta_enviada).length, regalo: M.filter(o => !o.lo_tengo).length, sintel: M.filter(o => !o.telefono).length,
+      sincarta: M.filter(o => !tc(o)).length, sinpadrino: M.filter(o => !String(o.padrino || "").trim()).length, todos: M.length};
+    document.querySelectorAll("#filt button").forEach(b => { if (!b.dataset.base) b.dataset.base = b.textContent; b.textContent = b.dataset.base + " (" + n[b.dataset.f] + ")"; });
+  }
   function render(){
-    renderWho();
+    renderWho(); contarFiltros();
     const q = sinAc($("q").value.trim());
     const tieneCarta = o => !!(o.carta_file || o.carta_url);
     let L = lista.slice();
@@ -442,6 +452,9 @@ document.addEventListener("pointerdown", e => {
       L = L.filter(esMio);
       if (filtro === "enviar") L = L.filter(o => !o.carta_enviada);
       if (filtro === "regalo") L = L.filter(o => !o.lo_tengo);
+      if (filtro === "sintel") L = L.filter(o => !o.telefono);
+      if (filtro === "sincarta") L = L.filter(o => !tieneCarta(o));
+      if (filtro === "sinpadrino") L = L.filter(o => !String(o.padrino || "").trim());
     }
     document.getElementById("filt").style.opacity = q ? ".45" : "1";
     L.sort((a,b) => (filtro === "enviar" ? (+!(a.telefono && tieneCarta(a)) - +!(b.telefono && tieneCarta(b))) : 0) || a.nino.localeCompare(b.nino));
