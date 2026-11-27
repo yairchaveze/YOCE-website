@@ -2,58 +2,56 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Portal de calidad | YoCellTherapy</title>
+<meta name="theme-color" content="#F2F5F4">
+<title>Portal del personal | YoCellTherapy</title>
 <link rel="icon" type="image/svg+xml" href="/yct-favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="fonts/bricolage-grotesque-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="yct-theme.css">
 <link rel="stylesheet" href="css/calidad.css">
-<script>document.documentElement.classList.add('js');</script>
 </head>
 <body data-api="https://yocelltherapy-calidad.yairchaveze.workers.dev">
-<!-- yct:header -->
-<div class="yct-nav"><div class="yct-wrap">
-<a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a>
-<div class="yct-links" id="yctLinks" role="navigation" aria-label="Principal">
-<div class="yct-dd"><a href="/#plataforma">Plataforma</a><div class="yct-menu"><a href="/#plataforma">Asesoría en Terapia Celular</a><a href="protocolos.html">Bioestadística y Protocolos</a><a href="ia-salud.html">IA en Ciencias de la Salud</a><a href="id-estrategico.html">I+D Estratégico</a><a href="/#plataforma">Control de Calidad</a><a href="/#plataforma">Asesoría a Inversionistas</a></div></div>
-<div class="yct-dd"><a href="cart-vector.html">CAR-T</a><div class="yct-menu"><a href="cart-vector.html">Vector Lentiviral CD19</a><a href="cart-vector.html#diseno">Diseño del constructo</a><a href="cart-vector.html#vector">Vector lentiviral</a><a href="cart-vector.html#manufactura">Manufactura cGMP</a><a href="cart-vector.html#calidad">Control de calidad</a></div></div>
-<div class="yct-dd"><a href="ia-salud.html">Herramientas</a><div class="yct-menu"><a href="recambio-plasmatico.html">Recambio plasmático</a><a href="hppc-cryopreservation-calculator.html">Criopreservación CPH</a><a href="fraccionamiento-cd34-calculator.html">Fraccionamiento CD34⁺</a><a href="ce2-calculator-yoce.html">CE2% CD34⁺</a><a href="colecta-linfocitos.html">Colecta de linfocitos T</a><a href="calculadora-vec-pediatrico.html">VEC pediátrico</a><a href="predictor.html">Predictor de volemia</a><a href="propagacion-celular.html">Propagación celular</a></div></div>
-<div class="yct-dd"><a href="/#ecosistema">Ecosistema</a><div class="yct-menu"><a href="la-celula-mexicana.html">La Célula Mexicana · Podcast</a><a href="yocell-lab.html">YoCell Lab</a></div></div>
-<a href="/#equipo">Liderazgo</a><a href="/#publicaciones">Publicaciones</a><a href="/#noticias">Noticias</a>
-<a class="yct-m" href="contacto.html">Contacto</a>
-</div>
-<a class="yct-btn" href="contacto.html">Contacto</a>
-<button type="button" class="yct-burger" id="yctBurger" aria-expanded="false" aria-controls="yctLinks" aria-label="Menú"><span></span><span></span></button>
-</div></div>
-<!-- /yct:header -->
-<main>
-<div class="qw">
-  <section class="q-head">
-    <h1>Portal de calidad <em>del personal.</em></h1>
-    <p>Versión vigente y oficial de los documentos del sistema de calidad de YoCellTherapy y YoCell Lab. Consulta siempre aquí; una copia impresa o descargada no se actualiza.</p>
-  </section>
+<div class="app">
+  <header class="bar">
+    <a class="brand" href="/"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><radialGradient id="qg"><stop offset="0" stop-color="#7F9CFF" stop-opacity=".55"/><stop offset="1" stop-color="#7F9CFF" stop-opacity="0"/></radialGradient></defs><g transform="translate(256 256) scale(1.55) translate(-256 -256)"><circle cx="256" cy="256" r="96" fill="#43C6A5" fill-opacity="0.17"/><circle cx="256" cy="256" r="150" fill="none" stroke="#43C6A5" stroke-width="24"/><path d="M202 199L256 260.5L310 199M256 260.5V323.5" fill="none" stroke="#0C1A1D" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/><circle cx="371.8" cy="183.8" r="52" fill="url(#qg)"/><circle cx="371.8" cy="183.8" r="28" fill="#7F9CFF"/></g></svg><span>Yo<b>Cell</b>Therapy</span></a>
+    <span class="bar-t">Portal del personal</span>
+    <div class="who" id="who" hidden><span id="whoName"></span><button type="button" class="out" id="logout">Salir</button></div>
+  </header>
 
-  <section class="lock" aria-labelledby="t-lock">
-    <div><h2 id="t-lock">Acceso del personal</h2><p>Si no tienes la contraseña, pídela a Yair Omar Chávez-Estrada.</p></div>
-    <form id="lockForm" novalidate>
-      <label for="code">Contraseña del portal</label>
-      <div class="row"><input id="code" type="password" autocomplete="current-password" required><button class="btn" type="submit">Entrar</button></div>
-      <p class="msg" id="lockMsg" role="status" aria-live="polite"></p>
-    </form>
-  </section>
+  <main class="stage" id="stage">
+    <section class="login" id="login">
+      <form class="card" id="loginForm" novalidate>
+        <h1>Portal del personal</h1>
+        <p class="sub">Entra con tu usuario y contraseña.</p>
+        <label for="user">Usuario</label>
+        <input id="user" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        <label for="pw">Contraseña</label>
+        <input id="pw" type="password" autocomplete="current-password" required>
+        <button class="btn" type="submit">Entrar</button>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+        <p class="help">¿No tienes usuario? Pídelo a Dirección.</p>
+      </form>
+    </section>
 
-  <section class="list gated" id="list" aria-labelledby="t-list">
-    <div class="list-top"><h2 id="t-list">Lista maestra</h2><button class="btn btn--quiet" type="button" id="logout">Salir</button></div>
-    <div class="tablewrap"><table class="master">
-      <thead><tr><th scope="col">Código</th><th scope="col">Título</th><th scope="col">Versión</th><th scope="col">Emisión</th><th scope="col">Próxima revisión</th><th scope="col">Estado</th><th scope="col"><span class="visually-hidden">Abrir</span></th></tr></thead>
-      <tbody id="rows"></tbody>
-    </table></div>
-  </section>
+    <section class="home" id="home" hidden>
+      <h1 class="hello" id="hello"></h1>
+      <div class="tiles" id="tiles">
+<button type="button" class="tile" data-mod="calidad" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="t-tx"><span class="t-name">Calidad</span><span class="t-desc">Manual, procedimientos y formatos vigentes</span></span><span class="t-state" data-state="calidad">En construcción</span></button>
+<button type="button" class="tile" data-mod="administracion" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span><span class="t-tx"><span class="t-name">Administración</span><span class="t-desc">Facturas, contabilidad, precios y cotizaciones</span></span><span class="t-state" data-state="administracion">En construcción</span></button>
+<button type="button" class="tile" data-mod="cultivo" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6L4 18a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8M7 15h10"/></svg></span><span class="t-tx"><span class="t-name">Cultivo celular</span><span class="t-desc">Seguimiento de cultivos y bancos celulares</span></span><span class="t-state" data-state="cultivo">En construcción</span></button>
+<button type="button" class="tile" data-mod="qc" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><span class="t-tx"><span class="t-name">QC CAR-T y terapia celular</span><span class="t-desc">Control de calidad y liberación de lotes</span></span><span class="t-state" data-state="qc">En construcción</span></button>
+      </div>
+    </section>
 
-  <section class="viewer gated" id="viewer" hidden aria-live="polite">
-    <div class="v-bar"><button class="btn btn--quiet" type="button" id="back">Volver a la lista</button><button class="btn" type="button" id="print">Imprimir o guardar PDF</button></div>
+    <section class="mod" id="m-calidad" hidden>
+      <div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Calidad</h2></div>
+      <div id="docList">
+        <p class="m-note">Versión vigente y oficial. Una copia impresa o descargada no se actualiza.</p>
+        <ul class="docs" id="docs"></ul>
+      </div>
+      <section class="viewer" id="viewer" hidden aria-live="polite">
+    <div class="v-bar"><button class="btn btn--quiet" type="button" id="back">Volver a documentos</button><button class="btn" type="button" id="print">Imprimir o guardar PDF</button></div>
     <article class="sheet">
       <header class="d-head">
         <div class="d-logo"><svg viewBox="0 0 512 512" aria-hidden="true"><defs><radialGradient id="qg"><stop offset="0" stop-color="#7F9CFF" stop-opacity=".55"/><stop offset="1" stop-color="#7F9CFF" stop-opacity="0"/></radialGradient></defs><g transform="translate(256 256) scale(1.55) translate(-256 -256)"><circle cx="256" cy="256" r="96" fill="#43C6A5" fill-opacity="0.17"/><circle cx="256" cy="256" r="150" fill="none" stroke="#43C6A5" stroke-width="24"/><path d="M202 199L256 260.5L310 199M256 260.5V323.5" fill="none" stroke="#0C1A1D" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/><circle cx="371.8" cy="183.8" r="52" fill="url(#qg)"/><circle cx="371.8" cy="183.8" r="28" fill="#7F9CFF"/></g></svg><span>Yo<b>Cell</b>Therapy</span></div>
@@ -64,60 +62,14 @@
       <footer class="d-foot"><span id="dCtl"></span><span>Página 1 de 1 al imprimir</span><span>yocelltherapy.com</span></footer>
     </article>
   </section>
-</div>
-</main>
-<div class="page"><!-- yct:footer -->
-<div class="yct-foot"><div class="yct-foot-in">
-<div><a class="yct-brand" href="/"><img src="yct-favicon.svg" alt="" width="34" height="34"><span>Yo<b>Cell</b>Therapy</span></a><p>Consultoría científica en terapia celular, manufactura cGMP e inteligencia artificial aplicada a la salud. Monterrey, México.</p></div>
-<div><h4>Sitio</h4><ul><li><a href="/#plataforma">Plataforma</a></li><li><a href="cart-vector.html">CAR-T</a></li><li><a href="ia-salud.html">Herramientas</a></li><li><a href="/#publicaciones">Publicaciones</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
-<div><h4>Perfil</h4><ul><li><a href="https://www.linkedin.com/in/yair-chaveze/">LinkedIn</a></li><li><a href="https://orcid.org/0000-0002-8418-7655">ORCID</a></li><li><a href="https://scholar.google.com/citations?user=MBKYLVsAAAAJ&amp;hl=es">Google Académico</a></li><li><a href="https://www.instagram.com/yairchaveze/">Instagram</a></li><li><a href="yocell-lab.html">YoCell Lab</a></li><li><a href="la-celula-mexicana.html">La Célula Mexicana</a></li></ul></div>
-</div><div class="yct-foot-bot"><span>© 2026 YoCellTherapy · Yair Omar Chávez-Estrada</span><span>Cell Therapy · AI · R&amp;D</span></div></div>
-<script src="yct-site.js" defer></script>
-<!-- /yct:footer -->
+    </section>
+
+<section class="mod" id="m-administracion" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Administración</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Facturas de pago y comprobantes</li><li>Contabilidad de ingresos y gastos</li><li>Catálogo de productos y servicios con precios</li><li>Cotizaciones con el formato de YoCellTherapy</li></ul></div></section>
+<section class="mod" id="m-cultivo" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Cultivo celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Registro de cultivos, pases y viabilidad</li><li>Bancos celulares y su inventario</li><li>Cálculos de siembra y expansión</li></ul></div></section>
+<section class="mod" id="m-qc" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>QC CAR-T y terapia celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Pruebas de liberación por lote</li><li>Registro de resultados contra especificaciones</li><li>Certificado de análisis</li></ul></div></section>
+  </main>
 </div>
 <style id="pageBoxes"></style>
-<script>
-(function(){
-  var API = document.body.dataset.api, code = '', docs = [];
-  var $ = function(id){ return document.getElementById(id); };
-  var esc = function(t){ return String(t).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
-  function post(path, body){
-    return fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ code: code }, body)) })
-      .then(function(r){ return r.json().then(function(j){ return { status: r.status, body: j }; }); });
-  }
-  function showList(){
-    $('viewer').hidden = true; $('list').hidden = false;
-    $('rows').innerHTML = docs.map(function(d){
-      return '<tr><td>' + esc(d.code) + '</td><td>' + esc(d.title) + '</td><td>' + esc(d.version) + '</td><td>' + esc(d.issued) + '</td><td>' + esc(d.review || '') + '</td><td><span class="state">' + esc(d.status) + '</span></td><td><button type="button" data-doc="' + esc(d.code) + '">Abrir</button></td></tr>';
-    }).join('');
-  }
-  $('lockForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var v = $('code').value.trim(), msg = $('lockMsg');
-    if (!v) { msg.textContent = 'Escribe la contraseña.'; return; }
-    msg.textContent = 'Verificando...'; code = v;
-    post('/qms/list', {}).then(function(r){
-      if (r.status !== 200) { code = ''; msg.textContent = 'Contraseña incorrecta. Inténtalo de nuevo.'; $('code').value = ''; $('code').focus(); return; }
-      docs = r.body.docs; msg.textContent = ''; document.body.classList.add('open'); showList(); $('t-list').focus && $('t-list').scrollIntoView({ block: 'start' });
-    }).catch(function(){ code = ''; msg.textContent = 'No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.'; });
-  });
-  $('rows').addEventListener('click', function(e){
-    var b = e.target.closest('button[data-doc]'); if (!b) return;
-    b.textContent = 'Abriendo...';
-    post('/qms/doc', { doc: b.dataset.doc }).then(function(r){
-      if (r.status === 401) { document.body.classList.remove('open'); $('lockMsg').textContent = 'La contraseña cambió. Escríbela de nuevo.'; return; }
-      if (r.status !== 200) { b.textContent = 'Abrir'; return; }
-      var d = r.body, ctl = d.code + ', versión ' + d.version + ', emisión ' + d.issued;
-      $('dTitle').textContent = d.title; $('dBody').innerHTML = d.html; $('dCtl').textContent = ctl;
-      $('pageBoxes').textContent = '@media print { @page { size: letter; margin: 15mm 15mm 18mm; @bottom-left { content: "' + ctl.replace(/"/g, '') + '"; font: 8pt sans-serif; color: #506267; } @bottom-center { content: "Página " counter(page) " de " counter(pages); font: 8pt sans-serif; color: #506267; } @bottom-right { content: "yocelltherapy.com"; font: 8pt sans-serif; color: #506267; } } }';
-      document.title = d.code + ' ' + d.title + ' | YoCellTherapy';
-      $('list').hidden = true; $('viewer').hidden = false; window.scrollTo(0, 0); $('back').focus();
-    }).catch(function(){ b.textContent = 'Abrir'; });
-  });
-  $('back').addEventListener('click', function(){ document.title = 'Portal de calidad | YoCellTherapy'; showList(); });
-  $('print').addEventListener('click', function(){ window.print(); });
-  $('logout').addEventListener('click', function(){ code = ''; docs = []; $('rows').innerHTML = ''; $('dBody').innerHTML = ''; document.body.classList.remove('open'); $('code').value = ''; $('code').focus(); });
-})();
-</script>
+<script src="js/portal.js" defer></script>
 </body>
 </html>
