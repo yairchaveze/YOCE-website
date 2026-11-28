@@ -19,10 +19,10 @@
   function renderLib() {
     var q = $('lQ').value.trim().toLowerCase();
     var rows = items.filter(function (d) { return !q || (d.titulo + ' ' + d.tipo + ' ' + (d.notas || '')).toLowerCase().indexOf(q) >= 0; })
-      .sort(function (a, b) { return (b.referencia ? 1 : 0) - (a.referencia ? 1 : 0) || (b.fecha || '').localeCompare(a.fecha || ''); });
+      .sort(function (a, b) { return (refTipo(b) ? 1 : 0) - (refTipo(a) ? 1 : 0) || (b.fecha || '').localeCompare(a.fecha || ''); });
     $('lEmpty').hidden = items.length > 0;
     $('lList').innerHTML = rows.map(function (d) {
-      return '<li><div><b>' + esc(d.titulo) + '</b><small>' + esc(d.tipo) + (d.version ? ' · versión ' + esc(d.version) : '') + ' · subido ' + esc(dmy(d.fecha)) + (d.notas ? ' · ' + esc(d.notas) : '') + '</small>' + (d.referencia ? '<span class="pill ok">Referencia de la guía</span>' : '') + '</div><div class="acts"><button type="button" data-view="' + esc(d.id) + '">Ver</button><button type="button" data-dl="' + esc(d.id) + '">Descargar</button><button type="button" data-del="' + esc(d.id) + '">Eliminar</button></div></li>';
+      return '<li><div><b>' + esc(d.titulo) + '</b><small>' + esc(d.tipo) + (d.version ? ' · versión ' + esc(d.version) : '') + ' · subido ' + esc(dmy(d.fecha)) + (d.notas ? ' · ' + esc(d.notas) : '') + '</small>' + (refTipo(d) ? '<span class="pill ok">Referencia: ' + (refTipo(d) === 'manual' ? 'manual del investigador' : 'protocolo clínico') + '</span>' : '') + '</div><div class="acts"><button type="button" data-view="' + esc(d.id) + '">Ver</button><button type="button" data-dl="' + esc(d.id) + '">Descargar</button><button type="button" data-del="' + esc(d.id) + '">Eliminar</button></div></li>';
     }).join('');
   }
   $('lQ').addEventListener('input', renderLib);
@@ -55,7 +55,10 @@
   lf.file.addEventListener('change', function () {
     var f = lf.file.files[0]; if (!f) return;
     if (!lf.titulo.value) lf.titulo.value = f.name.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ');
-    if (/ensayo|protocolo|cart/i.test(f.name)) { lf.tipo.value = 'Protocolo clínico'; if (!items.some(function (x) { return x.referencia; })) lf.referencia.checked = true; }
+    var kind = /manual.*investigador|investigator|brochure/i.test(f.name) ? 'manual' : (/ensayo|protocolo/i.test(f.name) ? 'protocolo' : '');
+    if (kind === 'protocolo') lf.tipo.value = 'Protocolo clínico';
+    if (kind === 'manual') lf.tipo.value = 'Artículo o guía';
+    if (kind && !items.some(function (x) { return refTipo(x) === kind; })) lf.referencia.value = kind;
   });
   lf.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -65,11 +68,11 @@
     msg.textContent = 'Subiendo...';
     var rd = new FileReader();
     rd.onload = function () {
-      var ref = lf.referencia.checked;
+      var ref = lf.referencia.value;
       var save = function () { return call('/lib/save', { item: { titulo: lf.titulo.value.trim(), tipo: lf.tipo.value, version: lf.version.value.trim(), notas: lf.notas.value.trim(), referencia: ref, fecha: today() }, file: { name: f.name, type: f.type || 'application/octet-stream', data: rd.result.split(',')[1] } }); };
       // Solo un documento puede ser la referencia de la guía
-      var prev = ref ? items.filter(function (x) { return x.referencia; }) : [];
-      Promise.all(prev.map(function (x) { x.referencia = false; return call('/lib/save', { item: x }); })).then(save).then(function (r) {
+      var prev = ref ? items.filter(function (x) { return refTipo(x) === ref; }) : [];
+      Promise.all(prev.map(function (x) { x.referencia = ''; return call('/lib/save', { item: x }); })).then(save).then(function (r) {
         if (r.status !== 200) throw new Error();
         items.push(r.body.item); lf.hidden = true; msg.textContent = 'Documento guardado.'; renderLib(); renderGuia();
       }).catch(function () { msg.textContent = 'No se pudo subir. Revisa el tamaño del archivo.'; });
@@ -78,7 +81,8 @@
   });
 
   // Guía: estructura del protocolo MB-CART19.1 (CARLLA-B1) como checklist. p = página del protocolo de referencia.
-  var GUIA = [
+  var GUIAS = {};
+  GUIAS.protocolo = [
     { t: 'Antes de escribir: trámites y requisitos', items: [
       ['Definir producto, plataforma de manufactura y proveedor del vector', 'Quién fabrica, dónde y con qué equipo (p. ej. CliniMACS Prodigy).'],
       ['Manual del investigador vigente del producto', 'El protocolo lo cita para la descripción del producto.'],
@@ -123,15 +127,41 @@
     { t: '14 y 15. Financiamiento y publicación', p: 61, items: [['Fuentes de financiamiento y costos para participantes', '', 61], ['Seguro, indemnización y conflictos de interés', '', 61], ['Política de publicación', '', 62]] },
     { t: 'Referencias y apéndices', p: 63, items: [['Referencias', '', 63], ['Escalas ICANS, ICE y SLC (ASTCT)', '', 68], ['Cuestionarios de calidad de vida (PROMIS-29, FACT)', '', 69], ['Clase funcional', '', 75]] }
   ];
+
+  // Manual del investigador MB-CART19.1 (estructura ICH E6, sección 7). p = página del manual de referencia.
+  GUIAS.manual = [
+    { t: 'Antes de escribir', items: [
+      ['Definir patrocinador y producto en investigación', 'Nombre, patrocinador institucional y versión.'],
+      ['Reunir la información del fabricante del vector o del producto', 'Datos no clínicos, certificado de análisis y especificaciones.'],
+      ['Alinear con el protocolo', 'El manual es la guía rápida; no sustituye al protocolo extenso.'],
+      ['Plan de actualización', 'Revisar al menos una vez al año o cuando haya nueva información de seguridad.']
+    ] },
+    { t: 'Portada, control y confidencialidad', p: 1, items: [['Portada: producto, patrocinador y versión', '', 1], ['Control de cambios', 'Versión, fecha, descripción, sección y responsable.', 2], ['Declaración de confidencialidad', 'Quién puede inspeccionar registros y dónde se resguardan los datos.', 2], ['Índice', '', 3]] },
+    { t: '2 y 3. Resumen e introducción', p: 5, items: [['Resumen del producto', '', 5], ['Datos clínicos clave', '', 5], ['Introducción', 'Mecanismo de acción e indicación propuesta.', 7]] },
+    { t: '4. Información del producto', p: 8, items: [
+      ['Propiedades físicas, químicas y farmacéuticas', '', 8], ['Formulación y lista de excipientes', '', 8], ['Periodo de validez', '', 9],
+      ['Manejo del producto e instrucciones de precaución', '', 9], ['Conservación y traslado', 'Temperatura, cadena de frío y criopreservación.', 10], ['Eliminación del producto', '', 10], ['Envasado y etiquetado', '', 10]
+    ] },
+    { t: '5. Estudios no clínicos', p: 12, items: [
+      ['Estudios in vitro publicados', '', 12], ['Estudios in vivo', '', 13], ['Estudios del fabricante', '', 13], ['Farmacología no clínica', '', 18],
+      ['Farmacocinética y metabolismo en animales', '', 19], ['Toxicología: genotoxicidad y riesgo germinal', '', 19], ['Presencia de vector lentiviral (RCL)', '', 20]
+    ] },
+    { t: '6. Efectos en seres humanos', p: 21, items: [['Farmacocinética y metabolismo en humanos', 'Expansión y persistencia.', 22], ['Seguridad en ensayos clínicos', 'SLC, ICANS, citopenias.', 23], ['Eficacia en ensayos clínicos', '', 25], ['Experiencia poscomercialización', '', 28]] },
+    { t: '7. Resumen y guía para el investigador', p: 29, items: [['Resumen de datos no clínicos y clínicos', '', 29], ['Guía práctica para el investigador', 'Riesgos esperados, vigilancia y manejo.', 29], ['Farmacocinética y metabolismo en humanos', '', 30]] },
+    { t: 'Referencias y apéndices', p: 31, items: [['Referencias', '', 31], ['Lista de tablas y de abreviaturas', '', 34]] }
+  ];
   var KEY = 'yct-guia';
-  function state() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } }
-  function setState(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
-  function ref() { return items.find(function (x) { return x.referencia; }); }
+  function state() { try { return JSON.parse(localStorage.getItem(KEY + '-' + tipo()) || (tipo() === 'protocolo' ? localStorage.getItem(KEY) : '') || '{}'); } catch (e) { return {}; } }
+  function setState(s) { try { localStorage.setItem(KEY + '-' + tipo(), JSON.stringify(s)); } catch (e) {} }
+  function refTipo(x) { return x.referencia === true ? 'protocolo' : (x.referencia || ''); }
+  function ref() { var t = tipo(); return items.find(function (x) { return refTipo(x) === t; }); }
+  function tipo() { return $('gTipo').value; }
   function renderGuia() {
     var s = state(), r = ref(), n = 0, done = 0;
     $('gProj').value = s.proyecto || '';
-    $('gRefNote').innerHTML = r ? 'Las páginas abren tu protocolo de referencia: <b>' + esc(r.titulo) + '</b>.' : 'Sube tu protocolo en <b>Biblioteca</b> y márcalo como referencia para abrir cada sección desde aquí.';
-    $('guia').innerHTML = GUIA.map(function (g, gi) {
+    var nom = tipo() === 'manual' ? 'manual del investigador' : 'protocolo';
+    $('gRefNote').innerHTML = r ? 'Las páginas abren tu ' + nom + ' de referencia: <b>' + esc(r.titulo) + '</b>.' : 'Sube tu ' + nom + ' en <b>Biblioteca</b> y márcalo como referencia para abrir cada sección desde aquí.';
+    $('guia').innerHTML = GUIAS[tipo()].map(function (g, gi) {
       return '<section class="gsec"><h3>' + esc(g.t) + (g.p && r ? ' <button type="button" class="pg" data-pg="' + g.p + '">pág. ' + g.p + '</button>' : '') + '</h3><ul>' + g.items.map(function (it, ii) {
         var id = gi + '.' + ii, on = !!(s.done || {})[id]; n++; if (on) done++;
         return '<li><label><input type="checkbox" data-id="' + id + '"' + (on ? ' checked' : '') + '><span><b>' + esc(it[0]) + '</b>' + (it[1] ? '<small>' + esc(it[1]) + '</small>' : '') + '</span></label>' + (it[2] && r ? '<button type="button" class="pg" data-pg="' + it[2] + '">pág. ' + it[2] + '</button>' : '') + '</li>';
@@ -150,5 +180,6 @@
     b.dataset.sure = ''; b.textContent = 'Nuevo proyecto'; setState({}); renderGuia(); $('gProj').focus();
   });
   $('gPrint').addEventListener('click', function () { document.body.classList.add('print-guia'); window.print(); setTimeout(function () { document.body.classList.remove('print-guia'); }, 500); });
+  $('gTipo').addEventListener('change', renderGuia);
   renderGuia();
 })();

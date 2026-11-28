@@ -15,7 +15,7 @@
   }
   window.YCT = { call: function (p, b) { return call(p, b); }, expired: function () { expired(); } };
   function view(id) {
-    ['login', 'home', 'm-calidad', 'm-administracion', 'm-asesorias', 'm-cultivo', 'm-qc'].forEach(function (v) { $(v).hidden = v !== id; });
+    [].forEach.call(document.querySelectorAll('#stage > section'), function (sec) { sec.hidden = sec.id !== id; });
     $('stage').scrollTop = 0; window.scrollTo(0, 0);
   }
   function expired() { signOut(); $('msg').textContent = 'Tu sesión terminó. Entra de nuevo.'; }
