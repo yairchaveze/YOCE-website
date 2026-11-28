@@ -67,7 +67,7 @@
     document.dispatchEvent(new CustomEvent('yct:open', { detail: b.dataset.mod }));
   });
   document.addEventListener('click', function (e) {
-    if (e.target.closest('[data-home]')) { document.title = 'Portal del personal | YoCellTherapy'; view('home'); }
+    if (e.target.closest('[data-home]')) { $('tocFab').hidden = true; document.title = 'Portal del personal | YoCellTherapy'; view('home'); }
   });
   $('docs').addEventListener('click', function (e) {
     var b = e.target.closest('button[data-doc]'); if (!b) return;
@@ -78,12 +78,31 @@
       if (r.status !== 200) return;
       var d = r.body, ctl = d.code + ', versión ' + d.version + ', emisión ' + d.issued;
       $('dTitle').textContent = d.title; $('dBody').innerHTML = d.html; $('dCtl').textContent = ctl;
+      buildToc();
       $('pageBoxes').textContent = '@media print { @page { size: letter; margin: 15mm 15mm 18mm; @bottom-left { content: "' + ctl.replace(/"/g, '') + '"; font: 8pt sans-serif; color: #506267; } @bottom-center { content: "Página " counter(page) " de " counter(pages); font: 8pt sans-serif; color: #506267; } @bottom-right { content: "yocelltherapy.com"; font: 8pt sans-serif; color: #506267; } } }';
       document.title = d.code + ' ' + d.title + ' | YoCellTherapy';
       $('docList').hidden = true; $('viewer').hidden = false; $('stage').scrollTop = 0; window.scrollTo(0, 0);
     }).catch(function () { label.textContent = old; });
   });
-  $('back').addEventListener('click', function () { $('viewer').hidden = true; $('docList').hidden = false; document.title = 'Portal del personal | YoCellTherapy'; });
+  // Índice navegable a partir de los títulos del documento
+  function buildToc() {
+    var hs = [].slice.call($('dBody').querySelectorAll('h2, h3')), html = '', open = false;
+    hs.forEach(function (h, i) {
+      h.id = 'sec-' + i;
+      var a = '<a href="#sec-' + i + '">' + esc(h.textContent) + '</a>';
+      if (h.tagName === 'H2') { if (open) html += '</ol></li>'; html += '<li>' + a + '<ol>'; open = true; }
+      else html += open ? '<li>' + a + '</li>' : '<li class="sub">' + a + '</li>';
+    });
+    if (open) html += '</ol></li>';
+    $('tocList').innerHTML = html.replace(/<ol><\/ol>/g, '');
+    $('dToc').hidden = hs.length < 4; $('tocFab').hidden = hs.length < 4;
+  }
+  $('tocList').addEventListener('click', function (e) {
+    var a = e.target.closest('a'); if (!a) return; e.preventDefault();
+    var t = document.getElementById(a.getAttribute('href').slice(1)); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  $('tocFab').addEventListener('click', function () { $('dToc').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $('back').addEventListener('click', function () { $('tocFab').hidden = true; $('viewer').hidden = true; $('docList').hidden = false; document.title = 'Portal del personal | YoCellTherapy'; });
   $('print').addEventListener('click', function () { window.print(); });
 
   var saved = store.get();
