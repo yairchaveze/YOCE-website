@@ -15,7 +15,7 @@
   }
   window.YCT = { call: function (p, b) { return call(p, b); }, expired: function () { expired(); } };
   function view(id) {
-    ['login', 'home', 'm-calidad', 'm-administracion', 'm-cultivo', 'm-qc'].forEach(function (v) { $(v).hidden = v !== id; });
+    ['login', 'home', 'm-calidad', 'm-administracion', 'm-asesorias', 'm-cultivo', 'm-qc'].forEach(function (v) { $(v).hidden = v !== id; });
     $('stage').scrollTop = 0; window.scrollTo(0, 0);
   }
   function expired() { signOut(); $('msg').textContent = 'Tu sesión terminó. Entra de nuevo.'; }
@@ -25,7 +25,7 @@
     $('hello').textContent = 'Hola, ' + p.name.split(' ')[0] + '.';
     document.querySelectorAll('.tile').forEach(function (b) { b.hidden = p.modules.indexOf(b.dataset.mod) < 0; });
     view('home');
-    if (p.modules.indexOf('administracion') >= 0) document.querySelector('[data-state="administracion"]').classList.add('ok');
+    ['administracion', 'asesorias'].forEach(function (k) { if (p.modules.indexOf(k) >= 0) document.querySelector('[data-state="' + k + '"]').classList.add('ok'); });
     if (p.modules.indexOf('calidad') >= 0) {
       call('/qms/list').then(function (r) {
         if (r.status === 401) return expired();

@@ -39,6 +39,7 @@
       <div class="tiles" id="tiles">
 <button type="button" class="tile" data-mod="calidad" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 2h3v16H5V5h3z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="t-tx"><span class="t-name">Calidad</span><span class="t-desc">Manual, procedimientos y formatos vigentes</span></span><span class="t-state" data-state="calidad">En construcción</span></button>
 <button type="button" class="tile" data-mod="administracion" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span><span class="t-tx"><span class="t-name">Administración</span><span class="t-desc">Facturas, contabilidad, precios y cotizaciones</span></span><span class="t-state" data-state="administracion">Facturación</span></button>
+<button type="button" class="tile" data-mod="asesorias" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg></span><span class="t-tx"><span class="t-name">Asesorías</span><span class="t-desc">Protocolos de referencia y guía para nuevas implementaciones</span></span><span class="t-state" data-state="asesorias">Biblioteca</span></button>
 <button type="button" class="tile" data-mod="cultivo" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v6L4 18a2 2 0 0 0 2 3h12a2 2 0 0 0 2-3l-5-9V3"/><path d="M8 3h8M7 15h10"/></svg></span><span class="t-tx"><span class="t-name">Cultivo celular</span><span class="t-desc">Seguimiento de cultivos y bancos celulares</span></span><span class="t-state" data-state="cultivo">En construcción</span></button>
 <button type="button" class="tile" data-mod="qc" hidden><span class="t-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><span class="t-tx"><span class="t-name">QC CAR-T y terapia celular</span><span class="t-desc">Control de calidad y liberación de lotes</span></span><span class="t-state" data-state="qc">En construcción</span></button>
       </div>
@@ -192,6 +193,35 @@
         </div>
       </div>
     </section>
+<section class="mod" id="m-asesorias" hidden>
+      <div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Asesorías</h2></div>
+      <div class="tabs" role="tablist" aria-label="Asesorías">
+        <button type="button" role="tab" id="tb-lib" aria-controls="p-lib" aria-selected="true">Biblioteca</button>
+        <button type="button" role="tab" id="tb-guia" aria-controls="p-guia" aria-selected="false">Guía para un protocolo nuevo</button>
+      </div>
+      <div class="panel" role="tabpanel" id="p-lib" aria-labelledby="tb-lib">
+        <div class="toolbar"><label class="f-inline">Buscar <input type="search" id="lQ" placeholder="CAR-T, aféresis..."></label><button type="button" class="btn btn--quiet" id="lNew">Subir documento</button><span class="msg" id="lMsg" role="status" aria-live="polite"></span></div>
+        <form class="nf dform" id="lForm" hidden novalidate>
+          <fieldset><legend>Nuevo documento de referencia</legend>
+            <label class="wide">Título<input name="titulo" required></label>
+            <label>Tipo<select name="tipo"><option>Protocolo clínico</option><option>Procedimiento</option><option>Plantilla o formato</option><option>Artículo o guía</option><option>Presentación</option><option>Otro</option></select></label>
+            <label>Versión<input name="version" placeholder="1.0"></label>
+            <label class="wide">Notas <small>opcional</small><input name="notas" placeholder="Institución, fecha, para qué sirve"></label>
+            <label class="wide">Archivo (PDF, Word o foto, máx. 14 MB)<input name="file" type="file" accept="application/pdf,image/*,.doc,.docx,.xlsx,.pptx" required></label>
+            <label class="chk"><input type="checkbox" name="referencia"> Usar como protocolo de referencia en la guía</label>
+          </fieldset>
+          <div class="nf-act"><button class="btn" type="submit">Guardar</button><button class="btn btn--quiet" type="button" id="lCancel">Cancelar</button></div>
+        </form>
+        <ul class="dlist" id="lList"></ul>
+        <p class="empty" id="lEmpty" hidden>Aún no hay documentos. Sube tu protocolo MB-CART19.1 y márcalo como referencia.</p>
+      </div>
+      <div class="panel" role="tabpanel" id="p-guia" aria-labelledby="tb-guia" hidden>
+        <div class="toolbar"><label class="f-inline">Proyecto <input id="gProj" placeholder="Nombre de la nueva implementación"></label><span class="due" id="gProg"></span><button type="button" class="btn btn--quiet" id="gReset">Nuevo proyecto</button><button type="button" class="btn btn--quiet" id="gPrint">Imprimir checklist</button></div>
+        <p class="note" id="gRefNote"></p>
+        <div class="guia" id="guia"></div>
+      </div>
+    </section>
+
 <section class="mod" id="m-cultivo" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Cultivo celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Registro de cultivos, pases y viabilidad</li><li>Bancos celulares y su inventario</li><li>Cálculos de siembra y expansión</li></ul></div></section>
 <section class="mod" id="m-qc" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>QC CAR-T y terapia celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Pruebas de liberación por lote</li><li>Registro de resultados contra especificaciones</li><li>Certificado de análisis</li></ul></div></section>
   </main>
@@ -199,5 +229,6 @@
 <style id="pageBoxes"></style>
 <script src="js/portal.js" defer></script>
 <script src="js/admin.js" defer></script>
+<script src="js/asesorias.js" defer></script>
 </body>
 </html>

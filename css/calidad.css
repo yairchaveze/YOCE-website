@@ -41,7 +41,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 /* Inicio: todo en una pantalla */
 .home:not([hidden]) { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: var(--space-lg); height: 100%; }
 .hello { font-size: var(--text-3xl); font-weight: 300; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); grid-auto-rows: minmax(10rem, 15rem); align-content: start; gap: var(--space-md); min-height: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); grid-auto-rows: minmax(10rem, 15rem); align-content: start; gap: var(--space-md); min-height: 0; }
 .tile { display: grid; grid-template-rows: auto 1fr auto; justify-items: start; gap: var(--space-sm); padding: var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); color: var(--color-ink); text-align: left; font: inherit; cursor: pointer; transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
 .tile[hidden] { display: none; }
 .tile:hover { border-color: var(--color-accent); background: var(--color-paper); }
@@ -172,6 +172,27 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .dlist .acts button { min-height: 36px; margin-left: var(--space-3xs); padding: 0 var(--space-sm); border: 1px solid var(--color-rule); border-radius: var(--radius-inner); background: transparent; color: var(--color-ink); font: 600 var(--text-xs)/1 var(--font-body); cursor: pointer; }
 .dlist .acts button.warn { border-color: var(--color-error); color: var(--color-error); }
 @media (max-width: 60rem) { .docgrid { grid-template-columns: minmax(0, 1fr); } }
+
+.guia { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); align-items: start; }
+.gsec { padding: var(--space-md) var(--space-lg); border: 1px solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper-2); break-inside: avoid; }
+.gsec h3 { display: flex; justify-content: space-between; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs); font-size: var(--text-lg); font-weight: 400; }
+.gsec ul { display: grid; gap: var(--space-2xs); margin: 0; padding: 0; list-style: none; }
+.gsec li { display: flex; justify-content: space-between; align-items: start; gap: var(--space-sm); padding: var(--space-2xs) 0; border-top: 1px solid var(--color-rule); }
+.gsec label { display: flex; gap: var(--space-xs); align-items: start; font-size: var(--text-sm); cursor: pointer; }
+.gsec label input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--color-accent); }
+.gsec label b { font-weight: 600; }
+.gsec label small { display: block; color: var(--color-muted); font-size: var(--text-xs); }
+.gsec input:checked + span b { color: var(--color-muted); text-decoration: line-through; }
+.pg { flex-shrink: 0; min-height: 28px; padding: 0 var(--space-xs); border: 1px solid var(--color-rule); border-radius: var(--radius-pill); background: transparent; color: var(--color-accent); font: 600 var(--text-xs)/1 var(--font-body); cursor: pointer; }
+.pg:hover { border-color: var(--color-accent); }
+@media (max-width: 60rem) { .guia { grid-template-columns: minmax(0, 1fr); } }
+@media print {
+  body.print-guia .app { display: block; height: auto; }
+  body.print-guia .stage { overflow: visible; padding: 0; }
+  body.print-guia .bar, body.print-guia .m-top, body.print-guia .tabs, body.print-guia #p-lib, body.print-guia .pg, body.print-guia #gReset, body.print-guia #gPrint, body.print-guia #gRefNote { display: none !important; }
+  body.print-guia #m-asesorias, body.print-guia #p-guia { display: block !important; }
+  body.print-guia .gsec { background: #fff; }
+}
 
 /* Documento controlado */
 .v-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-sm); margin-bottom: var(--space-lg); }
