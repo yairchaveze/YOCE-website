@@ -89,6 +89,8 @@
     var hs = [].slice.call($('dBody').querySelectorAll('h2, h3')), html = '', open = false;
     hs.forEach(function (h, i) {
       h.id = 'sec-' + i;
+      // Cada sección mayor empieza en hoja nueva al imprimir
+      if (h.tagName === 'H2' && /^(Secci[oó]n|Anexo|Ap[eé]ndice|Documentos del sistema)/i.test(h.textContent.trim())) h.classList.add('sec-break');
       var a = '<a href="#sec-' + i + '">' + esc(h.textContent) + '</a>';
       if (h.tagName === 'H2') { if (open) html += '</ol></li>'; html += '<li>' + a + '<ol>'; open = true; }
       else html += open ? '<li>' + a + '</li>' : '<li class="sub">' + a + '</li>';

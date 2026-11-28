@@ -269,6 +269,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .d-toc { border: 0; padding: 0; background: none; break-after: page; }
   .d-toc li ol { grid-template-columns: 1fr 1fr; }
   .d-body h2 { break-after: avoid; margin-top: 8mm !important; }
+  .d-body h2.sec-break { break-before: page; margin-top: 0 !important; }
   .d-body h3 { break-after: avoid; }
   .d-body tr, .d-body li { break-inside: avoid; }
   .d-body thead th, .d-body h2, .d-body tbody tr:nth-child(even) td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
