@@ -107,3 +107,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--yct-accent);outl
 .yct-foot-bot{max-width:1160px;margin:0 auto;padding:16px max(20px,env(safe-area-inset-right,0px)) 24px max(20px,env(safe-area-inset-left,0px));border-top:1px solid rgba(231,239,237,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:13px}
 .yct-foot-bot span:last-child{font-family:var(--yct-mono);letter-spacing:.08em}
 @media (max-width:760px){.yct-foot-in{grid-template-columns:1fr 1fr}.yct-foot-in>div:first-child{grid-column:1/-1}}
+
+/* Marca unificada: YoCellTherapy · Laboratorio */
+.ylab-t{display:grid;gap:3px;line-height:1}
+.ylab-t small{font-family:var(--yct-mono);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--yct-accent)}
+.yct-foot .ylab-t small{color:var(--yct-band-muted)}
