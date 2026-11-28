@@ -150,6 +150,32 @@
     { t: '7. Resumen y guía para el investigador', p: 29, items: [['Resumen de datos no clínicos y clínicos', '', 29], ['Guía práctica para el investigador', 'Riesgos esperados, vigilancia y manejo.', 29], ['Farmacocinética y metabolismo en humanos', '', 30]] },
     { t: 'Referencias y apéndices', p: 31, items: [['Referencias', '', 31], ['Lista de tablas y de abreviaturas', '', 34]] }
   ];
+
+  // Expediente de sometimiento de un protocolo (p. ej. CAR-T) a COFEPRIS: una sección por carpeta.
+  GUIAS.cofepris = [
+    { t: 'Antes de armar el expediente', items: [
+      ['Dictámenes favorables de los comités', 'Ética en Investigación, Investigación y Bioseguridad, con versión y fecha del protocolo.'],
+      ['Versiones congeladas', 'Protocolo, consentimiento y manual del investigador con la misma versión en todos los documentos.'],
+      ['Documento genérico "No aplica"', 'Toda carpeta sin documento lleva el PDF que lo justifica.'],
+      ['Archivos en PDF, legibles y firmados', 'Nombres de archivo claros y numerados igual que las carpetas.']
+    ] },
+    { t: '1. Datos del propietario', items: [['Identificación oficial del titular o representante legal', ''], ['Acta constitutiva o documento que acredita la personalidad y poder notarial', 'Si el titular es institución.'], ['RFC y comprobante de domicilio', '']] },
+    { t: '2. Datos del establecimiento del titular', items: [['Licencia sanitaria o aviso de funcionamiento', ''], ['Responsable sanitario y su cédula', ''], ['Domicilio y datos de contacto del establecimiento', '']] },
+    { t: '3. Comprobante de pago y carta de solicitud', items: [['Comprobante del pago de derechos', 'Hoja de ayuda e5cinco con el sello del banco.'], ['Carta de solicitud firmada', 'Dirigida a COFEPRIS, con título, número y versión del protocolo.'], ['Formato oficial de solicitud del trámite', '']] },
+    { t: '4. Información del patrocinador', items: [['Datos del patrocinador', 'Razón social, domicilio y representante.'], ['Carta de patrocinio o compromiso', 'Responsabilidades y financiamiento del estudio.']] },
+    { t: '5. Documentos del protocolo', items: [['Protocolo completo con versión y fecha', ''], ['Resumen del protocolo', ''], ['Carta de consentimiento informado (y asentimiento si aplica)', ''], ['Formatos de recolección de datos y cuestionarios', 'CRF, escalas y cuestionarios de calidad de vida.'], ['Cronograma y presupuesto', '']] },
+    { t: '6. Producto de investigación', items: [['Manual del investigador vigente', ''], ['Información de manufactura y calidad del producto', 'Proceso, especificaciones de liberación y controles.'], ['Certificados de análisis del vector y materiales críticos', ''], ['Estudios de estabilidad', 'Producto fresco y criopreservado.'], ['Etiquetado, envasado, conservación y traslado', '']] },
+    { t: '7. Centro de investigación', items: [['Licencia sanitaria del centro', ''], ['Carta de aceptación del centro', 'Firmada por la dirección del hospital.'], ['Descripción de instalaciones y equipo', 'Aféresis, laboratorio de manufactura, control de calidad y área clínica.']] },
+    { t: '8. Centro de atención de urgencias', items: [['Carta compromiso o convenio de atención de urgencias', ''], ['Capacidad de terapia intensiva y disponibilidad de tocilizumab', 'Para manejo de SLC e ICANS.']] },
+    { t: '9. Investigador principal', items: [['Currículum firmado y fechado', ''], ['Título y cédula profesional', ''], ['Constancia de Buenas Prácticas Clínicas vigente', ''], ['Carta compromiso del investigador', '']] },
+    { t: '10. Equipo de investigación', items: [['Lista de integrantes y delegación de funciones', ''], ['Currículum, cédula y constancia de BPC de cada integrante', '']] },
+    { t: '11. Comité de Ética en Investigación', items: [['Dictamen favorable', 'Con versión del protocolo y del consentimiento aprobados.'], ['Registro vigente del comité ante CONBIOÉTICA', ''], ['Lista de integrantes', '']] },
+    { t: '12. Comité de Investigación', items: [['Dictamen favorable', ''], ['Registro vigente del comité ante COFEPRIS', '']] },
+    { t: '13. Comité de Bioseguridad', items: [['Dictamen favorable', 'Indispensable por el uso de vector lentiviral (organismo genéticamente modificado).'], ['Registro vigente del comité', ''], ['Evaluación de riesgo biológico y manejo de residuos', '']] },
+    { t: '14. Importador', items: [['Datos y licencia del importador', ''], ['Permisos sanitarios de importación', 'Vector, reactivos o insumos que no se fabrican en México.'], ['Si no hay importación: documento genérico "No aplica"', '']] },
+    { t: '15. Información complementaria', items: [['Póliza de seguro del estudio', ''], ['Registro público del ensayo', 'ClinicalTrials.gov u otro.'], ['Declaración de conflictos de interés', '']] },
+    { t: '16. Otros documentos', items: [['Documentos que pida la institución o el revisor', ''], ['Acuse de recepción y seguimiento del trámite', 'Prevenciones y sus respuestas.']] }
+  ];
   var KEY = 'yct-guia';
   function state() { try { return JSON.parse(localStorage.getItem(KEY + '-' + tipo()) || (tipo() === 'protocolo' ? localStorage.getItem(KEY) : '') || '{}'); } catch (e) { return {}; } }
   function setState(s) { try { localStorage.setItem(KEY + '-' + tipo(), JSON.stringify(s)); } catch (e) {} }
@@ -160,7 +186,7 @@
     var s = state(), r = ref(), n = 0, done = 0;
     $('gProj').value = s.proyecto || '';
     var nom = tipo() === 'manual' ? 'manual del investigador' : 'protocolo';
-    $('gRefNote').innerHTML = r ? 'Las páginas abren tu ' + nom + ' de referencia: <b>' + esc(r.titulo) + '</b>.' : 'Sube tu ' + nom + ' en <b>Biblioteca</b> y márcalo como referencia para abrir cada sección desde aquí.';
+    $('gRefNote').innerHTML = tipo() === 'cofepris' ? 'Una sección por carpeta del expediente. Guarda los documentos de cada sometimiento en <b>Biblioteca</b>.' : r ? 'Las páginas abren tu ' + nom + ' de referencia: <b>' + esc(r.titulo) + '</b>.' : 'Sube tu ' + nom + ' en <b>Biblioteca</b> y márcalo como referencia para abrir cada sección desde aquí.';
     $('guia').innerHTML = GUIAS[tipo()].map(function (g, gi) {
       return '<section class="gsec"><h3>' + esc(g.t) + (g.p && r ? ' <button type="button" class="pg" data-pg="' + g.p + '">pág. ' + g.p + '</button>' : '') + '</h3><ul>' + g.items.map(function (it, ii) {
         var id = gi + '.' + ii, on = !!(s.done || {})[id]; n++; if (on) done++;
