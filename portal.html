@@ -69,8 +69,9 @@
       <div class="tabs" role="tablist" aria-label="Administración">
         <button type="button" role="tab" id="tb-fact" aria-controls="p-fact" aria-selected="true">Facturas</button>
         <button type="button" role="tab" id="tb-new" aria-controls="p-new" aria-selected="false">Nueva factura</button>
+        <button type="button" role="tab" id="tb-gas" aria-controls="p-gas" aria-selected="false">Gastos</button>
         <button type="button" role="tab" id="tb-sum" aria-controls="p-sum" aria-selected="false">Resumen para el SAT</button>
-        <span class="tab-soon">Contabilidad, precios y cotizaciones: próximamente</span>
+        <span class="tab-soon">Precios y cotizaciones: próximamente</span>
       </div>
 
       <div class="panel" role="tabpanel" id="p-fact" aria-labelledby="tb-fact">
@@ -125,10 +126,40 @@
         </form>
       </div>
 
+      <div class="panel" role="tabpanel" id="p-gas" aria-labelledby="tb-gas" hidden>
+        <div class="toolbar">
+          <label class="f-inline">Mes <input type="month" id="gMonth"></label>
+          <label class="btn btn--quiet upl">Subir XML<input type="file" id="gXml" accept=".xml,text/xml" multiple hidden></label>
+          <label class="btn btn--quiet upl">Foto o PDF<input type="file" id="gFile" accept="image/*,application/pdf" hidden></label>
+          <button type="button" class="btn btn--quiet" id="gCsv">Exportar año para el contador</button>
+          <span class="msg" id="gMsg" role="status" aria-live="polite"></span>
+        </div>
+        <form class="nf gform" id="gForm" hidden novalidate>
+          <fieldset><legend>Datos del gasto <small id="gFileName"></small></legend>
+            <label>Fecha<input name="fecha" type="date" required></label>
+            <label class="wide">Proveedor<input name="emisorNombre" required></label>
+            <label>RFC del proveedor <small>opcional</small><input name="emisorRfc" maxlength="13" autocapitalize="characters"></label>
+            <label class="wide">Concepto<input name="concepto" required></label>
+            <label>Categoría<select name="categoria"><option>Equipo de laboratorio</option><option>Material y reactivos</option><option>Servicios profesionales</option><option>Software y suscripciones</option><option>Otro</option></select></label>
+            <label>Total pagado<input name="total" type="number" min="0" step="0.01" required></label>
+            <label>IVA incluido<input name="iva" type="number" min="0" step="0.01"></label>
+            <label class="chk"><input type="checkbox" name="conIva" checked> El total incluye IVA 16%</label>
+          </fieldset>
+          <div class="nf-act"><button class="btn" type="submit">Guardar gasto</button><button class="btn btn--quiet" type="button" id="gCancel">Cancelar</button></div>
+          <p class="note">Para que un gasto cuente ante el SAT necesitas la factura (XML) a tu RFC. La foto sirve como respaldo mientras pides la factura.</p>
+        </form>
+        <p class="gtot" id="gTot"></p>
+        <div class="tablewrap"><table class="ft">
+          <thead><tr><th scope="col">Fecha</th><th scope="col">Proveedor</th><th scope="col">Categoría</th><th scope="col" class="num">IVA</th><th scope="col" class="num">Total</th><th scope="col">Comprobante</th><th scope="col"><span class="visually-hidden">Acciones</span></th></tr></thead>
+          <tbody id="gRows"></tbody>
+        </table></div>
+        <p class="empty" id="gEmpty" hidden>No hay gastos en este mes. Sube el XML de la factura o una foto del comprobante.</p>
+      </div>
+
       <div class="panel" role="tabpanel" id="p-sum" aria-labelledby="tb-sum" hidden>
         <div class="toolbar"><label class="f-inline">Mes <input type="month" id="sMonth"></label><span class="due" id="sDue"></span></div>
         <div class="sum" id="sum"></div>
-        <p class="note">Estimación con las facturas cobradas del mes, Régimen Simplificado de Confianza. Aún no resta el IVA de tus gastos (se agregará con Contabilidad). Confirma siempre con la declaración del SAT o tu contador.</p>
+        <p class="note">Estimación con las facturas cobradas del mes, Régimen Simplificado de Confianza. Resta el IVA de los gastos del mes que tienen XML. Confirma siempre con la declaración del SAT o tu contador.</p>
       </div>
     </section>
 <section class="mod" id="m-cultivo" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Cultivo celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Registro de cultivos, pases y viabilidad</li><li>Bancos celulares y su inventario</li><li>Cálculos de siembra y expansión</li></ul></div></section>
