@@ -8,7 +8,7 @@
   // Tasas mensuales de ISR del RESICO para personas físicas (art. 113-E LISR), sobre ingresos cobrados sin IVA.
   var RESICO = [[25000, 0.01], [50000, 0.011], [83333.33, 0.015], [208333.33, 0.02], [3500000, 0.025]];
   var localIso = function () { var d = new Date(); return new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 19); };
-  var facturas = [], gastos = [], loaded = false;
+  var facturas = [], gastos = [], docs = [], emisor = {}, loaded = false;
   var MI_RFC = 'CAEY941215T23';
   var now = new Date(), ym = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
   $('fMonth').value = ym; $('sMonth').value = ym; $('gMonth').value = ym;
@@ -17,14 +17,15 @@
     return window.YCT.call(p, b).then(function (r) { if (r.status === 401) { window.YCT.expired(); throw new Error('sesion'); } return r; });
   }
   function load() {
-    return Promise.all([call('/adm/fact/list'), call('/adm/gasto/list')]).then(function (rs) {
-      facturas = rs[0].body.items || []; gastos = rs[1].body.items || []; loaded = true; renderList(); renderGas(); renderSum(); fillRfcs();
+    return Promise.all([call('/adm/fact/list'), call('/adm/gasto/list'), call('/adm/doc/list'), call('/adm/config')]).then(function (rs) {
+      facturas = rs[0].body.items || []; gastos = rs[1].body.items || []; docs = rs[2].body.items || []; emisor = rs[3].body.emisor || {};
+      loaded = true; renderList(); renderGas(); renderSum(); fillRfcs(); renderDocs(); renderFis();
     });
   }
   document.addEventListener('yct:open', function (e) { if (e.detail === 'administracion' && !loaded) load().catch(function () {}); });
 
   // Pestañas
-  var tabs = ['fact', 'new', 'gas', 'sum'];
+  var tabs = ['fact', 'new', 'gas', 'sum', 'doc'];
   tabs.forEach(function (t) {
     $('tb-' + t).addEventListener('click', function () {
       tabs.forEach(function (o) { $('tb-' + o).setAttribute('aria-selected', o === t); $('p-' + o).hidden = o !== t; });
@@ -284,6 +285,67 @@
       rows.push(['Gasto', dmy(g.fecha), g.uuid || '', g.emisorRfc || '', g.emisorNombre, g.concepto, g.categoria, g.subtotal, g.iva, '', g.total, '', g.tieneXml ? 'XML' : (g.archivo ? 'Foto/PDF sin factura' : '')]);
     });
     download('YoCellTherapy-ingresos-y-gastos-' + y + '.csv', new Blob(['﻿' + rows.map(function (r) { return r.map(q).join(','); }).join('\r\n')], { type: 'text/csv' }));
+  });
+
+
+  // Documentos legales y datos fiscales
+  function fisRows() {
+    return [['RFC', emisor.rfc], ['Nombre', emisor.nombre], ['Código postal', emisor.cp], ['Régimen fiscal', emisor.regimen + ' ' + (emisor.regimenNombre || '')], ['Uso del CFDI', 'G03 Gastos en general']];
+  }
+  function renderFis() {
+    $('fisList').innerHTML = fisRows().map(function (r, i) { return '<div><dt>' + r[0] + '</dt><dd><span>' + esc(r[1]) + '</span><button type="button" data-fis="' + i + '">Copiar</button></dd></div>'; }).join('');
+  }
+  function copy(text, label) {
+    var done = function () { $('fisMsg').textContent = label + ' copiado.'; setTimeout(function () { $('fisMsg').textContent = ''; }, 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {}); else done();
+  }
+  $('fisList').addEventListener('click', function (e) { var b = e.target.closest('button[data-fis]'); if (!b) return; var r = fisRows()[+b.dataset.fis]; copy(r[1], r[0]); });
+  $('fisCopy').addEventListener('click', function () { copy(fisRows().map(function (r) { return r[0] + ': ' + r[1]; }).join('\n'), 'Todo'); });
+
+  function renderDocs() {
+    $('dEmpty').hidden = docs.length > 0;
+    var today = localIso().slice(0, 10);
+    $('dList').innerHTML = docs.slice().sort(function (a, b) { return (b.fecha || '').localeCompare(a.fecha || ''); }).map(function (d) {
+      var venc = d.vigencia ? (d.vigencia < today ? '<span class="pill warn">Vencido ' + esc(dmy(d.vigencia)) + '</span>' : '<span class="pill ok">Vigente hasta ' + esc(dmy(d.vigencia)) + '</span>') : '';
+      return '<li><div><b>' + esc(d.titulo) + '</b><small>' + esc(d.categoria) + ' · subido ' + esc(dmy(d.fecha)) + '</small>' + venc + '</div><div class="acts"><button type="button" data-dview="' + esc(d.id) + '">Ver</button><button type="button" data-ddl="' + esc(d.id) + '">Descargar</button><button type="button" data-ddel="' + esc(d.id) + '">Eliminar</button></div></li>';
+    }).join('');
+  }
+  function fileBlob(r) { var bin = atob(r.data), arr = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i); return new Blob([arr], { type: r.type }); }
+  $('dList').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.dview || b.dataset.ddl) {
+      var id = b.dataset.dview || b.dataset.ddl, win = b.dataset.dview ? window.open('', '_blank') : null, old = b.textContent;
+      b.textContent = 'Abriendo...';
+      call('/adm/doc/file', { id: id }).then(function (r) {
+        b.textContent = old; if (r.status !== 200) { if (win) win.close(); return; }
+        var blob = fileBlob(r.body);
+        if (win) win.location.href = URL.createObjectURL(blob); else download(r.body.name, blob);
+      }).catch(function () { b.textContent = old; if (win) win.close(); });
+    } else if (b.dataset.ddel) {
+      if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = '¿Seguro?'; b.classList.add('warn'); return; }
+      call('/adm/doc/delete', { id: b.dataset.ddel }).then(function () { docs = docs.filter(function (x) { return x.id !== b.dataset.ddel; }); renderDocs(); });
+    }
+  });
+  var df = $('dForm');
+  $('dNew').addEventListener('click', function () { df.reset(); df.hidden = false; df.titulo.focus(); });
+  $('dCancel').addEventListener('click', function () { df.hidden = true; });
+  df.file.addEventListener('change', function () {
+    var f = df.file.files[0]; if (f && !df.titulo.value) df.titulo.value = /constancia|csf|cif/i.test(f.name) ? 'Constancia de situación fiscal' : f.name.replace(/\.[^.]+$/, '');
+    if (f && /constancia|csf|cif/i.test(f.name)) df.categoria.value = 'Fiscal';
+  });
+  df.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = df.file.files[0], msg = $('dMsg');
+    if (!df.titulo.value.trim() || !f) { msg.textContent = 'Pon un nombre y elige el archivo.'; return; }
+    if (f.type === 'application/pdf' && f.size > 6 * 1024 * 1024) { msg.textContent = 'El archivo pesa más de 6 MB.'; return; }
+    msg.textContent = 'Subiendo...';
+    (f.type === 'application/pdf' ? new Promise(function (res, rej) { var rd = new FileReader(); rd.onload = function () { res({ name: f.name, type: f.type, data: rd.result.split(',')[1] }); }; rd.onerror = rej; rd.readAsDataURL(f); }) : shrink(f))
+      .then(function (file) {
+        return call('/adm/doc/save', { item: { titulo: df.titulo.value.trim(), categoria: df.categoria.value, vigencia: df.vigencia.value, fecha: localIso().slice(0, 10) }, file: file });
+      }).then(function (r) {
+        if (r.status !== 200) throw new Error();
+        docs.push(r.body.item); renderDocs(); df.hidden = true; msg.textContent = 'Documento guardado.';
+      }).catch(function () { msg.textContent = 'No se pudo subir. Revisa el tamaño del archivo.'; });
   });
 
   // Resumen mensual RESICO

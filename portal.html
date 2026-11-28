@@ -71,6 +71,7 @@
         <button type="button" role="tab" id="tb-new" aria-controls="p-new" aria-selected="false">Nueva factura</button>
         <button type="button" role="tab" id="tb-gas" aria-controls="p-gas" aria-selected="false">Gastos</button>
         <button type="button" role="tab" id="tb-sum" aria-controls="p-sum" aria-selected="false">Resumen para el SAT</button>
+        <button type="button" role="tab" id="tb-doc" aria-controls="p-doc" aria-selected="false">Documentos</button>
         <span class="tab-soon">Precios y cotizaciones: próximamente</span>
       </div>
 
@@ -160,6 +161,35 @@
         <div class="toolbar"><label class="f-inline">Mes <input type="month" id="sMonth"></label><span class="due" id="sDue"></span></div>
         <div class="sum" id="sum"></div>
         <p class="note">Estimación con las facturas cobradas del mes, Régimen Simplificado de Confianza. Resta el IVA de los gastos del mes que tienen XML. Confirma siempre con la declaración del SAT o tu contador.</p>
+      </div>
+    <div class="panel" role="tabpanel" id="p-doc" aria-labelledby="tb-doc" hidden>
+        <div class="docgrid">
+          <section class="fis" aria-labelledby="t-fis">
+            <h3 id="t-fis">Mis datos fiscales</h3>
+            <p class="note">Para pedir factura cuando compras.</p>
+            <dl id="fisList"></dl>
+            <div class="nf-act"><button type="button" class="btn" id="fisCopy">Copiar todo</button><span class="msg" id="fisMsg" role="status" aria-live="polite"></span></div>
+            <ul class="links">
+              <li><a href="https://wwwmat.sat.gob.mx/aplicacion/53027/genera-tu-constancia-de-situacion-fiscal" target="_blank" rel="noopener">Generar constancia actualizada en el SAT</a></li>
+              <li><a href="https://portal.facturaelectronica.sat.gob.mx" target="_blank" rel="noopener">Factura electrónica del SAT</a></li>
+              <li><a href="https://www.sat.gob.mx" target="_blank" rel="noopener">Portal del SAT</a></li>
+            </ul>
+          </section>
+          <section aria-labelledby="t-docs">
+            <div class="toolbar"><h3 id="t-docs">Documentos guardados</h3><button type="button" class="btn btn--quiet" id="dNew">Subir documento</button><span class="msg" id="dMsg" role="status" aria-live="polite"></span></div>
+            <form class="nf dform" id="dForm" hidden novalidate>
+              <fieldset><legend>Nuevo documento</legend>
+                <label class="wide">Nombre<input name="titulo" placeholder="Constancia de situación fiscal" required></label>
+                <label>Tipo<select name="categoria"><option>Fiscal</option><option>Legal</option><option>Identificación</option><option>Bancario</option><option>Contratos</option><option>Otro</option></select></label>
+                <label>Vigente hasta <small>opcional</small><input name="vigencia" type="date"></label>
+                <label class="wide">Archivo (PDF o foto, máx. 6 MB)<input name="file" type="file" accept="application/pdf,image/*" required></label>
+              </fieldset>
+              <div class="nf-act"><button class="btn" type="submit">Guardar</button><button class="btn btn--quiet" type="button" id="dCancel">Cancelar</button></div>
+            </form>
+            <ul class="dlist" id="dList"></ul>
+            <p class="empty" id="dEmpty" hidden>Aún no hay documentos. Sube tu constancia de situación fiscal para tenerla a la mano.</p>
+          </section>
+        </div>
       </div>
     </section>
 <section class="mod" id="m-cultivo" hidden><div class="m-top"><button type="button" class="back" data-home>Portal</button><h2>Cultivo celular</h2></div><div class="soon"><p class="soon-h">En construcción</p><p>Lo que tendrá este módulo:</p><ul><li>Registro de cultivos, pases y viabilidad</li><li>Bancos celulares y su inventario</li><li>Cálculos de siembra y expansión</li></ul></div></section>
